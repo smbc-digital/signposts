@@ -11,7 +11,7 @@
   (str/lower-case (name keyword)))
 
 (defn write-to-index [{:keys [event-type event-source] :as event}]
-  (esd/create @!conn (esname event-source) (esname event-type) event))
+  (esd/create @!conn (str "feed_" (esname event-source)) (esname event-type) event))
 
 (defn push-some-data []
   (map write-to-index (take 5000 (fd/timelines))))

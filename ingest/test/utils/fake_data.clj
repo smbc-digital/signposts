@@ -39,9 +39,9 @@
   (let [{:keys [event-source event-type]} (rand-event-source)]
     (merge
       person
-      {:timestamp    (f/unparse (:date-time f/formatters) (time-in-last-2-years))
-       :event-source event-source
-       :event-type   event-type})))
+      {(keyword "@timestamp") (f/unparse (:date-time f/formatters) (time-in-last-2-years))
+       :event-source          event-source
+       :event-type            event-type})))
 
 (defn timeline []
   (let [someone (person)]
