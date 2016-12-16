@@ -7,11 +7,7 @@
             [cljs-time.core :as time]
             [cljs-time.format :as format]))
 
-
-(def example {:took 23, :timed_out false, :_shards {:total 16, :successful 16, :failed 0}, :hits {:total 68, :max_score 5.1923194, :hits [{:_index "feed_schools", :_type "exclusion", :_id "AVkCYlq0HKc4AMKM8A2F", :_score 5.1923194, :_source {:name "Lizzie Altenwerth", :dob "2000-06-05", :address "66157 Hayes Stream,Powys,BM61 4DE", :timestamp "2016-11-14T12:08:37.156Z", :event-source "SCHOOLS", :event-type "EXCLUSION"}} {:_index "feed_gmp", :_type "asbo", :_id "AVkCYka2HKc4AMKM8Alk", :_score 4.732541, :_source {:name "Lizzie Altenwerth", :dob "2001-03-21", :address "6643 Pfeffer Stravenue,Central,BT1 8RD", :timestamp "2016-05-08T12:08:32.041Z", :event-source "GMP", :event-type "ASBO"}} {:_index "feed_gmp", :_type "caution", :_id "AVkCYmi7HKc4AMKM8BB4", :_score 4.732541, :_source {:name "Lizzie Altenwerth", :dob "1997-10-01", :address "6315 O'Keefe Manor,Somerset,TL53 3KZ", :timestamp "2016-03-31T12:08:40.750Z", :event-source "GMP", :event-type "CAUTION"}} {:_index "feed_schools", :_type "exclusion", :_id "AVkCYlD6HKc4AMKM8Avl", :_score 4.5698967, :_source {:name "Lizzie Altenwerth", :dob "2002-09-21", :address "965 Hane Mall,Kent,RV9 6KW", :timestamp "2015-08-23T12:08:34.669Z", :event-source "SCHOOLS", :event-type "EXCLUSION"}} {:_index "feed_schools", :_type "exclusion", :_id "AVkCYmi9HKc4AMKM8BB5", :_score 4.5698967, :_source {:name "Lizzie Altenwerth", :dob "1997-10-01", :address "6315 O'Keefe Manor,Somerset,TL53 3KZ", :timestamp "2015-06-23T12:08:40.752Z", :event-source "SCHOOLS", :event-type "EXCLUSION"}} {:_index "feed_schools", :_type "exclusion", :_id "AVkCYlq4HKc4AMKM8A2G", :_score 4.349698, :_source {:name "Lizzie Altenwerth", :dob "2000-06-05", :address "66157 Hayes Stream,Powys,BM61 4DE", :timestamp "2016-01-03T12:08:37.162Z", :event-source "SCHOOLS", :event-type "EXCLUSION"}} {:_index "feed_schools", :_type "exclusion", :_id "AVkCYlrWHKc4AMKM8A2M", :_score 4.349698, :_source {:name "Lizzie Altenwerth", :dob "2000-06-05", :address "66157 Hayes Stream,Powys,BM61 4DE", :timestamp "2016-03-04T12:08:37.193Z", :event-source "SCHOOLS", :event-type "EXCLUSION"}} {:_index "feed_schools", :_type "exclusion", :_id "AVkCYmqqHKc4AMKM8BEX", :_score 4.349698, :_source {:name "Lizzie Altenwerth", :dob "2000-02-15", :address "212 Dickinson Stream,Oxfordshire,ST86 4NJ", :timestamp "2015-08-20T12:08:41.245Z", :event-source "SCHOOLS", :event-type "EXCLUSION"}} {:_index "feed_homes", :_type "arrears", :_id "AVkCYimyHKc4AMKM8ANv", :_score 4.058346, :_source {:name "Lizzie Altenwerth", :dob "2000-04-11", :address "557 Oran Ferry,Lothian,RA34 9GA", :timestamp "2015-12-10T12:08:24.612Z", :event-source "HOMES", :event-type "ARREARS"}} {:_index "feed_homes", :_type "eviction", :_id "AVkCYmYKHKc4AMKM8A_H", :_score 4.058346, :_source {:name "Lizzie Altenwerth", :dob "1998-03-14", :address "1316 Wayne Extensions,Herefordshire,XM84 1VZ", :timestamp "2016-04-29T12:08:40.061Z", :event-source "HOMES", :event-type "EVICTION"}}]}})
-
-
-(defonce !state (reagent/atom {:result         example
+(defonce !state (reagent/atom {:result         {}
                                :selected-event nil}))
 
 
@@ -43,23 +39,34 @@
   (into (sorted-set) (map (fn [event] [(:event-source event) (:event-type event)]) (raw-events))))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://192.168.99.100:9200/_search?size=50&q=" search-term)]
+  (let [query-string (str "http://192.168.99.100:9200/_search?size=25&q=" search-term)]
+    (swap! !state assoc :result {})
     (GET query-string
-      {:format          :json
-       :response-format :json
-       :keywords?       true
-       :handler         (fn [response]
-                          (swap! !state assoc :result response)
-                          )})))
+         {:format          :json
+          :response-format :json
+          :keywords?       true
+          :handler         (fn [response]
+                             (swap! !state assoc :result response)
+                             )})))
 
 (defn query-box []
   (let [!local (reagent/atom "")]
+    (fn []
+      [:div.query-box
+       [:input {:type        "text"
+                :placeholder "enter your search here..."
+                :value       @!local
+                :on-change   #(reset! !local (-> % .-target .-value))
+                :on-key-up   #(if (= "Enter" (-> % .-key)) (perform-query @!local))}]])))
+
+(defn people []
+    (map (fn [event] (select-keys event [:name :dob :address])) (raw-events)))
+
+(defn people-selector []
   (fn []
-    [:div.query-box
-     [:input {:type      "text"
-              :value     @!local
-              :on-change #(reset! !local (-> % .-target .-value))}]
-     [:button {:on-click #(perform-query @!local)} "Search"]])))
+    (let [people {}]
+      [:select
+       (doall (map (fn [person] [:option {:value  person} (:name person)]) people))])))
 
 (defn selected-event-popup []
   (fn []
@@ -116,6 +123,7 @@
 (defn home-page []
   [:div
    [query-box]
+   ;[people-selector]
    [selected-event-popup]
    [results]
    ])
