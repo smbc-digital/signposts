@@ -49,24 +49,36 @@
                              (swap! !state assoc :result response)
                              )})))
 
-(defn query-box []
-  (let [!local (reagent/atom "")]
-    (fn []
-      [:div.query-box
-       [:input {:type        "text"
-                :placeholder "enter your search here..."
-                :value       @!local
-                :on-change   #(reset! !local (-> % .-target .-value))
-                :on-key-up   #(if (= "Enter" (-> % .-key)) (perform-query @!local))}]])))
 
 (defn people []
-    (map (fn [event] (select-keys event [:name :dob :address])) (raw-events)))
+  (into (sorted-set) (map (fn [event] (into [] (vals (select-keys event [:name :dob :address])))) (raw-events))))
 
-(defn people-selector []
+
+(defn query-box [!local]
   (fn []
-    (let [people {}]
-      [:select
-       (doall (map (fn [person] [:option {:value  person} (:name person)]) people))])))
+    [:div.query-box
+     [:input {:type        "text"
+              :placeholder "enter your search here..."
+              :value       @!local
+              :on-change   #(reset! !local (-> % .-target .-value))
+              :on-key-up   #(if (= "Enter" (-> % .-key)) (perform-query @!local))}]]))
+
+
+(defn people-selector [!local]
+  (fn []
+    (let [people (people)]
+      [:select {:on-change (fn [event] (perform-query (reset! !local (-> event .-target .-value))))}
+       (doall (map (fn [[name dob address :as person]]
+                     ^{:key person}
+                     [:option {:value (str "name:" name " AND dob:" dob)} (str name " - " dob " - " address)]) people))])))
+
+
+(defn query-area []
+  (let [!qstate (reagent/atom "")]
+    (fn []
+      [:div
+       [query-box !qstate]
+       [people-selector !qstate]])))
 
 (defn selected-event-popup []
   (fn []
@@ -122,8 +134,7 @@
 
 (defn home-page []
   [:div
-   [query-box]
-   ;[people-selector]
+   [query-area]
    [selected-event-popup]
    [results]
    ])
