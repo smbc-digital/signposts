@@ -3,7 +3,8 @@
 version: '2'
 services:
   elasticsearch:
-    image: "elasticsearch"
+    build:
+      context: "es"
     ports: 
       - "9200:9200"
       - "9300:9300"

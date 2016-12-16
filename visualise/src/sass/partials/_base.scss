@@ -1,0 +1,56 @@
+html {
+  background: url(/static/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  max-width: 90%;
+  margin: auto;
+}
+
+.body-container {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.3em;
+  color: #222;
+  line-height: 1.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+
+div {
+  &.query-box {
+    input {
+      font-size: 1.5em;
+      width: 100%;
+    }
+    button {
+      font-size: 1.2em;
+      margin: 20px auto 20px auto;
+      width: 20%;
+    }
+  }
+}
+
+
+
+.popup-parent {
+  position : absolute;
+  z-index: 5;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 30px;
+}
+
+.popup {
+  position: relative;
+  color: red;
+  background-color: white;
+  color: black;
+  margin: auto;
+}
