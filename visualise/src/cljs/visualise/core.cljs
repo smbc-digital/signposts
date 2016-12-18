@@ -31,10 +31,10 @@
   (let [earliest (time/earliest (map :timestamp result))
         latest (time/latest (map :timestamp result))
         diff (time/in-days (time/interval earliest latest))]
-        (assoc state
-               :earliest earliest
-               :latest latest
-               :diff diff)))
+    (assoc state
+      :earliest earliest
+      :latest latest
+      :diff diff)))
 
 (defn add-offsets [{:keys [result earliest] :as state}]
   (assoc state :result
@@ -120,11 +120,13 @@
     :height   "100%"
     :width    "100%"}
    [:g {:stroke-width "2px" :stroke "black"}
-    [:line {:x1 "0" :y1 "15" :x2 "732" :y2 "15"}]]
+    [:line {:x1 "0" :y1 "15" :x2 (+ 14 days-to-show) :y2 "15"}]]
    (doall (map (fn [event]
                  ^{:key (gensym)}
-                 [:g {:stroke-width "2px" :stroke "blue" :fill "white"}
-                  [:circle {:on-mouse-enter (fn [jse]
+                 [:g
+                  [:text {:y 30 :text-anchor :middle :x (+ 7 (:offset event)) :font-size "0.3em" :bg-color :white-bg} (simple (:timestamp event))]
+                  [:circle {:stroke-width "2px" :stroke "blue" :fill "white"
+                            :on-mouse-enter (fn [jse]
                                               (swap! !state
                                                      (fn [state]
                                                        (assoc state :selected-event
