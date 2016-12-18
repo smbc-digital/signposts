@@ -52,6 +52,8 @@
           :keywords?       true
           :handler         (fn [response]
                              (swap! !state #(-> %
+                                                (assoc :total (-> response :hits :total))
+                                                (assoc :took-millis (-> response :took))
                                                 (assoc :result (source-events response))
                                                 (add-date-info)
                                                 (add-offsets))))})))
@@ -84,7 +86,8 @@
       (let [people (people)
             display (fn [[name dob address]] (str name "- " dob " - " address))]
         [:div
-         [:p "Your search found " [:strong (pluralise (count (raw-events)) "event")] ", involving " [:strong (pluralise (count people) "person" "people")]]
+         [:p "Your search took " (:took-millis @!state) "ms to find " [:strong (pluralise (:total @!state) "event")]]
+         [:p "Displaying the best " [:strong (pluralise (count (raw-events)) "event")] ", involving " [:strong (pluralise (count people) "person" "people")]]
          (if (= 1 (count people))
            [:p [:strong "Person: "] (display (first people))]
            [:p [:strong "People: "] [:select {:on-change (fn [event] (perform-query (reset! !local (-> event .-target .-value))))}
@@ -125,7 +128,7 @@
                  ^{:key (gensym)}
                  [:g
                   [:text {:y 30 :text-anchor :middle :x (+ 7 (:offset event)) :font-size "0.3em" :bg-color :white-bg} (simple (:timestamp event))]
-                  [:circle {:stroke-width "2px" :stroke "blue" :fill "white"
+                  [:circle {:stroke-width   "2px" :stroke "blue" :fill "white"
                             :on-mouse-enter (fn [jse]
                                               (swap! !state
                                                      (fn [state]
