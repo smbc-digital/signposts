@@ -10,43 +10,51 @@
 (defonce !state (reagent/atom {:result         {}
                                :selected-event nil}))
 
-(defn optimise-response [response]
-  (map :_source (-> response :hits :hits)))
+(defn parse-timestamp [timestamp]
+  (format/parse (:date-hour-minute-second-ms format/formatters) timestamp))
+
+(defn simple [date]
+  (format/unparse (format/formatter "dd/MM/yyyy") date))
+
+(defn raw-events []
+  (:result @!state))
+
+(defn days-in-resultset []
+  (:diff @!state))
+
+(defn source-events [response]
+  (map #(-> %
+            (update :timestamp parse-timestamp))
+       (map :_source (-> response :hits :hits))))
+
+(defn add-date-info [{:keys [result] :as state}]
+  (let [earliest (time/earliest (map :timestamp result))
+        latest (time/latest (map :timestamp result))
+        diff (time/in-days (time/interval earliest latest))]
+        (assoc state
+               :earliest earliest
+               :latest latest
+               :diff diff)))
+
+(defn add-offsets [{:keys [result earliest] :as state}]
+  (assoc state :result
+               (map
+                 (fn [event]
+                   (assoc event :offset (time/in-days (time/interval earliest (:timestamp event)))))
+                 result)))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://192.168.99.100:9200/_search?size=25&q=" search-term)]
+  (let [query-string (str "http://192.168.99.100:9200/_search?size=50&q=" search-term)]
     (swap! !state assoc :result {})
     (GET query-string
          {:format          :json
           :response-format :json
           :keywords?       true
           :handler         (fn [response]
-                             (swap! !state assoc :result (optimise-response response))
-                             )})))
-
-(defn raw-events []
-  (:result @!state))
-
-(defn parse-timestamp [timestamp]
-  (format/parse (:date-hour-minute-second-ms format/formatters) timestamp))
-
-(defn times []
-  (map #(parse-timestamp (:timestamp %)) (raw-events)))
-
-(defn simple [date]
-  (format/unparse (format/formatter "dd/MM/yyyy") date))
-
-(defn earliest-day []
-  (time/earliest (times)))
-
-(defn latest-day []
-  (time/latest (times)))
-
-(defn days-in-resultset []
-  (time/in-days (time/interval (earliest-day) (latest-day))))
-
-(defn offset-day [{timestamp :timestamp}]
-  (time/in-days (time/interval (earliest-day) (parse-timestamp timestamp))))
+                             (swap! !state #(-> %
+                                                (assoc :result (source-events response))
+                                                (add-date-info)
+                                                (add-offsets))))})))
 
 (defn event-source-types []
   (into (sorted-set) (map (fn [event] [(:event-source event) (:event-type event)]) (raw-events))))
@@ -103,7 +111,7 @@
            [:div.popup
             [:p "who: " (:name event)]
             [:p "dob: " (:dob event)]
-            [:p "on:" (simple (parse-timestamp (:timestamp event)))]
+            [:p "on:" (simple (:timestamp event))]
             ]])))))
 
 (defn result-pic [days-to-show events]
@@ -127,7 +135,7 @@
                                                                         (assoc :sy (-> jse .-screenY))
                                                                         )))))
                             :on-mouse-leave #(swap! !state assoc :selected-event nil)
-                            :cx             (+ 7 (offset-day event)) :cy "15" :r "5"}]]) events))])
+                            :cx             (+ 7 (:offset event)) :cy "15" :r "5"}]]) events))])
 
 (defn result [[event-source event-type]]
   (let [events (filter #(and (= event-source (:event-source %)) (= event-type (:event-type %))) (raw-events))
