@@ -10,9 +10,22 @@
 (defonce !state (reagent/atom {:result         {}
                                :selected-event nil}))
 
+(defn optimise-response [response]
+  (map :_source (-> response :hits :hits)))
+
+(defn perform-query [search-term]
+  (let [query-string (str "http://192.168.99.100:9200/_search?size=25&q=" search-term)]
+    (swap! !state assoc :result {})
+    (GET query-string
+         {:format          :json
+          :response-format :json
+          :keywords?       true
+          :handler         (fn [response]
+                             (swap! !state assoc :result (optimise-response response))
+                             )})))
 
 (defn raw-events []
-  (map :_source (:hits (:hits (:result @!state)))))
+  (:result @!state))
 
 (defn parse-timestamp [timestamp]
   (format/parse (:date-hour-minute-second-ms format/formatters) timestamp))
@@ -38,16 +51,9 @@
 (defn event-source-types []
   (into (sorted-set) (map (fn [event] [(:event-source event) (:event-type event)]) (raw-events))))
 
-(defn perform-query [search-term]
-  (let [query-string (str "http://192.168.99.100:9200/_search?size=25&q=" search-term)]
-    (swap! !state assoc :result {})
-    (GET query-string
-         {:format          :json
-          :response-format :json
-          :keywords?       true
-          :handler         (fn [response]
-                             (swap! !state assoc :result response)
-                             )})))
+(defn pluralise
+  ([value singular] (str value " " singular (when-not (= 1 value) "s")))
+  ([value singular plural] (str value " " (if (= 1 value) singular plural))))
 
 
 (defn people []
@@ -66,12 +72,17 @@
 
 (defn people-selector [!local]
   (fn []
-    (let [people (people)]
-      [:select {:on-change (fn [event] (perform-query (reset! !local (-> event .-target .-value))))}
-       (doall (map (fn [[name dob address :as person]]
-                     ^{:key person}
-                     [:option {:value (str "name:" name " AND dob:" dob)} (str name " - " dob " - " address)]) people))])))
-
+    (if (not (empty? (raw-events)))
+      (let [people (people)
+            display (fn [[name dob address]] (str name "- " dob " - " address))]
+        [:div
+         [:p "Your search found " [:strong (pluralise (count (raw-events)) "event")] ", involving " [:strong (pluralise (count people) "person" "people")]]
+         (if (= 1 (count people))
+           [:p [:strong "Person: "] (display (first people))]
+           [:p [:strong "People: "] [:select {:on-change (fn [event] (perform-query (reset! !local (-> event .-target .-value))))}
+                                     (doall (map (fn [[name dob :as person]]
+                                                   ^{:key person}
+                                                   [:option {:value (str "name:" name " AND dob:" dob)} (display person)]) people))]])]))))
 
 (defn query-area []
   (let [!qstate (reagent/atom "")]
