@@ -10,63 +10,97 @@
 (defonce !state (reagent/atom {:result         {}
                                :selected-event nil}))
 
-
-(defn raw-events []
-  (map :_source (:hits (:hits (:result @!state)))))
-
 (defn parse-timestamp [timestamp]
   (format/parse (:date-hour-minute-second-ms format/formatters) timestamp))
-
-(defn times []
-  (map #(parse-timestamp (:timestamp %)) (raw-events)))
 
 (defn simple [date]
   (format/unparse (format/formatter "dd/MM/yyyy") date))
 
-(defn earliest-day []
-  (time/earliest (times)))
-
-(defn latest-day []
-  (time/latest (times)))
+(defn raw-events []
+  (:result @!state))
 
 (defn days-in-resultset []
-  (time/in-days (time/interval (earliest-day) (latest-day))))
+  (:diff @!state))
 
-(defn offset-day [{timestamp :timestamp}]
-  (time/in-days (time/interval (earliest-day) (parse-timestamp timestamp))))
+(defn source-events [response]
+  (map #(-> %
+            (update :timestamp parse-timestamp))
+       (map :_source (-> response :hits :hits))))
 
-(defn event-source-types []
-  (into (sorted-set) (map (fn [event] [(:event-source event) (:event-type event)]) (raw-events))))
+(defn add-date-info [{:keys [result] :as state}]
+  (let [earliest (time/earliest (map :timestamp result))
+        latest (time/latest (map :timestamp result))
+        diff (time/in-days (time/interval earliest latest))]
+    (assoc state
+      :earliest earliest
+      :latest latest
+      :diff diff)))
+
+(defn add-offsets [{:keys [result earliest] :as state}]
+  (assoc state :result
+               (map
+                 (fn [event]
+                   (assoc event :offset (time/in-days (time/interval earliest (:timestamp event)))))
+                 result)))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://192.168.99.100:9200/_search?size=25&q=" search-term)]
+  (let [query-string (str "http://192.168.99.100:9200/_search?size=50&q=" search-term)]
     (swap! !state assoc :result {})
     (GET query-string
          {:format          :json
           :response-format :json
           :keywords?       true
           :handler         (fn [response]
-                             (swap! !state assoc :result response)
-                             )})))
+                             (swap! !state #(-> %
+                                                (assoc :total (-> response :hits :total))
+                                                (assoc :took-millis (-> response :took))
+                                                (assoc :result (source-events response))
+                                                (add-date-info)
+                                                (add-offsets))))})))
 
-(defn query-box []
-  (let [!local (reagent/atom "")]
-    (fn []
-      [:div.query-box
-       [:input {:type        "text"
-                :placeholder "enter your search here..."
-                :value       @!local
-                :on-change   #(reset! !local (-> % .-target .-value))
-                :on-key-up   #(if (= "Enter" (-> % .-key)) (perform-query @!local))}]])))
+(defn event-source-types []
+  (into (sorted-set) (map (fn [event] [(:event-source event) (:event-type event)]) (raw-events))))
+
+(defn pluralise
+  ([value singular] (str value " " singular (when-not (= 1 value) "s")))
+  ([value singular plural] (str value " " (if (= 1 value) singular plural))))
+
 
 (defn people []
-    (map (fn [event] (select-keys event [:name :dob :address])) (raw-events)))
+  (into (sorted-set) (map (fn [event] (into [] (vals (select-keys event [:name :dob :address])))) (raw-events))))
 
-(defn people-selector []
+
+(defn query-box [!local]
   (fn []
-    (let [people {}]
-      [:select
-       (doall (map (fn [person] [:option {:value  person} (:name person)]) people))])))
+    [:div.query-box
+     [:input {:type        "text"
+              :placeholder "enter your search here..."
+              :value       @!local
+              :on-change   #(reset! !local (-> % .-target .-value))
+              :on-key-up   #(if (= "Enter" (-> % .-key)) (perform-query @!local))}]]))
+
+
+(defn people-selector [!local]
+  (fn []
+    (if (not (empty? (raw-events)))
+      (let [people (people)
+            display (fn [[name dob address]] (str name "- " dob " - " address))]
+        [:div
+         [:p "Your search took " (:took-millis @!state) "ms to find " [:strong (pluralise (:total @!state) "event")]]
+         [:p "Displaying the best " [:strong (pluralise (count (raw-events)) "event")] ", involving " [:strong (pluralise (count people) "person" "people")]]
+         (if (= 1 (count people))
+           [:p [:strong "Person: "] (display (first people))]
+           [:p [:strong "People: "] [:select {:on-change (fn [event] (perform-query (reset! !local (-> event .-target .-value))))}
+                                     (doall (map (fn [[name dob :as person]]
+                                                   ^{:key person}
+                                                   [:option {:value (str "name:" name " AND dob:" dob)} (display person)]) people))]])]))))
+
+(defn query-area []
+  (let [!qstate (reagent/atom "")]
+    (fn []
+      [:div
+       [query-box !qstate]
+       [people-selector !qstate]])))
 
 (defn selected-event-popup []
   (fn []
@@ -80,7 +114,7 @@
            [:div.popup
             [:p "who: " (:name event)]
             [:p "dob: " (:dob event)]
-            [:p "on:" (simple (parse-timestamp (:timestamp event)))]
+            [:p "on:" (simple (:timestamp event))]
             ]])))))
 
 (defn result-pic [days-to-show events]
@@ -89,11 +123,13 @@
     :height   "100%"
     :width    "100%"}
    [:g {:stroke-width "2px" :stroke "black"}
-    [:line {:x1 "0" :y1 "15" :x2 "732" :y2 "15"}]]
+    [:line {:x1 "0" :y1 "15" :x2 (+ 14 days-to-show) :y2 "15"}]]
    (doall (map (fn [event]
                  ^{:key (gensym)}
-                 [:g {:stroke-width "2px" :stroke "blue" :fill "white"}
-                  [:circle {:on-mouse-enter (fn [jse]
+                 [:g
+                  [:text {:y 30 :text-anchor :middle :x (+ 7 (:offset event)) :font-size "0.3em" :bg-color :white-bg} (simple (:timestamp event))]
+                  [:circle {:stroke-width   "2px" :stroke "blue" :fill "white"
+                            :on-mouse-enter (fn [jse]
                                               (swap! !state
                                                      (fn [state]
                                                        (assoc state :selected-event
@@ -104,7 +140,7 @@
                                                                         (assoc :sy (-> jse .-screenY))
                                                                         )))))
                             :on-mouse-leave #(swap! !state assoc :selected-event nil)
-                            :cx             (+ 7 (offset-day event)) :cy "15" :r "5"}]]) events))])
+                            :cx             (+ 7 (:offset event)) :cy "15" :r "5"}]]) events))])
 
 (defn result [[event-source event-type]]
   (let [events (filter #(and (= event-source (:event-source %)) (= event-type (:event-type %))) (raw-events))
@@ -122,8 +158,7 @@
 
 (defn home-page []
   [:div
-   [query-box]
-   ;[people-selector]
+   [query-area]
    [selected-event-popup]
    [results]
    ])
