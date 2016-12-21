@@ -44,7 +44,7 @@
                  result)))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://192.168.99.100:9200/_search?size=50&q=" search-term)]
+  (let [query-string (str "http://localhost:9200/_search?size=50&q=" search-term)]
     (swap! !state assoc :result {})
     (GET query-string
          {:format          :json

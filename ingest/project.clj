@@ -6,7 +6,9 @@
 
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [clojurewerkz/elastisch "2.2.1"]
-                 [clj-http "2.3.0"]]
+                 [clj-http "2.3.0"]
+                 [semantic-csv "0.1.0"]
+                 ]
 
   :test-paths ["test/unit" "test/utils"]
 
