@@ -25,17 +25,19 @@
         (map #(select-keys % [:KnownAs :dob :Start_Date :OFFICIAL_BASE_NAME :ncode_des])
                                            (conjoin-exclusions-to-students-and-schools))]
     (map #(clojure.set/rename-keys % {:Start_Date :timestamp, :KnownAs :name, :OFFICIAL_BASE_NAME :agency,
-                                      :ncode_des :agency-subtype}) events-with-relevant-fields-per-exclusion )))
+                                      :ncode_des :agency-subtype
+                                      }) events-with-relevant-fields-per-exclusion )))
 
 (def date-format (f/formatter "dd/MM/yyyy"))
 
-(defn date-formatter [datestring]
-  (f/unparse (:date f/formatters) (f/parse date-format datestring))
+(defn date-time-formatter [datestring date-type]
+  (f/unparse (date-type f/formatters) (f/parse (f/formatter "dd/MM/yyyy") datestring))
   )
 
 (defn exclusion-events-in-es-format-with-event-source []
   (let [events-with-event-source (take 10 (map #(conj % {:event-source :SCHOOLS
                               :event-type   :EXCLUSION}) (exclusion-events-in-es-format)))]
-    (map #(update-in % [:timestamp]date-formatter ) events-with-event-source)
+    (map #(update-in % [:dob] date-time-formatter :date)
+         (map #(update-in % [:timestamp] date-time-formatter :date-time) events-with-event-source))
     )
   )
