@@ -35,8 +35,8 @@
   )
 
 (defn exclusion-events-in-es-format-with-event-source []
-  (let [events-with-event-source (take 10 (map #(conj % {:event-source :SCHOOLS
-                              :event-type   :EXCLUSION}) (exclusion-events-in-es-format)))]
+  (let [events-with-event-source (map #(conj % {:event-source :SCHOOLS
+                              :event-type   :EXCLUSION}) (exclusion-events-in-es-format))]
     (map #(update-in % [:dob] date-time-formatter :date)
          (map #(update-in % [:timestamp] date-time-formatter :date-time) events-with-event-source))
     )
