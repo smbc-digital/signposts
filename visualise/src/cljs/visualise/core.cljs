@@ -5,7 +5,8 @@
             [accountant.core :as accountant]
             [ajax.core :refer [GET]]
             [cljs-time.core :as time]
-            [cljs-time.format :as format]))
+            [cljs-time.format :as format]
+            [goog.crypt.base64 :as b64]))
 
 (defonce !state (reagent/atom {:result         {}
                                :selected-event nil}))
@@ -44,10 +45,11 @@
                  result)))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://localhost:9200/_search?size=50&q=" search-term)]
+  (let [query-string (str "http://192.168.99.100:9200/_search?size=50&q=" search-term)]
     (swap! !state assoc :result {})
     (GET query-string
-         {:format          :json
+         {:headers         {"Authorization" (str "Basic " (b64/encodeString "elastic:changeme"))}
+          :format          :json
           :response-format :json
           :keywords?       true
           :handler         (fn [response]

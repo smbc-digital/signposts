@@ -7,7 +7,9 @@
             ))
 
 
-(def !conn (atom (esr/connect "http://localhost:9200")))
+(def !conn (atom (esr/connect
+                   "http://192.168.99.100:9200"
+                   {:basic-auth ["elastic" "changeme"]})))
 
 (defn esname [keyword]
   (str/lower-case (name keyword)))
@@ -21,5 +23,5 @@
 (defn page-some-data []
   (map #(println %) (take 10 (ic/exclusion-events-in-es-format-with-event-source))))
 
-;(cheshire.core/parse-string (:body (clj-http.client/get "http://192.168.99.100:9200/_search?q=name:Barney")) true)
-; ic/exclusion-events-in-es-format-with-event-source
+(defn push-some-fake-data []
+  (map write-to-index (take 5000 (fd/timelines))))
