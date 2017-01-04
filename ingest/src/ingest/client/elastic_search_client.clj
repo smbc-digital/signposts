@@ -1,0 +1,23 @@
+(ns ingest.client.elastic-search-client
+  (:require [clj-http.client :as http]
+            [ingest.config :refer [!config]]
+            [base64-clj.core :as b64]
+            [clj-http.client :as http]
+            [cheshire.core :refer [generate-string]]))
+
+(defn auth-header []
+  (let [{:keys [username password]} (:elastic-search @!config)]
+    {:Authorization (str "Basic " (b64/encode (str username ":" password)))}))
+
+(defn es-url-for [path]
+  (let [{url :url} (:elastic-search @!config)]
+    (str url path)))
+
+
+(defn post-json-to-es [{:keys [path payload]}]
+  (println payload)
+  (http/post (es-url-for path)
+             {:content-type :json
+              :headers      (auth-header)
+              :body         (generate-string payload)}))
+

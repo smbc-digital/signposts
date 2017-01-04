@@ -7,6 +7,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [clojurewerkz/elastisch "2.2.1"]
                  [clj-http "2.3.0"]
+                 [base64-clj "0.1.1"]
                  [semantic-csv "0.1.0"]
                  [levand/immuconf "0.1.0"]]
 
