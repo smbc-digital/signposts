@@ -13,11 +13,13 @@
   (let [{url :url} (:elastic-search @!config)]
     (str url path)))
 
-
 (defn post-json-to-es [{:keys [path payload]}]
-  (println payload)
   (http/post (es-url-for path)
              {:content-type :json
               :headers      (auth-header)
               :body         (generate-string payload)}))
+
+(defn delete-to-es [{:keys [path]}]
+  (http/delete (es-url-for path)
+               {:headers      (auth-header)}))
 

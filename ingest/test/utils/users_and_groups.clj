@@ -7,9 +7,13 @@
 (defn esname [keyword]
   (str/lower-case (name keyword)))
 
+(def common-password "password123")
+
 (defn create-user [{:keys [user-name user-template]}]
-  (esc/post-json-to-es {:path    (str "/_xpack/security/user/" user-name)
-                        :payload user-template}))
+  (let [user-path (str "/_xpack/security/user/" user-name)]
+    (esc/delete-to-es {:path user-path})
+    (esc/post-json-to-es {:path    user-path
+                          :payload user-template})))
 
 (defn create-role [{:keys [role-name role-template]}]
   (esc/post-json-to-es {:path    (str "/_xpack/security/role/" role-name)
@@ -31,7 +35,7 @@
   (let [username (str (esname event-source) "-read")]
     {:user-name     username
      :user-template {:username username
-                     :password username
+                     :password common-password
                      :roles    [(ro-role-name event-source)]}}))
 
 (defn read-all-user [event-source]
@@ -61,6 +65,6 @@
 (defn create-full-user []
   (create-user {:user-name     full-access
                 :user-template {:username full-access
-                                :password full-access
+                                :password common-password
                                 :roles    [full-access]}}))
 
