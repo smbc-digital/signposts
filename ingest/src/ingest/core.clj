@@ -9,8 +9,7 @@
 
 (defn load-csv-as-hashmap-over-key [filename key]
   (let [row (sc/slurp-csv filename)]
-    (zipmap (map #(get % key ) row) row))
-  )
+    (zipmap (map #(get % key) row) row)))
 
 (defn conjoin-exclusions-to-students-and-schools []
   (let [exclusions (sc/slurp-csv "c:\\DATA\\exclusions.csv")
@@ -21,10 +20,10 @@
 (defn exclusion-events-in-es-format []
   (let [events-with-relevant-fields-per-exclusion
         (map #(select-keys % [:KnownAs :dob :Start_Date :OFFICIAL_BASE_NAME :ncode_des])
-                                           (conjoin-exclusions-to-students-and-schools))]
+             (conjoin-exclusions-to-students-and-schools))]
     (map #(clojure.set/rename-keys % {:Start_Date :timestamp, :KnownAs :name, :OFFICIAL_BASE_NAME :agency,
-                                      :ncode_des :agency-subtype
-                                      }) events-with-relevant-fields-per-exclusion )))
+                                      :ncode_des  :agency-subtype
+                                      }) events-with-relevant-fields-per-exclusion)))
 
 (def date-format (f/formatter "dd/MM/yyyy"))
 
@@ -34,8 +33,6 @@
 
 (defn exclusion-events-in-es-format-with-event-source []
   (let [events-with-event-source (map #(conj % {:event-source :SCHOOLS
-                              :event-type   :EXCLUSION}) (exclusion-events-in-es-format))]
+                                                :event-type   :EXCLUSION}) (exclusion-events-in-es-format))]
     (map #(update-in % [:dob] date-time-formatter :date)
-         (map #(update-in % [:timestamp] date-time-formatter :date-time) events-with-event-source))
-    )
-  )
+         (map #(update-in % [:timestamp] date-time-formatter :date-time) events-with-event-source))))

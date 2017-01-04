@@ -23,5 +23,5 @@
 (defn page-some-data []
   (map #(println %) (take 10 (ic/exclusion-events-in-es-format-with-event-source))))
 
-(defn push-some-fake-data []
-  (map write-to-index (take 5000 (fd/timelines))))
+(defn push-some-fake-data [amount]
+  (doall (map write-to-index (take amount (fd/timelines)))))

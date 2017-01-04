@@ -17,5 +17,4 @@
 
   :profiles {:dev     {:plugins      [[lein-midje "3.2.1"]]
                        :dependencies [[midje "1.8.3"]
-                                      [faker "0.2.2"]]}
-             :richard {:app-config "richard.edn"}})
+                                      [faker "0.2.2"]]}})
