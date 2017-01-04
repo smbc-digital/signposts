@@ -5,8 +5,7 @@
             [clojure.set]
             [clj-time.core :as t]
             [clj-time.format :as f]
-            [clojure.string :as str])
-  )
+            [clojure.string :as str]))
 
 (defn load-csv-as-hashmap-over-key [filename key]
   (let [row (sc/slurp-csv filename)]
@@ -17,8 +16,7 @@
   (let [exclusions (sc/slurp-csv "c:\\DATA\\exclusions.csv")
         students (load-csv-as-hashmap-over-key "c:\\DATA\\students.csv" :stud_id)
         schools (load-csv-as-hashmap-over-key "c:\\DATA\\bases.csv" :base_id)]
-    (map #(conj % (get students (get % :stud_id)) (get schools (get % :base_id))) exclusions)
-  ))
+    (map #(conj % (get students (get % :stud_id)) (get schools (get % :base_id))) exclusions)))
 
 (defn exclusion-events-in-es-format []
   (let [events-with-relevant-fields-per-exclusion

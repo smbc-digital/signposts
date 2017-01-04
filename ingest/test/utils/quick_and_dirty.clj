@@ -4,12 +4,12 @@
             [clojurewerkz.elastisch.rest.document :as esd]
             [clojure.string :as str]
             [ingest.core :as ic]
-            ))
+            [ingest.config :refer [!config]]))
 
+(defn connect [{:keys [url username password]}]
+  (esr/connect url {:basic-auth [username password]}))
 
-(def !conn (atom (esr/connect
-                   "http://192.168.99.100:9200"
-                   {:basic-auth ["elastic" "changeme"]})))
+(def !conn (atom (connect (:elastic-search @!config))))
 
 (defn esname [keyword]
   (str/lower-case (name keyword)))
