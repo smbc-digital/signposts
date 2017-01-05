@@ -8,10 +8,14 @@
             [clojure.string :as str])
   )
 
+(defn load-csv [filename]
+  (sc/slurp-csv filename))
+
 (defn load-csv-as-hashmap-over-key [filename key]
-  (let [row (sc/slurp-csv filename)]
-    (zipmap (map #(get % key ) row) row))
-  )
+  (let [rows (load-csv filename)]
+    (group-by key rows)
+    ;(zipmap (map #(get % key) row) rows)
+    ))
 
 (defn conjoin-exclusions-to-students-and-schools []
   (let [exclusions (sc/slurp-csv "c:\\DATA\\exclusions.csv")
