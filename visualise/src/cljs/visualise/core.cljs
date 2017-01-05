@@ -5,10 +5,15 @@
             [accountant.core :as accountant]
             [ajax.core :refer [GET]]
             [cljs-time.core :as time]
-            [cljs-time.format :as format]))
+            [cljs-time.format :as format]
+            [goog.crypt.base64 :as b64]))
 
+(defonce !creds (reagent/atom {}))
 (defonce !state (reagent/atom {:result         {}
                                :selected-event nil}))
+
+(defn authorisation-header []
+  {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
 
 (defn parse-timestamp [timestamp]
   (format/parse (:date-hour-minute-second-ms format/formatters) timestamp))
@@ -44,10 +49,11 @@
                  result)))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://localhost:9200/_search?size=50&q=" search-term)]
+  (let [query-string (str "http://192.168.99.100:9200/_search?size=50&q=" search-term)]
     (swap! !state assoc :result {})
     (GET query-string
-         {:format          :json
+         {:headers         (authorisation-header)
+          :format          :json
           :response-format :json
           :keywords?       true
           :handler         (fn [response]
@@ -127,7 +133,7 @@
    (doall (map (fn [event]
                  ^{:key (gensym)}
                  [:g
-                  [:text {:y 30 :text-anchor :middle :x (+ 7 (:offset event)) :font-size "0.3em" :bg-color :white-bg} (simple (:timestamp event))]
+                  [:text {:y 30 :text-anchor :middle :x (+ 7 (:offset event)) :font-size "0.3em"} (simple (:timestamp event))]
                   [:circle {:stroke-width   "2px" :stroke "blue" :fill "white"
                             :on-mouse-enter (fn [jse]
                                               (swap! !state
@@ -156,8 +162,23 @@
     [:div
      (doall (map result (event-source-types)))]))
 
+(defn creds-area []
+  (fn []
+    [:div
+     [:input {:type        "text"
+              :placeholder "username"
+              :value       (or (:username @!creds) "")
+              :on-change   #(swap! !creds assoc :username (-> % .-target .-value))}]
+     [:input {:type        "password"
+              :placeholder "password"
+              :value       (or (:password @!creds) "")
+              :on-change   #(swap! !creds assoc :password (-> % .-target .-value))}]
+     ]))
+
+
 (defn home-page []
   [:div
+   [creds-area]
    [query-area]
    [selected-event-popup]
    [results]
