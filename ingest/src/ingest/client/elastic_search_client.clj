@@ -2,7 +2,6 @@
   (:require [clj-http.client :as http]
             [ingest.config :refer [!config]]
             [base64-clj.core :as b64]
-            [clj-http.client :as http]
             [cheshire.core :refer [generate-string]]))
 
 (defn auth-header []
@@ -21,5 +20,12 @@
 
 (defn delete-to-es [{:keys [path]}]
   (http/delete (es-url-for path)
-               {:headers      (auth-header)}))
+               {:headers (auth-header)}))
+
+(defn ping []
+  (try
+    (println "ping es to see if it is awake yet...")
+    (:status (http/get (es-url-for "/")
+                       {:headers (auth-header)}))
+    (catch Exception _)))
 

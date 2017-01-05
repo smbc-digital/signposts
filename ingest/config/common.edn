@@ -1,5 +1,5 @@
 ; common configuration goes in here
 {:use-fake-data  true
- :elastic-search {:url      "http://localhost:9200"
-                  :username "elastic"
-                  :password "changeme"}}
+ :elastic-search {:url        "http://localhost:9200"
+                  :username   "elastic"
+                  :password   "changeme"}}

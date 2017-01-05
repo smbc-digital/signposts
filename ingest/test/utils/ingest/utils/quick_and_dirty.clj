@@ -1,10 +1,11 @@
-(ns quick-and-dirty
-  (:require [fake-data :as fd]
+(ns ingest.utils.quick-and-dirty
+  (:require [ingest.utils.fake-data :as fd]
             [clojurewerkz.elastisch.rest :as esr]
             [clojurewerkz.elastisch.rest.document :as esd]
             [clojure.string :as str]
             [ingest.core :as ic]
-            [ingest.config :refer [!config]]))
+            [ingest.config :refer [!config]]
+            [ingest.client.elastic-search-client :as esc]))
 
 (defn connect [{:keys [url username password]}]
   (esr/connect url {:basic-auth [username password]}))
@@ -25,3 +26,12 @@
 
 (defn push-some-fake-data [amount]
   (doall (map write-to-index (take amount (fd/timelines)))))
+
+(defn create-kibana-index []
+  (println "setting default kibana index to feed_*")
+  (esc/post-json-to-es {:path    "/.kibana/index-pattern/feed_*?op_type=create"
+                        :payload {:title         "feed_*"
+                                  :timeFieldName "timestamp"}})
+  (esc/post-json-to-es {:path    "/.kibana/config/5.1.1"
+                        :payload {:buildNum     14566
+                                  :defaultIndex "feed_*"}}))

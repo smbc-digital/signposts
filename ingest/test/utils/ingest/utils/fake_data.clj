@@ -1,4 +1,4 @@
-(ns fake-data
+(ns ingest.utils.fake-data
   (:require [clj-time.core :as t]
             [clj-time.format :as f]
             [clojure.string :as str])

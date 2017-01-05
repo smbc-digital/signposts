@@ -1,6 +1,6 @@
-(ns users-and-groups
+(ns ingest.utils.users-and-groups
   (:require [ingest.client.elastic-search-client :as esc]
-            [fake-data :refer [event-sources]]
+            [ingest.utils.fake-data :refer [event-sources]]
             [clojure.string :as str]))
 
 
@@ -11,7 +11,7 @@
 
 (defn create-user [{:keys [user-name user-template]}]
   (let [user-path (str "/_xpack/security/user/" user-name)]
-    (esc/delete-to-es {:path user-path})
+    (try (esc/delete-to-es {:path user-path}) (catch Exception _))
     (esc/post-json-to-es {:path    user-path
                           :payload user-template})))
 
@@ -49,10 +49,10 @@
   (map :event-source event-sources))
 
 (defn create-ro-roles []
-  (map #(create-role (read-event-source-role %)) (event-source-names)))
+  (doall (map #(create-role (read-event-source-role %)) (event-source-names))))
 
 (defn create-ro-users []
-  (map #(create-user (read-event-source-user %)) (event-source-names)))
+  (doall (map #(create-user (read-event-source-user %)) (event-source-names))))
 
 (def full-access "full-access")
 
@@ -67,4 +67,11 @@
                 :user-template {:username full-access
                                 :password common-password
                                 :roles    [full-access]}}))
+
+(defn create-demo-users-and-groups []
+  (println "creating users and roles")
+  (create-ro-roles)
+  (create-ro-users)
+  (create-full-role)
+  (create-full-user))
 
