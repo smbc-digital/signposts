@@ -5,11 +5,19 @@ services:
   elasticsearch:
     build:
       context: "es"
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     ports: 
       - "9200:9200"
       - "9300:9300"
   kibana:
     build:
       context: "kibana"
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     ports:
       - "5601:5601"
