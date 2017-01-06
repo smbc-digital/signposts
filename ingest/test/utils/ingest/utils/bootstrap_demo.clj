@@ -13,7 +13,7 @@
       (do
         (Thread/sleep 2000)
         (println "pushing some fake data")
-        (doall (repeatedly 5 (fn [] (qad/push-some-fake-data 5000) (println "added 5000..."))))
+        (qad/push-some-fake-data 50000)
         (uag/create-demo-users-and-groups)
         (qad/create-kibana-index)
         )
