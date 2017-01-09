@@ -12,7 +12,10 @@
    {:event-source :HOMES
     :event-types  [:ARREARS :EVICTION]}
    {:event-source :GMP
-    :event-types  [:ASBO :CAUTION]}])
+    :event-types  [:ASBO :CAUTION]}
+   {:event-source :EIS
+    :event-types  [:LIC :CIN]}
+   ])
 
 (defn rand-event-source []
   (let [{:keys [event-source event-types]} (rand-nth event-sources)]
