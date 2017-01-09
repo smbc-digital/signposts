@@ -1,14 +1,11 @@
 (ns ingest.faking.people
   (:require [clj-time.core :as t]
             [faker.name :as name]
-            [ingest.faking.addresses :as addresses]
-            [ingest.faking.helpers :as h])
+            [ingest.faking.helpers :as h]
+            [ingest.faking.config :as cfg]
+            [ingest.faking.phone :as phone])
   (:import (java.util UUID)))
 
-(def unique-names 4000)
-
-(def child-age-range [3 18])
-(def adult-age-range [35 45])
 
 (defn- year-of-birth [[lower upper]]
   (- (t/year (t/now)) (+ 1 lower (rand-int (- upper lower)))))
@@ -17,9 +14,9 @@
   (fn []
     (t/date-midnight (year-of-birth range) (+ 1 (rand-int 11)) (+ 1 (rand-int 27)))))
 
-(def child-dob (dob child-age-range))
+(def child-dob (dob cfg/child-age-range))
 
-(def adult-dob (dob adult-age-range))
+(def adult-dob (dob cfg/adult-age-range))
 
 (defn persons-name []
   (let [fn (name/first-name)
@@ -27,7 +24,7 @@
     {:full-name (str fn " " ln)
      :surname   ln}))
 
-(def name-pool (take unique-names (repeatedly persons-name)))
+(def name-pool (take cfg/unique-names (repeatedly persons-name)))
 
 (defn relative [{:keys [surname]}]
   {:full-name (str (name/first-name) " " surname)
@@ -56,3 +53,9 @@
      {:name (name-fn family-name)
       :dob  (adult-dob)
       :uid  (UUID/randomUUID)})))
+
+(defn employee []
+  {:name  (rand-nth name-pool)
+   :phone (phone/phone-number)})
+
+(def key-worker-pool (take 50 (repeatedly #(employee))))

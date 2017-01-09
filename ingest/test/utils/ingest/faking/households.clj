@@ -2,10 +2,9 @@
   (:require [ingest.faking.schools :as schools]
             [ingest.faking.people :refer [adult child likely-related likely-unrelated]]
             [ingest.faking.helpers :as h]
-            [ingest.faking.addresses :as addresses]))
+            [ingest.faking.addresses :as addresses]
+            [ingest.faking.config :as cfg]))
 
-(def max-dependent-children 3)
-(def max-addresses-per-household 3)
 
 (defn in-district [household]
   (assoc household :district (rand-nth addresses/districts)))
@@ -14,10 +13,10 @@
   (let [family-name (:name (first (:adults household)))]
     (assoc household
       :dependents
-      (h/up-to max-dependent-children #(child family-name)))))
+      (h/up-to cfg/max-dependent-children #(child family-name)))))
 
 (defn with-addresses [{:keys [district] :as household}]
-  (let [addresses (h/up-to max-addresses-per-household #(addresses/address-in-district district))]
+  (let [addresses (h/up-to cfg/max-addresses-per-household #(addresses/address-in-district district))]
     (assoc household :addresses addresses)))
 
 (defn single-parent-household []

@@ -29,3 +29,21 @@
 
 (defn age-in-years [dob]
   (t/in-years (t/interval dob (t/now))))
+
+(defn perhaps [prob fn]
+  (if (> prob (rand)) (fn)))
+
+(defn time-in-last-3-years []
+  (t/minus (t/now) (t/days (rand-int (* 3 365)))))
+
+(defn gappy-numbers-fn [min-week-gaps]
+  (fn gappy
+    ([] (gappy 0))
+    ([n] (lazy-seq (cons n (gappy (+ n (* min-week-gaps 7) (rand-int (* min-week-gaps 7)))))))))
+
+(defn durations [min-week-gaps max-duration]
+  (let [gappy (gappy-numbers-fn min-week-gaps)
+        start (t/minus (t/now) (t/days (* 3 365)))]
+    (map (fn [n]
+           {:timestamp (t/plus start (t/days n))
+            :duration (+ 1 (rand-int max-duration))}) (rest (gappy)))))
