@@ -25,6 +25,10 @@ The following illustrates a typical single event with several fields:
     "event-type": "EXCLUSION"
 },
    ```
+### Timestamp
+
+All data in the system must have a timestamp, otherwise we cannot display it to the user in a sensible way.
+   
    
 ### Demographic fields
 
