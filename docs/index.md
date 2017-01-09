@@ -1,17 +1,21 @@
-# Getting Started
+## Getting Started
 
 Use go.cmd (Windows) or go.sh (OSX/Linux)
 
-# Project Structure:
+## Project Structure:
 
-## Infra
+### Infra
 
 docker / scripts / config for kibana / elastic search 
 
-## Ingest
+### Ingest
 
 clojure for csv -> elastic search
 
-## Visualise
+### Visualise
 
 clojure for UI
+
+## Event model
+
+See: [Event Model](event_model.md)
