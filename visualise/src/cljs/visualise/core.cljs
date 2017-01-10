@@ -73,8 +73,9 @@
 
 
 (defn people []
-  (into (sorted-set) (map (fn [event] (into [] (vals (select-keys event [:name :dob :address])))) (raw-events))))
-
+  (into (sorted-set)
+        (map (fn [event]
+               (into [] (vals (select-keys event [:name :dob :address])))) (raw-events))))
 
 (defn query-box [!local]
   (fn []

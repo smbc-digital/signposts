@@ -20,23 +20,31 @@
     (next-fn)))
 
 (def standard-date-time-format (:date-time f/formatters))
+(def standard-date-format (:date f/formatters))
 (defn is-joda? [v] (str/starts-with? (.getName ^Class (type v)) "org.joda"))
 
-(defn fmt [date] (f/unparse standard-date-time-format date))
+(defn fmt-dt [date] (f/unparse standard-date-time-format date))
+(defn fmt-d [date] (f/unparse standard-date-format date))
 
 (defn cleanup-dates [m]
-  (let [f (fn [[k v]] (if (is-joda? v) [k (fmt v)] [k v]))]
+  (let [f (fn [[k v]]
+            (if (= :dob k)
+              [k (fmt-d v)]
+              (if (is-joda? v) [k (fmt-dt v)] [k v])))]
     (walk/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
+
+(def not-nil? (complement nil?))
 
 (defn timeline []
   (let [household (next-household)]
     (map cleanup-dates
-         (flatten
-           (map
-             (fn [events-fn] (events-fn household))
-             [school-events
-              eis-events
-              simple-events])))))
+         (filter not-nil?
+                 (flatten
+                   (map
+                     (fn [events-fn] (events-fn household))
+                     [school-events
+                      eis-events
+                      simple-events]))))))
 
 (defn timelines
   ([] (timelines []))

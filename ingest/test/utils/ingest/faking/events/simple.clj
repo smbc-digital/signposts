@@ -3,7 +3,7 @@
 
 (def event-sources
   [{:event-source :HOMES
-    :event-types  [:ARREARS :EVICTION]}
+    :event-types  [:ARREARS :VISIT]}
    {:event-source :GMP
     :event-types  [:ASBO :CAUTION]}])
 
@@ -12,17 +12,17 @@
     {:event-source event-source
      :event-type   (rand-nth event-types)}))
 
-(defn event [person {:keys [dependents addresses]}]
+(defn event [{:keys [name dob]} {:keys [dependents] :as household}]
   (let [{:keys [event-source event-type]} (rand-event-source)
-        dependents (map #(select-keys % [:name :dob]) dependents)
-        address (last addresses)]
-    (merge
-      person
-      {:timestamp    (h/time-in-last-3-years)
-       :event-source event-source
-       :event-type   event-type
-       :meta         {:last-address address
-                      :dependents   dependents}})))
+        timestamp (h/time-in-last-3-years)
+        dependents (map #(select-keys % [:name :dob]) dependents)]
+    {:name         (:full-name name)
+     :dob          dob
+     :timestamp    (h/time-in-last-3-years)
+     :event-source event-source
+     :event-type   event-type
+     :address      (h/address-at timestamp household)
+     :meta         {:dependents dependents}}))
 
 (defn events-for-someone [{:keys [adults] :as household}]
   (let [someone (rand-nth adults)]

@@ -41,9 +41,19 @@
     ([] (gappy 0))
     ([n] (lazy-seq (cons n (gappy (+ n (* min-week-gaps 7) (rand-int (* min-week-gaps 7)))))))))
 
+(defn address-dates []
+  (let [gappy (gappy-numbers-fn 26)
+        start (t/minus (t/now) (t/days (* 4 365)))]
+    (map (fn [n] (t/plus start (t/days n))) (rest (gappy)))))
+
 (defn durations [min-week-gaps max-duration]
   (let [gappy (gappy-numbers-fn min-week-gaps)
         start (t/minus (t/now) (t/days (* 3 365)))]
     (map (fn [n]
            {:timestamp (t/plus start (t/days n))
-            :duration (+ 1 (rand-int max-duration))}) (rest (gappy)))))
+            :duration  (+ 1 (rand-int max-duration))}) (rest (gappy)))))
+
+(defn address-at [timestamp {:keys [addresses]}]
+  (str/join "," (vals (:address
+                  (last (filter (fn [{:keys [from]}]
+                                  (t/before? from timestamp)) addresses))))))

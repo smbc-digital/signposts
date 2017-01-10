@@ -18,8 +18,8 @@
            {:event-source :SCHOOLS
             :event-type   event-type
             :timestamp    timestamp
-            :duration     (rand-int 14)
-            :name         name
+            :duration     (+ 1 (rand-int 14))
+            :name         (:full-name name)
             :dob          dob
             :meta         {:school (get @schools (:school school))}
             }) timestamps)))

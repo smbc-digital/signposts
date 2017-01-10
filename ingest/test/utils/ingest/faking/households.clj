@@ -3,7 +3,9 @@
             [ingest.faking.people :refer [adult child likely-related likely-unrelated]]
             [ingest.faking.helpers :as h]
             [ingest.faking.addresses :as addresses]
-            [ingest.faking.config :as cfg]))
+            [ingest.faking.config :as cfg]
+            [ingest.faking.addresses :as address]
+            [clj-time.core :as t]))
 
 
 (defn in-district [household]
@@ -16,7 +18,10 @@
       (h/up-to cfg/max-dependent-children #(child family-name)))))
 
 (defn with-addresses [{:keys [district] :as household}]
-  (let [addresses (h/up-to cfg/max-addresses-per-household #(addresses/address-in-district district))]
+  (let [address-dates (take (+ 1 (rand-int cfg/max-addresses-per-household)) (h/address-dates))
+        addresses (map (fn [from]
+                         {:from    from
+                          :address (address/address-in-district district)}) address-dates)]
     (assoc household :addresses addresses)))
 
 (defn single-parent-household []
@@ -50,3 +55,4 @@
       {:adults [adult-one adult-two]}
       in-district
       with-addresses)))
+
