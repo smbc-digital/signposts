@@ -5,6 +5,7 @@
             [clojure.string :as str]
             [ingest.core :as ic]
             [ingest.config :refer [!config]]
+            [ingest.faking.events.event-stream :as event-stream]
             [ingest.client.elastic-search-client :as esc]))
 
 (defn connect [{:keys [url username password]}]
@@ -25,7 +26,7 @@
   (map #(println %) (take 10 (ic/exclusion-events-in-es-format-with-event-source))))
 
 (defn push-some-fake-data [amount]
-  (esc/bulk-index (take amount (fd/timelines))))
+  (esc/bulk-index (take amount (event-stream/timelines))))
 
 (defn create-kibana-index []
   (println "setting default kibana index to feed_*")

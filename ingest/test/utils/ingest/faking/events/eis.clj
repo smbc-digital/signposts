@@ -21,7 +21,7 @@
               ) children)
           ) durations))))
 
-(defn child-in-need [{:keys [dependents]}]
+(defn eis-events [{:keys [dependents]}]
   (if dependents
     (h/perhaps cfg/eis-per-household
                #(child-in-need-events dependents))))

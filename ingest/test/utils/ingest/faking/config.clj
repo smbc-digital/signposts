@@ -9,6 +9,7 @@
 (def adult-age-range [35 45])
 
 (def exclusions-per-household 10/10)
+(def awol-per-household 10/10)
 (def eis-per-household 10/10)
 
 (def max-exclusions 3)
