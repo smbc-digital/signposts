@@ -28,6 +28,9 @@
 (defn push-some-fake-data [amount]
   (esc/bulk-index (take amount (event-stream/timelines))))
 
+;(defn push-some-fake-data [amount]
+;  (esc/bulk-index (take amount (fd/timelines))))
+
 (defn create-kibana-index []
   (println "setting default kibana index to feed_*")
   (esc/post-json-to-es {:path    "/.kibana/index-pattern/feed_*?op_type=create"

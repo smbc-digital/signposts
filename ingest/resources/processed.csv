@@ -1,0 +1,5 @@
+name,dob,timestamp,duration,address,event-source,event-type,,,
+Joe Blogs,01/01/1971,16/10/2001,2.5,"2, Acacia Avenue,Manchester,M12 1AA",SCHOOLS,EXCLUSION,,,
+Joe Blogs,01/01/1971,16/10/2001,2.5,"2, Acacia Avenue,Manchester,M12 1AA",SCHOOLS,EXCLUSION,,,
+Joe Blogs,01/01/1971,16/10/2001,2.5,"",SCHOOLS,EXCLUSION,,,
+Joe Blogs,01/01/1971,16/10/2001,2.5,"2, Acacia Avenue,Manchester,M12 1AA",SCHOOLS,EXCLUSION,,,
