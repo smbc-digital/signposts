@@ -3,7 +3,7 @@
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
-            [visualise.v2 :as v]))
+            [visualise.v3 :as v]))
 
 (defn home-page []
   [v/home-page])
