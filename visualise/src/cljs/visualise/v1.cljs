@@ -3,7 +3,8 @@
             [ajax.core :refer [GET]]
             [cljs-time.core :as time]
             [cljs-time.format :as format]
-            [goog.crypt.base64 :as b64]))
+            [goog.crypt.base64 :as b64]
+            [visualise.v3 :refer [graph view-state]]))
 
 (defonce !creds (reagent/atom {}))
 (defonce !state (reagent/atom {:result         {}
@@ -158,7 +159,9 @@
 (defn results []
   (fn []
     [:div
-     (doall (map result (event-source-types)))]))
+     (let [events (raw-events)]
+       (if (not-empty events)
+         [graph (view-state {:vb-h 300 :resolution :quarters}) events]))]))
 
 (defn creds-area []
   (fn []

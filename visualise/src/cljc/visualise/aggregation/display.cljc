@@ -51,7 +51,7 @@
              (<= (/ suitable-days (:days bucket)) max-buckets))
            bucket-sizes)))
 
-(defn display-characteristics [days-to-display max-buckets]
+(defn display-characteristics [{days-to-display :days} max-buckets]
   (let [display-size (suitable-display days-to-display)
         days-per-bucket(:days (suitable-bucket max-buckets display-size))
         buckets (ceil (/ (:days display-size) days-per-bucket))]
