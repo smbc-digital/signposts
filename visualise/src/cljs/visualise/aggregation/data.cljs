@@ -1,13 +1,13 @@
 (ns visualise.aggregation.data
-  (:require [cljs-time.core :as t]
-            [visualise.aggregation.aggregate :refer [aggregate-and-group]]))
+  (:require [cljs-time.core :as t]))
 
-(defn blips [date event-type]
+(defn blips [date event-source event-type]
   (map
     (fn [idx]
-      {:timestamp  date
-       :event-type event-type
-       :name       (str "blip-" idx)})
+      {:timestamp    date
+       :event-source event-source
+       :event-type   event-type
+       :name         (str "blip-" idx)})
     (range 1 (rand-int 5))))
 
 (defn random-events [years]
@@ -17,4 +17,4 @@
     (flatten
       (map (fn [day]
              (let [date (t/minus now (t/days day))]
-               (blips date (rand-nth ["A" "B" "C" "D"])))) days))))
+               (blips date (rand-nth ["GMP" "SCHOOLS"]) (rand-nth ["A" "B" "C" "D"])))) days))))

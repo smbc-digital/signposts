@@ -14,14 +14,16 @@
 
 (defn aggregate-into-periods [seq qty name-fn group-fn ascending-events]
   (let [start (take qty seq)
-        end (map #(t/minus % (t/seconds 1)) (rest (take qty seq)))]
-    (map (fn [[idx [from to]]]
-           {:bucket-number idx
-            :bucket-name   (name-fn from to)
-            :lower         from
-            :upper         to
-            :contents      (group-by group-fn (bucket-content from to ascending-events))}
-           ) (zipmap (range) (zipmap start end)))))
+        end (map #(t/minus % (t/seconds 1)) (rest (take qty seq)))
+        earlier (fn [[a _] [b _]] (t/before? a b))]
+    (map
+      (fn [[idx [from to]]]
+        {:bucket-number idx
+         :bucket-name   (name-fn from to)
+         :lower         from
+         :upper         to
+         :contents      (group-by group-fn (bucket-content from to ascending-events))})
+      (zipmap (range) (sort earlier (zipmap start end))))))
 
 (defn name-days [date]
   {:heading     (t/year date)
@@ -34,11 +36,11 @@
    :sub-heading (fm from)})
 
 (defn name-quarters [from to]
-  {:heading (t/year from)
+  {:heading     (t/year from)
    :sub-heading (str (fm from) " - " (fm to))})
 
 (defn name-half-years [from to]
-  {:heading (t/year from)
+  {:heading     (t/year from)
    :sub-heading (str (fm from) " - " (fm to))})
 
 (defn name-years [from _]
@@ -59,17 +61,20 @@
 (defn aggregate-into-years [{:keys [start-year years]} group-fn ascending-events]
   (aggregate-into-periods (p/periodic-seq start-year (t/years 1)) years name-years group-fn ascending-events))
 
-(def resolution->aggregation-fn
-  {:days       aggregate-into-days
-   :months     aggregate-into-months
-   :quarters   aggregate-into-quarters
-   :half-years aggregate-into-half-years
-   :years      aggregate-into-years})
+(defn zoom-based-resolution [zoom {:keys [days months quarters half-years]}]
+  (cond
+    (< (/ days zoom) 24) aggregate-into-days
+    (< (/ months zoom) 24) aggregate-into-months
+    (< (/ quarters zoom) 24) aggregate-into-quarters
+    (< (/ half-years zoom) 24) aggregate-into-half-years
+    :else aggregate-into-years))
 
-(defn aggregate-and-group [event-series resolution _ group-fn]
+(defn aggregate-and-group-fn [event-series zoom event-grouping-function]
   (let [ascending-events (sort-by :timestamp t/before? event-series)
         spread (date-spread (:timestamp (first ascending-events)) (:timestamp (last ascending-events)))
-        aggregated-events ((resolution resolution->aggregation-fn) spread group-fn ascending-events)]
+        aggregated-events ((zoom-based-resolution zoom spread) spread event-grouping-function ascending-events)]
     {:spread            spread
      :number-of-buckets (count aggregated-events)
      :buckets           aggregated-events}))
+
+(def aggregate-and-group (memoize aggregate-and-group-fn))
