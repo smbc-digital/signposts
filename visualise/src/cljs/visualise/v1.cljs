@@ -102,27 +102,9 @@
               :on-change   #(swap! !creds assoc :password (-> % .-target .-value))}]
      ]))
 
-(defn name-dob-age [events]
-  (let [people (into #{} (map #(select-keys % [:name :dob]) events))]
-    (map (fn [{:keys [dob] :as person}]
-           (assoc person :age (t/in-years (t/interval (f/parse (f/formatter "yyyy-MM-dd") dob) (t/now))))) people)))
-
-(defn raw-data []
-  (fn []
-    [:table
-     (map
-       (fn [{:keys [name dob age]}]
-         ^{:key (gensym)}
-         [:tr
-          [:td name]
-          [:td (str age " [" dob "]")]
-          ])
-       (name-dob-age (raw-events)))]))
-
 (defn home-page []
   [:div
    [creds-area]
    [query-area]
    [results]
-   [raw-data]
    ])

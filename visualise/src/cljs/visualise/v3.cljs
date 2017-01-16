@@ -20,6 +20,8 @@
                           :lhs             250
                           :available-width 900
                           :zoom            1
+                          :current-event   nil
+                          :selected        []
                           })
 
 (defn view-state
@@ -82,10 +84,16 @@
               [:line {:x1 bucket-x1 :x2 bucket-x2 :y1 y :y2 y :stroke :black}]
               [:g
                (map
-                 (fn [{:keys [position-in-bucket]}]
+                 (fn [{:keys [position-in-bucket] :as event}]
                    (let [pos (+ bucket-x1 (* position-in-bucket (- bucket-x2 bucket-x1)))]
                      ^{:key (gensym)}
-                     [:line {:x1 pos :x2 pos :y1 (- y 3) :y2 (+ y 3) :stroke :black :stroke-width 2}]))
+                     [:line {:x1             pos :x2 pos :y1 (- y 4) :y2 (+ y 4)
+                             :stroke         :black
+                             :stroke-width   4
+                             :on-mouse-over  #(swap! !view assoc :current-event event)
+                             :on-click       (fn [] (swap! !view update :selected #(cons event (or % #{}))))
+                             :on-mouse-leave #(swap! !view assoc :current-event nil)
+                             }]))
                  series-content)]]))
          (sort-by :bucket-number buckets))
        [:rect {:x vb-x :y (- y 20) :width 250 :height 40 :fill :white}]
@@ -130,6 +138,22 @@
     (reset! !aggregated-event-series
             (aggregate-and-group event-series zoom group-by-event-type))))
 
+(defn row [{:keys [name dob address]}]
+  (let [age-in-years (t/in-years (t/interval (f/parse (f/formatter "yyyy-MM-dd") dob) (t/now)))]
+    ^{:key (gensym)} [:tr [:td [:i.fa.fa-times]] [:td name] [:td (str age-in-years " [" dob "]")] [:td address]]))
+
+(defn current-event [!view]
+  (fn []
+    (if (:current-event @!view)
+    [:table {:style {:width "100%" :height "50"}}
+     (row (:current-event @!view))])))
+
+(defn selected-events [!view]
+  (fn []
+    [:table {:style {:width "100%"}}
+     [:tr [:th ""] [:th "Name"] [:th "Age"] [:th "Addess"]]
+     (map row (:selected @!view))]))
+
 (defn graph [!view event-series]
   (let [!aggregated-event-series (r/atom event-series)
         aggregator (aggregation-fn event-series !aggregated-event-series)]
@@ -137,7 +161,12 @@
     (fn []
       [:div
        [graph-controls !view aggregator]
-       [graph-svg !view event-series !aggregated-event-series]])))
+       [graph-svg !view event-series !aggregated-event-series]
+       [selected-events !view]
+       [current-event !view]])))
+
+
+
 
 (def !view1 (view-state {:zoom 1}))
 
@@ -145,5 +174,4 @@
   (let [event-series (random-events 5)]
     (fn []
       [:div
-       [graph !view1 event-series]
-       ])))
+       [graph !view1 event-series]])))
