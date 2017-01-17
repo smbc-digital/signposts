@@ -14,16 +14,15 @@
 
 (defn aggregate-into-periods [seq qty name-fn group-fn ascending-events]
   (let [start (take qty seq)
-        end (map #(t/minus % (t/seconds 1)) (rest (take qty seq)))
-        earlier (fn [[a _] [b _]] (t/before? a b))]
+        end (map #(t/minus % (t/seconds 1)) (rest (take qty seq)))]
     (map
-      (fn [[idx [from to]]]
+      (fn [[idx from to]]
         {:bucket-number idx
          :bucket-name   (name-fn from to)
          :lower         from
          :upper         to
          :contents      (group-by group-fn (bucket-content from to ascending-events))})
-      (zipmap (range) (sort earlier (zipmap start end))))))
+      (partition 3 3 nil (interleave (range) start end)))))
 
 (defn name-days [date]
   {:heading     (t/year date)
