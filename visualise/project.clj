@@ -24,7 +24,8 @@
   :plugins [[lein-environ "1.0.2"]
             [lein-cljsbuild "1.1.1"]
             [lein-asset-minifier "0.2.7"
-             :exclusions [org.clojure/clojure]]]
+             :exclusions [org.clojure/clojure]]
+            [lein-doo "0.1.7"]]
 
   :ring {:handler visualise.handler/app
          :uberwar-name "visualise.war"}
@@ -41,6 +42,7 @@
    [:cljsbuild :builds :app :compiler :output-to]]
 
   :source-paths ["src/clj" "src/cljc"]
+  :test-paths ["test/cljs"]
   :resource-paths ["resources" "target/cljsbuild"]
 
   :minify-assets
@@ -65,12 +67,17 @@
               :source-map true
               :optimizations :none
               :pretty-print  true}}
-
-
-
+            :test
+            {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs" "test/cljs"]
+             :compiler
+                           {:main "visualise.runner"
+                            :output-to "target/cljsbuild/public/js/testable.js"
+                            :output-dir "target/cljsbuild/public/js/out"
+                            :source-map true
+                            :optimizations :none
+                            :pretty-print  true}}
             }
    }
-
 
   :figwheel
   {:http-server-root "public"
@@ -80,7 +87,6 @@
                       ]
    :css-dirs ["resources/public/css"]
    :ring-handler visualise.handler/app}
-
 
   :sass {:src "src/sass"
          :dst "resources/public/css"}
@@ -94,8 +100,7 @@
                                   [figwheel-sidecar "0.5.8"]
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                  [pjstadig/humane-test-output "0.8.1"]
-                                  ]
+                                  [pjstadig/humane-test-output "0.8.1"]]
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.8"]

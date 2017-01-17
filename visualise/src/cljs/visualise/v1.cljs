@@ -1,16 +1,13 @@
 (ns visualise.v1
   (:require [reagent.core :as reagent :refer [atom]]
             [ajax.core :refer [GET]]
-            [cljs-time.core :as time]
             [cljs-time.format :as format]
             [goog.crypt.base64 :as b64]
-            [visualise.v3 :refer [graph view-state]]
-            [cljs-time.core :as t]
-            [cljs-time.format :as f]))
+            [visualise.ui.explore :refer [graph view-state]]
+            ))
 
 (defonce !creds (reagent/atom {}))
-(defonce !state (reagent/atom {:result         {}
-                               :selected-event nil}))
+(defonce !state (reagent/atom {:result         {} :selected-event nil}))
 
 (defn authorisation-header []
   {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
@@ -27,7 +24,7 @@
        (map :_source (-> response :hits :hits))))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://192.168.99.100:9200/_search?size=50&q=" search-term)]
+  (let [query-string (str "http://192.168.99.100:9200/_search?size=250&q=" search-term)]
     (swap! !state assoc :result {})
     (GET query-string
          {:headers         (authorisation-header)
@@ -44,7 +41,6 @@
   ([value singular] (str value " " singular (when-not (= 1 value) "s")))
   ([value singular plural] (str value " " (if (= 1 value) singular plural))))
 
-
 (defn people []
   (into (sorted-set)
         (map (fn [event]
@@ -58,7 +54,6 @@
               :value       @!local
               :on-change   #(reset! !local (-> % .-target .-value))
               :on-key-up   #(if (= "Enter" (-> % .-key)) (perform-query @!local))}]]))
-
 
 (defn people-selector [!local]
   (fn []
