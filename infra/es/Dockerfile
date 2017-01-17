@@ -1,4 +1,4 @@
-FROM elasticsearch
+FROM elasticsearch:5.1.1
 
 RUN env
 RUN wget https://artifacts.elastic.co/downloads/packs/x-pack/x-pack-5.1.1.zip -O /tmp/x-pack-5.1.1.zip
