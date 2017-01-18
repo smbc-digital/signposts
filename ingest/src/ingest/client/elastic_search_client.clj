@@ -34,7 +34,7 @@
                 :body    payload})))
 
 (defn bulk-index [events]
-  (let [batch-size 10000]
+  (let [batch-size 100000]
     (doall (map bulk-index-list (partition batch-size batch-size nil events)))))
 
 (defn post-json-to-es [{:keys [path payload]}]

@@ -2,7 +2,8 @@
   (:require [clojure-csv.core :as cs]
             [ingest.client.elastic-search-client :as esc]
             [clj-time.format :as f]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [clojure.string :as str]))
 
 
 (defn raw-events [file]
@@ -14,8 +15,8 @@
 
 (defn date-fmt [field format]
   (fn [event]
-    (if (field event)
-    (assoc event field (f/unparse format (f/parse input-date-format (field event))))
+    (if (not-empty (field event))
+    (assoc event field (f/unparse format (f/parse input-date-format (str/trim (field event)))))
     event
     )))
 
