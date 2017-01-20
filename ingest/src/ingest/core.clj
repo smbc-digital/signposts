@@ -11,7 +11,7 @@
   (sc/slurp-csv filename))
 
 (defn load-csv-as-hashmap-over-key [filename key]
-  (let [row (sc/slurp-csv filename)]
+  (let [row (load-csv filename)]
     (zipmap (map #(get % key) row) row)))
 
 

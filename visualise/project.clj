@@ -72,7 +72,6 @@
              :compiler
                            {:main "visualise.runner"
                             :output-to "target/cljsbuild/public/js/testable.js"
-                            ;:output-dir "target/cljsbuild/public/js/out"
                             :source-map true
                             :optimizations :none
                             :pretty-print  true}}
