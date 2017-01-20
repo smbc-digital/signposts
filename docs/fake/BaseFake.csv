@@ -1,0 +1,8 @@
+provider_id,ASRGROUP,inactdate,BASE_ID,"BASE_NAME""""",COST_CENT,DFE_NO,GENDER,LEA_NO,SITES,School Type,lower age,upper age,ncode_des,NURSERY_URN,NURSERY_TYPE,BASE_WWW,ACTIVE,OFFICIAL_BASE_NAME,EY_SETTING,EMAIL,FAX,TELEPHONE,email_addr,prop_id,address_id
+12345,UP,01/01/2012,555,Albert Einstein Institute,888888,6709,M,100,,University,1,100,,,,,,Albert Einstein Institute,F,email@albert.com,,123456789,,,4938498
+12346,DOWN,,666,Trump University,,,M,200,1,Academy,1,100,,,,,,Trump University,F,email@trump.com,,,,,6775675
+12347,UP,,777,General Assembly,,,M,300,,Academy,1,100,,,,,,General Assembly,T,email@general.com,,,,,563547
+12348,DOWN,,888,Makers Academy,,,F,100,1,High School,2,50,SCHOOL,99999,SAME,www.google.com,T,Makers Academy,T,efail@makers.com,,,,,54635464
+12349,UP,,999,FlatIron ,,,F,100,,Middle School,,,,,,,,FlatIron ,F,efail@flatiron.com,,,,,
+12350,UP,,1110,Code Club,,,F,200,1,,,,,,,,,Code Club,F,efail@code.com,,,,,
+12351,,,1221,Rails Camp,,,F,200,,,,,,,,,,Rails Camp,F,efail@rails.com,,,,,
