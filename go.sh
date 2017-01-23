@@ -9,5 +9,5 @@ then
   docker-compose down
   docker-compose up -d
   cd ../ingest
-  lein run -m ingest.utils.bootstrap-demo
+  lein run -m gov.stockport.sonar.ingest.utils.bootstrap-demo
 fi
