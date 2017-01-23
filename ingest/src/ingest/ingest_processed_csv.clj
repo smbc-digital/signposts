@@ -5,7 +5,6 @@
             [clojure.java.io :as io]
             [clojure.string :as str]))
 
-
 (defn raw-events [file]
   (let [csv (cs/parse-csv (io/reader file))
         keys (map keyword (filter not-empty (first csv)))]
