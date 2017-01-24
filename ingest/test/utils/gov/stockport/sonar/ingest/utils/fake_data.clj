@@ -19,7 +19,7 @@
    ])
 
 (defn rand-event-source []
-  (let [{:keys [event-source event-types]} (rand-nth event-sources)]
+  (let [{:keys [::es/event-source ::es/event-types]} (rand-nth event-sources)]
     {::es/event-source event-source
      ::es/event-type   (rand-nth event-types)}))
 
@@ -40,12 +40,12 @@
    :address (address)})
 
 (defn event [person]
-  (let [{:keys [event-source event-type]} (rand-event-source)]
+  (let [{:keys [::es/event-source ::es/event-type]} (rand-event-source)]
     (merge
       person
       {:timestamp        (f/unparse (:date-time f/formatters) (time-in-last-2-years))
-       ::es/event-source event-source
-       ::es/event-type   event-type})))
+       ::es/event-source (name event-source)
+       ::es/event-type   (name event-type)})))
 
 (defn timeline []
   (let [someone (person)]

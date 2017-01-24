@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.ingest.utils.users-and-groups
-  (:require [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]
+  (:require [gov.stockport.sonar.spec.event-spec :as es]
+            [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]
             [gov.stockport.sonar.ingest.utils.fake-data :refer [event-sources]]
             [clojure.string :as str]))
 
@@ -46,7 +47,7 @@
                      :roles    [(ro-role-name event-source)]}}))
 
 (defn event-source-names []
-  (map :event-source event-sources))
+  (map ::es/event-source event-sources))
 
 (defn create-ro-roles []
   (doall (map #(create-role (read-event-source-role %)) (event-source-names))))
