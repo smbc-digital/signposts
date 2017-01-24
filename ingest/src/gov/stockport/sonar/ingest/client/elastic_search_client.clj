@@ -72,3 +72,9 @@
 (defn delete [query-url]
   (http/delete (es-url-for query-url)
                {:headers (auth-header)}))
+
+(defn try-delete [query-url]
+  (try
+    (http/delete (es-url-for query-url)
+                 {:headers (auth-header)})
+    (catch Exception _)))

@@ -9,16 +9,27 @@
   (fsutil/spit-test-feed [(fake-event {:event-source "INTEGRATION-TEST"})]))
 
 (against-background
-  [(before :contents
+  [(before :facts
            (do
-             (fsutil/configure-temp-inbound-file-system)))]
+             (fsutil/configure-temp-inbound-file-system)
+             (esc/try-delete "/events-integration-test-*")))]
 
   (facts
     "about ingestion of data"
+
     (fact "it should load an event from the simplest feed into elastic search"
           (write-test-feed)
           (let [invocation-results (invoke)
                 index-name (:index-name (first invocation-results))]
             (count invocation-results) => 1
+            (get-in (esc/query (str "/" index-name "/_stats")) [:_all :total :docs :count]) => 1))
+
+    (fact "it should not re-process the file if invoked twice"
+          (write-test-feed)
+          (let [invocation-results (invoke)
+                second-invocation-results (invoke)
+                index-name (:index-name (first invocation-results))]
+            (count invocation-results) => 1
+            (count second-invocation-results) => 0
             (get-in (esc/query (str "/" index-name "/_stats")) [:_all :total :docs :count]) => 1))))
 
