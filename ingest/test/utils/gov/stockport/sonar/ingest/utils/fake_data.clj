@@ -43,7 +43,7 @@
   (let [{:keys [::es/event-source ::es/event-type]} (rand-event-source)]
     (merge
       person
-      {:timestamp        (f/unparse (:date-time f/formatters) (time-in-last-2-years))
+      {::es/timestamp    (f/unparse (:date-time f/formatters) (time-in-last-2-years))
        ::es/event-source (name event-source)
        ::es/event-type   (name event-type)})))
 

@@ -6,6 +6,9 @@
 (defn now []
   (or @!now (t/now)))
 
+(defn now-millis []
+  (clj-time.coerce/to-long (now)))
+
 (defn freeze! [now]
   (reset! !now now))
 

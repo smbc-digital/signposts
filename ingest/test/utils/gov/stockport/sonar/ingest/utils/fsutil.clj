@@ -5,18 +5,17 @@
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.fakers.fake-csv :refer [as-csv]]
             [gov.stockport.sonar.ingest.fakers.faker :as faker]
-            [clojure.string :as str]
-            [clj-time.format :as f]
-            [clj-time.core :as t]))
+            [clojure.string :as str]))
 
 (defn configure-temp-inbound-file-system []
-  (let [fsroot (fs/temp-dir "sonar-integration-test")]
+  (let [;fsroot (fs/file "/tmp/sonar-integration-test")]
+        fsroot (fs/temp-dir "sonar-integration-test")]
     (fs/mkdir (fs/file fsroot "ready"))
     (fs/mkdir (fs/file fsroot "processed"))
     (swap! !config assoc :inbound-dir fsroot)))
 
 (defn file-name [events]
-  (str/join "-" ["events" (::es/event-source (first events)) (f/unparse (:date-time f/formatters) (clock/now))]))
+  (str (str/join "-" ["events" (::es/event-source (first events)) (clock/now-millis)]) ".csv"))
 
 (defn spit-test-feed
   ([] (spit-test-feed [(faker/fake-event)]))
