@@ -6,5 +6,5 @@
         events (map #(zipmap headers %) (rest csv-data))]
     (if (empty? events)
       (update feed :errors #(conj (or % []) :file-produced-no-csv-data))
-      (assoc feed ::es/event-list events))))
+      (assoc feed :event-list events))))
 

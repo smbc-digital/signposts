@@ -4,9 +4,6 @@
 (s/def ::event (s/keys :req [::event-source ::event-type]
                        :opt [::name ::dob]))
 
-(s/def ::event-list (s/coll-of ::event))
-
-
 (s/def ::event-source string?)
 (s/def ::event-type string?)
 

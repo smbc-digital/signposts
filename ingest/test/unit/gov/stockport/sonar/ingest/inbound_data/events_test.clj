@@ -13,7 +13,7 @@
 
   (fact "should map simple csv data to event"
         (let [events (events/csv->events {:csv-data simplest-valid-csv-data})]
-          (::es/event-list events) => [{::es/event-source "SOURCE"
+          (:event-list events) => [{::es/event-source "SOURCE"
                                     ::es/event-type   "TYPE"
                                     ::es/timestamp    "2012-01-01T12:34:56.000Z"}]))
 

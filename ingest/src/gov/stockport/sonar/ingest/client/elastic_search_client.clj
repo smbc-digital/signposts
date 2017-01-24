@@ -40,7 +40,7 @@
    (let [batch-size 100000]
      (doall (map (partial bulk-index-list index-naming-fn) (partition batch-size batch-size nil events))))))
 
-(defn bulk-index-new [{:keys [file ::es/event-list] :as feed}]
+(defn bulk-index-new [{:keys [file event-list] :as feed}]
   (let [index-name (str/join "-" ["events" (esname (::es/event-source (first event-list))) (fs/mod-time file)])]
     (bulk-index (fn [_] index-name) event-list)
     (assoc feed :index-name index-name)))

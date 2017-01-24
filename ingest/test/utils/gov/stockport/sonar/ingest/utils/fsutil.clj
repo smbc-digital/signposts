@@ -10,8 +10,7 @@
             [clj-time.core :as t]))
 
 (defn configure-temp-inbound-file-system []
-  (let [fsroot (fs/file "/tmp/sonar-integration-test")]
-        ;fsroot (fs/temp-dir "sonar-integration-test")]
+  (let [fsroot (fs/temp-dir "sonar-integration-test")]
     (fs/mkdir (fs/file fsroot "ready"))
     (fs/mkdir (fs/file fsroot "processed"))
     (swap! !config assoc :inbound-dir fsroot)))
