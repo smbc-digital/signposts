@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.ingest.client.elastic-search-client
   (:require [clj-http.client :as http]
+            [gov.stockport.sonar.spec.event-spec :as es]
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [base64-clj.core :as b64]
             [cheshire.core :refer [generate-string]]
@@ -17,7 +18,7 @@
   (let [{url :url} (:elastic-search @!config)]
     (str url path)))
 
-(defn event-in-bulk-format [index-naming-fn {:keys [event-type] :as event}]
+(defn event-in-bulk-format [index-naming-fn {:keys [::es/event-type] :as event}]
   (str
     (generate-string {:index {:_index (index-naming-fn event) :_type (esname event-type)}})
     "\n"
@@ -29,19 +30,18 @@
 
 (defn bulk-index-list [index-naming-fn list-of-events]
   (let [payload (events-in-bulk-format index-naming-fn list-of-events)]
-    (println "adding records " (count list-of-events))
     (http/post (es-url-for "/_bulk")
                {:headers (auth-header)
                 :body    payload})))
 
 (defn bulk-index
-  ([events] (bulk-index (fn [event] (str "feed_" (esname (:event-source event)))) events))
+  ([events] (bulk-index (fn [event] (str "feed_" (esname (::es/event-source event)))) events))
   ([index-naming-fn events]
    (let [batch-size 100000]
      (doall (map (partial bulk-index-list index-naming-fn) (partition batch-size batch-size nil events))))))
 
-(defn bulk-index-new [{:keys [file event-list] :as feed}]
-  (let [index-name (str/join "-" ["events" (esname (:event-source (first event-list))) (fs/mod-time file)])]
+(defn bulk-index-new [{:keys [file ::es/event-list] :as feed}]
+  (let [index-name (str/join "-" ["events" (esname (::es/event-source (first event-list))) (fs/mod-time file)])]
     (bulk-index (fn [_] index-name) event-list)
     (assoc feed :index-name index-name)))
 
