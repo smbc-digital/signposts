@@ -9,6 +9,6 @@
   (let [headers (map #(keyword (str 'gov.stockport.sonar.spec.event-spec) %) (first csv-data))
         supplied-events (map #(zipmap headers %) (rest csv-data))]
     (assoc feed
-      :valid-event (filter valid-event? supplied-events)
+      :valid-events (filter valid-event? supplied-events)
       :rejected-events (filter invalid-event? supplied-events))))
 

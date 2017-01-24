@@ -26,16 +26,16 @@
   (fact "should map simple csv data to event"
         (let [events (events/csv->events {:csv-data simplest-valid-csv-data})]
           events => contains-no-errors?
-          (:valid-event events) => [{::es/event-source "SOURCE"
-                                     ::es/event-type   "TYPE"
-                                     ::es/timestamp    "2012-01-01T12:34:56.000Z"}]))
+          (:valid-events events) => [{::es/event-source "SOURCE"
+                                     ::es/event-type    "TYPE"
+                                     ::es/timestamp     "2012-01-01T12:34:56.000Z"}]))
 
   (fact "should report no data for empty file"
-        (count (:valid-event (events/csv->events nil))) => 0
-        (count (:valid-event (events/csv->events {}))) => 0
-        (count (:valid-event (events/csv->events {:csv-data nil}))) => 0
-        (count (:valid-event (events/csv->events {:csv-data []}))) => 0
-        (count (:valid-event (events/csv->events {:csv-data with-headers-only}))) => 0)
+        (count (:valid-events (events/csv->events nil))) => 0
+        (count (:valid-events (events/csv->events {}))) => 0
+        (count (:valid-events (events/csv->events {:csv-data nil}))) => 0
+        (count (:valid-events (events/csv->events {:csv-data []}))) => 0
+        (count (:valid-events (events/csv->events {:csv-data with-headers-only}))) => 0)
 
   (fact "should discard invalid events"
         (count (:rejected-events (events/csv->events {:csv-data single-failing-record}))) => 1))

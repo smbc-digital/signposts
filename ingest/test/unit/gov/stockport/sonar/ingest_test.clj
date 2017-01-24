@@ -1,6 +1,6 @@
-(ns gov.stockport.sonar.ingest.ingest-test
+(ns gov.stockport.sonar.ingest-test
   (:require [midje.sweet :refer :all]
-            [gov.stockport.sonar.ingest.ingest :refer [invoke]]
+            [gov.stockport.sonar.ingest :refer [invoke]]
             [gov.stockport.sonar.ingest.inbound-data.backlog :as backlog]))
 
 (fact "it should process files and send to elastic search"

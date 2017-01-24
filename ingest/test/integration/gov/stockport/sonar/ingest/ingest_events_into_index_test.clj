@@ -2,7 +2,7 @@
   (:require [midje.sweet :refer :all]
             [gov.stockport.sonar.spec.event-spec :as es]
             [gov.stockport.sonar.ingest.fakers.faker :refer [fake-event]]
-            [gov.stockport.sonar.ingest.ingest :refer [invoke]]
+            [gov.stockport.sonar.ingest :refer [invoke]]
             [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]
             [gov.stockport.sonar.ingest.utils.fsutil :as fsutil]))
 

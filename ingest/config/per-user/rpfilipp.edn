@@ -1,2 +1,3 @@
-{:elastic-search
+{:inbound-dir "/tmp/sonar-integration-test"
+ :elastic-search
  {:url        "http://192.168.99.100:9200"}}
