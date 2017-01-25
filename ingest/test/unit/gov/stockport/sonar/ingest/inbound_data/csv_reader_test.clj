@@ -16,7 +16,7 @@
 
   (fact "should read a clean csv file"
         (let [test-file (fsutil/spit-test-feed)
-              {:keys [file csv-data]} (csv-reader/read-csv test-file)]
+              {:keys [file csv-data]} (csv-reader/read-csv {:file test-file})]
           file => test-file
           (first csv-data) => ["event-source" "event-type" "timestamp"]
           (rest csv-data) => [["FAKE-SOURCE" "FAKE-TYPE" "2017-01-01T23:59:59.999Z"]])))

@@ -8,3 +8,5 @@
 (s/def ::event-source string?) ; consider minimum characters for these ?
 (s/def ::event-type string?) ; consider minimum characters for these ?
 (s/def ::timestamp iso-date-string?)
+
+(def explainer (partial s/explain-str ::event))

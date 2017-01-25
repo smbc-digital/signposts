@@ -1,14 +1,8 @@
 (ns gov.stockport.sonar.ingest.util.dates
-  (:require [clj-time.core :as t]
-            [clj-time.format :as f]))
+  (:require [clj-time.format :as f]
+            [gov.stockport.sonar.ingest.util.misc :refer [quietly]]))
 
 (def iso-format (:date-time f/formatters))
-
-(defmacro quietly [form]
-  `(try
-     ~form
-     (catch Exception _# nil)))
-
 
 (defn date->iso-date-string [date]
   (quietly (f/unparse iso-format date)))

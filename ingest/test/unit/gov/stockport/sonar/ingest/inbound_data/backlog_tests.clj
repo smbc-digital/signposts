@@ -15,9 +15,19 @@
         (backlog/waiting-feeds) => [oldest newer newest]))
 
 (fact "should process a given feed"
-      (backlog/process-file ..feed..) => ..report..
+      (backlog/process-file ..file..) => ..result..
       (provided
-        (csv-reader/read-csv ..feed..) => ..feed-with-csv-data..
+        (csv-reader/read-csv {:file ..file..}) => ..feed-with-csv-data..
         (events/csv->events ..feed-with-csv-data..) => ..feed-with-events..
-        (esc/bulk-index-new ..feed-with-events..) => ..feed-with-index-name..
-        (backlog/move-to-processed ..feed-with-index-name..) => ..report..))
+        (esc/bulk-index-new ..feed-with-events..) => ..result..))
+
+(facts
+  "about exception handling during pipeline processing"
+  (fact "csv fails to be read"
+        (backlog/process-file ..file..) => ..result..
+        (provided
+          (csv-reader/read-csv {:file ..file..}) =throws=> (Exception. "BARF")
+          (events/csv->events {:file ..file..}) => ..feed-after-events..
+          (esc/bulk-index-new ..feed-after-events..) => ..result..)))
+
+

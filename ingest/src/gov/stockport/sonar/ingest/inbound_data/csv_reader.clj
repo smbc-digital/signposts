@@ -4,7 +4,9 @@
             [me.raynes.fs :as fs]
             [gov.stockport.sonar.ingest.util.logging :refer [log]]))
 
-(defn read-csv [file]
+(defn read-csv [{:keys [file]}]
   (log "processing file [" (fs/base-name file) "]")
+  (let [reader (io/reader file)]
   {:file     file
-   :csv-data (cs/parse-csv (io/reader file))})
+   :reader   reader
+   :csv-data (cs/parse-csv reader)}))
