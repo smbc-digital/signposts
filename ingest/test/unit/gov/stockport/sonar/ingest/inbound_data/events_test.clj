@@ -16,6 +16,10 @@
 (def simplest-valid-csv-data [["event-source" "event-type" "timestamp"]
                               ["SOURCE" "TYPE" "2012-01-01T12:34:56.000Z"]])
 
+(def valid-csv-data-with-whitespace [["event-source" "event-type" "timestamp"]
+                                     ["  SOURCE " "  TYPE " "  2012-01-01T12:34:56.000Z "]])
+
+
 (def single-failing-record [["incorrect-heading"]
                             ["irrelevant value"]])
 
@@ -27,8 +31,15 @@
         (let [events (events/csv->events {:csv-data simplest-valid-csv-data})]
           events => contains-no-errors?
           (:valid-events events) => [{::es/event-source "SOURCE"
-                                     ::es/event-type    "TYPE"
-                                     ::es/timestamp     "2012-01-01T12:34:56.000Z"}]))
+                                      ::es/event-type   "TYPE"
+                                      ::es/timestamp    "2012-01-01T12:34:56.000Z"}]))
+
+  (fact "should map csv data with whitespace to event"
+        (let [events (events/csv->events {:csv-data valid-csv-data-with-whitespace})]
+          events => contains-no-errors?
+          (:valid-events events) => [{::es/event-source "SOURCE"
+                                      ::es/event-type   "TYPE"
+                                      ::es/timestamp    "2012-01-01T12:34:56.000Z"}]))
 
   (fact "should report no data for empty file"
         (count (:valid-events (events/csv->events nil))) => 0
