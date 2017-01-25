@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.ingest.clock
-  (:require [clj-time.core :as t]))
+  (:require [clj-time.core :as t]
+            [clj-time.coerce :as c]))
 
 (def !now (atom nil))
 
@@ -7,7 +8,7 @@
   (or @!now (t/now)))
 
 (defn now-millis []
-  (clj-time.coerce/to-long (now)))
+  (c/to-long (now)))
 
 (defn freeze! [now]
   (reset! !now now))

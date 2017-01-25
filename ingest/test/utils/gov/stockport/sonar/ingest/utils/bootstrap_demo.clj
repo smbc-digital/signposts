@@ -3,7 +3,8 @@
             [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]
             [gov.stockport.sonar.ingest.utils.quick-and-dirty :as qad]
             [gov.stockport.sonar.ingest.utils.users-and-groups :as uag]
-            [gov.stockport.sonar.ingest.utils.wait-for :refer [wait-for]])
+            [gov.stockport.sonar.ingest.utils.wait-for :refer [wait-for]]
+            [gov.stockport.sonar.ingest :refer [invoke-and-report]])
   (:gen-class))
 
 (defn bootstrap []
@@ -13,7 +14,8 @@
       (do
         (Thread/sleep 2000)
         (println "pushing some fake data")
-        (qad/push-some-fake-data 50000)
+        (qad/write-some-fake-data 50000)
+        (invoke-and-report)
         (uag/create-demo-users-and-groups)
         (qad/create-kibana-index)
         )

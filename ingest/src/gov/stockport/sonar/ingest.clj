@@ -7,5 +7,8 @@
   (into []
         (map backlog/process-file (backlog/waiting-feeds))))
 
-(defn -main [& args]
+(defn invoke-and-report []
   (clojure.pprint/pprint (map :report (invoke))))
+
+(defn -main [& _]
+  (invoke-and-report))

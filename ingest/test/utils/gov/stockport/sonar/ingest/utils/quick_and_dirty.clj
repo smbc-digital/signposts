@@ -1,22 +1,19 @@
 (ns gov.stockport.sonar.ingest.utils.quick-and-dirty
   (:require [gov.stockport.sonar.ingest.config :refer [!config]]
-            [gov.stockport.sonar.ingest.faking.events.event-stream :as event-stream]
             [gov.stockport.sonar.ingest.utils.fake-data :as fd]
+            [gov.stockport.sonar.ingest.utils.fsutil :as fs]
             [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]))
 
-; use for the supposedly more realistic data
-;(defn push-some-fake-data [amount]
-;  (esc/bulk-index (take amount (event-stream/timelines))))
-
-; as per the original demo fake data
-(defn push-some-fake-data [amount]
-  (esc/bulk-index (take amount (fd/timelines))))
+(defn write-some-fake-data [amount]
+  (fs/configure-temp-inbound-file-system)
+  (let [data (group-by :event-source (take amount (fd/timelines)))]
+    (doall (map fs/spit-test-feed (vals data)))))
 
 (defn create-kibana-index []
-  (println "setting default kibana index to feed_*")
-  (esc/post-json-to-es {:path    "/.kibana/index-pattern/feed_*?op_type=create"
-                        :payload {:title         "feed_*"
+  (println "setting default kibana index to events-*")
+  (esc/post-json-to-es {:path    "/.kibana/index-pattern/events-*?op_type=create"
+                        :payload {:title         "events-*"
                                   :timeFieldName "timestamp"}})
   (esc/post-json-to-es {:path    "/.kibana/config/5.1.1"
                         :payload {:buildNum     14566
-                                  :defaultIndex "feed_*"}}))
+                                  :defaultIndex "events-*"}}))

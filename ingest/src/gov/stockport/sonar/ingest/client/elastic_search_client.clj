@@ -18,11 +18,15 @@
   (let [{url :url} (:elastic-search @!config)]
     (str url path)))
 
+
+(defn strip-namespaces [event]
+  (reduce merge {} (map (fn [[k v]] {(keyword (name k)) v}) event)))
+
 (defn event-in-bulk-format [index-naming-fn {:keys [::es/event-type] :as event}]
   (str
     (generate-string {:index {:_index (index-naming-fn event) :_type (esname event-type)}})
     "\n"
-    (generate-string event)
+    (generate-string (strip-namespaces event))
     "\n"))
 
 (defn events-in-bulk-format [index-naming-fn list-of-events]
@@ -35,7 +39,6 @@
                 :body    payload})))
 
 (defn bulk-index
-  ([events] (bulk-index (fn [event] (str "feed_" (esname (::es/event-source event)))) events))
   ([index-naming-fn events]
    (let [batch-size 100000]
      (doall (map (partial bulk-index-list index-naming-fn) (partition batch-size batch-size nil events))))))

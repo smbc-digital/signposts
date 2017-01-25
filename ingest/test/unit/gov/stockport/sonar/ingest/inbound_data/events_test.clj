@@ -19,10 +19,8 @@
 (def valid-csv-data-with-whitespace [["event-source" "event-type" "timestamp"]
                                      ["  SOURCE " "  TYPE " "  2012-01-01T12:34:56.000Z "]])
 
-
 (def single-failing-record [["incorrect-heading"]
                             ["irrelevant value"]])
-
 
 (facts
   "about mapping csv to events"

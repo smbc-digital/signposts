@@ -1,6 +1,5 @@
 (ns gov.stockport.sonar.ingest.utils.fsutil
   (:require [me.raynes.fs :as fs]
-            [gov.stockport.sonar.spec.event-spec :as es]
             [gov.stockport.sonar.ingest.clock :as clock]
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.fakers.fake-csv :refer [as-csv]]
@@ -15,7 +14,7 @@
     (swap! !config assoc :inbound-dir fsroot)))
 
 (defn file-name [events]
-  (str (str/join "-" ["events" (::es/event-source (first events)) (clock/now-millis)]) ".csv"))
+  (str (str/join "-" ["events" (:event-source (first events)) (clock/now-millis)]) ".csv"))
 
 (defn spit-test-feed
   ([] (spit-test-feed [(faker/fake-event)]))

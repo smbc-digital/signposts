@@ -13,7 +13,7 @@
   {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
 
 (defn parse-timestamp [timestamp]
-  (format/parse (:date-hour-minute-second-ms format/formatters) timestamp))
+  (format/parse (:date-time format/formatters) timestamp))
 
 (defn raw-events []
   (:result @!state))
@@ -24,7 +24,7 @@
        (map :_source (-> response :hits :hits))))
 
 (defn perform-query [search-term]
-  (let [query-string (str "http://192.168.99.100:9200/_search?size=250&q=" search-term)]
+  (let [query-string (str "http://192.168.99.100:9200/events-*/_search?size=250&q=" search-term)]
     (swap! !state assoc :result {})
     (GET query-string
          {:headers         (authorisation-header)
