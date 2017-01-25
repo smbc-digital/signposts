@@ -24,5 +24,6 @@
   (-> {:file file}
       ((safe csv-reader/read-csv))
       ((safe events/csv->events))
+      ; safely munge valid events -> canonical form for indexing here ?
       ((safe elastic-search/bulk-index-new))
       ((safe report))))
