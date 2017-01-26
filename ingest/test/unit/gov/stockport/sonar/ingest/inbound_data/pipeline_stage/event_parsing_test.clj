@@ -1,8 +1,8 @@
-(ns gov.stockport.sonar.ingest.inbound-data.events-test
+(ns gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing-test
   (:require [midje.sweet :refer :all]
             [midje.checking.core :as checking]
             [gov.stockport.sonar.spec.event-spec :as es]
-            [gov.stockport.sonar.ingest.inbound-data.events :as events]
+            [gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing :as events]
             [clojure.spec :as s]))
 
 (defn contains-no-errors? [{rejects :rejected-events}]
@@ -26,25 +26,25 @@
   "about mapping csv to events"
 
   (fact "should map simple csv data to event"
-        (let [events (events/csv->events {:csv-data simplest-valid-csv-data})]
+        (let [events (events/->events {:csv-data simplest-valid-csv-data})]
           events => contains-no-errors?
           (:valid-events events) => [{::es/event-source "SOURCE"
                                       ::es/event-type   "TYPE"
                                       ::es/timestamp    "2012-01-01T12:34:56.000Z"}]))
 
   (fact "should map csv data with whitespace to event"
-        (let [events (events/csv->events {:csv-data valid-csv-data-with-whitespace})]
+        (let [events (events/->events {:csv-data valid-csv-data-with-whitespace})]
           events => contains-no-errors?
           (:valid-events events) => [{::es/event-source "SOURCE"
                                       ::es/event-type   "TYPE"
                                       ::es/timestamp    "2012-01-01T12:34:56.000Z"}]))
 
   (fact "should report no data for empty file"
-        (count (:valid-events (events/csv->events nil))) => 0
-        (count (:valid-events (events/csv->events {}))) => 0
-        (count (:valid-events (events/csv->events {:csv-data nil}))) => 0
-        (count (:valid-events (events/csv->events {:csv-data []}))) => 0
-        (count (:valid-events (events/csv->events {:csv-data with-headers-only}))) => 0)
+        (count (:valid-events (events/->events nil))) => 0
+        (count (:valid-events (events/->events {}))) => 0
+        (count (:valid-events (events/->events {:csv-data nil}))) => 0
+        (count (:valid-events (events/->events {:csv-data []}))) => 0
+        (count (:valid-events (events/->events {:csv-data with-headers-only}))) => 0)
 
   (fact "should discard invalid events"
-        (count (:rejected-events (events/csv->events {:csv-data single-failing-record}))) => 1))
+        (count (:rejected-events (events/->events {:csv-data single-failing-record}))) => 1))

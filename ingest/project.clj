@@ -9,6 +9,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [clojurewerkz/elastisch "2.2.1"]
                  [clojure-future-spec "1.9.0-alpha14"]
+                 [camel-snake-kebab "0.4.0"]
                  [clj-http "2.3.0"]
                  [me.raynes/fs "1.4.6"]
                  [base64-clj "0.1.1"]

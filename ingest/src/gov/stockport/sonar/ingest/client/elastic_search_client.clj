@@ -43,7 +43,7 @@
    (let [batch-size 100000]
      (doall (map (partial bulk-index-list index-naming-fn) (partition batch-size batch-size nil events))))))
 
-(defn bulk-index [{:keys [file valid-events] :as feed}]
+(defn ->elastic-search [{:keys [file valid-events] :as feed}]
   (if (> (count valid-events) 0)
     (do
       (let [index-name (str/join "-" ["events" (esname (::es/event-source (first valid-events))) (fs/mod-time file)])]

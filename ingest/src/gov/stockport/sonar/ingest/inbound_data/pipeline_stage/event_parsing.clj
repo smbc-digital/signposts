@@ -1,8 +1,8 @@
-(ns gov.stockport.sonar.ingest.inbound-data.events
-  (:require [clojure.spec :as s]
+(ns gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing
+  (:require [gov.stockport.sonar.ingest.util.dates :as dates]
             [gov.stockport.sonar.spec.event-spec :as es]
-            [clojure.string :as str]
-            [gov.stockport.sonar.ingest.util.dates :as dates]))
+            [clojure.spec :as s]
+            [clojure.string :as str]))
 
 (def valid-event? (partial s/valid? ::es/event))
 (def invalid-event? (complement valid-event?))

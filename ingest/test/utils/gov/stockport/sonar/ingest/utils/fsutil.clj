@@ -8,7 +8,7 @@
 
 (defn configure-temp-inbound-file-system []
   (let [;fsroot (fs/file "/tmp/sonar-integration-test")]
-        fsroot (fs/temp-dir "sonar-integration-test")]
+        fsroot (fs/temp-dir "sonar-fake-data-test")]
     (fs/mkdir (fs/file fsroot "ready"))
     (fs/mkdir (fs/file fsroot "processed"))
     (swap! !config assoc :inbound-dir fsroot)))

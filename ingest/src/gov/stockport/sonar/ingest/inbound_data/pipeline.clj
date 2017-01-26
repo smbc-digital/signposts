@@ -1,0 +1,27 @@
+(ns gov.stockport.sonar.ingest.inbound-data.pipeline
+  (:require [gov.stockport.sonar.ingest.util.logging :refer [log]]
+            [gov.stockport.sonar.ingest.inbound-data.pipeline-stage.csv-reader :refer [stream->csv]]
+            [gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing
+             :refer [->events ->canonical-events]]
+            [gov.stockport.sonar.ingest.client.elastic-search-client :refer [->elastic-search]]
+            [gov.stockport.sonar.ingest.inbound-data.report :refer [->report]]))
+
+(def pipeline-stages [stream->csv
+                      ->events
+                      ->canonical-events
+                      ->elastic-search
+                      ->report])
+
+(defn log-exceptions-and-continue [stage]
+  (fn [state]
+    (try
+      (stage state)
+      (catch Exception e
+        (log (.getMessage e))
+        state))))
+
+(defn process-event-data [event-data]
+  (reduce
+    (fn [state stage] (stage state))
+    event-data
+    (map log-exceptions-and-continue pipeline-stages)))
