@@ -23,6 +23,6 @@
     (map
       (fn [{:keys [::es/timestamp] :as event}]
         (if (dates/dmy-date-string? timestamp)
-          (assoc ::es/timestamp event (dates/date->iso-date-string (dates/dmy-date-string->date timestamp)))
+          (assoc event ::es/timestamp (dates/date->iso-date-string (dates/dmy-date-string->date timestamp)))
           event))
       valid-events)))
