@@ -19,7 +19,8 @@
       (provided
         (csv-reader/read-csv {:file ..file..}) => ..feed-with-csv-data..
         (events/csv->events ..feed-with-csv-data..) => ..feed-with-events..
-        (esc/bulk-index-new ..feed-with-events..) => ..result..))
+        (events/events->canonical-events ..feed-with-events..) => ..feed-with-canonical-events..
+        (esc/bulk-index ..feed-with-canonical-events..) => ..result..))
 
 (facts
   "about exception handling during pipeline processing"
@@ -27,7 +28,8 @@
         (backlog/process-file ..file..) => ..result..
         (provided
           (csv-reader/read-csv {:file ..file..}) =throws=> (Exception. "BARF")
-          (events/csv->events {:file ..file..}) => ..feed-after-events..
-          (esc/bulk-index-new ..feed-after-events..) => ..result..)))
+          (events/csv->events {:file ..file..}) => ..feed-with-events..
+          (events/events->canonical-events ..feed-with-events..) => ..feed-with-canonical-events..
+          (esc/bulk-index ..feed-with-canonical-events..) => ..result..)))
 
 

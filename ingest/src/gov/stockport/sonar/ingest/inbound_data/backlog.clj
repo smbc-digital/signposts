@@ -2,9 +2,9 @@
   (:require [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.util.logging :refer [log]]
             [me.raynes.fs :as fs]
-            [gov.stockport.sonar.ingest.inbound-data.csv-reader :as csv-reader]
-            [gov.stockport.sonar.ingest.inbound-data.events :as events]
-            [gov.stockport.sonar.ingest.client.elastic-search-client :as elastic-search]
+            [gov.stockport.sonar.ingest.inbound-data.csv-reader :refer [read-csv]]
+            [gov.stockport.sonar.ingest.inbound-data.events :refer [csv->events events->canonical-events]]
+            [gov.stockport.sonar.ingest.client.elastic-search-client :refer [bulk-index]]
             [gov.stockport.sonar.ingest.inbound-data.report :refer [report]]))
 
 (defn waiting-feeds []
@@ -22,8 +22,8 @@
 
 (defn process-file [file]
   (-> {:file file}
-      ((safe csv-reader/read-csv))
-      ((safe events/csv->events))
-      ; safely munge valid events -> canonical form for indexing here ?
-      ((safe elastic-search/bulk-index-new))
+      ((safe read-csv))
+      ((safe csv->events))
+      ((safe events->canonical-events))
+      ((safe bulk-index))
       ((safe report))))

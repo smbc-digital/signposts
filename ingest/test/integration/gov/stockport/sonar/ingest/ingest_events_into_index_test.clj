@@ -7,7 +7,7 @@
             [gov.stockport.sonar.ingest.utils.fsutil :as fsutil]))
 
 (defn write-test-feed []
-  (fsutil/spit-test-feed [(fake-event {::es/event-source "INTEGRATION-TEST"})]))
+  (fsutil/spit-test-feed [(fake-event {:event-source "INTEGRATION-TEST"})]))
 
 (against-background
   [(before :facts
@@ -18,7 +18,6 @@
   (fact "it should load an event from the simplest feed into elastic search"
         (write-test-feed)
         (let [invocation-results (invoke)
-              _ (println (map :report invocation-results))
               index-name (:index-name (first invocation-results))]
           (count invocation-results) => 1
           (get-in (esc/query (str "/" index-name "/_stats")) [:_all :total :docs :count]) => 1))

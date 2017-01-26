@@ -1,7 +1,8 @@
 (ns gov.stockport.sonar.ingest.inbound-data.events
   (:require [clojure.spec :as s]
             [gov.stockport.sonar.spec.event-spec :as es]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [gov.stockport.sonar.ingest.util.dates :as dates]))
 
 (def valid-event? (partial s/valid? ::es/event))
 (def invalid-event? (complement valid-event?))
@@ -16,3 +17,12 @@
       :valid-events (filter valid-event? supplied-events)
       :rejected-events (filter invalid-event? supplied-events))))
 
+(defn events->canonical-events [{:keys [valid-events] :as feed}]
+  (assoc feed
+    :valid-events
+    (map
+      (fn [{:keys [::es/timestamp] :as event}]
+        (if (dates/dmy-date-string? timestamp)
+          (assoc ::es/timestamp event (dates/date->iso-date-string (dates/dmy-date-string->date timestamp)))
+          event))
+      valid-events)))

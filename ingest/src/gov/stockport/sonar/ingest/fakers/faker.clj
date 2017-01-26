@@ -1,11 +1,10 @@
 (ns gov.stockport.sonar.ingest.fakers.faker
-  (:require [gov.stockport.sonar.ingest.clock :as clock]
-            [gov.stockport.sonar.spec.event-spec :as es]))
+  (:require [gov.stockport.sonar.ingest.clock :as clock]))
 
 (defn default-event []
-  {::es/event-source "FAKE-SOURCE"
-   ::es/event-type   "FAKE-TYPE"
-   ::es/timestamp    (clock/now)})
+  {:event-source "FAKE-SOURCE"
+   :event-type   "FAKE-TYPE"
+   :timestamp    (clock/now)})
 
 (defn fake-event
   ([] (fake-event {}))
