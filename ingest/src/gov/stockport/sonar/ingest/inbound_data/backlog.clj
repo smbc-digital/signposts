@@ -17,7 +17,7 @@
     (or (try
           (func arg)
           (catch Exception e
-            (log e)))
+            (log (.getMessage e))))
         arg)))
 
 (defn process-file [file]

@@ -18,11 +18,12 @@
       :rejected-events (filter invalid-event? supplied-events))))
 
 (defn events->canonical-events [{:keys [valid-events] :as feed}]
-  (assoc feed
-    :valid-events
-    (map
-      (fn [{:keys [::es/timestamp] :as event}]
-        (if (dates/dmy-date-string? timestamp)
-          (assoc event ::es/timestamp (dates/date->iso-date-string (dates/dmy-date-string->date timestamp)))
-          event))
-      valid-events)))
+  (let [is-dmy? (dates/dmy-date-string? (::es/timestamp (first valid-events)))]
+    (assoc feed
+      :valid-events
+      (map
+        (fn [{:keys [::es/timestamp] :as event}]
+          (if is-dmy?
+            (assoc event ::es/timestamp (dates/date->iso-date-string (dates/dmy-date-string->date timestamp)))
+            event))
+        valid-events))))
