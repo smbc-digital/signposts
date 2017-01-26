@@ -7,6 +7,6 @@
 (defn read-csv [{:keys [file]}]
   (log "processing file [" (fs/base-name file) "]")
   (let [reader (io/reader file)]
-  {:file     file
-   :reader   reader
-   :csv-data (cs/parse-csv reader)}))
+    {:file     file
+     :reader   reader
+     :csv-data (cs/parse-csv reader)}))

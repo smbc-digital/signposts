@@ -8,7 +8,7 @@
 (def invalid-event? (complement valid-event?))
 
 (defn headers [row]
-  (map #(keyword (str 'gov.stockport.sonar.spec.event-spec) (str/trim %)) row))
+  (map #(keyword (str 'gov.stockport.sonar.spec.event-spec) (str/trim %)) (filter not-empty row)))
 
 (defn csv->events [{:keys [csv-data] :as feed}]
   (let [headers (headers (first csv-data))
