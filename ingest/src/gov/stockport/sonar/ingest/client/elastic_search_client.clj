@@ -5,6 +5,7 @@
             [base64-clj.core :as b64]
             [cheshire.core :refer [generate-string]]
             [clojure.string :as str]
+            [gov.stockport.sonar.ingest.util.logging :refer [log]]
             [me.raynes.fs :as fs]))
 
 (defn esname [keyword]
@@ -41,14 +42,17 @@
 (defn bulk-index-old
   ([index-naming-fn events]
    (let [batch-size 100000]
-     (doall (map (partial bulk-index-list index-naming-fn) (partition batch-size batch-size nil events))))))
+     (doall
+       (map
+         (partial bulk-index-list index-naming-fn)
+         (partition batch-size batch-size nil events))))))
 
 (defn ->elastic-search [{:keys [file valid-events] :as feed}]
-  (if (> (count valid-events) 0)
-    (do
-      (let [index-name (str/join "-" ["events" (esname (::es/event-source (first valid-events))) (fs/mod-time file)])]
-        (bulk-index-old (fn [_] index-name) valid-events)
-        (assoc feed :index-name index-name)))))
+  (if (first valid-events)
+    (let [index-name
+          (str/join "-" ["events" (esname (::es/event-source (first valid-events))) (fs/mod-time file)])]
+      (bulk-index-old (fn [_] index-name) valid-events)
+      (assoc feed :index-name index-name))))
 
 (defn post-json-to-es [{:keys [path payload]}]
   (http/post (es-url-for path)

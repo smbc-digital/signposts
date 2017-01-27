@@ -6,6 +6,7 @@
             [gov.stockport.sonar.ingest.client.elastic-search-client :refer [->elastic-search]]
             [gov.stockport.sonar.ingest.inbound-data.report :refer [->report]]))
 
+
 (def pipeline-stages [stream->csv
                       ->events
                       ->canonical-events
@@ -20,7 +21,8 @@
         (log (.getMessage e))
         state))))
 
-(defn process-event-data [event-data]
+(defn process-event-data [{:keys [name] :as event-data}]
+  (log "processing [" name "]")
   (reduce
     (fn [state stage] (stage state))
     event-data
