@@ -38,7 +38,7 @@
     (http/post (es-url-for "/_bulk")
                {:headers (auth-header)
                 :body    payload})
-    (log "processed " (count list-of-events))))
+    (log "processed chunk [" (count list-of-events) "]")))
 
 (defn bulk-index-old
   ([index-naming-fn events]

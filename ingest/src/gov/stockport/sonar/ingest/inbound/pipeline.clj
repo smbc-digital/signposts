@@ -1,11 +1,16 @@
 (ns gov.stockport.sonar.ingest.inbound.pipeline
   (:require [gov.stockport.sonar.ingest.util.logging :refer [log]]
+            [gov.stockport.sonar.ingest.clock :as clock]
             [gov.stockport.sonar.ingest.inbound.pipeline-stage.event-parsing
              :refer [->events ->canonical-events]]
             [gov.stockport.sonar.ingest.client.elastic-search-client :refer [->elastic-search]]
             [gov.stockport.sonar.ingest.inbound.pipeline-stage.report :refer [->report]]))
 
-(def pipeline-stages [->events
+(defn ->start-time [state]
+  (assoc state :start-time (clock/now)))
+
+(def pipeline-stages [->start-time
+                      ->events
                       ->canonical-events
                       ->elastic-search
                       ->report])
