@@ -8,12 +8,11 @@
 (def invalid-event? (complement valid-event?))
 
 (defn headers [row]
-  (println row)
   (map #(keyword (str 'gov.stockport.sonar.spec.event-spec) (str/trim %)) (filter not-empty row)))
 
-(defn ->events [{:keys [csv-data] :as feed}]
-  (let [headers (headers (first csv-data))
-        supplied-events (map #(zipmap headers (map str/trim %)) (rest csv-data))]
+(defn ->events [{:keys [csv] :as feed}]
+  (let [headers (headers (first csv))
+        supplied-events (map #(zipmap headers (map str/trim %)) (rest csv))]
     (assoc feed
       :valid-events (filter valid-event? supplied-events)
       :rejected-events (filter invalid-event? supplied-events))))

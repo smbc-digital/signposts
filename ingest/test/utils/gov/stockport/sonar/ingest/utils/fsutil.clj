@@ -11,6 +11,7 @@
         fsroot (fs/temp-dir "sonar-fake-data-test")]
     (fs/mkdir (fs/file fsroot "ready"))
     (fs/mkdir (fs/file fsroot "processed"))
+    (fs/mkdir (fs/file fsroot "failed"))
     (swap! !config assoc :inbound-dir fsroot)))
 
 (defn file-name [events]

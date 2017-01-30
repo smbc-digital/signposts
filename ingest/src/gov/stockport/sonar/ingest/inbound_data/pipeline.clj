@@ -1,14 +1,11 @@
 (ns gov.stockport.sonar.ingest.inbound-data.pipeline
   (:require [gov.stockport.sonar.ingest.util.logging :refer [log]]
-            [gov.stockport.sonar.ingest.inbound-data.pipeline-stage.csv-reader :refer [stream->csv]]
             [gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing
              :refer [->events ->canonical-events]]
             [gov.stockport.sonar.ingest.client.elastic-search-client :refer [->elastic-search]]
             [gov.stockport.sonar.ingest.inbound-data.report :refer [->report]]))
 
-
-(def pipeline-stages [stream->csv
-                      ->events
+(def pipeline-stages [->events
                       ->canonical-events
                       ->elastic-search
                       ->report])

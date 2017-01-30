@@ -4,7 +4,7 @@
             [gov.stockport.sonar.ingest.utils.quick-and-dirty :as qad]
             [gov.stockport.sonar.ingest.utils.users-and-groups :as uag]
             [gov.stockport.sonar.ingest.utils.wait-for :refer [wait-for]]
-            [gov.stockport.sonar.ingest :refer [invoke-and-report]])
+            [gov.stockport.sonar.ingest :refer [invoke]])
   (:gen-class))
 
 (defn bootstrap []
@@ -15,10 +15,9 @@
         (Thread/sleep 2000)
         (println "pushing some fake data")
         (qad/write-some-fake-data 50000)
-        (invoke-and-report)
+        (invoke)
         (uag/create-demo-users-and-groups)
-        (qad/create-kibana-index)
-        )
+        (qad/create-kibana-index))
       (println "Elastic Search did not become available in time, sorry."))))
 
 (defn -main [& args]

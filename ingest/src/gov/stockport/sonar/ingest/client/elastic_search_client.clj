@@ -37,20 +37,21 @@
   (let [payload (events-in-bulk-format index-naming-fn list-of-events)]
     (http/post (es-url-for "/_bulk")
                {:headers (auth-header)
-                :body    payload})))
+                :body    payload})
+    (log "processed " (count list-of-events))))
 
 (defn bulk-index-old
   ([index-naming-fn events]
-   (let [batch-size 100000]
+   (let [batch-size (:batch-size @!config)]
      (doall
        (map
          (partial bulk-index-list index-naming-fn)
          (partition batch-size batch-size nil events))))))
 
-(defn ->elastic-search [{:keys [file valid-events] :as feed}]
+(defn ->elastic-search [{:keys [feed-hash valid-events] :as feed}]
   (if (first valid-events)
     (let [index-name
-          (str/join "-" ["events" (esname (::es/event-source (first valid-events))) (fs/mod-time file)])]
+          (str/join "-" ["events" (esname (::es/event-source (first valid-events))) feed-hash])]
       (bulk-index-old (fn [_] index-name) valid-events)
       (assoc feed :index-name index-name))))
 

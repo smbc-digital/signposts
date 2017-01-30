@@ -1,5 +1,6 @@
 ; common configuration goes in here
 {:use-fake-data  true
- :elastic-search {:url        "http://localhost:9200"
-                  :username   "elastic"
-                  :password   "changeme"}}
+ :batch-size     100000
+ :elastic-search {:url      "http://localhost:9200"
+                  :username "elastic"
+                  :password "changeme"}}

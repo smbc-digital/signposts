@@ -2,3 +2,7 @@
 
 (defn log [& args]
   (println args))
+
+(defn plog [& args]
+  (clojure.pprint/pprint args))
+
