@@ -1,6 +1,6 @@
-(ns gov.stockport.sonar.ingest.inbound-data.pipeline-test
+(ns gov.stockport.sonar.ingest.inbound.pipeline-test
   (:require [midje.sweet :refer :all]
-            [gov.stockport.sonar.ingest.inbound-data.pipeline :as pipeline]))
+            [gov.stockport.sonar.ingest.inbound.pipeline :as pipeline]))
 
 (defn dummy-stage-one [state]
   (assoc state :one "one"))

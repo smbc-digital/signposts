@@ -1,8 +1,8 @@
-(ns gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing-test
+(ns gov.stockport.sonar.ingest.inbound.pipeline-stage.event-parsing-test
   (:require [midje.sweet :refer :all]
             [midje.checking.core :as checking]
             [gov.stockport.sonar.spec.event-spec :as es]
-            [gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing :as events]
+            [gov.stockport.sonar.ingest.inbound.pipeline-stage.event-parsing :as events]
             [clojure.spec :as s]))
 
 (defn contains-no-errors? [{rejects :rejected-events}]

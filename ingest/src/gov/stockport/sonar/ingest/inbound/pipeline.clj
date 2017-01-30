@@ -1,9 +1,9 @@
-(ns gov.stockport.sonar.ingest.inbound-data.pipeline
+(ns gov.stockport.sonar.ingest.inbound.pipeline
   (:require [gov.stockport.sonar.ingest.util.logging :refer [log]]
-            [gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing
+            [gov.stockport.sonar.ingest.inbound.pipeline-stage.event-parsing
              :refer [->events ->canonical-events]]
             [gov.stockport.sonar.ingest.client.elastic-search-client :refer [->elastic-search]]
-            [gov.stockport.sonar.ingest.inbound-data.report :refer [->report]]))
+            [gov.stockport.sonar.ingest.inbound.pipeline-stage.report :refer [->report]]))
 
 (def pipeline-stages [->events
                       ->canonical-events

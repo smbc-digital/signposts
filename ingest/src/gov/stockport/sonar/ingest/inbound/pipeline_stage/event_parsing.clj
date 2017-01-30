@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.ingest.inbound-data.pipeline-stage.event-parsing
+(ns gov.stockport.sonar.ingest.inbound.pipeline-stage.event-parsing
   (:require [gov.stockport.sonar.ingest.util.dates :as dates]
             [gov.stockport.sonar.spec.event-spec :as es]
             [clojure.spec :as s]

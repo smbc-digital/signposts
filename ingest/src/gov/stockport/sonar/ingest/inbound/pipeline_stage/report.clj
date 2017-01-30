@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.ingest.inbound-data.report
+(ns gov.stockport.sonar.ingest.inbound.pipeline-stage.report
   (:require [gov.stockport.sonar.spec.event-spec :refer [explainer]]
             [gov.stockport.sonar.ingest.util.logging :refer [plog]]))
 
