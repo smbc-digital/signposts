@@ -9,7 +9,7 @@
 (defn- older [^File f1 ^File f2]
   (< (mtime f1) (mtime f2)))
 
-(defn name [^File file]
+(defn fname [^File file]
   (.getName file))
 
 (defn list-files [dir-name]

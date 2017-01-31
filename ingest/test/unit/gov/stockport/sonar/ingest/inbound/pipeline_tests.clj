@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.ingest.inbound.pipeline-test
+(ns gov.stockport.sonar.ingest.inbound.pipeline-tests
   (:require [midje.sweet :refer :all]
             [gov.stockport.sonar.ingest.inbound.pipeline :as pipeline]))
 

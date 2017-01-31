@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.ingest.config-test
+(ns gov.stockport.sonar.ingest.config-tests
   (:require [midje.sweet :refer :all]
             [gov.stockport.sonar.ingest.config :as config]))
 
