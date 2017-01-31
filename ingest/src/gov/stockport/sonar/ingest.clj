@@ -4,6 +4,7 @@
   (:gen-class))
 
 (defn invoke []
+  ;(doall (feeds/inverted))) ; inverted works
   (doall (feeds/process-feeds process-event-data)))
 
 (defn -main [& _]

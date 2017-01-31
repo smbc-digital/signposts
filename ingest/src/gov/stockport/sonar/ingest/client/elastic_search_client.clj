@@ -6,7 +6,9 @@
             [cheshire.core :refer [generate-string]]
             [clojure.string :as str]
             [gov.stockport.sonar.ingest.util.logging :refer [log]]
-            [me.raynes.fs :as fs]))
+            [me.raynes.fs :as fs]
+            [clj-time.core :as t]
+            [gov.stockport.sonar.ingest.clock :as clock]))
 
 (defn esname [keyword]
   (str/lower-case (name keyword)))
@@ -35,10 +37,15 @@
 
 (defn bulk-index-list [index-naming-fn list-of-events]
   (let [payload (events-in-bulk-format index-naming-fn list-of-events)]
-    (http/post (es-url-for "/_bulk")
+    (let [start-time (clock/now)]
+      (http/post (es-url-for "/_bulk")
                {:headers (auth-header)
                 :body    payload})
-    (log "processed chunk [" (count list-of-events) "]")))
+      (log "processed chunk [" (count list-of-events) " in " (t/in-millis (t/interval start-time (clock/now))) " ms]"))))
+
+
+
+
 
 (defn bulk-index-old
   ([index-naming-fn events]

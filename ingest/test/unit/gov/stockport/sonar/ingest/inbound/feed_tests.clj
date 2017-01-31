@@ -17,7 +17,7 @@
                  (files/open-reader ..file..) => ..rdr..
                  (csv/parse-csv ..rdr..) => ..csv-stream..
                  (files/name ..file..) => ..file-name..
-                 (feeds/hash ..file..) => ..feed-hash..
+                 (feeds/fhash ..file..) => ..feed-hash..
                  (..csv-processor.. {:name      ..file-name..
                                      :feed-hash ..feed-hash..
                                      :csv       ..csv-stream..}) => ..result..
@@ -28,7 +28,7 @@
                (provided
                  (files/open-reader ..file..) => ..rdr..
                  (files/name ..file..) => ..file-name..
-                 (feeds/hash ..file..) => ..feed-hash..
+                 (feeds/fhash ..file..) => ..feed-hash..
                  (csv/parse-csv ..rdr..) => ..csv-stream..
                  (..csv-processor.. anything) =throws=> (Exception. "BARF")
                  (files/close-reader ..rdr..) => nil)))

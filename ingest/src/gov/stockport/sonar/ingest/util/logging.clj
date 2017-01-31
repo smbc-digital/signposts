@@ -1,8 +1,9 @@
-(ns gov.stockport.sonar.ingest.util.logging)
+(ns gov.stockport.sonar.ingest.util.logging
+  (:require [clojure.pprint :as pp]))
 
 (defn log [& args]
   (println args))
 
 (defn plog [& args]
-  (clojure.pprint/pprint args))
+  (pp/pprint args))
 
