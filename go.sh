@@ -7,7 +7,7 @@ then
   eval $(docker-machine env)
   cd infra
   docker-compose down
-  docker-compose up -d
+  docker-compose up -d --force-recreate
   cd ../ingest
   lein run -m gov.stockport.sonar.ingest.utils.bootstrap-demo
 fi

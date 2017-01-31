@@ -1,6 +1,6 @@
 # initial docker compose config; works on mac
 # issue `docker-compose up -d` for a basic set up
-version: '2'
+version: '2.1'
 services:
   elasticsearch:
     build:
