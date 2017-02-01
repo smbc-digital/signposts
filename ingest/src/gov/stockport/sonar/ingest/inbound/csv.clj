@@ -25,9 +25,9 @@
 
           (if (= (count data) expected-data-count)
 
-            {:idx  idx
-             :data (zipmap header-keys data)}
+            {:line-number idx
+             :data        (zipmap header-keys data)}
 
-            {:idx   idx
-             :error :insufficient-data
-             :data  {}}))))))
+            {:line-number idx
+             :error       :insufficient-data
+             :data        {}}))))))

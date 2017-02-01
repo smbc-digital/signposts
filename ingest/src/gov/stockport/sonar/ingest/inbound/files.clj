@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.ingest.inbound.files
   (:require [clojure.java.io :as io]
             [gov.stockport.sonar.ingest.util.logging :refer [log]])
-  (:import (java.io File Reader)))
+  (:import (java.io File)))
 
 (defn mtime [^File file]
   (.lastModified file))
@@ -21,6 +21,3 @@
 
 (defn open-reader [^File file]
   (io/reader file))
-
-(defn close-reader [^Reader rdr]
-  (.close rdr))

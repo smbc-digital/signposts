@@ -68,7 +68,7 @@
 
   (facts "about processing a single feed file"
 
-         (defn dummy-mapper [idx line] {:idx idx :line line})
+         (defn dummy-mapper [idx line] {:line-number idx :line line})
 
          (fact "it parses the csv queues the results in the event buffer, and flushes once at the end"
                (feeds/feed-processor {:queue ..enqueue-fn.. :flush ..flush-fn..} ..file..) => nil
@@ -76,6 +76,6 @@
                  (files/open-reader ..file..) =streams=> [(file-content "line1\nline2\nline3")
                                                           (file-content "line1\nline2\nline3")]
                  (csv/mapper "line1") => dummy-mapper
-                 (..enqueue-fn.. {:idx 2 :line "line2"}) => irrelevant
-                 (..enqueue-fn.. {:idx 3 :line "line3"}) => irrelevant
+                 (..enqueue-fn.. {:line-number 2 :line "line2"}) => irrelevant
+                 (..enqueue-fn.. {:line-number 3 :line "line3"}) => irrelevant
                  (..flush-fn..) => nil))))

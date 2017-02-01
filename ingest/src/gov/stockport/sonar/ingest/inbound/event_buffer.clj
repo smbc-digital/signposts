@@ -1,4 +1,5 @@
-(ns gov.stockport.sonar.ingest.inbound.event-buffer)
+(ns gov.stockport.sonar.ingest.inbound.event-buffer
+  (:require [gov.stockport.sonar.ingest.util.logging :refer [log-time]]))
 
 ; empty buffer is reset and can be GC'd once flushed
 
@@ -15,8 +16,12 @@
 (defn create-buffer [{:keys [flush-fn] :as options}]
   (let [!buffer (atom (empty-buffer options))
         flusher (fn []
-                  (flush-fn (:events @!buffer))
-                  (reset! !buffer (empty-buffer options)))]
+                  (let [events (:events @!buffer)]
+                    (log-time
+                      (str "flushing " (count events) " events ")
+                      (do
+                        (flush-fn events)
+                        (reset! !buffer (empty-buffer options))))))]
     {:flush flusher
      :queue (fn [event]
               (let [current (swap! !buffer #(-> %

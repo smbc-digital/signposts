@@ -35,17 +35,16 @@
 (defn events-in-bulk-format [index-naming-fn list-of-events]
   (str (apply str (map (partial event-in-bulk-format index-naming-fn) list-of-events)) "\n"))
 
+(defn post-bulk-data-to-es [bulk-data]
+  (http/post (es-url-for "/_bulk")
+             {:headers (auth-header)
+              :body    bulk-data}))
+
 (defn bulk-index-list [index-naming-fn list-of-events]
   (let [payload (events-in-bulk-format index-naming-fn list-of-events)]
     (let [start-time (clock/now)]
-      (http/post (es-url-for "/_bulk")
-               {:headers (auth-header)
-                :body    payload})
+      (post-bulk-data-to-es payload)
       (log "processed chunk [" (count list-of-events) " in " (t/in-millis (t/interval start-time (clock/now))) " ms]"))))
-
-
-
-
 
 (defn bulk-index-old
   ([index-naming-fn events]
@@ -61,6 +60,8 @@
           (str/join "-" ["events" (esname (::es/event-source (first valid-events))) feed-hash])]
       (bulk-index-old (fn [_] index-name) valid-events)
       (assoc feed :index-name index-name))))
+
+
 
 (defn post-json-to-es [{:keys [path payload]}]
   (http/post (es-url-for path)

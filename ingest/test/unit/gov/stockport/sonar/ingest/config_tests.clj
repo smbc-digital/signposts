@@ -8,6 +8,6 @@
              (provided
                (config/current-user-name) => "unknown-user"))
        (fact "it should override config on a per user basis"
-             (get-in (config/load-config) [:elastic-search :url]) => "http://192.168.99.100:9200"
+             (:inbound-dir (config/load-config)) => "/tmp/sonar-integration-test"
              (provided
                (config/current-user-name) => "rpfilipp")))

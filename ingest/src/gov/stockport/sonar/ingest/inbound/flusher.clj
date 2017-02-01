@@ -1,5 +1,7 @@
 (ns gov.stockport.sonar.ingest.inbound.flusher
-  (:require [gov.stockport.sonar.ingest.inbound.events :as events]))
+  (:require [gov.stockport.sonar.ingest.inbound.events :as events]
+            [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]
+            [gov.stockport.sonar.ingest.elastic.event-formatter :as ef]))
 
 ; check events against the schema
 ; normalise valid events i.e. any pre ES optimisations
@@ -8,4 +10,7 @@
 
 (defn flush-events [events]
   (doall
-    (println (str "Flush " (count (filter #(not (:error %)) (map events/validate events)))))))
+    (esc/post-bulk-data-to-es
+      (ef/bulk-format-events
+        (map :data
+             (filter #(not (:error %)) (map events/validate events)))))))
