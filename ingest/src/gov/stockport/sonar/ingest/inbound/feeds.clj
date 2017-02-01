@@ -2,27 +2,10 @@
   (:require [gov.stockport.sonar.ingest.inbound.files :as files]
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.util.logging :refer [log]]
-            [gov.stockport.sonar.ingest.inbound.csv :as csv])
-  (:import (java.io File)))
+            [gov.stockport.sonar.ingest.inbound.csv :as csv]))
 
 (defn- path-to [directory]
   (str (:inbound-dir @!config) "/" directory))
-
-(defn fhash [^File file]
-  (files/mtime file))                                       ; for now
-
-;(defn csv-stream [file]
-;  (let [rdr (files/open-reader file)]
-;    {:csv      (csv/parse-csv rdr)
-;     :close-fn #(files/close-reader rdr)}))
-;
-;(defn apply-csv-processing [file csv-processor]
-;  (let [{:keys [csv close-fn]} (csv-stream file)]
-;    (try
-;      (csv-processor {:name      (files/fname file)
-;                      :feed-hash (fhash file)
-;                      :csv       csv})
-;      (finally (close-fn)))))
 
 (defn first-line-of [file]
   (with-open [rdr (files/open-reader file)]

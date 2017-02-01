@@ -12,3 +12,6 @@
 (s/def ::name string?)
 
 (def explainer (partial s/explain-str ::event))
+
+(defn promote-to-namespaced-keywords [event]
+  (reduce merge {} (map (fn [[k v]] {(keyword (str 'gov.stockport.sonar.spec.event-spec) (name k)) v}) event)))
