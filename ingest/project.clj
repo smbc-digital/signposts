@@ -13,6 +13,7 @@
                  [clj-http "2.3.0"]
                  [me.raynes/fs "1.4.6"]
                  [base64-clj "0.1.1"]
+                 [pandect "0.6.1"]
                  [semantic-csv "0.1.0"]
                  [levand/immuconf "0.1.0"]]
 

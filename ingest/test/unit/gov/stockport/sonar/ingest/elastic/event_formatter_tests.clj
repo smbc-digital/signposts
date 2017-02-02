@@ -10,15 +10,15 @@
             :key2         "val2"})
 
 (fact "should format event for bulk indexing"
-      (let [result (ef/bulk-format event)
+      (let [result (ef/bulk-format "index_hash" event)
             [line-1 line-2 :as lines] (str/split-lines result)]
         (count lines) => 2
-        line-1 => (generate-string {:index {:_index "events-some-source" :_type "some-type"}})
+        line-1 => (generate-string {:index {:_index "events-some-source-index-hash" :_type "some-type"}})
         line-2 => (generate-string event)))
 
 (fact "should format events for bulk indexing"
-      (let [result (doall (ef/bulk-format-events [event event]))
+      (let [result (doall (ef/bulk-format-events "index-hash" [event event]))
             [line-1 line-2 :as lines] (str/split-lines result)]
         (count lines) => 4
-        line-1 => (generate-string {:index {:_index "events-some-source" :_type "some-type"}})
+        line-1 => (generate-string {:index {:_index "events-some-source-index-hash" :_type "some-type"}})
         line-2 => (generate-string event)))

@@ -5,8 +5,8 @@
 
 ; need some feed meta-data in here so that we can build the index name consistently
 
-(defn empty-buffer [{:keys [capacity]}]
-  {:capacity capacity :qty 0 :events []})
+(defn empty-buffer [{:keys [capacity feed-hash]}]
+  {:capacity capacity :qty 0 :events [] :feed-hash feed-hash})
 
 (defn- full [{:keys [capacity qty]}]
   (>= qty capacity))
@@ -16,12 +16,11 @@
 (defn create-buffer [{:keys [flush-fn] :as options}]
   (let [!buffer (atom (empty-buffer options))
         flusher (fn []
-                  (let [events (:events @!buffer)]
-                    (log-time
-                      (str "flushing " (count events) " events ")
-                      (do
-                        (flush-fn events)
-                        (reset! !buffer (empty-buffer options))))))]
+                  (log-time
+                    (str "flushing events")
+                    (do
+                      (flush-fn @!buffer)
+                      (reset! !buffer (empty-buffer options)))))]
     {:flush flusher
      :queue (fn [event]
               (let [current (swap! !buffer #(-> %

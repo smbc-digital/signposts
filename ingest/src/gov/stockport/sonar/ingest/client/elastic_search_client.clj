@@ -36,9 +36,10 @@
   (str (apply str (map (partial event-in-bulk-format index-naming-fn) list-of-events)) "\n"))
 
 (defn post-bulk-data-to-es [bulk-data]
-  (http/post (es-url-for "/_bulk")
-             {:headers (auth-header)
-              :body    bulk-data}))
+  (println (:body
+             (http/post (es-url-for "/_bulk")
+                        {:headers (auth-header)
+                         :body    bulk-data}))))
 
 (defn bulk-index-list [index-naming-fn list-of-events]
   (let [payload (events-in-bulk-format index-naming-fn list-of-events)]

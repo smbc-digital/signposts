@@ -6,9 +6,7 @@
   (:gen-class))
 
 (defn invoke []
-  (doall (feeds/process-feeds
-           (partial feeds/feed-processor
-                    (buffer/create-buffer {:capacity 20000 :flush-fn flusher/flush-events})))))
+  (doall (feeds/process-feeds)))
 
 (defn -main [& _]
   (invoke))

@@ -2,7 +2,10 @@
   (:require [gov.stockport.sonar.ingest.inbound.files :as files]
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.util.logging :refer [log]]
-            [gov.stockport.sonar.ingest.inbound.csv :as csv]))
+            [gov.stockport.sonar.ingest.inbound.csv :as csv]
+            [pandect.algo.sha1 :refer :all]
+            [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]
+            [gov.stockport.sonar.ingest.inbound.flusher :as flusher]))
 
 (defn- path-to [directory]
   (str (:inbound-dir @!config) "/" directory))
@@ -16,17 +19,24 @@
 
 (def line-numberer (fn [k v] [(+ 2 k) v]))
 
-(defn feed-processor [{:keys [queue flush]} file]
+(defn process-with-buffer [file {:keys [queue flush]}]
   (let [csv-mapper (csv/mapper (first-line-of file))]
     (with-open [rdr (files/open-reader file)]
       (doseq [[line-number data] (map-indexed line-numberer (remaining-lines-of rdr))]
         (queue (csv-mapper line-number data)))
       (flush))))
 
-(defn process-feed-file [file feed-processor]
+(defn feed-hash [file]
+  (sha1 (files/fname file)))
+
+(defn process-feed [file]
+  (process-with-buffer file (buffer/create-buffer
+                              {:capacity 20000 :flush-fn flusher/flush-events :feed-hash (feed-hash file)})))
+
+(defn process-feed-file [file]
   (try
     (log "Processing [" (files/fname file) "]")
-    (let [result (feed-processor file)]
+    (let [result (process-feed file)]
       (if (:failed result)
         (files/move-file file (path-to "failed"))
         (files/move-file file (path-to "processed")))
@@ -35,7 +45,7 @@
       (log e)
       (files/move-file file (path-to "failed")))))
 
-(defn process-feeds [feed-processor]
+(defn process-feeds []
   (filter
     (complement nil?)
-    (map #(process-feed-file % feed-processor) (files/list-files (path-to "ready")))))
+    (map process-feed-file (files/list-files (path-to "ready")))))
