@@ -16,5 +16,3 @@
          ret# ~expr]
      (log (str ~msg " took: " (/ (double (- (. System (nanoTime)) start#)) 1000000.0) " msecs"))
      ret#))
-
-
