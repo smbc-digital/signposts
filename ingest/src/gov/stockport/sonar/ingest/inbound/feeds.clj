@@ -31,7 +31,7 @@
 
 (defn process-feed [file]
   (process-with-buffer file (buffer/create-buffer
-                              {:capacity 20000 :flush-fn flusher/flush-events :feed-hash (feed-hash file)})))
+                              {:capacity (:batch-size @!config) :flush-fn flusher/flush-events :feed-hash (feed-hash file)})))
 
 (defn process-feed-file [file]
   (try

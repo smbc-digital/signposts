@@ -6,8 +6,7 @@
             [gov.stockport.sonar.ingest.util.logging :refer [log]]
             [gov.stockport.sonar.ingest.inbound.csv :as csv]
             [pandect.algo.sha1 :refer [sha1]]
-            [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]
-            [gov.stockport.sonar.ingest.inbound.flusher :as flusher])
+            [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer])
   (:import (java.io StringReader BufferedReader)))
 
 (def file-content (fn [string] (BufferedReader. (StringReader. string))))
