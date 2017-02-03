@@ -42,7 +42,7 @@
         (files/move-file file (path-to "processed")))
       result)
     (catch Exception e
-      (log e)
+      (log (.getMessage e))
       (files/move-file file (path-to "failed")))))
 
 (defn process-feeds []

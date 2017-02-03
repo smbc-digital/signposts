@@ -10,9 +10,11 @@
 ; report could be sent forwards to separate service ? channel ?
 
 (defn flush-events [{:keys [events feed-hash]}]
-  (doall
-    (elastic/post-bulk-data
-      (ef/bulk-format-events
-        feed-hash
-        (map :data
-             (filter #(not (:error %)) (map events/validate events)))))))
+  (let [validated (map events/validate events)
+        valid-events (map :data (filter #(not (:error %)) validated))
+        valid-qty (count valid-events)]
+    (doall
+      (merge
+        {:valid-events valid-qty :invalid-events (- valid-qty (count valid-events))}
+        (elastic/post-bulk-data
+          (ef/bulk-format-events feed-hash valid-events))))))

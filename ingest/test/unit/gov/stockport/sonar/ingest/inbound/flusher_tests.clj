@@ -3,6 +3,7 @@
             [gov.stockport.sonar.ingest.inbound.flusher :as flusher]
             [gov.stockport.sonar.ingest.inbound.events :as events]))
 
+; TODO
 ;(facts "about flushing events"
 ;
 ;       (fact "flushing no events passes off peacefully"

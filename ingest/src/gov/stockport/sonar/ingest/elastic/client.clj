@@ -25,8 +25,10 @@
      :records-rejected errors}))
 
 (defn post-bulk-data [bulk-data]
-  (report
-    (http/post (es-url-for "/_bulk")
-               {:headers (auth-header)
-                :body    bulk-data})))
+  (if (empty? bulk-data)
+    {}
+    (report
+      (http/post (es-url-for "/_bulk")
+                 {:headers (auth-header)
+                  :body    bulk-data}))))
 
