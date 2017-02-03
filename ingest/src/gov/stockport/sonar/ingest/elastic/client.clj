@@ -20,6 +20,7 @@
         total (count (:items es-result))
         errors (count (filter :error (:items es-result)))]
     {:status           status
+     :indexes          (into #{} (filter not-empty (map #(get-in % [:index :_index]) (:items es-result))))
      :took-ms          (:took es-result)
      :records-indexed  (- total errors)
      :records-rejected errors}))
