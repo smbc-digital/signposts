@@ -1,0 +1,4 @@
+Host github.com
+	UserKnownHostsFile /dev/null
+	StrictHostKeyChecking no
+ 	IdentityFile ~/.ssh/docker_deploy_key
