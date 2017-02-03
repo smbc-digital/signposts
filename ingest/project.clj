@@ -16,6 +16,7 @@
                  [base64-clj "0.1.1"]
                  [pandect "0.6.1"]
                  [semantic-csv "0.1.0"]
+                 [overtone/at-at "1.2.0"]
                  [levand/immuconf "0.1.0"]]
 
   :main gov.stockport.sonar.ingest
