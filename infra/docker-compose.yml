@@ -1,6 +1,6 @@
 # initial docker compose config; works on mac
 # issue `docker-compose up -d` for a basic set up
-version: '2.1'
+version: '3.0'
 services:
   elasticsearch:
     build:
@@ -21,10 +21,13 @@ services:
         - no_proxy
     ports:
       - "5601:5601"
-
-
   nginx:
     build:
       context: "nginx"
     ports: 
       - "80:80"
+  ingester:
+    build:
+      context: "ingester"
+    volumes:
+      - /tmp/sonar-integration-test:/data
