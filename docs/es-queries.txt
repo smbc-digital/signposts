@@ -1,0 +1,129 @@
+GET /events-*/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET /_cat/indices
+
+GET _template/
+
+GET events-*/_mapping
+
+# max / min ages
+GET events-*/_search
+{
+  "query": { "match_all": {} },
+  "size": 0,
+  "aggs" : {
+        "min_dob" : { "min" : { "field" : "dob" } },
+        "max_dob" : { "max" : { "field" : "dob" } }
+    }
+}
+
+# ages grouped with offset
+GET events-*/_search
+{
+  "size": 0,
+  "aggs": {
+    "ages": {
+      "date_histogram": {
+        "field": "dob",
+        "interval": "year",
+        "offset": "36d"
+      }
+    },
+    "min_dob" : { "min" : { "field" : "dob" } },
+    "max_dob" : { "max" : { "field" : "dob" } }
+  }
+}
+
+# all the Shannon Moen grouped on DOB
+GET events-*/_search 
+{
+  "query": {
+    "match_phrase": {
+      "name": "Shannon Moen"
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "ages": {
+      "date_histogram": {
+        "field": "dob",
+        "interval": "day",
+        "min_doc_count": 1
+      }
+    }
+  }
+}
+
+# Shannon Moen by address
+GET events-*/_search 
+{
+  "query": {
+    "match_phrase": {
+      "name": "Shannon Moen"
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "address": {
+      "terms": {
+        "field": "address.keyword",
+        "min_doc_count": 1
+      }
+    }
+  }
+}
+
+
+GET events-*/_search 
+{
+  "query": {
+    "match_phrase": {
+      "name": "Shannon Moen"
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "event-sources": {
+      "terms": {
+        "field": "event-source.keyword",
+        "size": 10
+      },
+      "aggs": {
+        "event-types": {
+          "terms": {
+            "field": "event-type.keyword",
+            "size": 10
+          }
+        }
+      }
+    }
+  }
+}
+
+# top 20 names grouped by age
+GET events-*/_search
+{
+  "size": 0,
+  "aggs": {
+    "top-20-names": {
+      "terms": {
+        "field": "name.keyword",
+        "size": 20
+      },
+      "aggs": {
+        "ages": {
+          "date_histogram": {
+            "field": "dob",
+            "interval": "year",
+            "offset": "36d"
+          }
+        }
+      }
+    }
+  }
+}
