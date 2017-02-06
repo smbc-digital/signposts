@@ -1,9 +1,7 @@
 (ns visualise.aggregation.date-spread-tests
-  (:require [cljs.test :refer-macros [deftest is testing run-tests]]
+  (:require [cljs.test :refer-macros [deftest is testing]]
             [cljs-time.core :as t]
             [visualise.aggregation.date-spread :as ds]))
-
-(enable-console-print!)
 
 (def first-day-of-year (t/date-time 2017))
 (def second-day-of-year (t/date-time 2017 1 2))
@@ -45,6 +43,5 @@
       (is (= (:start-month (t/date-time 2016 11 1))))
       (is (= (:start-quarter (t/date-time 2016 10 1))))
       (is (= (:start-half-year (t/date-time 2016 7 1))))
-      (is (= (:start-year (t/date-time 2016))))
-      )))
+      (is (= (:start-year (t/date-time 2016)))))))
 

@@ -9,12 +9,12 @@
         content (filter #(t/within? from to (:timestamp %)) events)]
     (map
       (fn [{:keys [timestamp] :as event}]
-        (assoc event :position-in-bucket (/ (t/in-days (t/interval from timestamp)) days)))
+        (assoc event :position-in-bucket (if (= days 0) 0.5 (/ (t/in-days (t/interval from timestamp)) days))))
       content)))
 
 (defn aggregate-into-periods [seq qty name-fn group-fn ascending-events]
   (let [start (take qty seq)
-        end (map #(t/minus % (t/seconds 1)) (rest (take qty seq)))]
+        end (map #(t/minus % (t/seconds 1)) (rest (take (+ 1 qty) seq)))]
     (map
       (fn [[idx from to]]
         {:bucket-number idx
@@ -71,7 +71,8 @@
 (defn aggregate-and-group-fn [event-series zoom event-grouping-function]
   (let [ascending-events (sort-by :timestamp t/before? event-series)
         spread (date-spread (:timestamp (first ascending-events)) (:timestamp (last ascending-events)))
-        aggregated-events ((zoom-based-resolution zoom spread) spread event-grouping-function ascending-events)]
+        resolution (zoom-based-resolution zoom spread)
+        aggregated-events (resolution spread event-grouping-function ascending-events)]
     {:spread            spread
      :number-of-buckets (count aggregated-events)
      :buckets           aggregated-events}))

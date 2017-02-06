@@ -1,14 +1,17 @@
 (ns visualise.runner
   (:require [doo.runner :refer-macros [doo-tests]]
-            [visualise.aggregation.date-spread-tests]))
+            [visualise.aggregation.date-spread-tests]
+            [visualise.aggregation.aggregation-tests]))
 
 ; run the tests from the command line with
 ; lein doo phantom test [auto|once]
 
-; add tests to the list below
+; add tests by 'requiring them and adding them to the list below
+
+(enable-console-print!)
 
 (doo-tests 'visualise.aggregation.date-spread-tests
-           ;'more.tests.namespaces.can.be.added.here
+           'visualise.aggregation.aggregation-tests
            )
 
 ; see https://github.com/bensu/doo for more information
