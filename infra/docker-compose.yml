@@ -31,3 +31,8 @@ services:
       context: "ingester"
     volumes:
       - /tmp/sonar-integration-test:/data
+  visualise:
+    build:
+      context: "visualise"
+    ports:
+      - "3000:3000"
