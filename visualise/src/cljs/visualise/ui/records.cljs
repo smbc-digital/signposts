@@ -8,19 +8,19 @@
 (defn argh []
   [:tr [:td "1"]])
 
-(defn record-list [!events]
+(defn record-list [!state]
   (fn []
-    (let [results (:result @!events)]
-      (if results
+    (let [results (:result @!state)]
+      (if (not-empty results)
         [:table.results
-           [:tr
-            [:th "source"]
-            [:th "type"]
-            [:th "timestamp"]
-            [:th "name"]
-            [:th "dob"]
-            [:th "address"]
-            [:th "other"]]
+         [:tr
+          [:th "source"]
+          [:th "type"]
+          [:th "timestamp"]
+          [:th "name"]
+          [:th "dob"]
+          [:th "address"]
+          [:th "other"]]
          (map
            (fn [event]
              (let [{:keys [event-source event-type timestamp name dob address]} event
@@ -34,6 +34,6 @@
                 [:td dob]
                 [:td address]
                 [:td (vals other)]]))
-             results)]
+           results)]
         )
       )))
