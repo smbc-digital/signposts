@@ -120,7 +120,7 @@
 
         (map
           (fn [[idx event-type]]
-            ^{:key (gensym)} [series !view (+ 50 (* idx 30)) event-type !aggregated-event-series])
+            ^{:key (gensym)} [series !view (+ 60 (* idx 30)) event-type !aggregated-event-series])
           (zipmap (range) event-types))
         [scale !view 20 !aggregated-event-series]
         ]])))
@@ -129,10 +129,6 @@
   (fn [{:keys [zoom]}]
     (reset! !aggregated-event-series
             (aggregate-and-group event-series zoom group-by-event-type))))
-
-(defn row [{:keys [name dob address]}]
-  (let [age-in-years (t/in-years (t/interval (f/parse (f/formatter "yyyy-MM-dd") dob) (t/now)))]
-    ^{:key (gensym)} [:tr [:td [:i.fa.fa-times]] [:td name] [:td (str age-in-years " [" dob "]")] [:td address]]))
 
 (defn graph [!view event-series]
   (let [!aggregated-event-series (r/atom event-series)
