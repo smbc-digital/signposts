@@ -63,8 +63,8 @@
             :xaxis  {:mode        "time"
                      :timeFormat  "%Y/%m/%d"
                      :minTickSize [1 "month"]
-                     :min         (t/date-time 2010 1)
-                     :max         (t/date-time 2010 12)}
+                     :min         (t/date-time 2013 1)
+                     :max         (t/date-time 2013 12)}
             :yaxis  {:min 0
                      :max 100}
             :lines  {:show true}

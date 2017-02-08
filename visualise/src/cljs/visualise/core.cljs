@@ -1,6 +1,7 @@
 (ns visualise.core
   (:require [reagent.core :as reagent :refer [atom]]
-            [visualise.v1 :as v]))
+            [visualise.v1 :as v]
+            [visualise.query.client]ajax.core))
 
 (defn home-page []
   [v/home-page])
