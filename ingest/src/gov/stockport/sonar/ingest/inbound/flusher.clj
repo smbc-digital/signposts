@@ -10,7 +10,7 @@
 ; report could be sent forwards to separate service ? channel ?
 
 (defn flush-events [{:keys [events feed-hash]}]
-  (let [validated (map events/validate events)
+  (let [validated (map (comp events/normalise events/validate) events)
         valid-events (map :data (filter #(not (:error %)) validated))
         valid-qty (count valid-events)]
     (doall
