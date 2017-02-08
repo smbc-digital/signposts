@@ -14,13 +14,13 @@
       (if results
         [:table.results
            [:tr
-            [:td "source"]
-            [:td "type"]
-            [:td "timestamp"]
-            [:td "name"]
-            [:td "dob"]
-            [:td "address"]
-            [:td "other"]]
+            [:th "source"]
+            [:th "type"]
+            [:th "timestamp"]
+            [:th "name"]
+            [:th "dob"]
+            [:th "address"]
+            [:th "other"]]
          (map
            (fn [event]
              (let [{:keys [event-source event-type timestamp name dob address]} event

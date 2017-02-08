@@ -90,7 +90,7 @@
                  series-content)]]))
          (sort-by :bucket-number buckets))
        [:rect {:x vb-x :y (- y 20) :width 250 :height 40 :fill :white}]
-       [:text {:x (+ vb-x (- lhs 10)) :y y :text-anchor :end :alignment-baseline :middle :font-size 22} (str/join "-" series-key)]
+       [:text.key {:x (+ vb-x (- lhs 10)) :y y :text-anchor :end :alignment-baseline :middle :font-size 14} (str/join "-" series-key)]
        ])))
 
 (def group-by-event-type (fn [event] [(:event-source event) (:event-type event)]))

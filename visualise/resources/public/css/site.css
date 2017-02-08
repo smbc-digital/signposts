@@ -32,5 +32,10 @@ div select {
   font-size: 1.5em;
   width: 100%; }
 
-.results td {
-  vertical-align: top; }
+.results tr:nth-child(odd) {
+  background-color: #eeeeff; }
+.results td, .results th {
+  padding-left: 2px;
+  padding-right: 2px;
+  vertical-align: top;
+  font-size: 12px; }
