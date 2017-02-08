@@ -4,6 +4,7 @@
             [cljs-time.format :as format]
             [goog.crypt.base64 :as b64]
             [visualise.ui.explore :refer [graph view-state]]
+            [visualise.ui.records :refer [record-list]]
             ))
 
 (defonce !creds (reagent/atom {}))
@@ -102,4 +103,5 @@
    [creds-area]
    [query-area]
    [results]
+   [record-list !state]
    ])

@@ -6,6 +6,9 @@
 (defn with-no-results [qip]
   (assoc qip :size 0))
 
+(defn with-size [qip number]
+  (assoc qip :size number))
+
 (defn with-term-aggregation [qip & terms]
   (merge
     qip
