@@ -1,6 +1,7 @@
 (ns visualise.ui.records
   (:require [cljs-time.core :as t]
-            [cljs-time.format :as f]))
+            [cljs-time.format :as f]
+            [clojure.string :as str]))
 
 (defn ts [ts]
   (f/unparse (:date f/formatters) ts))
@@ -33,7 +34,5 @@
                 [:td name]
                 [:td dob]
                 [:td address]
-                [:td (vals other)]]))
-           results)]
-        )
-      )))
+                [:td (str/join ", " (vals other))]]))
+             results)]))))
