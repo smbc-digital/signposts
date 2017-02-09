@@ -23,7 +23,7 @@
           :format          :json
           :response-format :json
           :keywords?       true
-          :handler         (fn [response] (println (:status response)) (handler response))
+          :handler         (fn [response] (handler response))
           :body            (->json query)})))
 
 (defn fetch [url]

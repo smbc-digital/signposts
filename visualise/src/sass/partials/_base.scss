@@ -27,15 +27,27 @@ div {
     input {
       font-size: 1.5em;
       width: 100%;
+
+      &.from, &.to {
+        width: 20%;
+        margin: 5px;
+      }
     }
   }
   select {
     font-size: 1.5em;
     width: 100%;
   }
+
+  &.drop-down {
+    //margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
 }
 
-.results {
+table.results {
+
+  width: 100%;
 
   tr:nth-child(odd) {
     background-color: #eeeeff;

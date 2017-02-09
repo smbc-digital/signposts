@@ -24,5 +24,7 @@
             (recur (rest remaining-terms) inner))
           query)))))
 
-(defn summarise [result]
-  )
+(defn with-query-string [qip qs]
+  (assoc qip :query
+             {:bool {:must {:query_string {:query qs
+                                           :default_field "_all"}}}}))
