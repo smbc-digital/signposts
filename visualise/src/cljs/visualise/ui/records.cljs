@@ -1,13 +1,11 @@
 (ns visualise.ui.records
-  (:require [cljs-time.core :as t]
+  (:require
             [cljs-time.format :as f]
+            [visualise.util.date :as d]
             [clojure.string :as str]))
 
 (defn ts [ts]
   (f/unparse (:date f/formatters) ts))
-
-(defn age [dob]
-  (t/in-years (t/interval (f/parse dob) (t/now))))
 
 (def surname #(last (str/split (:name %) #" ")))
 
@@ -36,7 +34,7 @@
                  [:td event-type]
                  [:td (ts timestamp)]
                  [:td name]
-                 [:td (age dob)]
+                 [:td (d/age dob)]
                  [:td dob]
                  [:td address]
                  [:td (str/join ", " (vals other))]]))

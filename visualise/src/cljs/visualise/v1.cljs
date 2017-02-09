@@ -7,6 +7,7 @@
             [visualise.ui.records :refer [record-list]]
             [visualise.query.client :refer [query ->json]]
             [visualise.common.query.aggregate :as qb]
+            [visualise.util.date :as d]
             [cljs-time.core :as t]))
 
 (defonce !creds (reagent/atom {:username "elastic" :password "changeme"}))
@@ -18,9 +19,6 @@
 
 (defn parse-timestamp [timestamp]
   (f/parse (:date-time f/formatters) timestamp))
-
-(defn age [dob]
-  (t/in-years (t/interval (f/parse dob) (t/now))))
 
 (defn raw-events []
   (:result @!state))
@@ -42,7 +40,7 @@
   (let [query-map (-> (qb/query)
                       (qb/with-size 250)
                       (qb/with-query-string search-term))]
-    (println (->json query-map))
+    ;(println (->json query-map))
     (query "/events-*/_search" query-map query-handler)))
 
 (defn pluralise
@@ -71,7 +69,7 @@
     (let [results (:result @!state)]
       (if (not-empty results)
         (let [people (people results)
-              rows (map (fn [[name dob]] (str name " - " dob " - aged " (age dob) " years")) people)]
+              rows (map (fn [[name dob]] (str name " - " dob " - aged " (d/age dob) " years")) people)]
           [drop-down "People" rows])))))
 
 (defn address-display [!state]
