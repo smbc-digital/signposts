@@ -25,6 +25,14 @@
           query)))))
 
 (defn with-query-string [qip qs]
-  (assoc qip :query
-             {:bool {:must {:query_string {:query qs
-                                           :default_field "_all"}}}}))
+  (update-in
+    qip
+    [:query :bool :must]
+    #(into [] (flatten (filter not-empty (cons (or % []) [{:query_string {:query         qs
+                                                                          :default_field "_all"}}]))))))
+
+(defn with-max-age [qip max-age]
+  (update-in
+    qip
+    [:query :bool :must]
+    #(into [] (flatten (filter not-empty (cons (or % []) [{:range {:dob {:gte (str "now-" max-age "y")}}}]))))))

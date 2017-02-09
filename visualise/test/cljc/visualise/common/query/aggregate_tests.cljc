@@ -23,20 +23,19 @@
                   :aggs  {:b {:terms {:field :b :size 100}
                               :aggs  {:c {:terms {:field :c :size 100}}}}}}}})
 
-(fact "summarises single level aggregation"
-      (qa/summarise
-        {:aggregations {:a {:buckets [{:key "GMP" :doc_count 1}
-                                      {:key "HOMES" :doc_count 3}]}}}) => {:a {:results {:GMP   1
-                                                                                         :HOMES 3}}})
+(fact "can build query string query"
+      (qa/with-query-string {} "some-search-term") => {:query {:bool {:must [{:query-string {:query         "some-search-term"
+                                                                                             :default_field "_all"}}]}}})
+(fact "can max-age query"
+      (qa/with-max-age {} 20) => {:query {:bool {:must [{:range {:dob {:gte "now-20y"}}}]}}})
 
-(fact "summarises multi level aggregation"
-      (qa/summarise
-        {:aggregations {:a {:buckets [{:key       "GMP"
-                                       :doc_count 3
-                                       :b         {:buckets [{:key "CAUTION" :doc_count 2}
-                                                             {:key "ASBO" :doc_count 1}]}}
-                                      {:key       "HOMES"
-                                       :doc_count 5
-                                       :b         {:buckets [{:key "CAUTION" :doc_count 3}
-                                                             {:key "ASBO" :doc_count 2}]}}]}}}) => {:GMP   {}
-                                                                                                    :HOMES 3})
+(fact "can combine queries"
+      (-> {}
+          (qa/with-query-string "argh")
+          (qa/with-max-age 20)) => {:query
+                                    {:bool
+                                     {:must
+                                      [{:query_string {:query         "argh"
+                                                       :default_field "_all"}}
+                                       {:range {:dob {:gte "now-20y"}}}
+                                       ]}}})

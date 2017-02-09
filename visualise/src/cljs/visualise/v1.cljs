@@ -35,10 +35,12 @@
                        (assoc :took-millis (-> response :took))
                        (assoc :result (source-events response))))))
 
-(defn perform-query [search-term]
+(defn perform-query [{:keys [query-string max-age]}]
   (let [query-map (-> (qb/query)
                       (qb/with-size 250)
-                      (qb/with-query-string search-term))]
+                      (qb/with-max-age max-age)
+                      (qb/with-query-string query-string))]
+    (println (->json query-map))
     (query "/events-*/_search" query-map query-handler)))
 
 (defn pluralise
@@ -78,14 +80,21 @@
               rows (map (fn [[address]] (str address)) addresses)]
           [drop-down "Addresses" rows])))))
 
+(defn query-on-enter [!local] #(if (= "Enter" (-> % .-key)) (perform-query @!local)))
+
 (defn query-box [!local]
   (fn []
     [:div.query-box
      [:input {:type        "text"
               :placeholder "enter your search here..."
-              :value       (:query @!local)
-              :on-change   #(swap! !local assoc :query (-> % .-target .-value))
-              :on-key-up   #(if (= "Enter" (-> % .-key)) (perform-query (:query @!local)))}]
+              :value       (:query-string @!local)
+              :on-change   #(swap! !local assoc :query-string (-> % .-target .-value))
+              :on-key-up   (query-on-enter !local)}]
+     [:label "aged up to"
+      [:input {:type      "text"
+               :value     (:max-age @!local)
+               :on-change #(swap! !local assoc :max-age (-> % .-target .-value))
+               :on-key-up (query-on-enter !local)}]]
      ;[:label "From: "
      ; [:input.from {:type      :date
      ;               :value     (:from @!local)
@@ -112,9 +121,10 @@
                                                    [:option {:value (str "name:" name " AND dob:" dob)} (display person)]) people))]])]))))
 
 (defn query-area []
-  (let [!qstate (reagent/atom {:query ""
-                               :from  "2010-01-01"
-                               :to    (f/unparse (f/formatter "yyyy-MM-dd") (t/now))})]
+  (let [!qstate (reagent/atom {:query-string ""
+                               :from         "2010-01-01"
+                               :to           (f/unparse (f/formatter "yyyy-MM-dd") (t/now))
+                               :max-age      99})]
     (fn []
       [:div
        [query-box !qstate]
