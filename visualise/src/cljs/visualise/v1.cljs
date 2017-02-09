@@ -30,7 +30,6 @@
 
 (def query-handler
   (fn [response]
-    (println response)
     (swap! !state #(-> %
                        (assoc :total (-> response :hits :total))
                        (assoc :took-millis (-> response :took))
@@ -40,7 +39,6 @@
   (let [query-map (-> (qb/query)
                       (qb/with-size 250)
                       (qb/with-query-string search-term))]
-    ;(println (->json query-map))
     (query "/events-*/_search" query-map query-handler)))
 
 (defn pluralise
@@ -102,7 +100,7 @@
   (fn []
     (if (not (empty? (raw-events)))
       (let [people (people (raw-events))
-            display (fn [[name dob]] (str name " - " dob " - aged " (age dob) " years"))]
+            display (fn [[name dob]] (str name " - " dob " - aged " (d/age dob) " years"))]
         [:div
          [:p "Your search took " (:took-millis @!state) "ms to find " [:strong (pluralise (:total @!state) "event")]]
          [:p "Displaying the best " [:strong (pluralise (count (raw-events)) "event")] ", involving " [:strong (pluralise (count people) "person" "people")]]
