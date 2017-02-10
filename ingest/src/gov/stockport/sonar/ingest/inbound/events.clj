@@ -4,13 +4,13 @@
             [gov.stockport.sonar.ingest.util.dates :as dates]))
 
 (defn- fix-timestamp [{{ts :timestamp} :data :as event}]
-  (if (dates/dmy-date-string? ts)
-    (assoc-in event [:data :timestamp] (dates/date->iso-date-string (dates/dmy-date-string->date ts)))
-    event))
+  (if (not (dates/iso-date-string? ts))
+    (assoc-in event [:data :timestamp] (dates/date->iso-date-string (dates/parse ts)))
+  event))
 
 (defn- fix-dob [{{dob :dob} :data :as event}]
   (if-let [dob-as-date (dates/parse dob)]
-    (assoc-in event [:data :dob] (dates/date->dmy-date-string dob-as-date))
+    (assoc-in event [:data :dob] (dates/date->ymd-date-string dob-as-date))
     event))
 
 (defn validate [{:keys [data error] :as event}]

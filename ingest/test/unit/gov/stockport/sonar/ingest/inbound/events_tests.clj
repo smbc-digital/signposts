@@ -23,14 +23,13 @@
 (facts "about normalising events"
 
        (fact "ensures full iso date for timestamp"
-             (events/normalise {:line-number 1 :data {:timestamp "31/01/2017"}}) => {:line-number 1 :data {:timestamp "2017-01-31T00:00:00.000Z"}})
+             (let [result (events/normalise {:line-number 1 :data {:timestamp "31/01/2017"}})]
+               (get-in result [:data :timestamp]) => "2017-01-31T00:00:00.000Z"))
 
        (fact "ensures standard dob format when dob can be parsed"
-             (events/normalise {:line-number 1
-                                :data        {:dob "19-nov-1991"}}) => {:line-number 1
-                                                                        :data        {:dob "19/11/1991"}})
+             (let [result (events/normalise {:line-number 1 :data {:dob "19-nov-1991"}})]
+               (get-in result [:data :dob]) => "1991-11-19"))
+
        (fact "leaves dob when it cannot be parsed"
-             (events/normalise {:line-number 1
-                                :data        {:dob "19-unk-1991"}}) => {:line-number 1
-                                                                        :data        {:dob "19-unk-1991"}})
-       )
+             (let [result (events/normalise {:line-number 1 :data {:dob "unk"}})]
+               (get-in result [:data :dob]) => "unk")))
