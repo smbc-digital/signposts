@@ -8,6 +8,11 @@
     (assoc-in event [:data :timestamp] (dates/date->iso-date-string (dates/dmy-date-string->date ts)))
     event))
 
+(defn- fix-dob [{{dob :dob} :data :as event}]
+  (if-let [dob-as-date (dates/parse dob)]
+    (assoc-in event [:data :dob] (dates/date->dmy-date-string dob-as-date))
+    event))
+
 (defn validate [{:keys [data error] :as event}]
   (let [event-data (es/promote-to-namespaced-keywords data)]
     (if (or error (s/valid? ::es/event event-data))
@@ -16,4 +21,5 @@
 
 (defn normalise [event]
   (-> event
-      (fix-timestamp)))
+      (fix-timestamp)
+      (fix-dob)))

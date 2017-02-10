@@ -3,9 +3,9 @@
             [gov.stockport.sonar.ingest.inbound.events :as events]))
 
 (def valid-event {:line-number 1 :data {:event-source "SOURCE"
-                                :event-type           "TYPE"
-                                :timestamp            "2017-01-01T12:12:12.000Z"
-                                :some-key             "SOME-VAL"}})
+                                        :event-type   "TYPE"
+                                        :timestamp    "2017-01-01T12:12:12.000Z"
+                                        :some-key     "SOME-VAL"}})
 
 (facts "about event validation"
 
@@ -23,4 +23,14 @@
 (facts "about normalising events"
 
        (fact "ensures full iso date for timestamp"
-             (events/normalise {:line-number 1 :data {:timestamp "31/01/2017"}}) => {:line-number 1 :data {:timestamp "2017-01-31T00:00:00.000Z"}}))
+             (events/normalise {:line-number 1 :data {:timestamp "31/01/2017"}}) => {:line-number 1 :data {:timestamp "2017-01-31T00:00:00.000Z"}})
+
+       (fact "ensures standard dob format when dob can be parsed"
+             (events/normalise {:line-number 1
+                                :data        {:dob "19-nov-1991"}}) => {:line-number 1
+                                                                        :data        {:dob "19/11/1991"}})
+       (fact "leaves dob when it cannot be parsed"
+             (events/normalise {:line-number 1
+                                :data        {:dob "19-unk-1991"}}) => {:line-number 1
+                                                                        :data        {:dob "19-unk-1991"}})
+       )
