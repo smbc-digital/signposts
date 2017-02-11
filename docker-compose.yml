@@ -5,15 +5,27 @@ services:
   visualise:
     build:
       context: "visualise"
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     ports:
       - "3000:3000"
   elasticsearch:
     build:
       context: "infra/es"
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     ports:
       - "9200:9200"
       - "9300:9300"
   ingest:
     build:
       context: "ingest"
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
 
