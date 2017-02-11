@@ -53,3 +53,17 @@
 
 (defn date-string? [str]
   (not-nil? (parse str)))
+
+
+;; Added by Jim to make things work, sure merge hell will emerge:
+
+(def dmy-format (f/formatter "dd/MM/yyyy"))
+
+(defn date->iso-date-string [date]
+  (quietly (f/unparse iso-format date)))
+
+(defn dmy-date-string->date [string]
+  (quietly (f/parse dmy-format string)))
+
+(defn dmy-date-string? [str]
+  (not (nil? (dmy-date-string->date str))))
