@@ -1,7 +1,0 @@
-; common configuration goes in here
-{:use-fake-data    true
- :batch-size       100000
- :poll-interval-ms 5000
- :elastic-search   {:url      "http://localhost:9200"
-                    :username "elastic"
-                    :password "changeme"}}

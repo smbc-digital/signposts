@@ -1,0 +1,16 @@
+# initial docker compose config; works on mac
+# issue `docker-compose up -d` for a basic set up
+version: '3.0'
+services:
+  visualise:
+    build:
+      context: "visualise"
+    ports:
+      - "3000:3000"
+  elasticsearch:
+    build:
+      context: "infra/es"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+

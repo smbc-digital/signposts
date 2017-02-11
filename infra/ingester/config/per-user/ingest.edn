@@ -1,4 +1,0 @@
-{:batch-size       50000
- :poll-interval-ms 15000
- :inbound-dir      "/data"
- :elastic-search   {:url "http://elasticsearch:9200"}}
