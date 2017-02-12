@@ -13,10 +13,8 @@ RUN chmod -R 700 /opt/$APPNAME
 
 USER $APPNAME
 
-RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > lein
-RUN chmod +x lein
 
-RUN ./lein uberjar
+RUN unset http_proxy; ./lein uberjar
 
 CMD ["java","-jar","/opt/visualise/target/visualise.jar"]
 

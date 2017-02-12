@@ -24,8 +24,14 @@ services:
   ingest:
     build:
       context: "ingest"
-      args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
+#      args:
+#        - http_proxy
+#        - https_proxy
+#        - no_proxy
+  nginx:
+    build:
+      context: "infra/nginx"
+    ports:
+      - "80:80"
+      - "443:443"
 

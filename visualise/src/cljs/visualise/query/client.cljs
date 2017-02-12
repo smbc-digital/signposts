@@ -18,7 +18,7 @@
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]
-   (POST (str "http://localhost:9200" url)
+   (POST (str "" url)
          {:headers         (authorisation-header)
           :format          :json
           :response-format :json
@@ -28,7 +28,7 @@
 
 (defn fetch [url]
   (let [chan (timeout 2000)]
-    (GET (str "http://localhost:9200" url)
+    (GET (str "" url)
          {:headers         (authorisation-header)
           :format          :json
           :response-format :json
