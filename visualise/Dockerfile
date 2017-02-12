@@ -13,8 +13,7 @@ RUN chmod -R 700 /opt/$APPNAME
 
 USER $APPNAME
 
-
-RUN unset http_proxy; ./lein uberjar
+RUN ./lein uberjar
 
 CMD ["java","-jar","/opt/visualise/target/visualise.jar"]
 
