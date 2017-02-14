@@ -16,4 +16,5 @@ USER $APPNAME
 RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > lein
 RUN chmod +x lein
 
+RUN ./run-unit-tests.sh
 CMD ./lein run -m gov.stockport.sonar.ingest.utils.bootstrap-demo
