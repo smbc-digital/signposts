@@ -2,7 +2,6 @@
   (:require [gov.stockport.sonar.ingest.util.logging :refer [log]]
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.inbound.feeds :as feeds]
-            [gov.stockport.sonar.ingest.inbound.pipeline :refer [process-event-data]]
             [overtone.at-at :as atat])
   (:gen-class))
 
