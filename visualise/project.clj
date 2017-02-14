@@ -114,7 +114,9 @@
                                         [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
                                         [devcards "0.2.1-7"]
                                         [pjstadig/humane-test-output "0.8.1"]
-                                        [midje "1.8.3"]]
+                                        [midje "1.8.3"]
+                                        [hipo "0.5.2"]
+                                        [prismatic/dommy "1.1.0"]]
 
                          :source-paths ["env/dev/clj"]
                          :plugins      [[lein-figwheel "0.5.8"]

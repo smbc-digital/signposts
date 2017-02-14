@@ -1,7 +1,8 @@
 (ns visualise.runner
   (:require [doo.runner :refer-macros [doo-tests]]
             [visualise.aggregation.date-spread-tests]
-            [visualise.aggregation.aggregation-tests]))
+            [visualise.aggregation.aggregation-tests]
+            [visualise.ui.facet-tests]))
 
 ; run the tests from the command line with
 ; lein doo phantom test [auto|once]
@@ -10,8 +11,10 @@
 
 (enable-console-print!)
 
-(doo-tests 'visualise.aggregation.date-spread-tests
-           'visualise.aggregation.aggregation-tests
-           )
+(doo-tests
+  'visualise.ui.facet-tests
+  ;'visualise.aggregation.date-spread-tests
+  ;'visualise.aggregation.aggregation-tests
+  )
 
 ; see https://github.com/bensu/doo for more information

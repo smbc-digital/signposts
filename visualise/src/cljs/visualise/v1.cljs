@@ -8,6 +8,7 @@
             [visualise.query.client :refer [query ->json]]
             [visualise.common.query.aggregate :as qb]
             [visualise.util.date :as d]
+            [visualise.ui.facet :refer [->cs facet-tree]]
             [cljs-time.core :as t]))
 
 (defonce !creds (reagent/atom {:username "elastic" :password "changeme"}))
@@ -153,6 +154,18 @@
 
 (defn home-page []
   [:div
+
+   ;[facet-tree (->cs {:facets [{:id    "GMP"
+   ;                             :name  "GMP"
+   ;                             :field :event-source
+   ;                             :count 3}
+   ;                            {:id    "SCHOOLS"
+   ;                             :name  "SCHOOLS"
+   ;                             :field :event-source
+   ;                             :count 5}
+   ;                            ]}
+   ;                  {"SCHOOLS" true})]
+
    ;[creds-area]
    [query-area]
    [people-display !state]
