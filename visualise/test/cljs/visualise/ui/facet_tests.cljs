@@ -25,10 +25,12 @@
                 checked (.-checked cbelem)]
             [id label checked])))
 
+; this simulates the react change event on the facet with the specified id
 (defn select [id]
   (sim/change
     (first (->> (sel [:input]) (filter #(= (dommy/value %) id))))
     nil))
+
 
 (deftest facet-test
 
