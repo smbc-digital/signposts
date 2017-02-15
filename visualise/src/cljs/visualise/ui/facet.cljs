@@ -1,14 +1,14 @@
-(ns visualise.ui.facet)
+(ns visualise.ui.facet
+  (:require [reagent.core :as r]))
 
 (defn ->cs
   ([data] (->cs data {}))
   ([data cs]
-   (atom {:component-state cs
-          :data            data})))
+   (r/atom {:component-state cs
+            :data            data})))
 
 (defn checked? [!cs id]
   (get-in @!cs [:component-state id]))
-
 
 (defn- cb [!cs {:keys [id name count]}]
   ^{:key (gensym)}
@@ -16,11 +16,12 @@
    [:input {:type      :checkbox
             :value     id
             :checked   (checked? !cs id)
-            :on-change #()}]
+            :on-change #(swap! !cs update-in [:component-state id] not)}]
    (str name " (" count ")")])
 
 (defn facet-tree [!cs]
   [:div.facet-tree
-   (map
+   (doall
+     (map
      (fn [facet] (cb !cs facet))
-     (:facets (:data @!cs)))])
+     (:facets (:data @!cs))))])

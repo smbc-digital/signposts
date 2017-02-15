@@ -1,7 +1,8 @@
 (ns visualise.ui.facet-tests
   (:require [cljs.test :refer-macros [deftest testing is are use-fixtures]]
             [cljs-react-test.utils :as tu]
-            [reagent.core :as reagent]
+            [cljs-react-test.simulate :as sim]
+            [reagent.core :refer [render]]
             [dommy.core :as dommy :refer-macros [sel sel1]]
             [visualise.ui.facet :refer [->cs facet-tree]]))
 
@@ -12,7 +13,10 @@
                         (test-fn)
                         (tu/unmount! c))))
 
-; this is a page object; knows DOM
+(defn ->render [component]
+  (render component c))
+
+; this is effectively a page object
 (defn facet-info
   ([] (map #(facet-info %) (sel [:label])))
   ([elem] (let [cbelem (sel1 elem [:input])
@@ -21,40 +25,55 @@
                 checked (.-checked cbelem)]
             [id label checked])))
 
+(defn select [id]
+  (sim/change
+    (first (->> (sel [:input]) (filter #(= (dommy/value %) id))))
+    nil))
+
 (deftest facet-test
 
-  (testing "single level facts"
+  (testing "with a single level of facets"
 
-    (testing "display"
+    (def simple-facet-data {:facets [{:id    "GMP"
+                                      :name  "GMP"
+                                      :field :event-source
+                                      :count 1}
+                                     {:id    "SCHOOLS"
+                                      :name  "SCHOOLS"
+                                      :field :event-source
+                                      :count 3}]})
 
-      (let [subject (facet-tree (->cs {:facets [{:id    "GMP"
-                                                 :name  "GMP"
-                                                 :field :event-source
-                                                 :count 1}
-                                                {:id    "SCHOOLS"
-                                                 :name  "SCHOOLS"
-                                                 :field :event-source
-                                                 :count 3}]}))
-            _ (reagent/render subject c)]
-        (is (= (facet-info) [["GMP" "GMP (1)" false]
-                             ["SCHOOLS" "SCHOOLS (3)" false]]))))
+    (testing "displays the basic data with nothing selected"
+
+      (->render (facet-tree (->cs simple-facet-data)))
+      (is (= (facet-info) [["GMP" "GMP (1)" false]
+                           ["SCHOOLS" "SCHOOLS (3)" false]])))
 
     (testing "uses state to show selected items"
 
-      (let [subject (facet-tree (->cs {:facets [{:id    "GMP"
-                                                 :name  "GMP"
-                                                 :field :event-source
-                                                 :count 3}
-                                                {:id    "SCHOOLS"
-                                                 :name  "SCHOOLS"
-                                                 :field :event-source
-                                                 :count 3}]}
-                                      {"SCHOOLS" true}))
-            _ (reagent/render subject c)]
-        (is (= (facet-info) [["GMP" "GMP (3)" false]
-                             ["SCHOOLS" "SCHOOLS (3)" true]]))))
+      (->render (facet-tree (->cs simple-facet-data {"SCHOOLS" true})))
+      (is (= (facet-info) [["GMP" "GMP (1)" false]
+                           ["SCHOOLS" "SCHOOLS (3)" true]])))
+
+    (testing "state changes on facet selection"
+
+      (let [!cs (->cs simple-facet-data {})]
+        (->render (facet-tree !cs))
+        (is (= (get-in @!cs [:component-state "GMP"]) nil))
+        (is (= (get-in @!cs [:component-state "SCHOOLS"]) nil))
+        (select "GMP")
+        (is (= (get-in @!cs [:component-state "GMP"]) true))
+        (is (= (get-in @!cs [:component-state "SCHOOLS"]) nil))
+        (select "SCHOOLS")
+        (is (= (get-in @!cs [:component-state "GMP"]) true))
+        (is (= (get-in @!cs [:component-state "SCHOOLS"]) true))
+        (select "GMP")
+        (is (= (get-in @!cs [:component-state "GMP"]) false))
+        (is (= (get-in @!cs [:component-state "SCHOOLS"]) true))))
     ))
 
+
+; for a more complicated version of the control...
 (def nested-facet-data
   {:control-state {}
    :data          {:facets [{:id     "GMP"
