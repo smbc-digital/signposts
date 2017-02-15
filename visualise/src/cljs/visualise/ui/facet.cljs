@@ -4,11 +4,11 @@
 (defn ->cs
   ([data] (->cs data {}))
   ([data cs]
-   (r/atom {:component-state cs
-            :data            data})))
+   (r/atom {:facet-state cs
+            :data        data})))
 
 (defn checked? [!cs id]
-  (get-in @!cs [:component-state id]))
+  (get-in @!cs [:facet-state id]))
 
 (defn- cb [!cs {:keys [id name count]}]
   ^{:key (gensym)}
@@ -16,7 +16,7 @@
    [:input {:type      :checkbox
             :value     id
             :checked   (checked? !cs id)
-            :on-change #(swap! !cs update-in [:component-state id] not)}]
+            :on-change #(swap! !cs update-in [:facet-state id] not)}]
    (str name " (" count ")")])
 
 (defn facet-tree [!cs]

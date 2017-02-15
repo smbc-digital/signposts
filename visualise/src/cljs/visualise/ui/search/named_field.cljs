@@ -1,5 +1,5 @@
 (ns visualise.ui.search.named-field)
 
-(defn search-name []
+(defn search-named-field []
   [:div
    [:input {:type :text}]])

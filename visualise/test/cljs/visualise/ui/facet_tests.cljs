@@ -2,19 +2,15 @@
   (:require [cljs.test :refer-macros [deftest testing is are use-fixtures]]
             [cljs-react-test.utils :as tu]
             [cljs-react-test.simulate :as sim]
+            [visualise.common :refer [c ->render]]
             [reagent.core :refer [render]]
             [dommy.core :as dommy :refer-macros [sel sel1]]
             [visualise.ui.facet :refer [->cs facet-tree]]))
-
-(def ^:dynamic c)
 
 (use-fixtures :each (fn [test-fn]
                       (binding [c (tu/new-container!)]
                         (test-fn)
                         (tu/unmount! c))))
-
-(defn ->render [component]
-  (render component c))
 
 ; this is effectively a page object
 (defn facet-info
@@ -61,17 +57,17 @@
 
       (let [!cs (->cs simple-facet-data {})]
         (->render (facet-tree !cs))
-        (is (= (get-in @!cs [:component-state "GMP"]) nil))
-        (is (= (get-in @!cs [:component-state "SCHOOLS"]) nil))
+        (is (= (get-in @!cs [:facet-state "GMP"]) nil))
+        (is (= (get-in @!cs [:facet-state "SCHOOLS"]) nil))
         (select "GMP")
-        (is (= (get-in @!cs [:component-state "GMP"]) true))
-        (is (= (get-in @!cs [:component-state "SCHOOLS"]) nil))
+        (is (= (get-in @!cs [:facet-state "GMP"]) true))
+        (is (= (get-in @!cs [:facet-state "SCHOOLS"]) nil))
         (select "SCHOOLS")
-        (is (= (get-in @!cs [:component-state "GMP"]) true))
-        (is (= (get-in @!cs [:component-state "SCHOOLS"]) true))
+        (is (= (get-in @!cs [:facet-state "GMP"]) true))
+        (is (= (get-in @!cs [:facet-state "SCHOOLS"]) true))
         (select "GMP")
-        (is (= (get-in @!cs [:component-state "GMP"]) false))
-        (is (= (get-in @!cs [:component-state "SCHOOLS"]) true))))
+        (is (= (get-in @!cs [:facet-state "GMP"]) false))
+        (is (= (get-in @!cs [:facet-state "SCHOOLS"]) true))))
     ))
 
 

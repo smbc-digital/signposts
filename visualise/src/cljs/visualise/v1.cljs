@@ -155,21 +155,11 @@
 (defn home-page []
   [:div
 
-   [facet-tree (->cs {:facets [{:id    "GMP"
-                                :name  "GMP"
-                                :field :event-source
-                                :count 3}
-                               {:id    "SCHOOLS"
-                                :name  "SCHOOLS"
-                                :field :event-source
-                                :count 5}
-                               ]}
-                     {"SCHOOLS" true})]
 
    ;[creds-area]
-   ;[query-area]
-   ;[people-display !state]
-   ;[address-display !state]
-   ;[results]
-   ;[record-list !state]
+   [query-area]
+   [people-display !state]
+   [address-display !state]
+   [results]
+   [record-list !state]
    ])
