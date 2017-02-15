@@ -19,7 +19,7 @@
    (str name " (" count ")")])
 
 (defn facet-tree [!cs]
-  [:div.facets
+  [:div.facet-tree
    (map
      (fn [facet] (cb !cs facet))
      (:facets (:data @!cs)))])
