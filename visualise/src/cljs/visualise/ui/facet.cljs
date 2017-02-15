@@ -15,7 +15,8 @@
   [:label
    [:input {:type      :checkbox
             :value     id
-            :checked   (checked? !cs id)}]
+            :checked   (checked? !cs id)
+            :on-change #()}]
    (str name " (" count ")")])
 
 (defn facet-tree [!cs]
