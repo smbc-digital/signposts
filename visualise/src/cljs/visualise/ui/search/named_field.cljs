@@ -1,4 +1,4 @@
-(ns visualise.ui.search.name)
+(ns visualise.ui.search.named-field)
 
 (defn search-name []
   [:div

@@ -2,7 +2,8 @@
   (:require [doo.runner :refer-macros [doo-tests]]
             [visualise.aggregation.date-spread-tests]
             [visualise.aggregation.aggregation-tests]
-            [visualise.ui.facet-tests]))
+            [visualise.ui.facet-tests]
+            [visualise.ui.search.named-field-tests]))
 
 ; run the tests from the command line with
 ; lein doo phantom test [auto|once]
@@ -13,7 +14,8 @@
 
 (doo-tests
   'visualise.ui.facet-tests
-  ;'visualise.aggregation.date-spread-tests
+  'visualise.ui.search.named-field-tests
+  'visualise.aggregation.date-spread-tests
   ;'visualise.aggregation.aggregation-tests
   )
 
