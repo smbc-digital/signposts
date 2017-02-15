@@ -3,6 +3,7 @@
             [visualise.cards.timelines]
             [visualise.cards.flot]
             [visualise.cards.explore]
+            [visualise.cards.search-named-field]
             [visualise.cards.faceted-search])
   (:require-macros
     [devcards.core]))
