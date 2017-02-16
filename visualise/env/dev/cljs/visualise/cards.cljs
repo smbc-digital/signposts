@@ -4,7 +4,8 @@
             [visualise.cards.flot]
             [visualise.cards.explore]
             [visualise.cards.search-named-field]
-            [visualise.cards.faceted-search])
+            [visualise.cards.faceted-search]
+            [visualise.cards.search-control])
   (:require-macros
     [devcards.core]))
 

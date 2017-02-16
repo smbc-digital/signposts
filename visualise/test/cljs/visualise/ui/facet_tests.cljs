@@ -27,7 +27,6 @@
     (first (->> (sel [:input]) (filter #(= (dommy/value %) id))))
     nil))
 
-
 (deftest facet-test
 
   (testing "with a single level of facets"
@@ -67,8 +66,7 @@
         (is (= (get-in @!cs [:facet-state "SCHOOLS"]) true))
         (select "GMP")
         (is (= (get-in @!cs [:facet-state "GMP"]) false))
-        (is (= (get-in @!cs [:facet-state "SCHOOLS"]) true))))
-    ))
+        (is (= (get-in @!cs [:facet-state "SCHOOLS"]) true))))))
 
 
 ; for a more complicated version of the control...

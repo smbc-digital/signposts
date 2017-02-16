@@ -3,7 +3,8 @@
             [visualise.aggregation.date-spread-tests]
             [visualise.aggregation.aggregation-tests]
             [visualise.ui.facet-tests]
-            [visualise.ui.search.named-field-tests]))
+            [visualise.ui.search.named-field-tests]
+            [visualise.ui.search.search-control-tests]))
 
 ; run the tests from the command line with
 ; lein doo phantom test [auto|once]
@@ -16,6 +17,7 @@
   'visualise.ui.facet-tests
   'visualise.ui.search.named-field-tests
   'visualise.aggregation.date-spread-tests
+  'visualise.ui.search.search-control-tests
   ;'visualise.aggregation.aggregation-tests
   )
 

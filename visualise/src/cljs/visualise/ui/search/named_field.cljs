@@ -1,8 +1,11 @@
 (ns visualise.ui.search.named-field)
 
+(defn current-value [!state]
+  (:text @!state))
+
 (defn search-named-field [!state]
   [:div
    [:input {:type      :text
-            :value     (:text @!state)
-            :on-change #(swap! !state assoc :text (-> % .-target .-value))
+            :value     (current-value !state)
+            :on-change #(println (swap! !state assoc :text (-> % .-target .-value)))
             }]])

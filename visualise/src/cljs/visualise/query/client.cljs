@@ -15,6 +15,8 @@
 (defn authorisation-header []
   {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
 
+(assoc)
+
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]

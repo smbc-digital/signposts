@@ -12,5 +12,4 @@
 (defcard-rg simple-search-named-field
             [search-named-field !state]
             !state
-            {:inspect-data true :history true}
-            )
+            {:inspect-data true :history true})
