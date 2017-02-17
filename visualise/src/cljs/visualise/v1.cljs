@@ -86,16 +86,19 @@
 (defn query-box [!local]
   (fn []
     [:div.query-box
-     [:input {:type        "text"
-              :placeholder "enter your search here..."
-              :value       (:query-string @!local)
-              :on-change   #(swap! !local assoc :query-string (-> % .-target .-value))
-              :on-key-up   (query-on-enter !local)}]
-     [:label "aged up to"
-      [:input {:type      "text"
-               :value     (:max-age @!local)
-               :on-change #(swap! !local assoc :max-age (-> % .-target .-value))
-               :on-key-up (query-on-enter !local)}]]
+     [:div.form-group
+      [:input.col-12.form-control
+       {:type        "text"
+        :placeholder "enter your search here..."
+        :value       (:query-string @!local)
+        :on-change   #(swap! !local assoc :query-string (-> % .-target .-value))
+        :on-key-up   (query-on-enter !local)}]]
+     [:div.form-group
+      [:label.col-2.col-form-label "aged up to"]
+      [:input.col-10.form-control {:type      "text"
+                                   :value     (:max-age @!local)
+                                   :on-change #(swap! !local assoc :max-age (-> % .-target .-value))
+                                   :on-key-up (query-on-enter !local)}]]
      ;[:label "From: "
      ; [:input.from {:type      :date
      ;               :value     (:from @!local)
@@ -127,10 +130,14 @@
                                :to           (f/unparse (f/formatter "yyyy-MM-dd") (t/now))
                                :max-age      99})]
     (fn []
-      [:div
-       [query-box !qstate]
-       ;[people-selector !qstate]
-       ])))
+      [:div.col-sm-4
+       [:div.panel.panel-primary
+        [:div.panel-heading
+         [:div.panel-title "Bootstrap Panel..."]]
+        [:div.panel-body
+         [query-box !qstate]
+         ;[people-selector !qstate]
+         ]]])))
 
 (defn results []
   (fn []
@@ -154,8 +161,6 @@
 
 (defn home-page []
   [:div
-
-
    ;[creds-area]
    [query-area]
    [people-display !state]
