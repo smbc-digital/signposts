@@ -16,9 +16,10 @@
   ")
 
 (defn path [id]
-  [(keyword (str "subcomp-" id))])
+  [:search-control :query-fields (keyword (str "subcomp-" id))])
 
 (defn subcomp [!state id]
+  ^{:getter (fn [] (* 2 id))}
   [:div
    [:label (str id " ")
     [:input
@@ -31,9 +32,16 @@
 
 (defonce !state (atom {:comps 5}))
 
+(defn do-something-with [subcomps]
+  (doall (map (fn [subcomp] (println ((:getter (meta subcomp))))) subcomps)))
+
 (defn controller [!state]
-  `[:div
-    ~@(subcomps !state)])
+  (let [subcomps (subcomps !state)]
+    `[:div
+      ~@subcomps
+      ~[:input {:type     :submit
+                :value    "PANIC!!!"
+                :on-click (fn [] (do-something-with subcomps))}]]))
 
 (defcard-rg create-components-programmatically
             [controller !state]
