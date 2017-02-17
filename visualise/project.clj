@@ -118,7 +118,8 @@
                                         [cljs-react-test "0.1.4-SNAPSHOT"]
                                         [cljsjs/react-with-addons "15.2.0-0"]
                                         [cljsjs/react-dom "15.2.0-0" :exclusions [cljsjs/react]]
-                                        [prismatic/dommy "1.1.0"]]
+                                        [prismatic/dommy "1.1.0"]
+                                        [stubadub "2.0.0"]]
 
                          :source-paths ["env/dev/clj"]
                          :plugins      [[lein-figwheel "0.5.8"]

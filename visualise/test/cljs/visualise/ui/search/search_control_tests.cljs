@@ -4,6 +4,7 @@
             [cljs-react-test.simulate :as sim]
             [visualise.common :refer [c ->render]]
             [dommy.core :as dommy :refer-macros [sel sel1]]
+            [stubadub.core :refer [calls-to] :refer-macros [with-stub]]
             [visualise.ui.search.search-control :refer [search-control]]))
 
 (use-fixtures :each (fn [test-fn]
@@ -25,11 +26,8 @@
       (is (= (dommy/value (submit-button)) "Search")))
 
     (testing "it includes a named field"
-      (let [query-fn-args (atom nil)]
-        (->render (search-control !state (fn [arg] (reset! query-fn-args arg))))
-        (sim/click (submit-button) nil)
-        (is (= @query-fn-args "Jim"))
-        )
-      ))
-
-  )
+      (with-stub query-stub
+                 (->render (search-control !state query-stub))
+                 (sim/click (submit-button) nil)
+                 (is (= (count (calls-to query-stub)) 1))
+                 (is (= (first (calls-to query-stub)) '("Jim")))))))
