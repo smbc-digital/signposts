@@ -117,6 +117,5 @@
      (reagent/create-class {:reagent-render      flot-ts-render
                             :component-did-mount flot-ts-did-mount})))
 
-
 (defcard-rg flot-with-time-series
             [flot-time-series-component])

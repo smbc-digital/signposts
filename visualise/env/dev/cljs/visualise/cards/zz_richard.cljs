@@ -19,13 +19,14 @@
   [:search-control :query-fields (keyword (str "subcomp-" id))])
 
 (defn subcomp [!state id]
-  ^{:getter (fn [] (* 2 id))}
-  [:div
-   [:label (str id " ")
-    [:input
-     {:type      :text
-      :value     (:val (get-in @!state (path id)))
-      :on-change #(swap! !state assoc-in (path id) {:val (-> % .-target .-value)})}]]])
+  (let [getter (fn [] (:val (get-in @!state (path id))))]
+    ^{:getter getter}
+    [:div
+     [:label (str id " ")
+      [:input
+       {:type      :text
+        :value     (getter)
+        :on-change #(swap! !state assoc-in (path id) {:val (-> % .-target .-value)})}]]]))
 
 (defn subcomps [!state]
   (doall (map #(subcomp !state %) (range 1 (+ 1 (:comps @!state))))))
