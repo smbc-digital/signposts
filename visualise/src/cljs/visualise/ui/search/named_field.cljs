@@ -4,8 +4,8 @@
   (:text @!state))
 
 (defn search-named-field [!state]
-  [:div
+  [:div.form-group
+   [:label "Name"]
    [:input {:type      :text
             :value     (current-value !state)
-            :on-change #(println (swap! !state assoc :text (-> % .-target .-value)))
-            }]])
+            :on-change #(swap! !state assoc :text (-> % .-target .-value))}]])

@@ -15,11 +15,12 @@
 
 (defonce !state (reagent/atom {:result {} :selected-event nil}))
 
-(defn parse-timestamp [timestamp]
-  (f/parse (:date-time f/formatters) timestamp))
 
 (defn raw-events []
   (:result @!state))
+
+(defn parse-timestamp [timestamp]
+  (f/parse (:date-time f/formatters) timestamp))
 
 (defn source-events [response]
   (map #(-> %
@@ -157,7 +158,7 @@
      ]))
 
 (defn home-page []
-  [:div
+  [:div.container
    ;[creds-area]
    [query-area]
    [people-display !state]

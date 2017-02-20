@@ -37,6 +37,7 @@
 (defroutes
   routes
   (GET "/" [] (loading-page))
+  (GET "/wip" [] (loading-page))
   (GET "/cards" [] (cards-page))
   (resources "/")
   (not-found "Not Found"))

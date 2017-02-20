@@ -4,17 +4,16 @@
             [visualise.common.query.base :as qb]
             [visualise.query.client :refer [search]]))
 
-(defn perform-search [!state name]
+(defn perform-search [handler data]
   (search (-> (qb/query)
               (qb/with-size 5)
-              (qb/with-field :name name))
-          (fn [result] (swap! !state assoc :results result))))
+              (qb/with-field :name (:name (first data))))
+          handler))
 
-(defn search-control
-  ([!state] (search-control !state perform-search))
-  ([!state query-fn]
-   [:div
-    [search-named-field !state]
-    [:input {:type     :submit
-             :value    "Search"
-             :on-click #(query-fn (nf/current-value !state))}]]))
+(defn search-control [!state handler]
+  [:div
+   [search-named-field !state]
+   [:input.btn.btn-primary
+    {:type     :submit
+     :value    "Search"
+     :on-click #(perform-search handler [{:name (nf/current-value !state)}])}]])
