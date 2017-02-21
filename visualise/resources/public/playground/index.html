@@ -1,9 +1,56 @@
 <html>
 <head>
     <link href="../css/site.css" rel="stylesheet" type="text/css">
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>"ARGH"</h1>
-
+    <div class="container-fluid header">
+        <div class="row">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand">Stockport Council | SoNAR</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><button type="button" class="btn btn-default navbar-btn">Log out</button></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="row body">
+            <div class="column container-criteria col-md-3">
+                <div class="column-title">
+                    Search by
+                </div>
+                <div class="panel panel-default criteria-box">
+                    <div class="panel-heading">Search criteria
+                        <button type="button" class="btn btn-default pull-right">Remove</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="btn-group">
+                            <button type="button" id="querytype" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select type <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="querytype">
+                                <li><a href="#">Age</a></li>
+                                <li><a href="#">Date of Birth</a></li>
+                                <li><a href="#">Name</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">All</a></li>
+                            </ul>
+                        </div>
+                        <input class="form-control" placeholder="Search for...">
+                    </div>
+                </div>
+            </div>
+            <div class="column container-results col-md-2">
+                <div class="column-title">
+                    Results
+                </div>
+            </div>
+            <div class="column container-timeline col-md-7">Timeline</div>
+        </div>
+    </div>
 </body>
 </html>
