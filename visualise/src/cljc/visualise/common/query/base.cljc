@@ -18,6 +18,9 @@
 (defn must [qip clause]
   (add-to qip [:query :bool :must] clause))
 
+(defn should [qip clause]
+  (add-to qip [:query :bool :should] clause))
+
 (defn with-query-string [qip qs]
   (must qip {:query_string {:query qs :default_field "_all"}}))
 
