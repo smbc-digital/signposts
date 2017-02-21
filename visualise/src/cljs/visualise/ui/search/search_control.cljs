@@ -7,7 +7,7 @@
 (defn perform-search [handler [target value]]
   (search (-> (qb/query)
               (qb/with-size 5)
-              (qb/with-field target value))
+              (qb/with-match target value))
           handler))
 
 (defn search-control [!state handler]

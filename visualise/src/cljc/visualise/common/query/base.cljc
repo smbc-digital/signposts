@@ -24,5 +24,8 @@
 (defn with-max-age [qip max-age]
   (must qip {:range {:dob {:gte (str "now-" max-age "y")}}}))
 
-(defn with-field [qip term value]
+(defn with-term [qip term value]
   (must qip {:term {term {:value value}}}))
+
+(defn with-match [qip term value]
+  (must qip {:match {term value}}))

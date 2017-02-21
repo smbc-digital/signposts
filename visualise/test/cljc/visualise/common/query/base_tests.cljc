@@ -13,7 +13,10 @@
       (qb/with-max-age {} 20) => {:query {:bool {:must [{:range {:dob {:gte "now-20y"}}}]}}})
 
 (fact "can query for term"
-      (qb/with-field {} :some-field "some value") => {:query {:bool {:must [{:term {:some-field {:value "some value"}}}]}}})
+      (qb/with-term {} :some-field "some value") => {:query {:bool {:must [{:term {:some-field {:value "some value"}}}]}}})
+
+(fact "can query for a match"
+      (qb/with-match {} :some-field "some value") => {:query {:bool {:must [{:match {:some-field "some value"}}]}}})
 
 (fact "can combine queries"
       (-> (qb/query)
