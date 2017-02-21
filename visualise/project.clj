@@ -112,7 +112,7 @@
                                         [figwheel-sidecar "0.5.8"]
                                         [org.clojure/tools.nrepl "0.2.12"]
                                         [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                        [devcards "0.2.1-7"]
+                                        [devcards "0.2.2"]
                                         [pjstadig/humane-test-output "0.8.1"]
                                         [midje "1.8.3"]
                                         [cljs-react-test "0.1.4-SNAPSHOT"]

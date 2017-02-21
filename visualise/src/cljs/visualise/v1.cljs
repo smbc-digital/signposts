@@ -6,7 +6,7 @@
             [visualise.ui.explore :refer [graph view-state]]
             [visualise.ui.records :refer [record-list]]
             [visualise.query.client :refer [query ->json]]
-            [visualise.common.query.aggregate :as qb]
+            [visualise.common.query.base :as qb]
             [visualise.util.date :as d]
             [visualise.ui.facet :refer [->cs facet-tree]]
             [cljs-time.core :as t]))
@@ -15,14 +15,12 @@
 
 (defonce !state (reagent/atom {:result {} :selected-event nil}))
 
-(defn authorisation-header []
-  {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
-
-(defn parse-timestamp [timestamp]
-  (f/parse (:date-time f/formatters) timestamp))
 
 (defn raw-events []
   (:result @!state))
+
+(defn parse-timestamp [timestamp]
+  (f/parse (:date-time f/formatters) timestamp))
 
 (defn source-events [response]
   (map #(-> %
@@ -160,7 +158,7 @@
      ]))
 
 (defn home-page []
-  [:div
+  [:div.container
    ;[creds-area]
    [query-area]
    [people-display !state]

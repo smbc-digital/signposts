@@ -3,6 +3,7 @@
             [goog.crypt.base64 :as b64]
             [cljs.core.async :refer [put! chan <! >! timeout]]
             [reagent.core :as r]
+            [visualise.common.query.base :as qb]
             [visualise.common.query.aggregate :as qa]
             [clojure.string :as str])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
@@ -15,18 +16,19 @@
 (defn authorisation-header []
   {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
 
-(assoc)
-
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]
-   (POST (str "" url)
+   (POST (str "http://localhost:9200" url)
          {:headers         (authorisation-header)
           :format          :json
           :response-format :json
           :keywords?       true
           :handler         (fn [response] (handler response))
           :body            (->json query)})))
+
+(defn search [aquery handler]
+  (query "/events-*/_search" aquery handler))
 
 (defn fetch [url]
   (let [chan (timeout 2000)]
@@ -43,8 +45,8 @@
 
 (defn event-source-and-type []
   (query "/events-*/_search"
-         (-> (qa/query)
-             (qa/with-no-results)
+         (-> (qb/query)
+             (qb/with-no-results)
              (qa/with-term-aggregation :event-source.keyword :event-type.keyword))
          #(reset! !mappings %)))
 

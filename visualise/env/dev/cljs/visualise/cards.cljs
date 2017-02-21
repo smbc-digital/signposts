@@ -5,7 +5,8 @@
             [visualise.cards.explore]
             [visualise.cards.search-named-field]
             [visualise.cards.faceted-search]
-            [visualise.cards.search-control])
+            [visualise.cards.search-control]
+            [visualise.cards.zz-richard])
   (:require-macros
     [devcards.core]))
 
