@@ -1,5 +1,6 @@
 (ns visualise.ui.search.search-control
-  (:require [visualise.ui.search.named-field :as nf :refer [search-named-field]]
+  (:require [reagent.core :as r]
+            [visualise.ui.search.named-field :as nf :refer [search-named-field]]
             [visualise.common.results.handler :refer [default-handler]]
             [visualise.common.query.base :as qb]
             [visualise.query.client :refer [search]]))
@@ -11,9 +12,13 @@
           handler))
 
 (defn search-control [!state handler]
-  [:div
-   [search-named-field !state]
-   [:input.btn.btn-primary
-    {:type     :submit
-     :value    "Search"
-     :on-click #(perform-search handler (nf/current-value !state))}]])
+  (let []
+    (fn []
+      [:div
+       [:div.form-group
+        [search-named-field !state]
+        [:button [:i.fa.fa-plus]]]
+       [:input.btn.btn-primary
+        {:type     :submit
+         :value    "Search"
+         :on-click #(perform-search handler (nf/current-value !state))}]])))

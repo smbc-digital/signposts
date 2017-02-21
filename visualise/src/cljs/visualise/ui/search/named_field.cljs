@@ -6,27 +6,28 @@
 (def options
   [{:target :name
     :desc   "Name"}
-   {:target :name.keyword
-    :desc   "Name-K"}
    {:target :address
     :desc   "Address"}
-   {:target :address.keyword
-    :desc   "Address-K"}])
+   {:target :event-source
+    :desc   "Source"}
+   {:target :event-type
+    :desc   "Type"}
+   ])
 
 (defn- search-target-selector [!state]
   [:select
-   {:on-change #(swap! !state assoc :target (-> % .-target .-value))}
+   {:value     (:target @!state)
+    :on-change #(swap! !state assoc :target (-> % .-target .-value))}
    (map
      (fn [{:keys [target desc]}]
        ^{:key target}
-       [:option {:value    target
-                 :selected (= target (:target @!state))} desc])
+       [:option {:value target} desc])
      options)])
 
 (defn search-named-field [!state]
-  (swap! !state assoc :target :name.keyword)
+  (swap! !state assoc :target (:target (first options)))
   (fn []
-    [:div.form-group
+    [:span
      (search-target-selector !state)
      [:input {:type      :text
               :value     (second (current-value !state))
