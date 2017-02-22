@@ -1,5 +1,6 @@
 (ns visualise.ui.search.search-control-ii
   (:require [visualise.common.ui.search-control-state :as state]
+            [visualise.common.ui.search-control-query :as query]
             [visualise.query.client :refer [search]]))
 
 (def target-value (fn [elem] (-> elem .-target .-value)))
@@ -39,4 +40,4 @@
         ~[:div.form-group.col-sm-12
           [:button.btn.btn-primary.col-sm-12 {:on-click #(state/add-search-criteria !state control-id)} "Add search criteria"]]
         ~[:div.form-group.col-sm-12
-          [:button.btn.btn-primary.col-sm-12 {:on-click #(search (state/extract-query !state control-id) query-handler)} "Search"]]])))
+          [:button.btn.btn-primary.col-sm-12 {:on-click #(search (query/extract-query (state/get-all-search-criteria !state control-id)) query-handler)} "Search"]]])))

@@ -32,3 +32,6 @@
 
 (defn with-match [qip term value]
   (must qip {:match {term value}}))
+
+(defn with-age-less-than [qip term value]
+  (must qip {:range {term {:gte (str "now-" value "y")}}}))

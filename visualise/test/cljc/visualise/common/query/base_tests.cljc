@@ -18,6 +18,9 @@
 (fact "can query for a match"
       (qb/with-match {} :some-field "some value") => {:query {:bool {:must [{:match {:some-field "some value"}}]}}})
 
+(fact "can query for age less than"
+      (qb/with-age-less-than {} :some-field 22) => {:query {:bool {:must [{:range {:some-field {:gte "now-22y"}}}]}}})
+
 (fact "can combine queries"
       (-> (qb/query)
           (qb/with-size 15)

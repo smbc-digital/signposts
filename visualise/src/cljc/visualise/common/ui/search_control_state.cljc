@@ -1,30 +1,29 @@
-(ns visualise.common.ui.search-control-state
-  (:require [visualise.common.query.base :as qb]))
+(ns visualise.common.ui.search-control-state)
 
 (def initial-state {:available-fields [{:target      :name
-                                        :type        :match-text
+                                        :field-type  :match-text
                                         :description "Name"
                                         :placeholder "search for name"}
                                        {:target      :address
-                                        :type        :match-text
+                                        :field-type  :match-text
                                         :description "Address"
                                         :placeholder "search for address"}
                                        {:target      :dob
-                                        :type        :match-text
-                                        :description "Date of Birth"
-                                        :placeholder "search by date of birth"}
+                                        :field-type  :age-less-than
+                                        :description "Aged up to"
+                                        :placeholder "enter years"}
                                        {:target      :event-source
-                                        :type        :match-text
+                                        :field-type  :match-text
                                         :description "Event Source"
                                         :placeholder "search for event source"}
                                        {:target      :event-type
-                                        :type        :match-text
+                                        :field-type  :match-text
                                         :description "Event Type"
                                         :placeholder "search for event type"}
                                        ]})
 
 (defn path [control-id & extras]
-  `[:controls :search-controls ~control-id ~@extras])
+  `[:controls ~control-id ~@extras])
 
 (defn add-search-control [!state control-id]
   (swap! !state assoc-in (path control-id) initial-state))
@@ -54,19 +53,20 @@
   (fn [] (get-in @!state (path control-id :search-criteria sc-id k))))
 
 (defn create-search-criteria [!state control-id sc-id]
-  (let [{:keys [target default type]} (first (available-fields !state control-id))
+  (let [{:keys [target default]} (first (available-fields !state control-id))
         mk-get (partial mk-search-criteria-get !state control-id sc-id)
         mk-set (partial mk-search-criteria-set !state control-id sc-id)
-        get-selected-field (mk-get :target)]
+        get-selected-field (mk-get :target)
+        selected-field-def #(field-def !state control-id (get-selected-field))]
     {:id                 sc-id
      :target             target
      :query              default
-     :type               type
      :set-selected-field (mk-set keyword :target)
      :get-selected-field get-selected-field
      :set-query          (mk-set identity :query)
      :get-query          (mk-get :query)
-     :get-placeholder    #(:placeholder (field-def !state control-id (get-selected-field)))
+     :get-field-type     #(:field-type (selected-field-def))
+     :get-placeholder    #(:placeholder (selected-field-def))
      :on-remove          (mk-remove-search-criteria !state control-id sc-id)}))
 
 (defn add-search-criteria [!state control-id]
@@ -81,18 +81,3 @@
 (defn init-search-control [!state control-id]
   (add-search-control !state control-id)
   (add-search-criteria !state control-id))
-
-(defn query-terms [!state control-id]
-  (map
-    (fn [{:keys [get-selected-field get-query]}]
-      [(get-selected-field) (get-query)])
-    (get-all-search-criteria !state control-id)))
-
-(defn extract-query [!state control-id]
-  (reduce
-    (fn [qip [term value]]
-      (qb/with-match qip term value))
-    (-> (qb/query)
-        (qb/with-size 25))
-    (query-terms !state control-id)))
-

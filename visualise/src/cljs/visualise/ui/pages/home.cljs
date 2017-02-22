@@ -26,7 +26,8 @@
      [sc-ii/search-control-ii !app (h/default-handler !data)]]
 
     [:div.column.container-results.col-md-2
-     [:div.column-title "Results"]]
+     [:div.column-title "Results"]
+     ]
+
     [:div.column.container-timeline.col-md-7
-     [:div.column-title "Timeline"
-      [rt/raw-table !data]]]]])
+      [rt/raw-table !data]]]])

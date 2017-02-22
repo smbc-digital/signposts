@@ -5,16 +5,16 @@
 (fact "should add control with initial search criteria"
       (let [!state (atom {})
             _ (s/init-search-control !state :control-id)]
-        (get-in @!state [:controls :search-controls :control-id]) =not=> nil
-        (keys (get-in @!state [:controls :search-controls :control-id])) => (contains [:available-fields :search-criteria])
-        (count (get-in @!state [:controls :search-controls :control-id :search-criteria])) => 1))
+        (get-in @!state [:controls :control-id]) =not=> nil
+        (keys (get-in @!state [:controls :control-id])) => (contains [:available-fields :search-criteria])
+        (count (get-in @!state [:controls :control-id :search-criteria])) => 1))
 
 (fact "should return all search critiera"
       (let [!state (atom {})
             _ (s/init-search-control !state :control-id)
             _ (s/add-search-criteria !state :control-id)]
-        (count (get-in @!state [:controls :search-controls :control-id :search-criteria])) => 2
-        (vals (get-in @!state [:controls :search-controls :control-id :search-criteria])) => (s/get-all-search-criteria !state :control-id)))
+        (count (get-in @!state [:controls :control-id :search-criteria])) => 2
+        (vals (get-in @!state [:controls :control-id :search-criteria])) => (s/get-all-search-criteria !state :control-id)))
 
 (fact "should return specific field definitions"
       (let [!state (atom {})
@@ -37,12 +37,14 @@
                 (set-selected-field :address)
                 (get-selected-field) => :address))
 
-        (fact "modifying the selected field, modifies the placeholder"
-              (let [{:keys [get-placeholder set-selected-field]} a-search-criteria]
+        (fact "modifying the selected field, modifies the placeholder and field type"
+              (let [{:keys [get-placeholder get-field-type set-selected-field]} a-search-criteria]
                 (set-selected-field :name)
                 (get-placeholder) => (:placeholder (s/field-def !state :control-id :name))
-                (set-selected-field :address)
-                (get-placeholder) => (:placeholder (s/field-def !state :control-id :address))))
+                (get-field-type) => (:field-type (s/field-def !state :control-id :name))
+                (set-selected-field :dob)
+                (get-placeholder) => (:placeholder (s/field-def !state :control-id :dob))
+                (get-field-type) => (:field-type (s/field-def !state :control-id :dob))))
 
         (fact "they provide functions to modify the user supplied query"
               (let [{:keys [get-query set-query]} a-search-criteria]
