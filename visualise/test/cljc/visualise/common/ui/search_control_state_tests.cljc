@@ -38,11 +38,12 @@
                 (get-selected-field) => :address))
 
         (fact "modifying the selected field, modifies the placeholder and field type"
-              (let [{:keys [get-placeholder get-field-type set-selected-field]} a-search-criteria]
+              (let [{:keys [get-placeholder get-field-type get-field-name set-selected-field]} a-search-criteria]
                 (set-selected-field :name)
                 (get-placeholder) => (:placeholder (s/field-def !state :control-id :name))
                 (get-field-type) => (:field-type (s/field-def !state :control-id :name))
                 (set-selected-field :dob)
+                (get-field-name) => (:field-name (s/field-def !state :control-id :dob))
                 (get-placeholder) => (:placeholder (s/field-def !state :control-id :dob))
                 (get-field-type) => (:field-type (s/field-def !state :control-id :dob))))
 

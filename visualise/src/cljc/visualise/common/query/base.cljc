@@ -35,3 +35,6 @@
 
 (defn with-age-less-than [qip term value]
   (must qip {:range {term {:gte (str "now-" value "y")}}}))
+
+(defn with-age-more-than [qip term value]
+  (must qip {:range {term {:lte (str "now-" value "y")}}}))

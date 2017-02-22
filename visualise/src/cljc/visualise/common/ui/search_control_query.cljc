@@ -4,12 +4,16 @@
 (defmulti criteria-to-query (fn [_ {:keys [get-field-type]}] (get-field-type)) :default :default)
 
 (defmethod criteria-to-query :age-less-than
-  [qip {:keys [get-query get-selected-field]}]
-  (qb/with-age-less-than qip (get-selected-field) (get-query)))
+  [qip {:keys [get-query get-field-name]}]
+  (qb/with-age-less-than qip (get-field-name) (get-query)))
+
+(defmethod criteria-to-query :age-more-than
+  [qip {:keys [get-query get-field-name]}]
+  (qb/with-age-more-than qip (get-field-name) (get-query)))
 
 (defmethod criteria-to-query :default
-  [qip {:keys [get-query get-selected-field]}]
-  (qb/with-match qip (get-selected-field) (get-query)))
+  [qip {:keys [get-query get-field-name]}]
+  (qb/with-match qip (get-field-name) (get-query)))
 
 (defn extract-query [search-criteria]
   (reduce

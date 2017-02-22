@@ -1,22 +1,32 @@
 (ns visualise.common.ui.search-control-state)
 
 (def initial-state {:available-fields [{:target      :name
+                                        :field-name  :name
                                         :field-type  :match-text
                                         :description "Name"
                                         :placeholder "search for name"}
                                        {:target      :address
+                                        :field-name  :address
                                         :field-type  :match-text
                                         :description "Address"
                                         :placeholder "search for address"}
-                                       {:target      :dob
+                                       {:target      :age-less-than
+                                        :field-name  :dob
                                         :field-type  :age-less-than
                                         :description "Aged up to"
-                                        :placeholder "enter years"}
+                                        :placeholder "enter maximum age in years"}
+                                       {:target      :age-more-than
+                                        :field-name  :dob
+                                        :field-type  :age-more-than
+                                        :description "Aged over"
+                                        :placeholder "enter minimum age in years"}
                                        {:target      :event-source
+                                        :field-name  :event-source
                                         :field-type  :match-text
                                         :description "Event Source"
                                         :placeholder "search for event source"}
                                        {:target      :event-type
+                                        :field-name  :event-type
                                         :field-type  :match-text
                                         :description "Event Type"
                                         :placeholder "search for event type"}
@@ -65,6 +75,7 @@
      :get-selected-field get-selected-field
      :set-query          (mk-set identity :query)
      :get-query          (mk-get :query)
+     :get-field-name     #(:field-name (selected-field-def))
      :get-field-type     #(:field-type (selected-field-def))
      :get-placeholder    #(:placeholder (selected-field-def))
      :on-remove          (mk-remove-search-criteria !state control-id sc-id)}))
