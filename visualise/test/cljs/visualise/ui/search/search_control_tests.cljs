@@ -5,7 +5,7 @@
             [visualise.common :refer [c ->render]]
             [dommy.core :as dommy :refer-macros [sel sel1]]
             [stubadub.core :refer [calls-to] :refer-macros [with-stub]]
-            [visualise.ui.search.search-control :as sc :refer [search-control]]))
+            [visualise.ui.search.search-control :refer [search-control]]))
 
 (use-fixtures :each (fn [test-fn]
                       (binding [c (tu/new-container!)]

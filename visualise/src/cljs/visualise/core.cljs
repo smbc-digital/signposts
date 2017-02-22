@@ -3,8 +3,8 @@
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
-            [visualise.v1 :as v]
-            [visualise.ui.pages.home :refer [home-page]]))
+            [visualise.ui.pages.home :as wip]
+            [visualise.ui.pages.home-orig :as prototype]))
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -13,10 +13,10 @@
 ;; Routes
 
 (secretary/defroute "/" []
-                    (session/put! :current-page #'v/home-page))
+                    (session/put! :current-page #'prototype/home-page))
 
 (secretary/defroute "/wip" []
-                    (session/put! :current-page #'home-page))
+                    (session/put! :current-page #'wip/home-page))
 
 ;; -------------------------
 ;; Initialize app

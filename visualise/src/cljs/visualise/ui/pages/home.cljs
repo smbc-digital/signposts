@@ -2,7 +2,6 @@
   (:require [reagent.core :as r]
             [visualise.common.results.handler :as h]
             [visualise.ui.search.search-control :as sc]
-            [visualise.ui.search.search-control-ii :as sc-ii]
             [visualise.ui.results.raw-table :as rt]))
 
 (defonce !app (r/atom {}))
@@ -23,7 +22,7 @@
    [:div.row.body
     [:div.column.container-criteria.col-md-3
      [:div.column-title "Search by"]
-     [sc-ii/search-control-ii !app (h/default-handler !data)]]
+     [sc/search-control !app (h/default-handler !data)]]
 
     [:div.column.container-results.col-md-2
      [:div.column-title "Results"]
