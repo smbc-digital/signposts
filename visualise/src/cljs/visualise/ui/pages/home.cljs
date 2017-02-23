@@ -2,7 +2,8 @@
   (:require [reagent.core :as r]
             [visualise.common.results.handler :as h]
             [visualise.ui.search.search-control :as sc]
-            [visualise.ui.results.raw-table :as rt]))
+            [visualise.ui.results.raw-table :as rt]
+            [visualise.ui.explore :as e]))
 
 (defonce !app (r/atom {}))
 (defonce !data (r/atom {}))
@@ -25,8 +26,15 @@
      [sc/search-control !app (h/default-handler !data)]]
 
     [:div.column.container-results.col-md-2
-     [:div.column-title "Results"]
-     ]
+     [:div.column-title "Results"]]
 
     [:div.column.container-timeline.col-md-7
-      [rt/raw-table !data]]]])
+     ;[:div.column-title
+     ; [:label "From " [:input {:type :date}]]
+     ; [:label "To " [:input {:type :date}]]
+     ; ]
+     [:div
+      ;(when (not-empty (:result @!data))
+      ;  [e/graph (e/view-state) (:result @!data)])
+      [rt/raw-table !data]]
+     ]]])

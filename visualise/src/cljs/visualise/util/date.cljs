@@ -1,6 +1,7 @@
 (ns visualise.util.date
   (:require [cljs-time.core :as t]
-            [cljs-time.format :as f]))
+            [cljs-time.format :as f]
+            [cljs-time.coerce :as c]))
 
 (defn parse
   [s formatters]
@@ -8,6 +9,12 @@
     (for [f formatters
           :let [d (try (f/parse f s) (catch :default _))]
           :when d] d)))
+
+(defn parse-timestamp [timestamp]
+  (f/parse (:date-time f/formatters) timestamp))
+
+(defn as-millis [timestamp]
+  (c/to-long timestamp))
 
 (defn age [dob]
   (try

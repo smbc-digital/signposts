@@ -19,12 +19,9 @@
 (defn raw-events []
   (:result @!state))
 
-(defn parse-timestamp [timestamp]
-  (f/parse (:date-time f/formatters) timestamp))
-
 (defn source-events [response]
   (map #(-> %
-            (update :timestamp parse-timestamp))
+            (update :timestamp d/parse-timestamp))
        (map :_source (-> response :hits :hits))))
 
 (def query-handler

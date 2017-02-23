@@ -1,7 +1,17 @@
-(ns visualise.common.results.handler)
+(ns visualise.common.results.handler
+  #?(:cljs (
+             :require
+             [visualise.util.date :refer [parse-timestamp]]))
+  #?@(:clj [
+            (
+              :require
+              [visualise.common.util.foreign :refer [parse-timestamp]])]))
 
 (defn source-events [response]
-  (map :_source (-> response :hits :hits)))
+  (map #(-> %
+            (update :timestamp parse-timestamp))
+       (map :_source (-> response :hits :hits))))
+
 
 (defn default-handler [!state]
   (fn [response]
