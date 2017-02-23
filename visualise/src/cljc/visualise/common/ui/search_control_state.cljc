@@ -20,6 +20,10 @@
                                         :field-type  :age-more-than
                                         :description "Aged over"
                                         :placeholder "enter minimum age in years"}
+                                       {:target      :all-fields
+                                        :field-type  :query-all
+                                        :description "All fields"
+                                        :placeholder "enter general search"}
                                        {:target      :event-source
                                         :field-name  :event-source
                                         :field-type  :match-text

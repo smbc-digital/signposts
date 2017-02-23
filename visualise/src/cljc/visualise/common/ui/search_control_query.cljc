@@ -11,6 +11,10 @@
   [qip {:keys [get-query get-field-name]}]
   (qb/with-age-more-than qip (get-field-name) (get-query)))
 
+(defmethod criteria-to-query :query-all
+  [qip {:keys [get-query]}]
+  (qb/with-query-string qip (get-query)))
+
 (defmethod criteria-to-query :default
   [qip {:keys [get-query get-field-name]}]
   (qb/with-match qip (get-field-name) (get-query)))

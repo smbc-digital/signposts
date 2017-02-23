@@ -138,3 +138,7 @@
       [:div
        [graph-controls !view aggregator]
        [graph-svg !view event-series !aggregated-event-series]])))
+
+(defn graphit [!view !data]
+  (fn []
+    (graph !view (:result @!data))))

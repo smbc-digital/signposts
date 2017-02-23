@@ -3,6 +3,8 @@
             [visualise.common.results.handler :as h]
             [visualise.ui.search.search-control :as sc]
             [visualise.ui.results.raw-table :as rt]
+            [visualise.ui.results.timeline-orig :refer [timeline-orig]]
+            [visualise.ui.results.timeline-flot :refer [timeline-flot]]
             [visualise.ui.explore :as e]))
 
 (defonce !app (r/atom {}))
@@ -29,12 +31,8 @@
      [:div.column-title "Results"]]
 
     [:div.column.container-timeline.col-md-7
-     ;[:div.column-title
-     ; [:label "From " [:input {:type :date}]]
-     ; [:label "To " [:input {:type :date}]]
-     ; ]
      [:div
-      ;(when (not-empty (:result @!data))
-      ;  [e/graph (e/view-state) (:result @!data)])
-      [rt/raw-table !data]]
-     ]]])
+      ;[timeline-orig !data]
+      [timeline-flot !data]
+      [rt/raw-table !data]
+      ]]]])
