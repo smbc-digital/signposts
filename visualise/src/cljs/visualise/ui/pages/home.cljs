@@ -5,7 +5,8 @@
             [visualise.ui.results.raw-table :as rt]
             [visualise.ui.results.timeline-orig :refer [timeline-orig]]
             [visualise.ui.results.timeline-flot :refer [timeline-flot]]
-            [visualise.ui.explore :as e]))
+            [visualise.ui.explore :as e]
+            [visualise.ui.cards.cards-state :as c]))
 
 (defonce !app (r/atom {}))
 (defonce !data (r/atom {}))
@@ -28,7 +29,8 @@
      [sc/search-control !app (h/default-handler !data)]]
 
     [:div.column.container-results.col-md-2
-     [:div.column-title "Results"]]
+     [:div
+      [c/print-results !data]]]
 
     [:div.column.container-timeline.col-md-7
      [:div
