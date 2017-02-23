@@ -9,11 +9,19 @@
 
 (def surname #(last (str/split (:name %) #" ")))
 
-(defn sortable-header [!sort description sort-key]
-  [:th description " " [:i.fa.fa-sort-asc {:on-click #(reset! !sort sort-key)}]])
+(defn sortable-header [!sort description sort-func]
+  [:th description " " [:i.fa.fa-sort
+                        {:on-click #(swap! !sort (fn [s] (-> s
+                                                             (assoc :sort-func sort-func)
+                                                             (update :ascending not))))}]])
+
+(defn sortit [!sort list]
+  (let [sorted (sort-by (:sort-func @!sort) list)]
+    (if (:ascending @!sort) sorted (reverse sorted))))
 
 (defn raw-table [!data]
-  (let [!sort-fn (r/atom (juxt surname :dob))]
+  (let [!sort-fn (r/atom {:sort-func (juxt surname :dob)
+                          :ascending true})]
     (fn []
       (let [results (:result @!data)]
         (if (not-empty results)
@@ -23,7 +31,7 @@
             [:table.table-striped.table-condensed.results
              [:thead
               [:tr
-               [sortable-header !sort-fn "source" :event-source]
+               [sortable-header !sort-fn "source" (comp :event-source not)]
                [sortable-header !sort-fn "type" :event-type]
                [sortable-header !sort-fn "timestamp" #(d/as-millis (:timestamp %))]
                [sortable-header !sort-fn "name" surname]
@@ -43,4 +51,4 @@
                      [:td (d/age dob)]
                      [:td dob]
                      [:td address]]))
-                (sort-by @!sort-fn results))]]]])))))
+                (sortit !sort-fn results))]]]])))))
