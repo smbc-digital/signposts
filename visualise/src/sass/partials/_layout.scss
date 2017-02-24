@@ -60,3 +60,51 @@
 .container-timeline {
     background-color: white;
 }
+
+.panel > .panel-heading {
+
+    &.red {
+        background-image: none;
+        background-color: red;
+        color: white;
+    }
+
+    &.blue {
+        background-image: none;
+        background-color: blue;
+        color: white;
+    }
+
+    &.green {
+        background-image: none;
+        background-color: green;
+        color: white;
+    }
+
+    &.orange {
+        background-image: none;
+        background-color: orange;
+        color: white;
+    }
+
+    &.purple {
+        background-image: none;
+        background-color: purple;
+        color: white;
+    }
+
+    &.yellow {
+        background-image: none;
+        background-color: yellow;
+        color: black;
+    }
+
+    &.red {
+        background-image: none;
+        background-color: red;
+        color: white;
+    }
+
+
+
+}

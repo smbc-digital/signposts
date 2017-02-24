@@ -1,4 +1,6 @@
-(ns visualise.common.ui.flot-data)
+(ns visualise.common.ui.flot-data
+  (:require [visualise.common.util.blur :as b]
+            [visualise.common.results.individuals :as i]))
 
 (defn label-map [data]
   (zipmap (reverse (sort (into #{} (map :event-type data)))) (rest (range))))
@@ -9,6 +11,9 @@
 (defn collision-count [collision-map event-type timestamp]
   (count (get collision-map {:event-type event-type :timestamp timestamp})))
 
+(defn y-axis-label-map [event-types]
+  (reduce merge {} (map-indexed (fn [idx et] {et (+ idx 1)}) (reverse (sort event-types)))))
+
 (defn y-axis [data]
   (let [labels (label-map data)]
     {:min      0
@@ -16,9 +21,6 @@
      :position :right
      :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
 
-(defn blurred [number number-of-distinct-values]
-  (let [start (- number (* 0.05 (/ (- number-of-distinct-values 1) 2)))]
-    (map float (take number-of-distinct-values (range start 100 0.05)))))
 
 (defn data-points [collisions idx labels events]
   (map
@@ -26,16 +28,31 @@
       (let [number (get labels event-type)
             distinct-values (collision-count collisions event-type timestamp)
             blurred-number (if (> distinct-values 1)
-                             (nth (blurred number distinct-values) idx)
+                             (nth (b/blurred number distinct-values) idx)
                              number)]
         [timestamp blurred-number]))
     events))
 
-(defn series-data [series-group-fn data]
-  (let [labels (label-map data)
-        collisions (collision-map data)]
-    (map-indexed
-      (fn [idx [series events]]
-        {:label series
-         :data  (data-points collisions idx labels events)})
-      (group-by series-group-fn data))))
+(defn individual-data [individual-events]
+  (map
+    (fn [{:keys [timestamp event-type]}]
+      [timestamp event-type])
+    individual-events))
+
+(defn series-meta [data]
+  (let [individuals (i/individuals data)
+        individual->data (i/group-by-individual data)]
+    (map
+      (fn [{:keys [ikey] :as individual}]
+        {:individual individual
+         :data       (individual-data (get individual->data ikey))})
+      individuals)))
+
+(def colors [:red :blue :green :yellow :orange :purple])
+
+(defn flot-series-data [label-map meta-data]
+  (map
+    (fn [{{:keys [idx]} :individual data :data}]
+      {:color (or (get colors idx) :black)
+       :data  (map (fn [[k v]] [k (get label-map v)]) data)})
+    (sort-by #(get-in % [:individual :idx]) meta-data)))

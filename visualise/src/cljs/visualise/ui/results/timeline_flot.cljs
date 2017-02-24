@@ -6,7 +6,7 @@
             [cljs-time.core :as t]
             [cljs-time.periodic :as p]
             [visualise.common.ui.flot-data :as fd]
-            ))
+            [visualise.common.results.individuals :as i]))
 
 (defn options [m]
   (clj->js
@@ -34,13 +34,20 @@
 (defn draw-graph [the-data options]
   (.plot js/jQuery (js/jQuery "#flot1") (clj->js the-data) options))
 
+(defn draw-with [!data]
+  (let [data (:result @!data)
+        label-map (fd/y-axis-label-map (distinct (map :event-type data)))
+        meta-data (fd/series-meta data)
+        fsd (fd/flot-series-data label-map meta-data)]
+  (draw-graph fsd (options {:yaxis (fd/y-axis (:result @!data))}))))
+
+
 (defn flot-component [!data _]
   (fn []
     (reagent/create-class {:should-component-update (fn [& _] true)
                            :reagent-render          flot-render
-                           :component-did-mount     (fn [] (draw-graph (fd/series-data :name (:result @!data)) (options {:yaxis (fd/y-axis (:result @!data))})))
-                           :component-did-update    (fn [] (draw-graph (fd/series-data :name (:result @!data)) (options {:yaxis (fd/y-axis (:result @!data))})))
-                           })))
+                           :component-did-mount     (fn [] (draw-with !data))
+                           :component-did-update    (fn [] (draw-with !data))})))
 
 (defn timeline-flot [!data]
   (fn []
