@@ -1,21 +1,17 @@
-(ns visualise.ui.cards.cards-state)
+(ns visualise.ui.cards.cards-state
+  (:require [visualise.common.results.individuals :as i]))
 
-(defn map-results [!data]
-  (let [results (:result @!data)]
-    (set (map (fn [x] (dissoc x :timestamp :event-source :event-type)) results))))
-
-(defn print-results [!data]
-  (fn[]
-    (let [uniq-data (map-results !data)]
-      [:div.panel.panel-default.criteria-box
-       [:div.panel-heading "Cards"]
-       [:div.panel-body
-        (map (fn [x]
+(defn cards [!data]
+  (fn []
+    (let [results (:result @!data)]
+      (when (not-empty results)
+          [:div
+           (map
+             (fn [{:keys [name dob address]}]
                ^{:key (gensym)}
-               [:div.panel.panel-default.criteria
-                [:div.panel-heading (get x :name)
-                 [:div.panel-body
-                  [:p "DOB: "(get x :dob)]
-                  [:p "ADDRESS: "(get x :address)]]]]) uniq-data)]])))
-
+               [:div.panel.panel-default
+                [:div.panel-heading name]
+                [:div.panel-body
+                 [:p "DOB: " dob]
+                 [:p "ADDRESS: " address]]]) (i/individuals results))]))))
 

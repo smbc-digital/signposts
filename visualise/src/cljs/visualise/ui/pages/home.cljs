@@ -3,7 +3,6 @@
             [visualise.common.results.handler :as h]
             [visualise.ui.search.search-control :as sc]
             [visualise.ui.results.raw-table :as rt]
-            [visualise.ui.results.timeline-orig :refer [timeline-orig]]
             [visualise.ui.results.timeline-flot :refer [timeline-flot]]
             [visualise.ui.explore :as e]
             [visualise.ui.cards.cards-state :as c]))
@@ -29,12 +28,11 @@
      [sc/search-control !app (h/default-handler !data)]]
 
     [:div.column.container-results.col-md-2
-     [:div
-      [c/print-results !data]]]
+     [:div.column-title "Results"]
+      [c/cards !data]]
 
     [:div.column.container-timeline.col-md-7
+     [:div.column-title "Timeline"]
      [:div
-      ;[timeline-orig !data]
       [timeline-flot !data]
-      [rt/raw-table !data]
-      ]]]])
+      [rt/raw-table !data]]]]])

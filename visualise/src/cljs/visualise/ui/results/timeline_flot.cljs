@@ -22,8 +22,8 @@
               :xaxis  {:mode        "time"
                        :timeFormat  "%Y/%m/%d"
                        :minTickSize [1 "month"]
-                       :min         (t/date-time 2014 1)
-                       :max         (t/date-time 2017 12)}
+                       :min         (t/date-time 2015 1)
+                       :max         (t/date-time 2016 12)}
               :lines  {:show false}
               :points {:show true}
               :legend {:show true}})))
@@ -51,4 +51,3 @@
          [:div.panel-body
           [flot-component !data (options {:yaxis (fd/y-axis results)})]
           ]]))))
-
