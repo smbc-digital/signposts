@@ -2,11 +2,8 @@
   (:require [reagent.core :as r]
             [visualise.query.handler :as h]
             [visualise.ui.search.search-control :as sc]
-            [visualise.ui.results.raw-table :as rt]
-            [visualise.ui.results.timeline-flot :refer [timeline-flot]]
-            [visualise.ui.results.individual-cards :as ic]
-            [visualise.ui.explore :as e]
-            ))
+            [visualise.ui.results.tabbed-results :as tr]
+            [visualise.ui.results.individual-cards :as ic]))
 
 (defonce !app (r/atom {}))
 (defonce !data (r/atom {}))
@@ -16,24 +13,20 @@
    [:div.row
     [:nav.navbar-default {:role "navigation"}
      [:div.container-fluid
+      [:div.navbar-header.stockport.col-md-3
+       [:a.navbar-brand {:href "#"} "Stockport MBC"]]
       [:div.navbar-header
-       [:a.navbar-brand {:href "#"} "Stockport | SoNAR"]]
-      [:ul.nav.navbar-nav.navbar-right
-       [:li
-        [:button.btn.btn-default.navbar-btn
-         {:type "button"} "Log out"]]]]]]
+       [:a.navbar-brand {:href "#"} "SIGNPOSTS"]]
+      ]]]
 
    [:div.row.body
     [:div.column.container-criteria.col-md-3
-     [:div.column-title "Search by"]
+     [:div.column-title.search-by "SEARCH BY"]
      [sc/search-control !app (h/default-handler !data)]]
 
     [:div.column.container-results.col-md-2
-     [:div.column-title "Results"]
-      [ic/cards !data]]
+     [:div.column-title "RESULTS"]
+     [ic/cards !data]]
 
     [:div.column.container-timeline.col-md-7
-     [:div.column-title "Timeline"]
-     [:div
-      [timeline-flot !data]
-      [rt/raw-table !data]]]]])
+     [tr/results-tabs !data]]]])

@@ -13,10 +13,10 @@
 ;; Routes
 
 (secretary/defroute "/" []
-                    (session/put! :current-page #'prototype/home-page))
+                    (session/put! :current-page #'wip/home-page))
 
 (secretary/defroute "/wip" []
-                    (session/put! :current-page #'wip/home-page))
+                    (session/put! :current-page #'prototype/home-page))
 
 ;; -------------------------
 ;; Initialize app

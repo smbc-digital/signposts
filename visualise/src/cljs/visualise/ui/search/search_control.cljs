@@ -17,12 +17,11 @@
 (defn search-criteria [!state control-id]
   (map
     (fn [{:keys [get-placeholder get-query set-query on-remove] :as sc}]
-      [:div.panel.panel-default.criteria-box
-       [:div.panel-heading "Search criteria"
-        [:button.btn.btn-default.pull-right {:type :button :on-click on-remove} "Remove"]]
+      [:div.panel.criteria-box
        [:div.panel-body
         [:div.btn-group
          [selected-field !state control-id sc]
+         [:button.btn.btn-default.pull-right {:type :button :on-click on-remove} [:i.fa.fa-times]]
          [:input.col-sm-12
           {:type        :text
            :value       (get-query)
@@ -38,6 +37,10 @@
       `[:div
         ~@(search-criteria !state control-id)
         ~[:div.form-group.col-sm-12
-          [:button.btn.btn-primary.col-sm-12 {:on-click #(state/add-search-criteria !state control-id)} "Add search criteria"]]
+          [:button.btn.col-sm-12.add-criteria
+           {:on-click #(state/add-search-criteria !state control-id)}
+           [:i.fa.fa-plus.pull-left] "Add search criteria"]]
         ~[:div.form-group.col-sm-12
-          [:button.btn.btn-primary.col-sm-12 {:on-click #(search (query/extract-query (state/get-all-search-criteria !state control-id)) query-handler)} "Search"]]])))
+          [:button.btn.btn-primary.col-sm-12.search
+           {:on-click #(search (query/extract-query (state/get-all-search-criteria !state control-id)) query-handler)}
+           [:i.fa.fa-search-plus.pull-left] "Search"]]])))

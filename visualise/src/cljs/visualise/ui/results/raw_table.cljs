@@ -25,9 +25,6 @@
     (fn []
       (let [results (:result @!data)]
         (if (not-empty results)
-          [:div.panel.panel-default.criteria-box
-           [:div.panel-heading "Raw Data"]
-           [:div.panel-body
             [:table.table-striped.table-condensed.results
              [:thead
               [:tr
@@ -51,4 +48,4 @@
                      [:td (d/age dob)]
                      [:td dob]
                      [:td address]]))
-                (sortit !sort-fn results))]]]])))))
+                (sortit !sort-fn results))]])))))

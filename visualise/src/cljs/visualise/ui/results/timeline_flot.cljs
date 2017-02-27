@@ -3,7 +3,6 @@
             [cljsjs.flot]
             [cljsjs.flot.plugins.time]
             [cljs-time.core :as t]
-            [cljs-time.periodic :as p]
             [visualise.common.ui.flot-data :as fd]))
 
 (defn options [m]
@@ -21,7 +20,8 @@
                        :timeFormat  "%Y/%m/%d"
                        :minTickSize [1 "month"]
                        :min         (t/date-time 2015 1)
-                       :max         (t/date-time 2016 12)}
+                       :max         (t/date-time 2016 12)
+                       }
               :lines  {:show false}
               :points {:show   true
                        :radius 5}
@@ -53,8 +53,4 @@
   (fn []
     (let [results (:result @!data)]
       (when (not-empty results)
-        [:div.panel.panel-default.criteria-box
-         [:div.panel-heading "Timeline Flot"]
-         [:div.panel-body
-          [flot-component !data (options {:yaxis (fd/y-axis results)})]
-          ]]))))
+          [flot-component !data (options {:yaxis (fd/y-axis results)})]))))
