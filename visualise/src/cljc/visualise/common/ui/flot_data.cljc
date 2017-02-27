@@ -22,16 +22,16 @@
      :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
 
 
-(defn data-points [collisions idx labels events]
-  (map
-    (fn [{:keys [event-type timestamp]}]
-      (let [number (get labels event-type)
-            distinct-values (collision-count collisions event-type timestamp)
-            blurred-number (if (> distinct-values 1)
-                             (nth (b/blurred number distinct-values) idx)
-                             number)]
-        [timestamp blurred-number]))
-    events))
+;(defn data-points [collisions idx labels events]
+;  (map
+;    (fn [{:keys [event-type timestamp]}]
+;      (let [number (get labels event-type)
+;            distinct-values (collision-count collisions event-type timestamp)
+;            blurred-number (if (> distinct-values 1)
+;                             (nth (b/blurred number distinct-values) idx)
+;                             number)]
+;        [timestamp blurred-number]))
+;    events))
 
 (defn individual-data [individual-events]
   (map
@@ -48,7 +48,7 @@
          :data       (individual-data (get individual->data ikey))})
       individuals)))
 
-(def colors [:red :blue :green :yellow :orange :purple])
+(def colors [:red :yellow :green :aqua :blue :purple])
 
 (defn flot-series-data [label-map meta-data]
   (map

@@ -61,50 +61,38 @@
     background-color: white;
 }
 
-.panel > .panel-heading {
+.cards > .panel > .panel-heading {
+
+    color: black;
 
     &.red {
         background-image: none;
-        background-color: red;
-        color: white;
+        background-color: $red-person;
     }
 
     &.blue {
         background-image: none;
-        background-color: blue;
-        color: white;
+        background-color: $blue-person;
     }
 
     &.green {
         background-image: none;
-        background-color: green;
-        color: white;
+        background-color: $green-person;
     }
 
-    &.orange {
+    &.aqua {
         background-image: none;
-        background-color: orange;
-        color: white;
+        background-color: $aqua-person;
     }
 
     &.purple {
         background-image: none;
-        background-color: purple;
-        color: white;
+        background-color: $purple-person;
     }
 
     &.yellow {
         background-image: none;
-        background-color: yellow;
-        color: black;
+        background-color: $yellow-person;
     }
-
-    &.red {
-        background-image: none;
-        background-color: red;
-        color: white;
-    }
-
-
 
 }

@@ -36,16 +36,16 @@
                                                    :name "Richard"}
                                       :data       [[3 :asbo]]}])
 
-(fact "should turn series meta data into flot series data"
-      (fd/flot-series-data
-        {:asbo 1 :exclusion 2}
-        [{:individual {:idx   0}
-          :data       [[1 :asbo] [2 :exclusion]]}
-         {:individual {:idx   1}
-          :data       [[3 :asbo]]}]) => [{:color :red
-                                          :data  [[1 1] [2 2]]}
-                                         {:color :blue
-                                          :data  [[3 1]]}])
+;(fact "should turn series meta data into flot series data"
+;      (fd/flot-series-data
+;        {:asbo 1 :exclusion 2}
+;        [{:individual {:idx   0}
+;          :data       [[1 :asbo] [2 :exclusion]]}
+;         {:individual {:idx   1}
+;          :data       [[3 :asbo]]}]) => [{:color :red
+;                                          :data  [[1 1] [2 2]]}
+;                                         {:color :blue
+;                                          :data  [[3 1]]}])
 
 
 ;(fact "should create a data series per person"

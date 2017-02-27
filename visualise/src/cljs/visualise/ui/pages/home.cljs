@@ -1,11 +1,12 @@
 (ns visualise.ui.pages.home
   (:require [reagent.core :as r]
-            [visualise.common.results.handler :as h]
+            [visualise.query.handler :as h]
             [visualise.ui.search.search-control :as sc]
             [visualise.ui.results.raw-table :as rt]
             [visualise.ui.results.timeline-flot :refer [timeline-flot]]
+            [visualise.ui.results.individual-cards :as ic]
             [visualise.ui.explore :as e]
-            [visualise.ui.cards.cards-state :as c]))
+            ))
 
 (defonce !app (r/atom {}))
 (defonce !data (r/atom {}))
@@ -29,7 +30,7 @@
 
     [:div.column.container-results.col-md-2
      [:div.column-title "Results"]
-      [c/cards !data]]
+      [ic/cards !data]]
 
     [:div.column.container-timeline.col-md-7
      [:div.column-title "Timeline"]

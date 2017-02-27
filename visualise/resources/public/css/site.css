@@ -5852,31 +5852,23 @@ button.close {
 .container-timeline {
   background-color: white; }
 
-.panel > .panel-heading.red {
-  background-image: none;
-  background-color: red;
-  color: white; }
-.panel > .panel-heading.blue {
-  background-image: none;
-  background-color: blue;
-  color: white; }
-.panel > .panel-heading.green {
-  background-image: none;
-  background-color: green;
-  color: white; }
-.panel > .panel-heading.orange {
-  background-image: none;
-  background-color: orange;
-  color: white; }
-.panel > .panel-heading.purple {
-  background-image: none;
-  background-color: purple;
-  color: white; }
-.panel > .panel-heading.yellow {
-  background-image: none;
-  background-color: yellow;
+.cards > .panel > .panel-heading {
   color: black; }
-.panel > .panel-heading.red {
-  background-image: none;
-  background-color: red;
-  color: white; }
+  .cards > .panel > .panel-heading.red {
+    background-image: none;
+    background-color: #f36624; }
+  .cards > .panel > .panel-heading.blue {
+    background-image: none;
+    background-color: #2e3292; }
+  .cards > .panel > .panel-heading.green {
+    background-image: none;
+    background-color: #8dc702; }
+  .cards > .panel > .panel-heading.aqua {
+    background-image: none;
+    background-color: #01a79d; }
+  .cards > .panel > .panel-heading.purple {
+    background-image: none;
+    background-color: #91278e; }
+  .cards > .panel > .panel-heading.yellow {
+    background-image: none;
+    background-color: #ffc502; }
