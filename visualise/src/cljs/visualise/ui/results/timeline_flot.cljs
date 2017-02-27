@@ -3,7 +3,8 @@
             [cljsjs.flot]
             [cljsjs.flot.plugins.time]
             [cljs-time.core :as t]
-            [visualise.common.ui.flot-data :as fd]))
+            [visualise.common.ui.flot-data :as fd]
+            [visualise.ui.results.selected-event :as se]))
 
 (defn options [m]
   (clj->js
@@ -30,8 +31,18 @@
 (defn flot-render []
   [:div.flot-timeline {:style {:width "100%" :height 500}}])
 
-(defn draw-graph [the-data options]
-  (.plot js/jQuery (js/jQuery ".flot-timeline") (clj->js the-data) options))
+(defonce !item (atom nil))
+(defonce !metad (atom nil))
+
+(defn draw-graph [!data the-data meta-data options]
+  (reset! !metad meta-data)
+  (.plot js/jQuery (js/jQuery ".flot-timeline") (clj->js the-data) options)
+  (.one (js/jQuery ".flot-timeline") "plotclick"
+         (fn [_ _ item]
+           (if item
+             (let [{:keys [dataIndex seriesIndex]} (js->clj item :keywordize-keys true)
+                   event-data (last (nth (:data (nth meta-data seriesIndex)) dataIndex))]
+               (println (:selected-event (swap! !data assoc :selected-event event-data))))))))
 
 (defn draw-with [!data]
   (let [data (:result @!data)
@@ -39,7 +50,7 @@
         meta-data (fd/series-meta data)
         collisions (fd/collision-map data)
         fsd (fd/flot-series-data label-map collisions meta-data)]
-    (draw-graph fsd (options {:yaxis (fd/y-axis (:result @!data))}))))
+    (draw-graph !data fsd meta-data (options {:yaxis (fd/y-axis (:result @!data))}))))
 
 
 (defn flot-component [!data _]
@@ -53,4 +64,6 @@
   (fn []
     (let [results (:result @!data)]
       (when (not-empty results)
-          [flot-component !data (options {:yaxis (fd/y-axis results)})]))))
+        [:div
+          [flot-component !data (options {:yaxis (fd/y-axis results)})]
+          [se/selected-event !data]]))))

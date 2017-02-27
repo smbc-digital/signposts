@@ -28,8 +28,8 @@
 
 (defn individual-data [individual-events]
   (map
-    (fn [{:keys [timestamp event-type]}]
-      [timestamp event-type])
+    (fn [{:keys [timestamp event-type] :as event}]
+      [timestamp event-type event])
     individual-events))
 
 (defn series-meta [data]

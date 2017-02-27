@@ -26,17 +26,33 @@
                                 :position :right
                                 :ticks    [[1 "exclusion"] [2 "asbo"]]})
 
-(fact "should create series-meta-data"
-      (fd/series-meta some-data) => [{:individual {:idx   0
-                                                   :color :red
-                                                   :ikey  {:name "Jim"}
-                                                   :name  "Jim"}
-                                      :data       [[1 :asbo] [2 :exclusion]]}
-                                     {:individual {:idx   1
-                                                   :color :yellow
-                                                   :ikey  {:name "Richard"}
-                                                   :name  "Richard"}
-                                      :data       [[3 :asbo]]}])
+(facts "about series meta data"
+
+       (let [result (fd/series-meta some-data)]
+
+         (fact "should include a set of individuals"
+
+               (map :individual result) => [{:idx   0
+                                             :color :red
+                                             :ikey  {:name "Jim"}
+                                             :name  "Jim"}
+                                            {:idx   1
+                                             :color :yellow
+                                             :ikey  {:name "Richard"}
+                                             :name  "Richard"}])
+
+         (fact "series meta data should include all event payload"
+               (let [event {:timestamp    1
+                            :event-source :gmp
+                            :event-type   :asbo
+                            :name         "Jim"
+                            :payload-1    "argh"
+                            :payload-2    "urgh"}]
+                 (fd/series-meta [event]) => [{:individual {:idx   0
+                                                            :color :red
+                                                            :ikey  {:name "Jim"}
+                                                            :name  "Jim"}
+                                               :data       [[1 :asbo (merge {:ikey {:name "Jim"}} event)]]}]))))
 
 (fact "should create collisions map with no entries if there are no collisions"
       (fd/collision-map some-data) => {})
