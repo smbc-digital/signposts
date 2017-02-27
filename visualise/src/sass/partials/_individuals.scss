@@ -1,0 +1,30 @@
+.cards > .panel > .panel-heading {
+
+  color: black;
+  background-image: none;
+
+  &.red {
+    background-color: $base-red;
+  }
+
+  &.blue {
+    background-color: $base-blue;
+  }
+
+  &.green {
+    background-color: $base-green;
+  }
+
+  &.aqua {
+    background-color: $base-aqua;
+  }
+
+  &.purple {
+    background-color: $base-purple;
+  }
+
+  &.yellow {
+    background-color: $base-yellow;
+  }
+
+}

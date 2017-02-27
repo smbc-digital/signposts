@@ -27,46 +27,49 @@
                                 :ticks    [[1 "exclusion"] [2 "asbo"]]})
 
 (fact "should create series-meta-data"
-      (fd/series-meta some-data) => [{:individual {:idx  0
-                                                   :ikey {:name "Jim"}
-                                                   :name "Jim"}
+      (fd/series-meta some-data) => [{:individual {:idx   0
+                                                   :color :red
+                                                   :ikey  {:name "Jim"}
+                                                   :name  "Jim"}
                                       :data       [[1 :asbo] [2 :exclusion]]}
-                                     {:individual {:idx  1
-                                                   :ikey {:name "Richard"}
-                                                   :name "Richard"}
+                                     {:individual {:idx   1
+                                                   :color :yellow
+                                                   :ikey  {:name "Richard"}
+                                                   :name  "Richard"}
                                       :data       [[3 :asbo]]}])
 
-;(fact "should turn series meta data into flot series data"
-;      (fd/flot-series-data
-;        {:asbo 1 :exclusion 2}
-;        [{:individual {:idx   0}
-;          :data       [[1 :asbo] [2 :exclusion]]}
-;         {:individual {:idx   1}
-;          :data       [[3 :asbo]]}]) => [{:color :red
-;                                          :data  [[1 1] [2 2]]}
-;                                         {:color :blue
-;                                          :data  [[3 1]]}])
+(fact "should create collisions map with no entries if there are no collisions"
+      (fd/collision-map some-data) => {})
 
+(fact "should create collisions map with collisions"
+      (fd/collision-map [{:event-type :asbo :timestamp 1} {:event-type :asbo :timestamp 1}]) => {{:event-type :asbo :timestamp 1} 2})
 
-;(fact "should create a data series per person"
-;      (fd/series-data :name some-data) => [{:data [[1 2] [2 1]]}
-;                                           {:data [[3 2]]}])
-;
-;; when two people have the same event type recorded on the same day they will be plotted directly
-;; on top of each other unless we adjust the data to create a spread on the y axis
-;(fact "should adjust the series data to disambiguate collisions of series on the same day"
-;      (let [result
-;            (fd/series-data :name [{:timestamp    1
-;                                    :event-source :gmp
-;                                    :event-type   :asbo
-;                                    :name         "Jim"}
-;                                   {:timestamp    1
-;                                    :event-source :gmp
-;                                    :event-type   :asbo
-;                                    :name         "Richard"}])]
-;        (first (:data (first result))) => (just [1 (roughly 0.975 0.001)])
-;        (first (:data (last result))) => (just [1 (roughly 1.025 0.001)])))
-;
+(fact "should turn series meta data into flot series data"
+      (fd/flot-series-data
+        {:asbo 1 :exclusion 2}
+        {}
+        [{:individual {:idx   0
+                       :color :red}
+          :data       [[1 :asbo] [2 :exclusion]]}
+         {:individual {:idx   1
+                       :color :yellow}
+          :data       [[3 :asbo]]}]) => [{:color "#f36624"
+                                          :data  [[1 1] [2 2]]}
+                                         {:color "#ffc502"
+                                          :data  [[3 1]]}])
+
+; when two people have the same event type recorded on the same day they will be plotted directly
+; on top of each other unless we adjust the data to create a spread on the y axis
+(fact "should adjust the series data to disambiguate collisions of series on the same day"
+      (let [result (fd/flot-series-data
+                     {:asbo 1 :exclusion 2}
+                     {{:event-type :asbo :timestamp 1} 2}
+                     [{:individual {:idx 0}
+                       :data       [[1 :asbo]]}
+                      {:individual {:idx 1}
+                       :data       [[1 :asbo]]}])]
+        (first (:data (first result))) => (just [1 (roughly 0.975 0.001)])
+        (first (:data (last result))) => (just [1 (roughly 1.025 0.001)])))
 
 
 

@@ -1,6 +1,10 @@
-$red-person:     #f36624;
-$yellow-person:  #ffc502;
-$green-person:   #8dc702;
-$aqua-person:    #01a79d;
-$blue-person:    #2e3292;
-$purple-person:  #91278e;
+// these colors correspond to colors defined in Clojure at
+// sonar/visualise/src/cljc/visualise/common/ui/colors.cljc
+
+$base-black:   #000000;
+$base-red:     #f36624;
+$base-yellow:  #ffc502;
+$base-green:   #8dc702;
+$base-aqua:    #01a79d;
+$base-blue:    #2e3292;
+$base-purple:  #91278e;

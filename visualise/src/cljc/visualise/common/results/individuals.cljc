@@ -1,5 +1,11 @@
 (ns visualise.common.results.individuals
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [visualise.common.ui.colors :as c]))
+
+(defn individual-color [number-of-individuals]
+  (if (> number-of-individuals (count c/color-priority))
+    (fn [_] :black)
+    (fn [idx] (c/color idx))))
 
 (def individual-keys [:name :dob :address])
 
@@ -11,8 +17,12 @@
   (group-by :ikey (map (fn [m] (assoc m :ikey (individual-group-fn m))) events)))
 
 (defn individuals [events]
-  (map-indexed
-    (fn [idx m]
-      (merge m {:idx   idx
-                :ikey  (select-keys m individual-keys)}))
-    (vec (sort-by surname (set (map #(select-keys % individual-keys) events))))))
+  (let [individuals (vec (sort-by surname (set (map #(select-keys % individual-keys) events))))
+        color (individual-color (count individuals))]
+    (map-indexed
+      (fn [idx m]
+        (merge m {:idx   idx
+                  :color (color idx)
+                  :ikey  (select-keys m individual-keys)}))
+      individuals)))
+

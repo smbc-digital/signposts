@@ -60,39 +60,3 @@
 .container-timeline {
     background-color: white;
 }
-
-.cards > .panel > .panel-heading {
-
-    color: black;
-
-    &.red {
-        background-image: none;
-        background-color: $red-person;
-    }
-
-    &.blue {
-        background-image: none;
-        background-color: $blue-person;
-    }
-
-    &.green {
-        background-image: none;
-        background-color: $green-person;
-    }
-
-    &.aqua {
-        background-image: none;
-        background-color: $aqua-person;
-    }
-
-    &.purple {
-        background-image: none;
-        background-color: $purple-person;
-    }
-
-    &.yellow {
-        background-image: none;
-        background-color: $yellow-person;
-    }
-
-}

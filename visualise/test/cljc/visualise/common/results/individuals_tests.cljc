@@ -21,6 +21,7 @@
 
 (fact "should group data into individuals by name, dob and address, ordered by surname"
       (i/individuals some-data) => [{:idx     0
+                                     :color   :red
                                      :ikey    {:name    "Zeshan Aardvark"
                                                :dob     2
                                                :address "Cockney"}
@@ -28,6 +29,7 @@
                                      :dob     2
                                      :address "Cockney"}
                                     {:idx     1
+                                     :color   :yellow
                                      :ikey    {:name    "Richard Sarky"
                                                :dob     3
                                                :address "Whippets"}
@@ -35,6 +37,7 @@
                                      :dob     3
                                      :address "Whippets"}
                                     {:idx     2
+                                     :color   :green
                                      :ikey    {:name    "Jim Zelda"
                                                :dob     1
                                                :address "Brummie"}

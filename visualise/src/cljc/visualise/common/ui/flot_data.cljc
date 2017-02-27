@@ -1,15 +1,20 @@
 (ns visualise.common.ui.flot-data
   (:require [visualise.common.util.blur :as b]
-            [visualise.common.results.individuals :as i]))
+            [visualise.common.results.individuals :as i]
+            [visualise.common.ui.colors :as c]))
 
 (defn label-map [data]
   (zipmap (reverse (sort (into #{} (map :event-type data)))) (rest (range))))
 
 (defn collision-map [data]
-  (group-by #(select-keys % [:event-type :timestamp]) data))
+  (reduce
+    merge {}
+    (filter (fn [[_ v]] (> v 1))
+            (map
+              (fn [[k v]]
+                [k (count v)])
+              (group-by #(select-keys % [:event-type :timestamp]) data)))))
 
-(defn collision-count [collision-map event-type timestamp]
-  (count (get collision-map {:event-type event-type :timestamp timestamp})))
 
 (defn y-axis-label-map [event-types]
   (reduce merge {} (map-indexed (fn [idx et] {et (+ idx 1)}) (reverse (sort event-types)))))
@@ -20,18 +25,6 @@
      :max      (+ 1 (count labels))
      :position :right
      :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
-
-
-;(defn data-points [collisions idx labels events]
-;  (map
-;    (fn [{:keys [event-type timestamp]}]
-;      (let [number (get labels event-type)
-;            distinct-values (collision-count collisions event-type timestamp)
-;            blurred-number (if (> distinct-values 1)
-;                             (nth (b/blurred number distinct-values) idx)
-;                             number)]
-;        [timestamp blurred-number]))
-;    events))
 
 (defn individual-data [individual-events]
   (map
@@ -48,11 +41,24 @@
          :data       (individual-data (get individual->data ikey))})
       individuals)))
 
-(def colors [:red :yellow :green :aqua :blue :purple])
+(defn collision-count [collision-map event-type timestamp]
+  (or (get collision-map {:event-type event-type :timestamp timestamp}) 1))
 
-(defn flot-series-data [label-map meta-data]
+(defn data-points [collisions idx labels events]
   (map
-    (fn [{{:keys [idx]} :individual data :data}]
-      {:color (or (get colors idx) :black)
-       :data  (map (fn [[k v]] [k (get label-map v)]) data)})
+    (fn [[timestamp event-type]]
+      (let [number (get labels event-type)
+            distinct-values (collision-count collisions event-type timestamp)
+            blurred-number (if (> distinct-values 1)
+                             (nth (b/blurred number distinct-values) idx)
+                             number)]
+        [timestamp blurred-number]))
+    events))
+
+(defn flot-series-data [label-map collisions meta-data]
+  (map
+    (fn [{{:keys [idx color]} :individual data :data}]
+      {:color (get c/color-map color)
+       :data  (data-points collisions idx label-map data)
+       })
     (sort-by #(get-in % [:individual :idx]) meta-data)))

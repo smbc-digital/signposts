@@ -6,10 +6,10 @@
       (when (not-empty individuals)
         [:div.cards
          (map
-           (fn [{:keys [idx name dob address]}]
+           (fn [{:keys [color name dob address]}]
              ^{:key (gensym)}
              [:div.panel.panel-default
-              [:div.panel-heading name]
+              [:div.panel-heading {:class color} name]
               [:div.panel-body
                [:p dob]
                [:p address]]])
