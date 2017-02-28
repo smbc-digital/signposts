@@ -43,7 +43,13 @@
        (fact "leaves existing postcode field in place if provided"
              (let [result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
                                                                  :postcode "SK2 2AA"}})]
-               (get-in result [:data :postcode]) => "SK2 2AA")))
+               (get-in result [:data :postcode]) => "SK2 2AA"))
+
+       (fact "enhance if provided field is empty but address contains postcode"
+             (let [result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
+                                                                 :postcode nil}})]
+               (get-in result [:data :postcode]) => "SK1 1AB"))
+       )
 
 
 

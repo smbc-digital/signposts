@@ -2,6 +2,9 @@
   (:require [midje.sweet :refer :all]
             [gov.stockport.sonar.ingest.util.postcode :as postcode]))
 
+(fact "should handle nil postcodes"
+      (postcode/extract nil) => nil)
+
 (fact "should extract postcode from string"
       (postcode/extract "123 Stockport Road, SK1 1AB") => "SK1 1AB"
       (postcode/extract "123 Stockport Road, SK1 1AB, England") => "SK1 1AB"

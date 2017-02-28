@@ -26,6 +26,6 @@
       (fix-dob)))
 
 (defn enhance [event]
-  (if (contains? (:data event) :postcode)
+  (if (not (nil? (get-in event [:data :postcode])))
       event
       (assoc-in event [:data :postcode] (p/extract (get-in event [:data :address])))))
