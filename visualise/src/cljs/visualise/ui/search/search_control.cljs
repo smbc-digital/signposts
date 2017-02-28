@@ -6,8 +6,9 @@
 (def target-value (fn [elem] (-> elem .-target .-value)))
 
 (defn selected-field [!state control-id {:keys [get-selected-field set-selected-field]}]
-  [:select {:value     (get-selected-field)
-            :on-change #(set-selected-field (target-value %))}
+  [:select.input-lg
+   {:value     (get-selected-field)
+    :on-change #(set-selected-field (target-value %))}
    (map
      (fn [{:keys [target description]}]
        ^{:key target}
@@ -19,10 +20,12 @@
     (fn [{:keys [get-placeholder get-query set-query on-remove] :as sc}]
       [:div.panel.criteria-box
        [:div.panel-body
-        [:div.btn-group
+
+        [:div.form-group
          [selected-field !state control-id sc]
-         [:button.btn.btn-default.pull-right {:type :button :on-click on-remove} [:i.fa.fa-times]]
-         [:input.col-sm-12
+         [:button.input-lg.btn.btn-default.remove-criteria.pull-right {:type :button :on-click on-remove} [:i.fa.fa-times]]]
+        [:div.form-group
+         [:input.input-lg.col-sm-12
           {:type        :text
            :value       (get-query)
            :placeholder (get-placeholder)
@@ -30,17 +33,27 @@
          ]]])
     (state/get-all-search-criteria !state control-id)))
 
+(defn add-criteria-button [on-click]
+  [:div.form-group
+    [:button.btn.btn-block.add-criteria
+     {:on-click on-click}
+     [:div
+      [:i.fa.fa-plus.fa-2x.pull-left]
+      [:p "Add Criteria"]]]])
+
+(defn search-button [on-click]
+  [:div.form-group
+   [:button.btn.btn-block.search
+    {:on-click on-click}
+    [:div
+     [:i.fa.fa-search.fa-2x.pull-left]
+     [:p "Search"]]]])
+
 (defn search-control [!state query-handler]
   (let [control-id (gensym "search-control-")]
     (state/init-search-control !state control-id)
     (fn []
-      `[:div
+      `[:div.search-control
         ~@(search-criteria !state control-id)
-        ~[:div.form-group.col-sm-12
-          [:button.btn.col-sm-12.add-criteria
-           {:on-click #(state/add-search-criteria !state control-id)}
-           [:i.fa.fa-plus.pull-left] "Add search criteria"]]
-        ~[:div.form-group.col-sm-12
-          [:button.btn.btn-primary.col-sm-12.search
-           {:on-click #(search (query/extract-query (state/get-all-search-criteria !state control-id)) query-handler)}
-           [:i.fa.fa-search-plus.pull-left] "Search"]]])))
+        ~[add-criteria-button #(state/add-search-criteria !state control-id)]
+        ~[search-button #(search (query/extract-query (state/get-all-search-criteria !state control-id)) query-handler)]])))

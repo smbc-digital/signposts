@@ -8,6 +8,10 @@
     min-height: 100%;
     height: 100%;
 
+    .stockport {
+      background-color: $sp-dark-green;
+    }
+
     .column-title {
 
       &.search-by {
@@ -40,16 +44,7 @@
 
       .panel-heading {
         background-color: $sp-green;
-
-        button {
-          margin-top: -7px;
-        }
       }
-
-      .form-control {
-        margin-top: 10px;
-      }
-
     }
   }
 }
@@ -58,21 +53,44 @@
   background-color: $sp-green;
   height: 100vh;
 
-  .btn.add-criteria {
-    background-color: $add-criteria;
-    color: white;
-    &:hover {
-      color: black;
+  .search-control {
+
+    .btn {
+
+      div {
+        padding-top: 7px;
+      }
+
+      p {
+        font-size: 1.4em;
+      }
+
+      &.add-criteria {
+        background-color: $add-criteria;
+        color: white;
+        &:hover {
+          color: black;
+        }
+      }
+
+      &.remove-criteria {
+        background-color: $add-criteria;
+        color: white;
+        &:hover {
+          color: black;
+        }
+      }
+
+      &.search {
+        background-color: $search;
+        color: white;
+        &:hover {
+          color: black;
+        }
+      }
     }
   }
 
-  .btn.search {
-    background-color: $search;
-    color: white;
-    &:hover {
-      color: black;
-    }
-  }
 
 }
 

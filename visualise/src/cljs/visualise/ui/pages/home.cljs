@@ -11,22 +11,19 @@
 (defn home-page []
   [:div.container-fluid.header
    [:div.row
-    [:nav.navbar-default {:role "navigation"}
-     [:div.container-fluid
-      [:div.navbar-header.stockport.col-md-3
-       [:a.navbar-brand {:href "#"} "Stockport MBC"]]
-      [:div.navbar-header
-       [:a.navbar-brand {:href "#"} "SIGNPOSTS"]]
-      ]]]
+    [:div.column.col-sm-3.stockport
+     [:a.navbar-brand {:href "#"} "Stockport MBC"]]
+    [:div.column.col-sm-9
+     [:a.navbar-brand {:href "#"} "SIGNPOSTS"]]]
 
    [:div.row.body
-    [:div.column.container-criteria.col-md-3
+    [:div.column.container-criteria.col-sm-3
      [:div.column-title.search-by "SEARCH BY"]
      [sc/search-control !app (h/default-handler !data)]]
 
-    [:div.column.container-results.col-md-2
+    [:div.column.container-results.col-sm-2
      [:div.column-title "RESULTS"]
      [ic/cards !data]]
 
-    [:div.column.container-timeline.col-md-7
+    [:div.column.container-timeline.col-sm-7
      [tr/results-tabs !data]]]])

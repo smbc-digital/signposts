@@ -45,9 +45,6 @@
 (defn remove-search-control [!state control-id]
   (swap! !state update-in (drop-last (path control-id)) dissoc control-id))
 
-(defn reset-search-control [!state control-id]
-  (swap! !state assoc-in (path control-id) initial-state))
-
 (defn available-fields [!state control-id]
   (get-in @!state (path control-id :available-fields)))
 
@@ -87,7 +84,7 @@
 (defn add-search-criteria [!state control-id]
   (swap! !state update-in (path control-id :search-criteria)
          (fn [m]
-           (let [sc-id (keyword (gensym "search-criteria-"))]
+           (let [sc-id (count m)]
              (assoc m sc-id (create-search-criteria !state control-id sc-id))))))
 
 (defn get-all-search-criteria [!state control-id]

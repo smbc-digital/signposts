@@ -27,6 +27,6 @@
   (reduce
     criteria-to-query
     (-> (qb/query)
-        (qb/with-size 25))
+        (qb/with-size 250))
     search-criteria))
 
