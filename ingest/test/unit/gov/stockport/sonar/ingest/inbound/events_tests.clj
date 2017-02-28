@@ -33,3 +33,17 @@
        (fact "leaves dob when it cannot be parsed"
              (let [result (events/normalise {:line-number 1 :data {:dob "unk"}})]
                (get-in result [:data :dob]) => "unk")))
+
+(facts "about enhancing events"
+
+       (fact "adds postcode field if none exist"
+             (let [result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"}})]
+               (get-in result [:data :postcode]) => "SK1 1AB"))
+
+       (fact "leaves existing postcode field in place if provided"
+             (let [result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
+                                                                 :postcode "SK2 2AA"}})]
+               (get-in result [:data :postcode]) => "SK2 2AA")))
+
+
+

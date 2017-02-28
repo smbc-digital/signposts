@@ -19,6 +19,7 @@
         (let [{:keys [queue]} (buffer/create-buffer {:capacity 2 :flush-fn flusher :feed-hash ..feed-hash..})]
           (queue ..event-one..) => {:capacity 2 :qty 1 :feed-hash ..feed-hash.. :events [..event-one..]}
           (queue ..event-two..) => {:capacity 2 :qty 2 :feed-hash ..feed-hash.. :events [..event-one.. ..event-two..]}
+          @!flushed => [..event-one.. ..event-two..]
           (queue ..event-three..) => {:capacity 2 :qty 1 :feed-hash ..feed-hash.. :events [..event-three..]}
           @!flushed => [..event-one.. ..event-two..]))
 

@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.ingest.utils.dates-tests
+(ns gov.stockport.sonar.ingest.util.dates-tests
   (:require [midje.sweet :refer :all]
             [clj-time.core :as t]
             [clj-time.format :as f]
