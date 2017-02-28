@@ -7,11 +7,12 @@
             (update :timestamp parse-timestamp))
        (map :_source (-> response :hits :hits))))
 
-(defn default-handler [!state]
+(defn default-handler [!data]
   (fn [response]
-    (swap! !state #(-> %
-                       (assoc :total (-> response :hits :total))
-                       (assoc :took-millis (-> response :took))
-                       (assoc :result (source-events response))))
-    (swap! !state #(-> %
-                       (assoc :individuals (i/individuals (:result %)))))))
+    (swap! !data #(-> %
+                      (assoc :total (-> response :hits :total))
+                      (assoc :took-millis (-> response :took))
+                      (assoc :result (source-events response))
+                      (dissoc :point :selected-event)))
+    (swap! !data #(-> %
+                      (assoc :individuals (i/individuals (:result %)))))))

@@ -31,18 +31,21 @@
 (defn flot-render []
   [:div.flot-timeline {:style {:width "100%" :height 500}}])
 
-(defonce !item (atom nil))
-(defonce !metad (atom nil))
+(defonce !item (atom {}))
+(defonce !metad (atom {}))
 
 (defn draw-graph [!data the-data meta-data options]
   (reset! !metad meta-data)
-  (.plot js/jQuery (js/jQuery ".flot-timeline") (clj->js the-data) options)
-  (.one (js/jQuery ".flot-timeline") "plotclick"
-         (fn [_ _ item]
-           (if item
-             (let [{:keys [dataIndex seriesIndex]} (js->clj item :keywordize-keys true)
-                   event-data (last (nth (:data (nth meta-data seriesIndex)) dataIndex))]
-               (println (:selected-event (swap! !data assoc :selected-event event-data))))))))
+  (let [flot (.plot js/jQuery (js/jQuery ".flot-timeline") (clj->js the-data) options)]
+    (if-let [{:keys [seriesIndex dataIndex]} (:point @!data)]
+      (.highlight flot seriesIndex dataIndex))
+    (.one (js/jQuery ".flot-timeline") "plotclick"
+          (fn [_ _ item]
+            (if item
+              (let [{:keys [datapoint dataIndex seriesIndex]} (js->clj item :keywordize-keys true)
+                    event-data (last (nth (:data (nth meta-data seriesIndex)) dataIndex))]
+                (:selected-event (swap! !data assoc :selected-event event-data))
+                (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex})))))))
 
 (defn draw-with [!data]
   (let [data (:result @!data)
@@ -65,5 +68,5 @@
     (let [results (:result @!data)]
       (when (not-empty results)
         [:div
-          [flot-component !data (options {:yaxis (fd/y-axis results)})]
-          [se/selected-event !data]]))))
+         [flot-component !data (options {:yaxis (fd/y-axis results)})]
+         [se/selected-event !data]]))))

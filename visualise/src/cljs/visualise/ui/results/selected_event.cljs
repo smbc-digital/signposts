@@ -2,8 +2,7 @@
 
 (defn selected-event [!data]
   (fn []
-    (let [selected (:selected-event @!data)
-          _ (println selected)]
+    (let [selected (:selected-event @!data)]
       (when (not-empty selected)
         (let [{:keys [name dob address timestamp event-type ]} selected]
           [:div.selected-event
