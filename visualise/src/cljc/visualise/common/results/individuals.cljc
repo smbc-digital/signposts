@@ -7,7 +7,7 @@
     (fn [_] :black)
     (fn [idx] (c/color idx))))
 
-(def individual-keys [:name :dob :address])
+(def individual-keys [:name :dob :address :postcode])
 
 (def individual-group-fn #(select-keys % individual-keys))
 

@@ -5,10 +5,12 @@
 (def some-data [{:name       "Jim Zelda"
                  :dob        1
                  :address    "Brummie"
+                 :postcode   "B1 1TS"
                  :event-data "baltis"}
                 {:name       "Jim Zelda"
                  :dob        1
                  :address    "Brummie"
+                 :postcode   "B1 1TS"
                  :event-data "weird accent"}
                 {:name       "Zeshan Aardvark"
                  :dob        2
@@ -36,11 +38,13 @@
                                      :name    "Richard Sarky"
                                      :dob     3
                                      :address "Whippets"}
-                                    {:idx     2
-                                     :color   :green
-                                     :ikey    {:name    "Jim Zelda"
-                                               :dob     1
-                                               :address "Brummie"}
-                                     :name    "Jim Zelda"
-                                     :dob     1
-                                     :address "Brummie"}])
+                                    {:idx      2
+                                     :color    :green
+                                     :ikey     {:name     "Jim Zelda"
+                                                :dob      1
+                                                :postcode "B1 1TS"
+                                                :address  "Brummie"}
+                                     :name     "Jim Zelda"
+                                     :dob      1
+                                     :postcode "B1 1TS"
+                                     :address  "Brummie"}])
