@@ -35,6 +35,18 @@
         (:query query) => (:query (-> {}
                                       (qb/with-age-less-than :dob 22)))))
 
+(fact "should handle all fields query"
+      (let [query (query/extract-query [{:get-query      (supply "SK2")
+                                         :get-field-type (supply :query-all)}])]
+        (:query query) => (:query (-> {}
+                                      (qb/with-query-string "SK2")))))
+
+(fact "should handle address query"
+      (let [query (query/extract-query [{:get-query      (supply "SK2")
+                                         :get-field-type (supply :address-with-postcode)}])]
+        (:query query) => (:query (-> {}
+                                      (qb/with-address "SK2")))))
+
 
 (fact "should handle age-more-than search criteria"
       (let [query (query/extract-query [{:get-field-name (supply :dob)

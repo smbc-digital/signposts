@@ -21,6 +21,9 @@
 (defn should [qip clause]
   (add-to qip [:query :bool :should] clause))
 
+(defn should [qip clause]
+  (add-to qip [:query :bool :should] clause))
+
 (defn with-query-string [qip qs]
   (must qip {:query_string {:query qs :default_field "_all"}}))
 
@@ -38,3 +41,8 @@
 
 (defn with-age-more-than [qip term value]
   (must qip {:range {term {:lte (str "now-" value "y")}}}))
+
+(defn with-address [qip value]
+  (-> qip
+      (should {:match {:address value}})
+      (should {:match {:postcode value}})))

@@ -15,6 +15,10 @@
   [qip {:keys [get-query]}]
   (qb/with-query-string qip (get-query)))
 
+(defmethod criteria-to-query :address-with-postcode
+  [qip {:keys [get-query]}]
+  (qb/with-address qip (get-query)))
+
 (defmethod criteria-to-query :default
   [qip {:keys [get-query get-field-name]}]
   (qb/with-match qip (get-field-name) (get-query)))

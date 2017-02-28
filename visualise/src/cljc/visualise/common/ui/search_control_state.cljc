@@ -7,7 +7,7 @@
                                         :placeholder "search for name"}
                                        {:target      :address
                                         :field-name  :address
-                                        :field-type  :match-text
+                                        :field-type  :address-with-postcode
                                         :description "Address"
                                         :placeholder "search for address"}
                                        {:target      :age-less-than
