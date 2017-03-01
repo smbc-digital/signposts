@@ -13,15 +13,12 @@
 
 (def !creds (atom {:username "elastic" :password "changeme"}))
 
-(defn authorisation-header []
-  {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
-
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]
-   (POST (str "http://localhost:9200" url)
-         {:headers         (authorisation-header)
-          :format          :json
+   (POST (str "/elasticsearch" url)
+         {:format          :json
+          :content-type    :json
           :response-format :json
           :keywords?       true
           :handler         (fn [response] (handler response))
@@ -33,13 +30,11 @@
 (defn fetch [url]
   (let [chan (timeout 2000)]
     (GET (str "" url)
-         {:headers         (authorisation-header)
-          :format          :json
+         {:format          :json
           :response-format :json
           :keywords?       true
           :handler         (fn [response] (go (>! chan response)))})
-  chan))
-
+    chan))
 
 (defonce !mappings (r/atom {}))
 
@@ -55,7 +50,6 @@
          {:size 0
           :aggs {:event-sources {:terms {:field :event-source.keyword :size 100}}}}
          #(reset! !mappings %)))
-
 
 (defn properties [event-type m]
   (let [props (get-in m [:mappings event-type :properties])]
