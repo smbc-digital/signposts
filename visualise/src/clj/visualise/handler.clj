@@ -1,9 +1,8 @@
 (ns visualise.handler
-  (:require [compojure.core :refer [GET ANY defroutes]]
+  (:require [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [visualise.middleware :refer [wrap-middleware]]
-            [visualise.esproxy :refer [esproxy]]
             [config.core :refer [env]]))
 
 (def mount-target
@@ -40,7 +39,6 @@
   (GET "/" [] (loading-page))
   (GET "/wip" [] (loading-page))
   (GET "/cards" [] (cards-page))
-  (ANY "/elasticsearch/*" [] esproxy)
   (resources "/")
   (not-found "Not Found"))
 

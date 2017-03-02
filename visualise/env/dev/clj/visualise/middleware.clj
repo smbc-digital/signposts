@@ -5,6 +5,6 @@
 
 (defn wrap-middleware [handler]
   (-> handler
-      ;(wrap-defaults site-defaults)
+      (wrap-defaults site-defaults)
       wrap-exceptions
       wrap-reload))
