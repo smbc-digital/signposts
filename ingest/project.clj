@@ -17,9 +17,12 @@
                  [pandect "0.6.1"]
                  [semantic-csv "0.1.0"]
                  [overtone/at-at "1.2.0"]
+                 [faker "0.2.2"]
                  [levand/immuconf "0.1.0"]]
 
   :main gov.stockport.sonar.ingest
+
+  :source-paths ["src" "test/utils"]
 
   :test-paths ["test/utils" "test/unit" "test/integration"]
 
