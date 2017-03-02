@@ -29,14 +29,14 @@
              :exclusions [org.clojure/clojure]]
             [lein-doo "0.1.7"]]
 
-  :ring {:handler      visualise.handler/app
+  :ring {:handler      gov.stockport.sonar.visualise.handler/app
          :uberwar-name "visualise.war"}
 
   :min-lein-version "2.5.0"
 
   :uberjar-name "visualise.jar"
 
-  :main visualise.server
+  :main gov.stockport.sonar.visualise.server
 
   :clean-targets ^{:protect false}
 [:target-path
@@ -72,7 +72,7 @@
             :test
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs" "test/cljs"]
              :compiler
-                           {:main          "visualise.runner"
+                           {:main          "gov.stockport.sonar.visualise.runner"
                             :output-to     "target/cljsbuild/public/js/testable.js"
                             :source-map    true
                             :optimizations :none
@@ -81,7 +81,7 @@
             :devcards
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
              :figwheel     {:devcards true}
-             :compiler     {:main                 "visualise.cards"
+             :compiler     {:main                 "gov.stockport.sonar.visualise.cards"
                             :asset-path           "js/devcards_out"
                             :output-to            "target/cljsbuild/public/js/app_devcards.js"
                             :output-dir           "target/cljsbuild/public/js/devcards_out"
@@ -98,12 +98,12 @@
              :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"
                                 ]
              :css-dirs         ["resources/public/css"]
-             :ring-handler     visualise.handler/app}
+             :ring-handler     gov.stockport.sonar.visualise.handler/app}
 
   :sass {:src "src/sass"
          :dst "resources/public/css"}
 
-  :profiles {:dev       {:repl-options {:init-ns          visualise.repl
+  :profiles {:dev       {:repl-options {:init-ns          gov.stockport.sonar.visualise.repl
                                         :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
                          :dependencies [[ring/ring-mock "0.3.0"]
