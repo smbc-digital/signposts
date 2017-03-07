@@ -1,0 +1,2 @@
+; common configuration goes in here
+{:elastic-search   {:url      "http://localhost:9200"}}
