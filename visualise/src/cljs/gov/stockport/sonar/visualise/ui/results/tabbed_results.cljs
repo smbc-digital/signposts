@@ -8,8 +8,8 @@
     (fn []
       [:div
        [:ul.nav.nav-tabs
-        [:li (if (= :timeline @!selected) {:class :active}) [:a {:on-click #(reset! !selected :timeline)} "TIMELINES"]]
-        [:li (if (= :raw-data @!selected) {:class :active}) [:a {:on-click #(reset! !selected :raw-data)} "RAW DATA"]]]
+        [:li (if (= :timeline @!selected) {:class :active}) [:a.results-title {:on-click #(reset! !selected :timeline)} "TIMELINES"]]
+        [:li (if (= :raw-data @!selected) {:class :active}) [:a.results-title {:on-click #(reset! !selected :raw-data)} "RAW DATA"]]]
        (if (= :timeline @!selected)
          [timeline-flot !data]
          [rt/raw-table !data])])))

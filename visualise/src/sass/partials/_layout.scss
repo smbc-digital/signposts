@@ -97,10 +97,18 @@
 }
 
 .stockport {
+  height: 8.8%;
   background-color: $sp-dark-green;
+  width: 24.6%;
 }
 
+
+
 .col-sm-9 {
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #c5d2e3;
   background-color: #f3f7fa;
 }
 
@@ -112,7 +120,7 @@
 
 .panel-group {
   width: 100%;
-  position: relative;
+  //position: relative;
   overflow: hidden;
 }
 
@@ -185,3 +193,35 @@
 //  background-color: violet;
 //}
 
+.fa.fa-map-signs {
+  color:  #486573;
+  //margin-right: .3em;
+  //margin-top: .3em;
+  //margin-bottom: .3em;
+  font-size: 36px;/* Approximation due to font substitution */
+  font-weight: 400;
+  text-align: left;
+}
+
+.title {
+  margin-top: .3em;
+  color:  #486573;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 4.8px;
+  text-align: left;
+}
+
+.results-title {
+  color:  #476575;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  line-height: 37px;
+  text-align: left;
+}
+
+.logo {
+  width: 45.6%;
+  //height: 9.6%;
+}

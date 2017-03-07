@@ -3681,7 +3681,8 @@ tbody.collapse.in {
   position: relative;
   min-height: 50px;
   margin-bottom: 20px;
-  border: 1px solid transparent; }
+  border: 1px solid transparent;
+  height: 8.8%; }
   .navbar:before, .navbar:after {
     content: " ";
     display: table; }
@@ -3784,7 +3785,7 @@ tbody.collapse.in {
   padding: 15px 15px;
   font-size: 18px;
   line-height: 20px;
-  height: 50px; }
+  height: 8.8%; }
   .navbar-brand:hover, .navbar-brand:focus {
     text-decoration: none; }
   .navbar-brand > img {
@@ -5870,9 +5871,15 @@ button.close {
       color: black; }
 
 .stockport {
-  background-color: #1d2932; }
+  height: 8.8%;
+  background-color: #1d2932;
+  width: 24.6%; }
 
 .col-sm-9 {
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #c5d2e3;
   background-color: #f3f7fa; }
 
 .selected-event {
@@ -5882,7 +5889,6 @@ button.close {
 
 .panel-group {
   width: 100%;
-  position: relative;
   overflow: hidden; }
 
 .event-details {
@@ -5915,6 +5921,32 @@ button.close {
 
 .container-timeline {
   background-color: white; }
+
+.fa.fa-map-signs {
+  color: #486573;
+  font-size: 36px;
+  /* Approximation due to font substitution */
+  font-weight: 400;
+  text-align: left; }
+
+.title {
+  margin-top: .3em;
+  color: #486573;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 4.8px;
+  text-align: left; }
+
+.results-title {
+  color: #476575;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  line-height: 37px;
+  text-align: left; }
+
+.logo {
+  width: 45.6%; }
 
 .cards > .panel > .panel-heading {
   color: black;
