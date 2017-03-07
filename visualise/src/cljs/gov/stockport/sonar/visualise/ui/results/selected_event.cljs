@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.visualise.ui.results.selected-event
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [reagent.core :as r]))
 
 
 (def standard-keys [:name :dob :address :postcode])
@@ -17,10 +18,26 @@
   (fn []
     (let [selected (:selected-event @!data)]
       (when (not-empty selected)
+        (println "Selected")
         [:div.selected-event
-         [:div.panel.panel-default
-          [:div.panel-heading "SELECTED EVENT"]
+         [:div.panel-group
+         [:div.panel.panel-default.event-details
+          [:div.panel-heading"SELECTED EVENT"]
           [:div.panel-body
-           [:table.table-striped.table-condensed.results
+           [:table.table-striped.table-condensed.results.selected-results
             `[:tbody
-              ~@(rows selected)]]]]]))))
+              ~@(rows selected)]
+            (println selected)
+           ] ]]
+          [:div.panel.panel-default.contact-panel
+           [:div.panel-heading.contact-heading "CONTACT"]
+           [:div.panel-body
+            [:p "System"]
+            [:p "Name"]
+            [:p "Number"]
+            [:p "Email"]
+            ]]
+
+          ]
+         ]
+        ))))

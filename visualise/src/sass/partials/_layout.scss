@@ -8,9 +8,11 @@
     min-height: 100%;
     height: 100%;
 
-    .stockport {
-      background-color: $sp-dark-green;
+
+    .col-sm-3 {
+      background-color: #1d2932;
     }
+
 
     .column-title {
 
@@ -94,6 +96,77 @@
 
 }
 
+.stockport {
+  background-color: $sp-dark-green;
+}
+
+.col-sm-9 {
+  background-color: #f3f7fa;
+}
+
+.selected-event {
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+}
+
+.panel-group {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-details {
+  float: left;
+  width: 50%;
+  border-radius: 5px;
+  //width: 1109px;
+  height: 100%;
+  //.table-striped {
+  background-color: #1c3645;
+  //}
+  .panel-heading {
+    background-color: #1c3645;
+    color: white;
+  }
+  .table-condensed {
+    background-color: #1c3645;
+    .tr:nth-of-type(odd) {
+      background-color: #1c3645;
+    }
+  }
+
+
+;
+}
+
+.contact-panel {
+  float: right;
+  width: 50%;
+  //height: 100%;
+  //background-color: $search;
+  //color:
+  border-radius: 5px;
+  background-color:  #71c573;
+  //width: 553px;
+  height: 100%;
+  .panel-heading {
+    background-color: #71c573;
+    color: white;
+  }
+}
+
+//
+//.table {
+//  .table-striped {
+//    .tbody {
+//      .tr:nth-of-type(odd) {
+//        background-color: #1c3645;
+//      }
+//    }
+//  }
+//}
+
 .container-results {
   background-color: #f3f7fa;
   height: 100vh;
@@ -102,3 +175,13 @@
 .container-timeline {
   background-color: white;
 }
+//.selected-event {
+//  .tr:nth-of-type(odd) {
+//    background-color: violet;
+//  }
+//}
+//
+//.tbody {
+//  background-color: violet;
+//}
+

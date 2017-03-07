@@ -2243,7 +2243,7 @@ th {
     border-bottom-width: 2px; }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #f9f9f9; }
+  background-color: #1c3645; }
 
 .table-hover > tbody > tr:hover {
   background-color: whitesmoke; }
@@ -4896,8 +4896,6 @@ button.list-group-item-danger {
   .panel-group .panel {
     margin-bottom: 0;
     border-radius: 4px; }
-    .panel-group .panel + .panel {
-      margin-top: 5px; }
   .panel-group .panel-heading {
     border-bottom: 0; }
     .panel-group .panel-heading + .panel-collapse > .panel-body,
@@ -5819,7 +5817,7 @@ button.close {
     border-right: 1px solid #e9ecf2;
     min-height: 100%;
     height: 100%; }
-    .body .column .stockport {
+    .body .column .col-sm-3 {
       background-color: #1d2932; }
     .body .column .column-title {
       box-shadow: inset 0 1px #fff;
@@ -5870,6 +5868,46 @@ button.close {
     color: white; }
     .container-criteria .search-control .btn.search:hover {
       color: black; }
+
+.stockport {
+  background-color: #1d2932; }
+
+.col-sm-9 {
+  background-color: #f3f7fa; }
+
+.selected-event {
+  width: 100%;
+  height: 100%;
+  color: #ffffff; }
+
+.panel-group {
+  width: 100%;
+  position: relative;
+  overflow: hidden; }
+
+.event-details {
+  float: left;
+  width: 50%;
+  border-radius: 5px;
+  height: 100%;
+  background-color: #1c3645; }
+  .event-details .panel-heading {
+    background-color: #1c3645;
+    color: white; }
+  .event-details .table-condensed {
+    background-color: #1c3645; }
+    .event-details .table-condensed .tr:nth-of-type(odd) {
+      background-color: #1c3645; }
+
+.contact-panel {
+  float: right;
+  width: 50%;
+  border-radius: 5px;
+  background-color: #71c573;
+  height: 100%; }
+  .contact-panel .panel-heading {
+    background-color: #71c573;
+    color: white; }
 
 .container-results {
   background-color: #f3f7fa;

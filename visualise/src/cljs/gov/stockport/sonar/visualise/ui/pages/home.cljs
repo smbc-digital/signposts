@@ -14,7 +14,8 @@
     [:div.column.col-sm-3.stockport
      [:a.navbar-brand {:href "#"} "Stockport MBC"]]
     [:div.column.col-sm-9
-     [:a.navbar-brand {:href "#"} "SIGNPOSTS"]]]
+     [:a.navbar-brand [:i.fa.fa-map-signs.pull-left {:aria-hidden "true"}] ]
+     [:a.navbar-brand {:href "#"} "SIGNPOSTS"]]
 
    [:div.row.body
     [:div.column.container-criteria.col-sm-3
@@ -26,4 +27,4 @@
      [ic/cards !data]]
 
     [:div.column.container-timeline.col-sm-7
-     [tr/results-tabs !data]]]])
+     [tr/results-tabs !data]]]]])
