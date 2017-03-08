@@ -7,11 +7,11 @@
 
       (fact "should add auth credentials to the outbound request"
 
-            (client/query-handler {:body (.getBytes "{}")}) => {:body ..response.. :status 200 :headers {}}
+            (client/query-handler {:body (.getBytes "{}")}) => {:body {"some" "value"} :status 200 :headers {}}
 
             (provided
               (http/post "http://localhost:9200/events-*/_search" {:headers ..auth-header..
-                                                                   :body    "{}"}) => {:body ..response..}
+                                                                   :body    "{}"}) => {:body "{\"some\":\"value\"}"}
               (client/authorisation-header) => ..auth-header..))
 
       (fact "should not send empty query if there is no body supplied"

@@ -1,7 +1,7 @@
-(ns gov.stockport.sonar.esproxy.handler-tests
+(ns gov.stockport.sonar.esproxy.routes-tests
   (:require [midje.sweet :refer :all]
             [bidi.bidi :refer [match-route]]
-            [gov.stockport.sonar.esproxy.handler :refer [api]]))
+            [gov.stockport.sonar.esproxy.routes :refer [api]]))
 
 (facts "about routes"
 
