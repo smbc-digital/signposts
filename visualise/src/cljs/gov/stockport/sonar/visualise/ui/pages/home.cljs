@@ -28,7 +28,6 @@
 
      [:div.column.container-results.col-sm-2
       [:div.column-title.results-title "RESULTS"]
-      [:p.results-confirmation "Your search returned " (:total @!data) " events"]
       [ic/cards !data]]
 
      [:div.column.container-timeline.col-sm-7

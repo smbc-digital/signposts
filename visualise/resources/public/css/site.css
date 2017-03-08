@@ -5975,6 +5975,11 @@ button.close {
   line-height: 37px;
   text-align: left; }
 
+.selected-event {
+  height: 30vh; }
+  .selected-event .panel-group {
+    height: 100%; }
+
 .cards > .panel > .panel-heading {
   color: #486573;
   font-size: 24px;
