@@ -20,14 +20,15 @@
     (if (:ascending @!sort) sorted (reverse sorted))))
 
 (defn raw-table [!data]
-  (let [!sort-fn (r/atom {:sort-func (juxt surname :dob)
-                          :ascending true})]
+  (let [!sort-fn (r/atom {:sort-func :score
+                          :ascending false})]
     (fn []
       (let [results (:result @!data)]
         (if (not-empty results)
             [:table.table-striped.table-condensed.results
              [:thead
               [:tr
+               [sortable-header !sort-fn "score" :score]
                [sortable-header !sort-fn "source" (comp :event-source not)]
                [sortable-header !sort-fn "type" :event-type]
                [sortable-header !sort-fn "timestamp" #(d/as-millis (:timestamp %))]
@@ -38,9 +39,10 @@
              [:tbody
               (map
                 (fn [event]
-                  (let [{:keys [event-source event-type timestamp name dob address]} event]
+                  (let [{:keys [score event-source event-type timestamp name dob address]} event]
                     ^{:key (gensym)}
                     [:tr
+                     [:td score]
                      [:td event-source]
                      [:td event-type]
                      [:td (ts timestamp)]

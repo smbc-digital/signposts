@@ -19,8 +19,8 @@
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]
-   (POST "http://localhost:3010/query"
-         {:headers         {"Content-Type" "application/json"}
+   (POST (str "http://localhost:9200" url)
+         {:headers         (authorisation-header)
           :format          :json
           :response-format :json
           :keywords?       true
@@ -38,7 +38,7 @@
           :response-format :json
           :keywords?       true
           :handler         (fn [response] (go (>! chan response)))})
-    chan))
+  chan))
 
 
 (defonce !mappings (r/atom {}))

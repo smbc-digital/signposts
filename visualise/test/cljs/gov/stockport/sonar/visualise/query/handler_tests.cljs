@@ -6,23 +6,25 @@
 
 (deftest results-handler-tests
 
-  (testing "extracts the core results data"
+  (testing "extracts the core results data with score"
     (let [!state (atom {})
           handler (h/default-handler !state)
           _ (handler {:took 99
                       :hits {:total 1234
-                             :hits [{:_source {:timestamp "2012-12-28T13:14:15.000Z"}}]}})]
+                             :hits  [{:_score  1.2
+                                      :_source {:timestamp "2012-12-28T13:14:15.000Z"}}]}})]
 
       (is (= (:took-millis @!state) 99))
       (is (= (:total @!state) 1234))
-      (is (t/= (:timestamp (first (:result @!state))) (t/date-time 2012 12 28 13 14 15)))))
+      (is (t/= (:timestamp (first (:result @!state))) (t/date-time 2012 12 28 13 14 15)))
+      (is (= (:score (first (:result @!state))) 1.2))))
 
   (testing "adds information about individuals in the dataset"
     (with-redefs [i/individuals (fn [_] :some-individuals)]
-    (let [!state (atom {})
-          handler (h/default-handler !state)
-          _ (handler {:took 99
-                      :hits {:total 1234
-                             :hits [{:_source {}}]}})]
-      (is (= (:individuals @!state) :some-individuals))))))
+                 (let [!state (atom {})
+                       handler (h/default-handler !state)
+                       _ (handler {:took 99
+                                   :hits {:total 1234
+                                          :hits  [{:_source {}}]}})]
+                   (is (= (:individuals @!state) :some-individuals))))))
 

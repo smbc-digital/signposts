@@ -5,7 +5,10 @@
 (defn source-events [response]
   (map #(-> %
             (update :timestamp parse-timestamp))
-       (map :_source (-> response :hits :hits))))
+       (map
+         (fn [{:keys [_score _source]}]
+           (assoc _source :score _score))
+         (-> response :hits :hits))))
 
 (defn default-handler [!data]
   (fn [response]
