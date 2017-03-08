@@ -8,11 +8,14 @@
          (map
            (fn [{:keys [color name dob address postcode]}]
              ^{:key (gensym)}
-             [:div.panel.panel-default
-              [:div.panel-heading {:class color} name]
+             [:div.panel.panel-default.card-box
+              [:div.panel-heading.card-name {:class color} name]
               [:div.panel-body
-               [:p dob]
-               [:p address]
-               [:p postcode]]])
+               [:p.info-label "Date of Birth: "]
+               [:p.info dob]
+               [:p.info-label "Address: "]
+               [:p.info address]
+               [:p.info-label "Postcode: "]
+               [:p.info postcode]]])
            individuals)]))))
 

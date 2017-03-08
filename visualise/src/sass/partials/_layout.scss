@@ -1,7 +1,7 @@
 
 .body {
 
-  height: 100vh;
+  //height: 100vh;
 
   .column {
     border-right: 1px solid #e9ecf2;
@@ -46,6 +46,7 @@
 
       .panel-heading {
         background-color: $sp-green;
+
       }
     }
   }
@@ -120,60 +121,46 @@
 
 .panel-group {
   width: 100%;
-  //position: relative;
-  overflow: hidden;
+  margin-bottom: 0px;
 }
 
 .event-details {
   float: left;
   width: 50%;
   border-radius: 5px;
-  //width: 1109px;
   height: 100%;
-  //.table-striped {
   background-color: #1c3645;
-  //}
   .panel-heading {
     background-color: #1c3645;
     color: white;
+    border-bottom: 1px solid #c6d3e3;
   }
-  .table-condensed {
-    background-color: #1c3645;
-    .tr:nth-of-type(odd) {
-      background-color: #1c3645;
-    }
-  }
-
-
-;
 }
+
+.card-box {
+  border-radius: 5px;
+  border-width: 2px;
+  border-color:  #c6d4e5;
+  border-style: solid;
+  background-color:  #f3f7fa;
+  //width: 22.2%;
+  //height: 14.1%;
+}
+
 
 .contact-panel {
   float: right;
   width: 50%;
-  //height: 100%;
-  //background-color: $search;
-  //color:
   border-radius: 5px;
   background-color:  #71c573;
-  //width: 553px;
   height: 100%;
   .panel-heading {
     background-color: #71c573;
     color: white;
+    border-bottom: 1px solid #c6d3e3;
   }
 }
 
-//
-//.table {
-//  .table-striped {
-//    .tbody {
-//      .tr:nth-of-type(odd) {
-//        background-color: #1c3645;
-//      }
-//    }
-//  }
-//}
 
 .container-results {
   background-color: #f3f7fa;
@@ -183,21 +170,10 @@
 .container-timeline {
   background-color: white;
 }
-//.selected-event {
-//  .tr:nth-of-type(odd) {
-//    background-color: violet;
-//  }
-//}
-//
-//.tbody {
-//  background-color: violet;
-//}
+
 
 .fa.fa-map-signs {
   color:  #486573;
-  //margin-right: .3em;
-  //margin-top: .3em;
-  //margin-bottom: .3em;
   font-size: 36px;/* Approximation due to font substitution */
   font-weight: 400;
   text-align: left;
@@ -223,5 +199,30 @@
 
 .logo {
   width: 45.6%;
-  //height: 9.6%;
+}
+
+.info-label {
+  display: inline;
+}
+
+.info {
+  color:  #486573;
+  font-size: 15px;/* Approximation due to font substitution */
+  font-weight: 700;
+  text-align: left;
+}
+
+.contact-label {
+  color:  #ffffff;
+  font-weight: 700;
+  text-align: left;
+}
+
+.results-confirmation {
+  color:  #476575;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  line-height: 37px;
+  text-align: left;
 }

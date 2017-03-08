@@ -4718,7 +4718,8 @@ button.list-group-item-danger {
   padding: 10px 15px;
   border-bottom: 1px solid transparent;
   border-top-right-radius: 3px;
-  border-top-left-radius: 3px; }
+  border-top-left-radius: 3px;
+  color: #f36624; }
   .panel-heading > .dropdown .dropdown-toggle {
     color: inherit; }
 
@@ -5812,40 +5813,38 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
-.body {
-  height: 100vh; }
-  .body .column {
-    border-right: 1px solid #e9ecf2;
-    min-height: 100%;
-    height: 100%; }
-    .body .column .col-sm-3 {
-      background-color: #1d2932; }
-    .body .column .column-title {
-      box-shadow: inset 0 1px #fff;
-      background-color: #ebf4f9;
-      background-repeat: no-repeat;
-      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6fbfd), to(#ebf4f9));
-      background-image: -webkit-linear-gradient(#f6fbfd, #ebf4f9);
-      background-image: linear-gradient(top, #f6fbfd, #ebf4f9);
-      border-top: 1px solid #dae8ed;
-      border-bottom: 1px solid #c6d3e3;
-      padding: 11px 0 9px 0px;
-      font-size: 13px;
-      letter-spacing: 1px;
-      color: #486574;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-      margin-bottom: 15px; }
-      .body .column .column-title.search-by {
-        background-color: #1c3645;
-        border-top: 1px solid #1c3645;
-        box-shadow: none;
-        background-image: none;
-        text-shadow: none;
-        color: white; }
-    .body .column .criteria-box {
-      background: #1d2932; }
-      .body .column .criteria-box .panel-heading {
-        background-color: #1c3645; }
+.body .column {
+  border-right: 1px solid #e9ecf2;
+  min-height: 100%;
+  height: 100%; }
+  .body .column .col-sm-3 {
+    background-color: #1d2932; }
+  .body .column .column-title {
+    box-shadow: inset 0 1px #fff;
+    background-color: #ebf4f9;
+    background-repeat: no-repeat;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6fbfd), to(#ebf4f9));
+    background-image: -webkit-linear-gradient(#f6fbfd, #ebf4f9);
+    background-image: linear-gradient(top, #f6fbfd, #ebf4f9);
+    border-top: 1px solid #dae8ed;
+    border-bottom: 1px solid #c6d3e3;
+    padding: 11px 0 9px 0px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #486574;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+    margin-bottom: 15px; }
+    .body .column .column-title.search-by {
+      background-color: #1c3645;
+      border-top: 1px solid #1c3645;
+      box-shadow: none;
+      background-image: none;
+      text-shadow: none;
+      color: white; }
+  .body .column .criteria-box {
+    background: #1d2932; }
+    .body .column .criteria-box .panel-heading {
+      background-color: #1c3645; }
 
 .container-criteria {
   background-color: #1c3645;
@@ -5889,7 +5888,7 @@ button.close {
 
 .panel-group {
   width: 100%;
-  overflow: hidden; }
+  margin-bottom: 0px; }
 
 .event-details {
   float: left;
@@ -5899,11 +5898,15 @@ button.close {
   background-color: #1c3645; }
   .event-details .panel-heading {
     background-color: #1c3645;
-    color: white; }
-  .event-details .table-condensed {
-    background-color: #1c3645; }
-    .event-details .table-condensed .tr:nth-of-type(odd) {
-      background-color: #1c3645; }
+    color: white;
+    border-bottom: 1px solid #c6d3e3; }
+
+.card-box {
+  border-radius: 5px;
+  border-width: 2px;
+  border-color: #c6d4e5;
+  border-style: solid;
+  background-color: #f3f7fa; }
 
 .contact-panel {
   float: right;
@@ -5913,7 +5916,8 @@ button.close {
   height: 100%; }
   .contact-panel .panel-heading {
     background-color: #71c573;
-    color: white; }
+    color: white;
+    border-bottom: 1px solid #c6d3e3; }
 
 .container-results {
   background-color: #f3f7fa;
@@ -5948,8 +5952,37 @@ button.close {
 .logo {
   width: 45.6%; }
 
+.info-label {
+  display: inline; }
+
+.info {
+  color: #486573;
+  font-size: 15px;
+  /* Approximation due to font substitution */
+  font-weight: 700;
+  text-align: left; }
+
+.contact-label {
+  color: #ffffff;
+  font-weight: 700;
+  text-align: left; }
+
+.results-confirmation {
+  color: #476575;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  line-height: 37px;
+  text-align: left; }
+
 .cards > .panel > .panel-heading {
-  color: black;
+  color: #486573;
+  font-size: 24px;
+  /* Approximation due to font substitution */
+  font-weight: 700;
+  line-height: 37px;
+  /* Approximation due to font substitution */
+  text-align: left;
   background-image: none; }
   .cards > .panel > .panel-heading.red {
     background-color: #f36624; }

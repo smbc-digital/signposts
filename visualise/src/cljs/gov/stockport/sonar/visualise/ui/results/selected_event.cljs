@@ -27,17 +27,13 @@
            [:table.table-striped.table-condensed.results.selected-results
             `[:tbody
               ~@(rows selected)]
-            (println selected)
-           ] ]]
+           ]]]
           [:div.panel.panel-default.contact-panel
            [:div.panel-heading.contact-heading "CONTACT"]
            [:div.panel-body
-            [:p "System"]
-            [:p "Name"]
-            [:p "Number"]
-            [:p "Email"]
-            ]]
+            [:p.contact-label "System"]
+            [:p.contact-label "Name"]
+            [:p.contact-label "Number"]
+            [:p.contact-label "Email"]]]
 
-          ]
-         ]
-        ))))
+          ]]))))
