@@ -1,11 +1,19 @@
 (ns gov.stockport.sonar.visualise.ui.results.selected-event
   (:require [clojure.string :as str]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [cljs-time.format :as f]))
 
 (def standard-keys [:name :dob :address :postcode :score])
 
+(def custom-formatter (f/formatter "dd-MM-yyyy hh:mm"))
+
+(defn unparse-timestamp [event]
+  (assoc event :timestamp (f/unparse custom-formatter(:timestamp event)))
+  )
+
+
 (defn selected-kvs [event]
-  (let [other-keys (sort (keys (apply dissoc (apply dissoc event [:timestamp :ikey]) standard-keys)))]
+  (let [other-keys (sort (keys (apply dissoc (dissoc event :ikey) standard-keys)))]
     (map
       (fn [k] [k (get event k "")])
         (concat standard-keys other-keys))))
@@ -13,7 +21,6 @@
 (defn selected-keys [kvs]
   (map (fn [[k v]] k) kvs))
 
-;(map (fn [[k v]] (println k v)) (selected-kvs {:zebra "ZZ" :aardvark "AA" :timestamp "TIMESTAMP"}))
 
 (defn row [event ekey]
   [:tr [:th (str/capitalize (name ekey))] [:td (get event ekey)]])
@@ -22,7 +29,7 @@
   (map
     (fn [ekey]
       [row event ekey])
-    (selected-keys(selected-kvs event)) ))
+    (selected-keys (selected-kvs (unparse-timestamp event)) )))
 
 (defn selected-event [!data]
   (fn []
