@@ -6,18 +6,20 @@
 
   (testing "should pull out common keys that exist, and in specified order"
 
-    (is (= (se/selected-kvs {:postcode "PC" :dob "DOB" :name "NAME" :address "ADDRESS"})
+    (is (= (se/selected-kvs {:postcode "PC" :dob "DOB" :name "NAME" :address "ADDRESS" :score 5})
            [[:name "NAME"]
             [:dob "DOB"]
             [:address "ADDRESS"]
-            [:postcode "PC"]])))
+            [:postcode "PC"]
+            [:score 5]])))
 
   (testing "should leave missing standard keys blank"
     (is (= (se/selected-kvs {:address "ADDRESS" :dob "DOB"})
            [[:name ""]
             [:dob "DOB"]
             [:address "ADDRESS"]
-            [:postcode ""]])))
+            [:postcode ""]
+            [:score ""]])))
   ;
   (testing "should add in other fields alphabetically"
     (is (= (se/selected-kvs {:zebra "ZZ" :aardvark "AA" :llama "LL" })
@@ -25,6 +27,7 @@
             [:dob ""]
             [:address ""]
             [:postcode ""]
+            [:score ""]
             [:aardvark "AA"]
             [:llama "LL"]
             [:zebra "ZZ"]])))
@@ -35,6 +38,7 @@
             [:dob ""]
             [:address ""]
             [:postcode ""]
+            [:score ""]
             [:aardvark "AA"]
             [:zebra "ZZ"]])))
 
