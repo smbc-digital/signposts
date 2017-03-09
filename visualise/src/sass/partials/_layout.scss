@@ -124,6 +124,8 @@
   width: 100%;
   height: 100%;
   color: #ffffff;
+  overflow: auto;
+  position: relative;
 }
 
 .panel-group {
@@ -161,6 +163,9 @@
   border-radius: 5px;
   background-color:  #71c573;
   height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
   .panel-heading {
     background-color: #71c573;
     color: white;
@@ -235,7 +240,7 @@
 }
 
 .selected-event {
-  height: 30vh;
+  height: 100%;
   .panel-group {
     height: 100%;
   }

@@ -2,13 +2,18 @@
   (:require [clojure.string :as str]
             [reagent.core :as r]))
 
-(def standard-keys [:name :dob :address :postcode])
+(def standard-keys [:name :dob :address :postcode :score])
 
 (defn selected-kvs [event]
-  (let [other-keys (sort (keys (apply dissoc (dissoc event :timestamp) standard-keys)))]
+  (let [other-keys (sort (keys (apply dissoc (apply dissoc event [:timestamp :ikey]) standard-keys)))]
     (map
       (fn [k] [k (get event k "")])
         (concat standard-keys other-keys))))
+
+(defn selected-keys [kvs]
+  (map (fn [[k v]] k) kvs))
+
+;(map (fn [[k v]] (println k v)) (selected-kvs {:zebra "ZZ" :aardvark "AA" :timestamp "TIMESTAMP"}))
 
 (defn row [event ekey]
   [:tr [:th (str/capitalize (name ekey))] [:td (get event ekey)]])
@@ -17,7 +22,7 @@
   (map
     (fn [ekey]
       [row event ekey])
-    selected-kvs))
+    (selected-keys(selected-kvs event)) ))
 
 (defn selected-event [!data]
   (fn []
