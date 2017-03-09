@@ -5,11 +5,10 @@
 (def standard-keys [:name :dob :address :postcode])
 
 (defn selected-kvs [event]
-  (let [other-keys (sort (keys (dissoc event standard-keys)))]
-    (println other-keys)
+  (let [other-keys (sort (keys (apply dissoc (dissoc event :timestamp) standard-keys)))]
     (map
       (fn [k] [k (get event k "")])
-      (concat standard-keys other-keys))))
+        (concat standard-keys other-keys))))
 
 (defn row [event ekey]
   [:tr [:th (str/capitalize (name ekey))] [:td (get event ekey)]])
@@ -18,7 +17,7 @@
   (map
     (fn [ekey]
       [row event ekey])
-    standard-keys))
+    selected-kvs))
 
 (defn selected-event [!data]
   (fn []

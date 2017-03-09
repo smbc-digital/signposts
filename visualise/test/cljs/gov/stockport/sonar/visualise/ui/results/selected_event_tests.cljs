@@ -18,7 +18,7 @@
             [:dob "DOB"]
             [:address "ADDRESS"]
             [:postcode ""]])))
-
+  ;
   (testing "should add in other fields alphabetically"
     (is (= (se/selected-kvs {:zebra "ZZ" :aardvark "AA" :llama "LL" })
            [[:name ""]
@@ -28,5 +28,16 @@
             [:aardvark "AA"]
             [:llama "LL"]
             [:zebra "ZZ"]])))
+
+  (testing "should ignore timestamps"
+    (is (= (se/selected-kvs {:zebra "ZZ" :aardvark "AA" :timestamp "TIMESTAMP"})
+           [[:name ""]
+            [:dob ""]
+            [:address ""]
+            [:postcode ""]
+            [:aardvark "AA"]
+            [:zebra "ZZ"]])))
+
+  ; exclude timestamp initially
 
   )
