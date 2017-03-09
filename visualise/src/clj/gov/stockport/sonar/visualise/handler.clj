@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.handler
   (:require [compojure.core :refer [GET POST defroutes]]
             [compojure.route :refer [not-found resources]]
+            [ring.middleware.json :refer [wrap-json-response]]
             [hiccup.page :refer [include-js include-css html5]]
             [gov.stockport.sonar.visualise.middleware :refer [wrap-middleware]]
             [config.core :refer [env]]
@@ -41,4 +42,10 @@
   (resources "/")
   (not-found "Not Found"))
 
-(def app (wrap-middleware #'routes))
+(defn wrap-common-middleware [handler]
+  (-> handler
+      (wrap-json-response)))
+
+(def app (-> #'routes
+             (wrap-middleware)
+             (wrap-common-middleware)))
