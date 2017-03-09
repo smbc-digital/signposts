@@ -1,8 +1,6 @@
 
 .body {
 
-  //height: 100vh;
-
   .column {
     border-right: 1px solid #e9ecf2;
     min-height: 100%;
@@ -10,6 +8,7 @@
 
 
     .col-sm-3 {
+      margin-left: 15px;
       background-color: #1d2932;
     }
 
@@ -55,6 +54,11 @@
 .container-criteria {
   background-color: $sp-green;
   height: 100vh;
+  margin-left: 15px;
+
+  .col-sm-3 {
+    margin-left: 15px;
+  }
 
   .search-control {
 
