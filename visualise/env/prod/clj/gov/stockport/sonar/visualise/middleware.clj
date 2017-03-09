@@ -2,4 +2,6 @@
   (:require [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
 
 (defn wrap-middleware [handler]
-  (wrap-defaults handler site-defaults))
+  (wrap-defaults
+    handler
+    (-> site-defaults (assoc-in [:security :anti-forgery] false))))

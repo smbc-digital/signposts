@@ -19,8 +19,8 @@
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]
-   (POST (str "http://localhost:9200" url)
-         {:headers         (authorisation-header)
+   (POST "/query"
+         {:headers         {"Content-Type" "application/json"}
           :format          :json
           :response-format :json
           :keywords?       true

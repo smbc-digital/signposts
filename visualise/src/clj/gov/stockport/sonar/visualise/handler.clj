@@ -1,9 +1,10 @@
 (ns gov.stockport.sonar.visualise.handler
-  (:require [compojure.core :refer [GET defroutes]]
+  (:require [compojure.core :refer [GET POST defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [gov.stockport.sonar.visualise.middleware :refer [wrap-middleware]]
-            [config.core :refer [env]]))
+            [config.core :refer [env]]
+            [gov.stockport.sonar.esproxy.proxy :as proxy]))
 
 (def mount-target
   [:div#app
@@ -36,6 +37,7 @@
   (GET "/" [] (loading-page))
   (GET "/wip" [] (loading-page))
   (GET "/cards" [] (cards-page))
+  (POST "/query" [] proxy/query-handler)
   (resources "/")
   (not-found "Not Found"))
 

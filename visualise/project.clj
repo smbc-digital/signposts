@@ -10,6 +10,7 @@
                  [reagent-utils "0.2.0"]
                  [ring "1.5.0"]
                  [ring/ring-defaults "0.2.1"]
+                 [ring/ring-json "0.4.0"]
                  [compojure "1.5.1"]
                  [hiccup "1.0.5"]
                  [yogthos/config "0.8"]
@@ -21,7 +22,9 @@
                  [venantius/accountant "0.1.7"
                   :exclusions [org.clojure/tools.reader]]
                  [cljs-ajax "0.5.8"]
-                 [com.andrewmcveigh/cljs-time "0.4.0"]]
+                 [com.andrewmcveigh/cljs-time "0.4.0"]
+                 [clj-http "2.3.0"]
+                 [base64-clj "0.1.1"]]
 
   :plugins [[lein-environ "1.0.2"]
             [lein-cljsbuild "1.1.1"]
@@ -44,7 +47,9 @@
  [:cljsbuild :builds :app :compiler :output-to]]
 
   :source-paths ["src/clj" "src/cljc"]
-  :test-paths ["test/cljs" "test/cljc"]
+
+  :test-paths ["test/clj" "test/cljs" "test/cljc"]
+
   :resource-paths ["resources" "target/cljsbuild"]
 
   :minify-assets
