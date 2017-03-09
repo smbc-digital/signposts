@@ -38,7 +38,7 @@
           :response-format :json
           :keywords?       true
           :handler         (fn [response] (go (>! chan response)))})
-  chan))
+    chan))
 
 
 (defonce !mappings (r/atom {}))
