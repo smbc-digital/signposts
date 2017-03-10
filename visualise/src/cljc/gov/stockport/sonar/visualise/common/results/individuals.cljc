@@ -26,11 +26,16 @@
         (select-keys ikey individual-keys)))
     (group-by-individual events)))
 
+(defn sort-individuals [individuals]
+  (sort-by (juxt #(- 0 (or (:score %) 0)) surname)  individuals))
+
 (defn individuals [events]
   (let [individuals-with-scores (individuals-with-scores events)
         color (individual-color (count individuals-with-scores))]
     (map-indexed
       (fn [idx m]
         (assoc m :idx idx :color (color idx)))
-      (reverse (sort-by :score individuals-with-scores)))))
+      (sort-individuals individuals-with-scores))))
+
+
 

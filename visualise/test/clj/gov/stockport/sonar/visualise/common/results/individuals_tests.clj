@@ -55,3 +55,16 @@
                                      :postcode "B1 1TS"
                                      :address  "Brummie"
                                      :score    2.2}])
+
+(facts "about sorting"
+
+       (fact "it should sort by surname when all scores are the same"
+             (i/sort-individuals [{:name "Jim Llama"} {:name "Jim Zebra"} {:name "Jim Aaardvark"}]) =>
+             [ {:name "Jim Aaardvark"} {:name "Jim Llama"} {:name "Jim Zebra"}])
+
+       (fact "it should sort by score and surname"
+             (i/sort-individuals [{:score 1.1 :name "Wibble McPing"} {:score 1.1 :name "Alex Zebrangelo"} {:score 1.1 :name "Bob Adams"} {:score 2.7 :name "John Smith"} ]) =>
+             [{:score 2.7 :name "John Smith"}
+              {:score 1.1 :name "Bob Adams"}
+              {:score 1.1 :name "Wibble McPing"}
+              {:score 1.1 :name "Alex Zebrangelo"}]))
