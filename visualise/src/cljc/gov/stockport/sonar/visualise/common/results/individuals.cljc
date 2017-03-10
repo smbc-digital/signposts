@@ -17,12 +17,15 @@
   (group-by :ikey (map (fn [m] (assoc m :ikey (individual-group-fn m))) events)))
 
 (defn individuals [events]
-  (let [individuals (vec (sort-by surname (set (map #(select-keys % individual-keys) events))))
+  (let [individuals (group-by-individual events)
         color (individual-color (count individuals))]
     (map-indexed
-      (fn [idx m]
-        (merge m {:idx   idx
-                  :color (color idx)
-                  :ikey  (select-keys m individual-keys)}))
+      (fn [idx [ikey data :as m]]
+        (merge
+          {:idx   idx
+           :color (color idx)
+           :ikey  ikey
+           :score (apply max (map :score data))}
+          (select-keys ikey individual-keys)))
       individuals)))
 

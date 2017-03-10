@@ -9,7 +9,7 @@
 (defn authorisation-header []
   {"Authorization" (str "Basic " (encode (str (:username @!creds) ":" (:password @!creds))))})
 
-(def search-url "http://localhost:9200/events-*/_search")
+(def search-url "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch")
 
 (defn query-handler [request]
   (if-let [query (:body request)]

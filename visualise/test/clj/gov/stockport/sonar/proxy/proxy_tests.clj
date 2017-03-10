@@ -10,7 +10,7 @@
             (proxy/query-handler {:body (.getBytes "{}")}) => {:body {"some" "value"} :status 200 :headers {}}
 
             (provided
-              (http/post "http://localhost:9200/events-*/_search" {:headers ..auth-header..
+              (http/post "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch" {:headers ..auth-header..
                                                                    :body    "{}"}) => {:body "{\"some\":\"value\"}"}
               (proxy/authorisation-header) => ..auth-header..))
 
