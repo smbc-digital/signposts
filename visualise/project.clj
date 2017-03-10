@@ -48,7 +48,7 @@
 
   :source-paths ["src/clj" "src/cljc"]
 
-  :test-paths ["test/clj" "test/cljs" "test/cljc"]
+  :test-paths ["test/clj" "test/cljs"]
 
   :resource-paths ["resources" "target/cljsbuild"]
 
@@ -135,9 +135,6 @@
                                         (pjstadig.humane-test-output/activate!)]
 
                          :env          {:dev true}}
-
-             :unit-test {:dependencies []
-                         :plugins      []}
 
              :uberjar   {:hooks        [minify-assets.plugin/hooks]
                          :source-paths ["env/prod/clj"]
