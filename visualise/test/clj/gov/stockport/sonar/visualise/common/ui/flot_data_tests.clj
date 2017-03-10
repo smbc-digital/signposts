@@ -5,15 +5,18 @@
 (def some-data [{:timestamp    1
                  :event-source :gmp
                  :event-type   :asbo
-                 :name         "Jim"}
+                 :name         "Jim"
+                 :score        1.0}
                 {:timestamp    3
                  :event-source :gmp
                  :event-type   :asbo
-                 :name         "Richard"}
+                 :name         "Richard"
+                 :score        1.2}
                 {:timestamp    2
                  :event-source :schools
                  :event-type   :exclusion
-                 :name         "Jim"}])
+                 :name         "Jim"
+                 :score        1.3}])
 
 (fact "should provide numeric values for event types"
       (fd/y-axis-label-map [:asbo :exclusion :caution]) => {:exclusion 1
@@ -35,23 +38,28 @@
                (map :individual result) => [{:idx   0
                                              :color :red
                                              :ikey  {:name "Jim"}
-                                             :name  "Jim"}
+                                             :name  "Jim"
+                                             :score 1.3}
                                             {:idx   1
                                              :color :yellow
                                              :ikey  {:name "Richard"}
-                                             :name  "Richard"}])
+                                             :name  "Richard"
+                                             :score 1.2}])
 
          (fact "series meta data should include all event payload"
                (let [event {:timestamp    1
                             :event-source :gmp
                             :event-type   :asbo
                             :name         "Jim"
+                            :score        1.1
                             :payload-1    "argh"
                             :payload-2    "urgh"}]
                  (fd/series-meta [event]) => [{:individual {:idx   0
                                                             :color :red
                                                             :ikey  {:name "Jim"}
-                                                            :name  "Jim"}
+                                                            :name  "Jim"
+                                                            :score 1.1
+                                                            }
                                                :data       [[1 :asbo (merge {:ikey {:name "Jim"}} event)]]}]))))
 
 (fact "should create collisions map with no entries if there are no collisions"
