@@ -7,5 +7,5 @@
   (-> handler
       (wrap-defaults
         (-> site-defaults (assoc-in [:security :anti-forgery] false)))
-      wrap-exceptions
+      ;wrap-exceptions
       wrap-reload))
