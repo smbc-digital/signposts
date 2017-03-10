@@ -3,33 +3,27 @@
             [reagent.core :as r]
             [cljs-time.format :as f]))
 
-(def standard-keys [:name :dob :address :postcode :score])
+(def standard-keys [:name :dob :address :postcode :timestamp :score])
 
-(def custom-formatter (f/formatter "dd-MM-yyyy hh:mm"))
+(def custom-formatter (f/formatter "dd-MM-yyyy HH:mm:ss"))
 
 (defn unparse-timestamp [event]
-  (assoc event :timestamp (f/unparse custom-formatter(:timestamp event)))
-  )
-
+  (if-let [ts (:timestamp event)]
+    (assoc event :timestamp (f/unparse custom-formatter ts))
+    event))
 
 (defn selected-kvs [event]
-  (let [other-keys (sort (keys (apply dissoc (dissoc event :ikey) standard-keys)))]
+  (let [event-with-formatted-timestamp (unparse-timestamp event)
+        other-keys (sort (keys (apply dissoc (dissoc event :ikey) standard-keys)))]
     (map
-      (fn [k] [k (get event k "")])
-        (concat standard-keys other-keys))))
+      (fn [k] [k (get event-with-formatted-timestamp k "")])
+      (concat standard-keys other-keys))))
 
-(defn selected-keys [kvs]
-  (map (fn [[k v]] k) kvs))
-
-
-(defn row [event ekey]
-  [:tr [:th (str/capitalize (name ekey))] [:td (get event ekey)]])
+(defn row [[k v]]
+  [:tr [:th (str/capitalize (name k))] [:td v]])
 
 (defn rows [event]
-  (map
-    (fn [ekey]
-      [row event ekey])
-    (selected-keys (selected-kvs (unparse-timestamp event)) )))
+  (map row (selected-kvs event)))
 
 (defn selected-event [!data]
   (fn []

@@ -1,47 +1,37 @@
 (ns gov.stockport.sonar.visualise.results.selected-event-tests
   (:require [cljs.test :refer-macros [deftest testing is are use-fixtures]]
+            [cljs-time.core :as t]
             [gov.stockport.sonar.visualise.ui.results.selected-event :as se]))
 
 (deftest display-selected-event-data
 
-  (testing "should pull out common keys that exist, and in specified order"
+  (testing "provision of selected key-values"
 
-    (is (= (se/selected-kvs {:postcode "PC" :dob "DOB" :name "NAME" :address "ADDRESS" :score 5})
-           [[:name "NAME"]
-            [:dob "DOB"]
-            [:address "ADDRESS"]
-            [:postcode "PC"]
-            [:score 5]])))
+    (testing "behaviour of standard keys"
+      (with-redefs
+        [se/standard-keys [:b :a]]
 
-  (testing "should leave missing standard keys blank"
-    (is (= (se/selected-kvs {:address "ADDRESS" :dob "DOB"})
-           [[:name ""]
-            [:dob "DOB"]
-            [:address "ADDRESS"]
-            [:postcode ""]
-            [:score ""]])))
-  ;
-  (testing "should add in other fields alphabetically"
-    (is (= (se/selected-kvs {:zebra "ZZ" :aardvark "AA" :llama "LL" })
-           [[:name ""]
-            [:dob ""]
-            [:address ""]
-            [:postcode ""]
-            [:score ""]
-            [:aardvark "AA"]
-            [:llama "LL"]
-            [:zebra "ZZ"]])))
+        (testing "should pull out common keys that exist, and in specified order"
+          (is (= (se/selected-kvs {:a "A" :b "B"}) [[:b "B"] [:a "A"]])))
 
-  (testing "should ignore timestamps"
-    (is (= (se/selected-kvs {:zebra "ZZ" :aardvark "AA" :timestamp "TIMESTAMP"})
-           [[:name ""]
-            [:dob ""]
-            [:address ""]
-            [:postcode ""]
-            [:score ""]
-            [:aardvark "AA"]
-            [:zebra "ZZ"]])))
+        (testing "should default values for common keys to blanks if they don't exist"
+          (is (= (se/selected-kvs {:a "A"}) [[:b ""] [:a "A"]])))
 
-  ; exclude timestamp initially
+        (testing "should add values for other keys to the end of the list in alphabetical order of key"
+          (is (= (se/selected-kvs {:llama "LL" :zebra "ZZ" :aardvark "AA"})
+                 [[:b ""]
+                  [:a ""]
+                  [:aardvark "AA"]
+                  [:llama "LL"]
+                  [:zebra "ZZ"]])))))
 
-  )
+    (testing "timestamp is parsed"
+      (with-redefs
+        [se/standard-keys [:timestamp]]
+
+        (testing "should format timestamp nicely"
+          (is (= (se/selected-kvs {:timestamp (t/date-time 2017 12 15 23 12 12)})
+                 [[:timestamp "15-12-2017 23:12:12"]]))))))
+
+  (testing "production of single row entry"
+    (is (= (se/row [:aardvark 1]) [:tr [:th "Aardvark"] [:td 1]]))))
