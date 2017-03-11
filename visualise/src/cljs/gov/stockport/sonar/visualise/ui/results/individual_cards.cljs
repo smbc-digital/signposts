@@ -5,7 +5,9 @@
     (let [individuals (:individuals @!data)]
       (when (not-empty individuals)
         [:div.cards
-         [:p.results-confirmation "Your search returned " (:total @!data) " events"]
+         (println individuals)
+         (println (count individuals))
+         [:p.results-confirmation "Your search returned " (:total @!data) " events from " (count individuals) " individuals"]
          (map
            (fn [{:keys [color name dob address postcode]}]
              ^{:key (gensym)}
