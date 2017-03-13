@@ -10,6 +10,11 @@
                                         :field-type  :address-with-postcode
                                         :description "Address"
                                         :placeholder "search for address"}
+                                       {:target      :postcode
+                                        :field-name  :postcode
+                                        :field-type  :postcode
+                                        :description "Postcode"
+                                        :placeholder "search for postcode"}
                                        {:target      :age-less-than
                                         :field-name  :dob
                                         :field-type  :age-less-than
