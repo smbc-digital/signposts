@@ -25,8 +25,9 @@
       (qb/with-age-more-than {} :some-field 10) => {:query {:bool {:must [{:range {:some-field {:lte "now-10y"}}}]}}})
 
 (fact "can query for address with postcode"
-      (qb/with-address {} "some value") => {:query {:bool {:should [{:match {:address "some value"}}
-                                                                  {:match {:postcode "some value"}}]}}})
+      (qb/with-address {} "some value") => {:query {:bool {:must [{:bool {:should               [{:match {:address "some value"}}
+                                                                                                 {:match {:postcode "some value"}}]
+                                                                          :minimum_should_match 1}}]}}})
 
 (fact "can combine queries"
       (-> (qb/query)

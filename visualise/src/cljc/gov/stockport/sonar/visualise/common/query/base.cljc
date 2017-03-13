@@ -9,7 +9,7 @@
 (defn with-size [qip number]
   (assoc qip :size number))
 
-(defn ensure-clauses-at [qip path]
+(defn- ensure-clauses-at [qip path]
   (update-in qip path #(or % [])))
 
 (defn add-to [qip path clause]
@@ -41,5 +41,6 @@
 
 (defn with-address [qip value]
   (-> qip
-      (should {:match {:address value}})
-      (should {:match {:postcode value}})))
+      (must {:bool {:should               [{:match {:address value}}
+                                           {:match {:postcode value}}]
+                    :minimum_should_match 1}})))

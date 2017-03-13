@@ -84,7 +84,7 @@
 (defn add-search-criteria [!state control-id]
   (swap! !state update-in (path control-id :search-criteria)
          (fn [m]
-           (let [sc-id (count m)]
+           (let [sc-id (gensym)]
              (assoc m sc-id (create-search-criteria !state control-id sc-id))))))
 
 (defn get-all-search-criteria [!state control-id]
