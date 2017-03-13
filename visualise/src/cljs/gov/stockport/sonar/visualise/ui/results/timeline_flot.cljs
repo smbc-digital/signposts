@@ -4,7 +4,8 @@
             [cljsjs.flot.plugins.time]
             [cljs-time.core :as t]
             [gov.stockport.sonar.visualise.common.ui.flot-data :as fd]
-            [gov.stockport.sonar.visualise.ui.results.selected-event :as se]))
+            [gov.stockport.sonar.visualise.ui.results.selected-event :as se]
+            [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
 
 (defn options [m]
   (clj->js
@@ -17,12 +18,6 @@
                        :margin          {:top    10
                                          :bottom 10
                                          :left   10}}
-              :xaxis  {:mode        "time"
-                       :timeFormat  "%Y/%m/%d"
-                       :minTickSize [1 "month"]
-                       :min         (t/date-time 2015 1)
-                       :max         (t/date-time 2016 12)
-                       }
               :lines  {:show false}
               :points {:show   true
                        :radius 5}
@@ -53,7 +48,8 @@
         meta-data (fd/series-meta data)
         collisions (fd/collision-map data)
         fsd (fd/flot-series-data label-map collisions meta-data)]
-    (draw-graph !data fsd meta-data (options {:yaxis (fd/y-axis (:result @!data))}))))
+    (draw-graph !data fsd meta-data (options {:xaxis (fa/x-axis (:result @!data))
+                                              :yaxis (fd/y-axis (:result @!data))}))))
 
 
 (defn flot-component [!data _]

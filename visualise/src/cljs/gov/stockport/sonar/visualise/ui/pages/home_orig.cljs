@@ -36,7 +36,6 @@
                       (qb/with-size 250)
                       (qb/with-max-age max-age)
                       (qb/with-query-string query-string))]
-    (println (->json query-map))
     (query "/events-*/_search" query-map query-handler)))
 
 (defn pluralise
