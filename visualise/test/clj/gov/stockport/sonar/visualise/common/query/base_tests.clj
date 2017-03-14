@@ -16,7 +16,8 @@
       (qb/with-term {} :some-field "some value") => {:query {:bool {:must [{:term {:some-field {:value "some value"}}}]}}})
 
 (fact "can query for a match"
-      (qb/with-match {} :some-field "some value") => {:query {:bool {:must [{:match {:some-field "some value"}}]}}})
+      (qb/with-match {} :some-field "some value") => {:query {:bool {:must [{:match {:some-field {:query    "some value"
+                                                                                                  :operator :and}}}]}}})
 
 (fact "can query for age less than"
       (qb/with-age-less-than {} :some-field 22) => {:query {:bool {:must [{:range {:some-field {:gte "now-22y"}}}]}}})
@@ -25,8 +26,10 @@
       (qb/with-age-more-than {} :some-field 10) => {:query {:bool {:must [{:range {:some-field {:lte "now-10y"}}}]}}})
 
 (fact "can query for address with postcode"
-      (qb/with-address {} "some value") => {:query {:bool {:must [{:bool {:should               [{:match {:address "some value"}}
-                                                                                                 {:match {:postcode "some value"}}]
+      (qb/with-address {} "some value") => {:query {:bool {:must [{:bool {:should               [{:match {:address {:query    "some value"
+                                                                                                                    :operator :and}}}
+                                                                                                 {:match {:postcode {:query    "some value"
+                                                                                                                     :operator :and}}}]
                                                                           :minimum_should_match 1}}]}}})
 
 (fact "can combine queries"

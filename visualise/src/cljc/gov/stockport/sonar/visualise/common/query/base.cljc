@@ -31,7 +31,8 @@
   (must qip {:term {term {:value value}}}))
 
 (defn with-match [qip term value]
-  (must qip {:match {term value}}))
+  (must qip {:match {term {:query    value
+                           :operator :and}}}))
 
 (defn with-age-less-than [qip term value]
   (must qip {:range {term {:gte (str "now-" value "y")}}}))
@@ -41,6 +42,8 @@
 
 (defn with-address [qip value]
   (-> qip
-      (must {:bool {:should               [{:match {:address value}}
-                                           {:match {:postcode value}}]
+      (must {:bool {:should               [{:match {:address {:query    value
+                                                              :operator :and}}}
+                                           {:match {:postcode {:query    value
+                                                               :operator :and}}}]
                     :minimum_should_match 1}})))
