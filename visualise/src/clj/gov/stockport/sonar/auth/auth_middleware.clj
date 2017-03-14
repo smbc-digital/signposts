@@ -17,18 +17,26 @@
 (def privkey (keys/private-key "config/privkey.pem" passphrase))
 
 (defn auth-fn [{:keys [user]}]
-  (println user)
+  (println "USER=" user)
   (when (= "elastic" user) user))
 
 (def jwe-authentication
-  (backends/jwe {:secret               privkey
-                 :authfn               auth-fn
+  (backends/jwe {:secret  privkey
+                 :authfn  auth-fn
                  ;:unauthorized-handler not-auth-403
-                 :options              {:alg :rsa-oaep
-                                        :enc :a128cbc-hs256}}))
+                 :options {:alg :rsa-oaep
+                           :enc :a128cbc-hs256}}))
+
+(defn wrap-raise-auth-token-from-cookies-to-header [handler]
+  (fn [request]
+    (let [request (if-let [token (get-in request [:cookies "token" :value])]
+                    (assoc-in request [:headers "Authorization"] (str "Token " token))
+                    request)]
+      (handler request))))
 
 (defn wrap-buddy-auth [handler]
   (-> handler
       (wrap-authorization jwe-authentication)
-      (wrap-authentication jwe-authentication)))
-
+      (wrap-authentication jwe-authentication)
+      (wrap-raise-auth-token-from-cookies-to-header)
+      ))

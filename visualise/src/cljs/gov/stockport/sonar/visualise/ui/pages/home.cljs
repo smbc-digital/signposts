@@ -14,7 +14,7 @@
     [:div.column.col-sm-3.stockport
      [:a.navbar-brand {:href "#"}
       [:img.logo
-       {:alt "hello",
+       {:alt "Stockport MBC",
         :src "/images/stockport_logo.gif"}]]]
 
     [:div.column.col-sm-9

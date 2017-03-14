@@ -15,4 +15,4 @@
           user (find-user username password)
           token (jwt/encrypt {:user (:id user)} pubkey
                              {:alg :rsa-oaep :enc :a128cbc-hs256})]
-      (response {:token token}))))
+      (assoc-in (response "") [:cookies "token"] token))))

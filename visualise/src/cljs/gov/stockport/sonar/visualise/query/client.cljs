@@ -40,7 +40,6 @@
           :handler         (fn [response] (go (>! chan response)))})
     chan))
 
-
 (defonce !mappings (r/atom {}))
 
 (defn event-source-and-type []
@@ -55,7 +54,6 @@
          {:size 0
           :aggs {:event-sources {:terms {:field :event-source.keyword :size 100}}}}
          #(reset! !mappings %)))
-
 
 (defn properties [event-type m]
   (let [props (get-in m [:mappings event-type :properties])]
@@ -79,9 +77,3 @@
 
 (defn available-fields []
   (go (fields (<! (fetch "/events-*/_mapping")))))
-
-
-
-
-
-

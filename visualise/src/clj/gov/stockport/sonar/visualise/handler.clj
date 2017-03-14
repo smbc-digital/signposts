@@ -1,12 +1,14 @@
 (ns gov.stockport.sonar.visualise.handler
   (:require [bidi.ring :refer [make-handler ->ResourcesMaybe ->Resources]]
-            [ring.util.response :as rur :refer [response content-type]]
+            [ring.util.response :as rur :refer [response redirect content-type]]
             [ring.middleware.json :refer [wrap-json-response]]
             [hiccup.page :refer [include-js include-css html5]]
             [gov.stockport.sonar.visualise.middleware :refer [wrap-middleware]]
             [config.core :refer [env]]
             [gov.stockport.sonar.esproxy.proxy :as proxy]
-            [gov.stockport.sonar.auth.login :as login]))
+            [gov.stockport.sonar.auth.login :as login]
+            [buddy.auth :refer [authenticated?]]
+            [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]]))
 
 (def mount-target
   [:div#app
@@ -44,25 +46,31 @@
     (-> (rur/not-found "Oops! Not Found!") (content-type "text/html"))))
 
 (def routes ["" [["/" :app]
-                 ["/login" {:post :do-login}]
+                 ["/login" {:get  :login
+                            :post :do-login}]
                  ["/query" {:post :es-query}]
                  ["" (->ResourcesMaybe {:prefix "public/"})]
                  [true :404]]])
 
-(def public-handlers {:login    (login-page)
-                      :do-login login/do-login
-                      :404      not-found-404})
+(defn redirect-if-not-auth [handler]
+  (fn [req]
+    (if (not (authenticated? req))
+      (redirect "/login")
+      (handler req))))
 
-(def secure-handlers {:app      (loading-page)
-                      :es-query proxy/query-handler})
+(def handlers {:login    (loading-page)
+               :do-login login/do-login
+               :404      not-found-404
+               ;:app      (loading-page)
+               :app      (redirect-if-not-auth (loading-page))
+               :es-query proxy/query-handler})
 
-(def handlers (merge public-handlers secure-handlers))
-
-(def app-handler (make-handler routes (fn [hkey] (get handlers hkey hkey))))
+(def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 
 (defn wrap-common-middleware [handler]
   (-> handler
-      (wrap-json-response)))
+      (wrap-json-response)
+      (wrap-buddy-auth)))
 
 (def app (->
            app-handler

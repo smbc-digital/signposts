@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.proxy.proxy-tests
+(ns gov.stockport.sonar.esproxy.proxy-tests
   (:require [midje.sweet :refer :all]
             [clj-http.client :as http]
             [gov.stockport.sonar.esproxy.proxy :as proxy]))
@@ -11,7 +11,7 @@
 
             (provided
               (http/post "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch" {:headers ..auth-header..
-                                                                   :body    "{}"}) => {:body "{\"some\":\"value\"}"}
+                                                                                                    :body    "{}"}) => {:body "{\"some\":\"value\"}"}
               (proxy/authorisation-header) => ..auth-header..))
 
       (fact "should not send empty query if there is no body supplied"
