@@ -3,7 +3,8 @@
             [gov.stockport.sonar.visualise.query.handler :as h]
             [gov.stockport.sonar.visualise.ui.search.search-control :as sc]
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
-            [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]))
+            [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]
+            [gov.stockport.sonar.visualise.auth.auth-client :as ac]))
 
 (defonce !app (r/atom {}))
 (defonce !data (r/atom {}))
@@ -19,7 +20,8 @@
 
     [:div.column.col-sm-9
      [:a.navbar-brand [:i.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]]
-     [:a.navbar-brand.title {:href "#"} "SIGNPOSTS"]]
+     [:a.navbar-brand.title {:href "#"} "SIGNPOSTS"]
+     [:button.pull-right {:on-click ac/logout} "Logout"]]
 
     [:div.row.body
      [:div.column.container-criteria.col-sm-3

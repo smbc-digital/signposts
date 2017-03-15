@@ -11,7 +11,7 @@
                (= session-1 session-2) => false))
 
        (fact "returns nil credentials for non-existant session"
-             (s/get-credentials ..session..) => nil)
+             (s/get-credentials "dunno") => nil)
 
        (fact "returns indicator that session is valid"
              (let [session (s/create-session {})]
@@ -32,4 +32,8 @@
                (= session-1 session-2) => false
                (= (s/get-credentials session-1) (s/get-credentials session-2)) => true))
 
-       )
+       (fact "session not valid once logged out"
+             (let [session (s/create-session {})]
+               (s/valid? session) => true
+               (s/logout session)
+               (s/valid? session) => false)))

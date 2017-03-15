@@ -5,20 +5,28 @@
 (defn ->json [x]
   (.stringify js/JSON (clj->js x)))
 
-(defn- perform-login [& args]
+(defn- perform-post [& args]
   (apply POST args))
 
 (defn handle-login-response [_]
   (accountant/navigate! "/"))
 
+(defn handle-logout-response [_]
+  (accountant/navigate! "/login"))
+
 (defn attempt-login [creds]
-  (perform-login
+  (perform-post
     "/login"
     {:headers         {"Content-Type" "application/json"}
      :format          :json
-     :response-format :json
-     :keywords?       true
      :handler         handle-login-response
+     :error-handler   (fn [resp] (println resp))
      :body            (->json creds)}))
 
-
+(defn logout []
+  (perform-post
+    "/logout"
+    {:headers         {"Content-Type" "application/json"}
+     :format          :json
+     :handler         handle-logout-response
+     :error-handler   (fn [resp] (println resp))}))

@@ -17,3 +17,6 @@
 
 (defn valid? [session]
   (contains? @store session))
+
+(defn logout [session]
+  (swap! store dissoc session))

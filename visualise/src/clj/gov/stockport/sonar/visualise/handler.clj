@@ -48,6 +48,7 @@
 (def routes ["" [["/" :app]
                  ["/login" {:get  :login
                             :post :do-login}]
+                 ["/logout" {:post :do-logout}]
                  ["/query" {:post :es-query}]
                  ["" (->ResourcesMaybe {:prefix "public/"})]
                  [true :404]]])
@@ -58,12 +59,12 @@
       (redirect "/login")
       (handler req))))
 
-(def handlers {:login    (loading-page)
-               :do-login login/handle-login
-               :404      not-found-404
-               :app      (loading-page)
-               ;:app      (redirect-if-not-auth (loading-page))
-               :es-query proxy/handle-query})
+(def handlers {:login     (loading-page)
+               :do-login  login/handle-login
+               :do-logout login/handle-logout
+               :404       not-found-404
+               :app       (redirect-if-not-auth (loading-page))
+               :es-query  proxy/handle-query})
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 
@@ -72,7 +73,6 @@
       (wrap-json-response)
       (wrap-buddy-auth)))
 
-(def app (->
-           app-handler
-           (wrap-common-middleware)
-           (wrap-middleware)))
+(def app (-> app-handler
+             (wrap-common-middleware)
+             (wrap-middleware)))

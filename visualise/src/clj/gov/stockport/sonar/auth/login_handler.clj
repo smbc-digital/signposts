@@ -13,3 +13,7 @@
           token (jwt/encrypt {:user session} pubkey
                              {:alg :rsa-oaep :enc :a128cbc-hs256})]
       (assoc-in (response "") [:cookies "token"] token))))
+
+(defn handle-logout [{session :identity}]
+  (sm/logout session)
+  (response ""))
