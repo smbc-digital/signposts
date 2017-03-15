@@ -1,11 +1,11 @@
-(ns gov.stockport.sonar.visualise.auth.login-tests
+(ns gov.stockport.sonar.visualise.auth.auth-client-tests
   (:require [cljs.test :refer-macros [deftest testing is are use-fixtures]]
             [stubadub.core :refer [with-stub calls-to]]
             [accountant.core :as accountant]
-            [gov.stockport.sonar.visualise.auth.login :as l]))
+            [gov.stockport.sonar.visualise.auth.auth-client :as l]))
 
 
-(deftest login-tests
+(deftest auth-client-tests
 
   (testing "should wire up ajax call and handler to perform login attempt"
 

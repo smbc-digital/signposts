@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.auth.login
+(ns gov.stockport.sonar.visualise.auth.auth-client
   (:require [ajax.core :refer [POST]]
             [accountant.core :as accountant]))
 

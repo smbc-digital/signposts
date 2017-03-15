@@ -7,7 +7,7 @@
 
       (fact "should add auth credentials to the outbound request"
 
-            (proxy/query-handler {:body (.getBytes "{}")}) => {:body {"some" "value"} :status 200 :headers {}}
+            (proxy/handle-query {:body (.getBytes "{}")}) => {:body {"some" "value"} :status 200 :headers {}}
 
             (provided
               (http/post "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch" {:headers ..auth-header..
@@ -16,4 +16,4 @@
 
       (fact "should not send empty query if there is no body supplied"
 
-            (proxy/query-handler {}) => {:body {} :status 200 :headers {}}))
+            (proxy/handle-query {}) => {:body {} :status 200 :headers {}}))

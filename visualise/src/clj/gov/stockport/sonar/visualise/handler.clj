@@ -6,7 +6,7 @@
             [gov.stockport.sonar.visualise.middleware :refer [wrap-middleware]]
             [config.core :refer [env]]
             [gov.stockport.sonar.esproxy.proxy :as proxy]
-            [gov.stockport.sonar.auth.login :as login]
+            [gov.stockport.sonar.auth.login-handler :as login]
             [buddy.auth :refer [authenticated?]]
             [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]]))
 
@@ -59,11 +59,11 @@
       (handler req))))
 
 (def handlers {:login    (loading-page)
-               :do-login login/do-login
+               :do-login login/handle-login
                :404      not-found-404
-               ;:app      (loading-page)
-               :app      (redirect-if-not-auth (loading-page))
-               :es-query proxy/query-handler})
+               :app      (loading-page)
+               ;:app      (redirect-if-not-auth (loading-page))
+               :es-query proxy/handle-query})
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 

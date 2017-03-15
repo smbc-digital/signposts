@@ -38,5 +38,4 @@
   (-> handler
       (wrap-authorization jwe-authentication)
       (wrap-authentication jwe-authentication)
-      (wrap-raise-auth-token-from-cookies-to-header)
-      ))
+      (wrap-raise-auth-token-from-cookies-to-header)))

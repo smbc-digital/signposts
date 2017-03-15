@@ -1,6 +1,6 @@
-(ns gov.stockport.sonar.visualise.ui.pages.login
+(ns gov.stockport.sonar.visualise.ui.pages.login-page
   (:require [reagent.core :as r]
-            [gov.stockport.sonar.visualise.auth.login :as login]))
+            [gov.stockport.sonar.visualise.auth.auth-client :as login]))
 
 (defn login-page []
   [:div.container-fluid.header

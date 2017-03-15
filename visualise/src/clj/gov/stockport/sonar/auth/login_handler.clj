@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.auth.login
+(ns gov.stockport.sonar.auth.login-handler
   (:require [buddy.sign.jwt :as jwt]
             [ring.util.response :refer [response]]
             [buddy.core.keys :as keys]
@@ -8,7 +8,7 @@
 
 (defn find-user [u p] {:id u})
 
-(defn do-login
+(defn handle-login
   [request]
   (if-let [creds (:body request)]
     (let [{:keys [username password]} (parse-string (slurp creds) true)

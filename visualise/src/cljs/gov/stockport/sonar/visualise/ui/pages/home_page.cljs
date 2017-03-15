@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.ui.pages.home
+(ns gov.stockport.sonar.visualise.ui.pages.home-page
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.query.handler :as h]
             [gov.stockport.sonar.visualise.ui.search.search-control :as sc]

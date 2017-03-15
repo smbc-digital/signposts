@@ -3,8 +3,8 @@
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
-            [gov.stockport.sonar.visualise.ui.pages.home :refer [home-page]]
-            [gov.stockport.sonar.visualise.ui.pages.login :refer [login-page]]))
+            [gov.stockport.sonar.visualise.ui.pages.home-page :refer [home-page]]
+            [gov.stockport.sonar.visualise.ui.pages.login-page :refer [login-page]]))
 
 (defn current-page []
   [:div [(session/get :current-page)]])
