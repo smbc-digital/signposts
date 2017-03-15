@@ -8,10 +8,10 @@
 (defn- perform-login [& args]
   (apply POST args))
 
-(defn handle-login-response [response]
+(defn handle-login-response [_]
   (accountant/navigate! "/"))
 
-(defn attempt-login [username password]
+(defn attempt-login [creds]
   (perform-login
     "/login"
     {:headers         {"Content-Type" "application/json"}
@@ -19,6 +19,6 @@
      :response-format :json
      :keywords?       true
      :handler         handle-login-response
-     :body            (->json {:username username :password password})}))
+     :body            (->json creds)}))
 
 

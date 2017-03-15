@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.pages.login-page
   (:require [reagent.core :as r]
-            [gov.stockport.sonar.visualise.auth.auth-client :as login]))
+            [gov.stockport.sonar.visualise.auth.auth-client :as login]
+            [gov.stockport.sonar.visualise.ui.login-form :refer [login-form]]))
 
 (defn login-page []
   [:div.container-fluid.header
@@ -17,5 +18,5 @@
 
     [:div.row.body
      [:div.column.col-sm-9
-      [:button {:on-click #(login/attempt-login "elastic" "changeme")} "Login"]]
+      [login-form]]
      ]]])

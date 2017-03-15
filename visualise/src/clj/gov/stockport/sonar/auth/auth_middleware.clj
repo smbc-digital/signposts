@@ -3,7 +3,8 @@
             [buddy.core.keys :as keys]
             [buddy.core.hash :as hash]
             [buddy.core.codecs :as codecs]
-            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]))
+            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
+            [gov.stockport.sonar.auth.session-manager :as sm]))
 
 (def passphrase (codecs/bytes->hex (hash/sha256 "secret"))) ; passphrase for the key pair
 
@@ -16,9 +17,8 @@
 
 (def privkey (keys/private-key "config/privkey.pem" passphrase))
 
-(defn auth-fn [{:keys [user]}]
-  (println "USER=" user)
-  (when (= "elastic" user) user))
+(defn auth-fn [{session :user}]
+  (when (sm/valid? session) session))
 
 (def jwe-authentication
   (backends/jwe {:secret  privkey

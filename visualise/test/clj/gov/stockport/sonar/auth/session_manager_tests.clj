@@ -13,6 +13,11 @@
        (fact "returns nil credentials for non-existant session"
              (s/get-credentials ..session..) => nil)
 
+       (fact "returns indicator that session is valid"
+             (let [session (s/create-session {})]
+               (s/valid? session) => true
+               (s/valid? "non-existent-session") => false))
+
        (fact "given existing session retrieves credentials"
 
              (with-redefs [b64/encode (fn [creds]
