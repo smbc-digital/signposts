@@ -64,7 +64,7 @@
                :do-logout login/handle-logout
                :404       not-found-404
                :app       (redirect-if-not-auth (loading-page))
-               :es-query  proxy/handle-query})
+               :es-query  proxy/handle-query-request})
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 

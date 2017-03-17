@@ -2,6 +2,8 @@
   (:require [clj-http.client :as http]
             [cheshire.core :as c]
             [ring.util.response :refer [response]]
+            [slingshot.slingshot :refer [try+]]
+            [buddy.auth :refer [throw-unauthorized]]
             [buddy.core.codecs.base64 :as b64]
             [gov.stockport.sonar.auth.session-manager :as sm]))
 
@@ -10,12 +12,15 @@
 (defn auth-header [{:keys [username password]}]
   (str "Basic " (String. ^bytes (b64/encode (str username ":" password)) "UTF-8")))
 
-(defn handle-query [{session :identity :as request}]
-  (if-let [query (:body request)]
+(defn perform-query [credentials query]
+  (try+
     (let [result (http/post search-url
-                            {:headers {"Authorization" (auth-header (sm/get-credentials session))}
+                            {:headers {"Authorization" (auth-header credentials)}
                              :body    (c/generate-string query)})]
+      (c/parse-string (:body result)))
+    (catch Object _ (throw-unauthorized {}))))
 
-      (response (c/parse-string (:body result))))
+(defn handle-query-request [{session :identity :as request}]
+  (if-let [query (:body request)]
+    (response (perform-query (sm/get-credentials session) query))
     (response {})))
-

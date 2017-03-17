@@ -7,20 +7,33 @@
 
 (fact "about sending queries to elastic search"
 
-      (fact "should add auth credentials to the outbound request"
 
-            (proxy/handle-query {:identity ..session..
-                                 :body     {}}) => {:body {"some" "value"} :status 200 :headers {}}
-
+      (fact "adds auth credentials to the outbound request when performing query"
+            (proxy/perform-query ..creds.. ..query..) => {"some" "value"}
             (provided
-              (sm/get-credentials ..session..) => ..creds..
               (proxy/auth-header ..creds..) => ..auth-header..
               (http/post "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch"
                          {:headers {"Authorization" ..auth-header..}
                           :body    "{}"}) => {:body "{\"some\":\"value\"}"}))
 
+      (fact "throws buddy unathorized exception when there is a problem with the query"
+            (proxy/perform-query ..creds.. ..query..) => (throws Exception #"Unauthorized")
+            (provided
+              (proxy/auth-header ..creds..) => ..auth-header..
+              (http/post "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch"
+                         {:headers {"Authorization" ..auth-header..}
+                          :body    "{}"}) =throws=> (Exception. "BARF CHUNKS")))
+
+      (fact "should add auth credentials to the outbound request"
+
+            (proxy/handle-query-request {:identity ..session..
+                                         :body     ..query..}) => {:body ..result.. :status 200 :headers {}}
+            (provided
+              (sm/get-credentials ..session..) => ..creds..
+              (proxy/perform-query ..creds.. ..query..) => ..result..))
+
       (fact "should not send empty query if there is no body supplied"
-            (proxy/handle-query {}) => {:body {} :status 200 :headers {}})
+            (proxy/handle-query-request {}) => {:body {} :status 200 :headers {}})
 
 
       (fact "builds suitable auth header for elastic search from credentials"
