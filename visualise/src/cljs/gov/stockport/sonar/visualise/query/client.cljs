@@ -16,6 +16,7 @@
 (defn authorisation-header []
   {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
 
+; TODO what happens if the response is 4xx -> should client side redirect to /login
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]

@@ -18,7 +18,7 @@
                             {:headers {"Authorization" (auth-header credentials)}
                              :body    (c/generate-string query)})]
       (c/parse-string (:body result)))
-    (catch Object _ (throw-unauthorized {}))))
+    (catch Object _ (throw-unauthorized))))
 
 (defn handle-query-request [{session :identity :as request}]
   (if-let [query (:body request)]

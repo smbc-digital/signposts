@@ -17,5 +17,5 @@
                 :on-change   #(swap! !local assoc :password (-> % .-target .-value))
                 :placeholder "password"}]
        [:button {:on-click (fn [] (let [creds @!local]
-                                    (reset! !local initial-state)
-                                    (login/attempt-login creds)))} "Login"]])))
+                                    (login/attempt-login creds)
+                                    (reset! !local initial-state)))} "Login"]])))
