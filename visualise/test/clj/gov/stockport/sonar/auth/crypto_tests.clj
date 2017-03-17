@@ -1,7 +1,6 @@
 (ns gov.stockport.sonar.auth.crypto-tests
   (:require [midje.sweet :refer :all]
-            [gov.stockport.sonar.auth.crypto :as c]
-            [buddy.core.codecs :as codecs]))
+            [gov.stockport.sonar.auth.crypto :as c]))
 
 (fact "should provide random key with encrypted content"
       (let [{:keys [secret-key ciphertext]} (c/encrypt "something secret")]
