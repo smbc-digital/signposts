@@ -20,7 +20,6 @@
     {:headers         {"Content-Type" "application/json"}
      :format          :json
      :handler         handle-login-response
-     :error-handler   (fn [resp] (println resp))
      :body            (->json creds)}))
 
 (defn logout []
@@ -28,5 +27,4 @@
     "/logout"
     {:headers         {"Content-Type" "application/json"}
      :format          :json
-     :handler         handle-logout-response
-     :error-handler   (fn [resp] (println resp))}))
+     :handler         handle-logout-response}))
