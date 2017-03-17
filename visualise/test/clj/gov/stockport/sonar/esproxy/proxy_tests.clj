@@ -38,4 +38,14 @@
 
       (fact "builds suitable auth header for elastic search from credentials"
             (proxy/auth-header {:username "the-username" :password "the-password"}) =>
-            (str "Basic " (String. ^bytes (b64/encode "the-username:the-password") "UTF-8"))))
+            (str "Basic " (String. ^bytes (b64/encode "the-username:the-password") "UTF-8")))
+
+      (fact "uses simple query to determine when user is valid"
+            (proxy/is-valid-elastic-search-user? ..creds..) => true
+            (provided
+              (proxy/perform-query ..creds.. {}) => {}))
+
+      (fact "uses simple query to determine when user is not valid"
+            (proxy/is-valid-elastic-search-user? ..creds..) => false
+            (provided
+              (proxy/perform-query ..creds.. {}) =throws=> (ex-info "Unauthorized" {}))))

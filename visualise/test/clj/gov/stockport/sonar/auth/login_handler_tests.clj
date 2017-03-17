@@ -12,14 +12,14 @@
              (lh/handle-login {:body ..creds..}) => (throws Exception #"Unauthorized")
 
              (provided
-               (p/perform-query ..creds.. {}) =throws=> (ex-info "Unauthorized" {})))
+               (p/is-valid-elastic-search-user? ..creds..) => false))
 
        (fact "it creates a session and returns a token"
              (lh/handle-login {:body ..creds..}) =>
              {:status 200 :body "" :headers {} :cookies {"token" ..token..}}
 
              (provided
-               (p/perform-query ..creds.. {}) => irrelevant
+               (p/is-valid-elastic-search-user? ..creds..) => true
                (sm/create-session ..creds..) => ..session..
                (jwt/encrypt {:user ..session..} lh/pubkey
                             {:alg :rsa-oaep :enc :a128cbc-hs256}) => ..token..)))

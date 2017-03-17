@@ -20,6 +20,12 @@
       (c/parse-string (:body result)))
     (catch Object _ (throw-unauthorized))))
 
+(defn is-valid-elastic-search-user? [creds]
+  (try
+    (perform-query creds {})
+    true
+    (catch Exception _ false)))
+
 (defn handle-query-request [{session :identity :as request}]
   (if-let [query (:body request)]
     (response (perform-query (sm/get-credentials session) query))
