@@ -2,14 +2,13 @@
   (:require [buddy.sign.jwt :as jwt]
             [ring.util.response :refer [response]]
             [buddy.core.keys :as keys]
-            [gov.stockport.sonar.auth.session-manager :as sm]
-            [cheshire.core :refer [parse-string]]))
+            [gov.stockport.sonar.auth.session-manager :as sm]))
 
 (def pubkey (keys/public-key "config/pubkey.pem"))
 
 (defn handle-login [request]
   (if-let [creds (:body request)]
-    (let [session (sm/create-session (parse-string (slurp creds) true))
+    (let [session (sm/create-session creds)
           token (jwt/encrypt {:user session} pubkey
                              {:alg :rsa-oaep :enc :a128cbc-hs256})]
       (assoc-in (response "") [:cookies "token"] token))))

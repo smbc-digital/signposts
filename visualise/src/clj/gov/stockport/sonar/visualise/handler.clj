@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.visualise.handler
   (:require [bidi.ring :refer [make-handler ->ResourcesMaybe ->Resources]]
             [ring.util.response :as rur :refer [response redirect content-type]]
-            [ring.middleware.json :refer [wrap-json-response]]
+            [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
             [hiccup.page :refer [include-js include-css html5]]
             [gov.stockport.sonar.visualise.middleware :refer [wrap-middleware]]
             [config.core :refer [env]]
@@ -70,6 +70,7 @@
 
 (defn wrap-common-middleware [handler]
   (-> handler
+      (wrap-json-body {:keywords? true})
       (wrap-json-response)
       (wrap-buddy-auth)))
 

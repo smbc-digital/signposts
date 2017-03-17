@@ -8,9 +8,10 @@
 
 (defn handle-query [{session :identity :as request}]
   (if-let [query (:body request)]
-    (let [result (http/post search-url
+    (let [_ (println query)
+          result (http/post search-url
                             {:headers {"Authorization" (sm/get-credentials session)}
-                             :body    (slurp query)})]
+                             :body    (c/generate-string query)})]
 
       (response (c/parse-string (:body result))))
     (response {})))

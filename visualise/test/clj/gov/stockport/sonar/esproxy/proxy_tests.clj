@@ -9,7 +9,7 @@
       (fact "should add auth credentials to the outbound request"
 
             (proxy/handle-query {:identity ..session..
-                                 :body (.getBytes "{}")}) => {:body {"some" "value"} :status 200 :headers {}}
+                                 :body     {}}) => {:body {"some" "value"} :status 200 :headers {}}
 
             (provided
               (http/post "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch" {:headers {"Authorization" ..creds..}
