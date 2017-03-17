@@ -19,12 +19,8 @@
                (s/valid? "non-existent-session") => false))
 
        (fact "given existing session retrieves credentials"
-
-             (with-redefs [b64/encode (fn [creds]
-                                        (when (= creds "the-username:the-password")
-                                          (.getBytes "based64-encoded-username-and-password" "UTF-8")))]
-               (let [session (s/create-session {:username "the-username" :password "the-password"})]
-                 (s/get-credentials session) => "Basic based64-encoded-username-and-password")))
+             (let [session (s/create-session {:username "the-username" :password "the-password"})]
+               (s/get-credentials session) => {:username "the-username" :password "the-password"}))
 
        (fact "sessions based on the same username and password produce the same credentials"
              (let [session-1 (s/create-session {:username "U" :password "P"})
