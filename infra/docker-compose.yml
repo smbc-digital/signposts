@@ -2,15 +2,6 @@
 # issue `docker-compose up -d` for a basic set up
 version: '3.0'
 services:
-  visualise:
-    build:
-      context: "../visualise"
-      args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
-    ports:
-      - "3000:3000"
   elasticsearch:
     build:
       context: "es"
@@ -30,18 +21,3 @@ services:
         - no_proxy
     ports:
       - "5601:5601"
-  nginx:
-    build:
-      context: "nginx"
-    ports: 
-      - "80:80"
-      - "443:443"
-  ingest:
-    build:
-      context: "../ingest"
-      args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
-    volumes:
-      - /tmp/sonar-integration-test:/data
