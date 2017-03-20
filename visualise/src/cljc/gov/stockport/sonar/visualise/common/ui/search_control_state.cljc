@@ -38,8 +38,7 @@
                                         :field-name  :event-type
                                         :field-type  :match-text
                                         :description "Event Type"
-                                        :placeholder "search for event type"}
-                                       ]})
+                                        :placeholder "search for event type"}]})
 
 (defn path [control-id & extras]
   `[:controls ~control-id ~@extras])
@@ -86,10 +85,12 @@
      :get-placeholder    #(:placeholder (selected-field-def))
      :on-remove          (mk-remove-search-criteria !state control-id sc-id)}))
 
+(def sc-counter (atom 0))
+
 (defn add-search-criteria [!state control-id]
   (swap! !state update-in (path control-id :search-criteria)
          (fn [m]
-           (let [sc-id (gensym)]
+           (let [sc-id (swap! sc-counter inc)]
              (assoc m sc-id (create-search-criteria !state control-id sc-id))))))
 
 (defn get-all-search-criteria [!state control-id]
