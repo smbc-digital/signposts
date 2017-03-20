@@ -1,123 +1,65 @@
+body {
+  background-color: #f3f7fa;
+}
+.stockport {
+  background: $sp-dark-green;
 
-.body {
-
-  .column {
-    border-right: 1px solid #e9ecf2;
-    min-height: 100%;
-    height: 100%;
-
-
-    .col-sm-3 {
-      margin-left: 8px;
-      background-color: #1d2932;
-    }
-
-    .col-sm-7 {
-      width: 57%;
-    }
-
-    .column-title {
-
-      &.search-by {
-        background-color: $sp-green;
-        border-top: 1px solid $sp-green;
-        box-shadow: none;
-        background-image: none;
-        text-shadow: none;
-        color: white;
-      }
-
-      box-shadow: inset 0 1px #fff;
-      background-color: #ebf4f9;
-      background-repeat: no-repeat;
-      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6fbfd), to(#ebf4f9));
-      background-image: -webkit-linear-gradient(#f6fbfd, #ebf4f9);
-      background-image: linear-gradient(top, #f6fbfd, #ebf4f9);
-      border-top: 1px solid #dae8ed;
-      border-bottom: 1px solid #c6d3e3;
-      padding: 11px 0 9px 0px;
-      font-size: 13px;
-      letter-spacing: 1px;
-      color: #486574;
-      text-shadow: 0 1px 0 hsla(0, 0%, 100%, .75);
-      margin-bottom: 15px;
-    }
-
-    .criteria-box {
-      background: $sp-dark-green;
-
-      .panel-heading {
-        background-color: $sp-green;
-
-      }
-    }
+  img {
+    width: 100%;
   }
+
+}
+
+.signpost {
+  margin-top: 6px;
+}
+
+.logout {
+  margin-top: 20px;
 }
 
 .container-criteria {
-  background-color: $sp-green;
-  height: 100vh;
-  margin-left: 15px;
 
-  .col-sm-3 {
-    margin-left: 15px;
+  background: $sp-dark-green;
+  height: 100vh;
+
+  .criteria-box {
+    background: $sp-green;
   }
 
   .search-control {
 
     .btn {
 
-      div {
-        padding-top: 7px;
+      color: white;
+      &:hover {
+        color: black;
+      }
+
+      &.add-criteria,
+      &.search {
+        padding-top: 16px;
       }
 
       p {
         font-size: 1.4em;
+        font-weight: 600;
       }
 
       &.add-criteria {
         background-color: $add-criteria;
-        color: white;
-        &:hover {
-          color: black;
-        }
       }
 
       &.remove-criteria {
         background-color: $add-criteria;
-        color: white;
-        &:hover {
-          color: black;
-        }
       }
 
       &.search {
         background-color: $search;
-        color: white;
-        &:hover {
-          color: black;
-        }
       }
     }
   }
 
-
-}
-
-.stockport {
-  height: 8.8%;
-  background-color: $sp-dark-green;
-  width: 24.6%;
-}
-
-
-
-.col-sm-9 {
-  box-sizing: border-box;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #c5d2e3;
-  background-color: #f3f7fa;
 }
 
 .selected-event {
@@ -152,10 +94,7 @@
   border-color:  #c6d4e5;
   border-style: solid;
   background-color:  #f3f7fa;
-  //width: 22.2%;
-  //height: 14.1%;
 }
-
 
 .contact-panel {
   float: right;
@@ -192,7 +131,6 @@
 }
 
 .title {
-  margin-top: .3em;
   color:  #486573;
   font-size: 36px;
   font-weight: 400;
@@ -205,12 +143,7 @@
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 1.4px;
-  line-height: 37px;
   text-align: left;
-}
-
-.logo {
-  width: 45.6%;
 }
 
 .info-label {
@@ -246,6 +179,3 @@
   }
 }
 
-.col-sm-7 {
-  width: 57%
-}

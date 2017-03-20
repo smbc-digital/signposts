@@ -7,16 +7,17 @@
   [:div.container-fluid.header
    [:div.row
     [:div.column.col-sm-3.stockport
-     [:a.navbar-brand {:href "#"}
+     [:div.navbar-brand {:href "#"}
       [:img.logo
        {:alt "Stockport MBC",
         :src "/images/stockport_logo.gif"}]]]
 
     [:div.column.col-sm-9
-     [:a.navbar-brand [:i.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]]
-     [:a.navbar-brand.title {:href "#"} "SIGNPOSTS - Login"]]
+     [:div.navbar-brand [:i.signpost.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]
+      [:div.navbar-brand.title "SIGNPOSTS"]]]]
 
     [:div.row.body
-     [:div.column.col-sm-9
-      [login-form]]
-     ]]])
+      [:div.column.container-criteria.col-sm-3]
+      [:div.column.col-sm-9
+       [login-form]]
+      ]])
