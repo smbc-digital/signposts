@@ -19,8 +19,9 @@
                                          :bottom 10
                                          :left   10}}
               :lines  {:show false}
-              :points {:show   true
-                       :radius 5}
+              :points {:show      true
+                       :radius    8
+                       :fillColor "rgba(255,255,255,0.8"}
               :legend {:show true}})))
 
 (defn flot-render []
@@ -40,7 +41,8 @@
               (let [{:keys [datapoint dataIndex seriesIndex]} (js->clj item :keywordize-keys true)
                     event-data (last (nth (:data (nth meta-data seriesIndex)) dataIndex))]
                 (:selected-event (swap! !data assoc :selected-event event-data))
-                (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex})))))))
+                (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex}))
+              (swap! !data dissoc :point :selected-event))))))
 
 (defn draw-with [!data]
   (let [data (:result @!data)
