@@ -53,7 +53,8 @@
   (let [control-id (gensym "search-control-")]
     (state/init-search-control !state control-id)
     (fn []
-      `[:div.search-control
+      `[:div.search-control.panel-body
+
         ~@(search-criteria !state control-id)
         ~[add-criteria-button #(state/add-search-criteria !state control-id)]
         ~[search-button #(search (query/extract-query (state/get-all-search-criteria !state control-id)) query-handler)]])))

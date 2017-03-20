@@ -16,6 +16,7 @@
 (defn authorisation-header []
   {"Authorization" (str "Basic " (b64/encodeString (str (:username @!creds) ":" (:password @!creds))))})
 
+; TODO what happens if the response is 4xx -> should client side redirect to /login
 (defn query
   ([url handler] (query url nil handler))
   ([url query handler]
@@ -40,7 +41,6 @@
           :handler         (fn [response] (go (>! chan response)))})
     chan))
 
-
 (defonce !mappings (r/atom {}))
 
 (defn event-source-and-type []
@@ -55,7 +55,6 @@
          {:size 0
           :aggs {:event-sources {:terms {:field :event-source.keyword :size 100}}}}
          #(reset! !mappings %)))
-
 
 (defn properties [event-type m]
   (let [props (get-in m [:mappings event-type :properties])]
@@ -79,9 +78,3 @@
 
 (defn available-fields []
   (go (fields (<! (fetch "/events-*/_mapping")))))
-
-
-
-
-
-

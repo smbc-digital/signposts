@@ -5813,79 +5813,40 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
-.body .column {
-  border-right: 1px solid #e9ecf2;
-  min-height: 100%;
-  height: 100%; }
-  .body .column .col-sm-3 {
-    margin-left: 8px;
-    background-color: #1d2932; }
-  .body .column .col-sm-7 {
-    width: 57%; }
-  .body .column .column-title {
-    box-shadow: inset 0 1px #fff;
-    background-color: #ebf4f9;
-    background-repeat: no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6fbfd), to(#ebf4f9));
-    background-image: -webkit-linear-gradient(#f6fbfd, #ebf4f9);
-    background-image: linear-gradient(top, #f6fbfd, #ebf4f9);
-    border-top: 1px solid #dae8ed;
-    border-bottom: 1px solid #c6d3e3;
-    padding: 11px 0 9px 0px;
-    font-size: 13px;
-    letter-spacing: 1px;
-    color: #486574;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-    margin-bottom: 15px; }
-    .body .column .column-title.search-by {
-      background-color: #1c3645;
-      border-top: 1px solid #1c3645;
-      box-shadow: none;
-      background-image: none;
-      text-shadow: none;
-      color: white; }
-  .body .column .criteria-box {
-    background: #1d2932; }
-    .body .column .criteria-box .panel-heading {
-      background-color: #1c3645; }
-
-.container-criteria {
-  background-color: #1c3645;
-  height: 100vh;
-  margin-left: 15px; }
-  .container-criteria .col-sm-3 {
-    margin-left: 15px; }
-  .container-criteria .search-control .btn div {
-    padding-top: 7px; }
-  .container-criteria .search-control .btn p {
-    font-size: 1.4em; }
-  .container-criteria .search-control .btn.add-criteria {
-    background-color: #366c8b;
-    color: white; }
-    .container-criteria .search-control .btn.add-criteria:hover {
-      color: black; }
-  .container-criteria .search-control .btn.remove-criteria {
-    background-color: #366c8b;
-    color: white; }
-    .container-criteria .search-control .btn.remove-criteria:hover {
-      color: black; }
-  .container-criteria .search-control .btn.search {
-    background-color: #71c573;
-    color: white; }
-    .container-criteria .search-control .btn.search:hover {
-      color: black; }
+body {
+  background-color: #f3f7fa; }
 
 .stockport {
-  height: 8.8%;
-  background-color: #1d2932;
-  width: 24.6%; }
+  background: #1d2932; }
+  .stockport img {
+    width: 100%; }
 
-.col-sm-9 {
-  box-sizing: border-box;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #c5d2e3;
-  background-color: #f3f7fa; }
+.signpost {
+  margin-top: 6px; }
+
+.logout {
+  margin-top: 20px; }
+
+.container-criteria {
+  background: #1d2932;
+  height: 100vh; }
+  .container-criteria .criteria-box {
+    background: #1c3645; }
+  .container-criteria .search-control .btn {
+    color: white; }
+    .container-criteria .search-control .btn:hover {
+      color: black; }
+    .container-criteria .search-control .btn.add-criteria, .container-criteria .search-control .btn.search {
+      padding-top: 16px; }
+    .container-criteria .search-control .btn p {
+      font-size: 1.4em;
+      font-weight: 600; }
+    .container-criteria .search-control .btn.add-criteria {
+      background-color: #366c8b; }
+    .container-criteria .search-control .btn.remove-criteria {
+      background-color: #366c8b; }
+    .container-criteria .search-control .btn.search {
+      background-color: #71c573; }
 
 .selected-event {
   width: 100%;
@@ -5945,7 +5906,6 @@ button.close {
   text-align: left; }
 
 .title {
-  margin-top: .3em;
   color: #486573;
   font-size: 36px;
   font-weight: 400;
@@ -5957,11 +5917,7 @@ button.close {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 1.4px;
-  line-height: 37px;
   text-align: left; }
-
-.logo {
-  width: 45.6%; }
 
 .info-label {
   display: inline; }
@@ -5990,9 +5946,6 @@ button.close {
   height: 100%; }
   .selected-event .panel-group {
     height: 100%; }
-
-.col-sm-7 {
-  width: 57%; }
 
 .cards > .panel > .panel-heading {
   color: #486573;
