@@ -1,8 +1,9 @@
 (ns gov.stockport.sonar.auth.session-manager-tests
   (:require [midje.sweet :refer :all]
+            [clj-time.core :as t]
+            [gov.stockport.sonar.test-clock :as test-clock]
             [gov.stockport.sonar.auth.session-manager :as s]
             [gov.stockport.sonar.auth.crypto :as crypto]))
-
 
 (against-background
   [(before :facts (reset! s/store {}))]
@@ -21,6 +22,10 @@
                (let [{session-1 :session-id} (s/create-session {})
                      {session-2 :session-id} (s/create-session {})]
                  (= session-1 session-2) => false))
+
+         (fact "non existent sessions are not valid"
+               (s/valid? nil) => false
+               (s/valid? {}) => false)
 
          (fact "returns nil credentials for non-existant session"
                (s/get-credentials "dunno") => nil)
@@ -57,4 +62,41 @@
                (let [session (s/create-session {})]
                  (s/valid? session) => true
                  (s/logout session)
-                 (s/valid? session) => false))))
+                 (s/valid? session) => false)))
+
+  (facts "about session expiry"
+
+         (let [creation-time (t/date-time 2016 12 25 13 15 15)
+               expiry-time-one (t/plus creation-time (t/minutes s/max-session-idle-minutes))
+               one-second-before-expiry-one (t/minus expiry-time-one (t/seconds 1))
+               expiry-time-two (t/plus one-second-before-expiry-one (t/minutes s/max-session-idle-minutes))
+               one-second-before-expiry-two (t/minus expiry-time-two (t/seconds 1))]
+
+           (with-redefs [t/now test-clock/now]
+
+             (fact "expired sessions are not available"
+                   (test-clock/freeze! creation-time)
+                   (let [session (s/create-session {})]
+                     (test-clock/freeze! expiry-time-one)
+                     (s/get-credentials session) => nil))
+
+             (fact "sessions expire after max-session-idle-minutes"
+                   (test-clock/freeze! creation-time)
+                   (let [session (s/create-session {})]
+                     (s/valid? session) => true
+                     (test-clock/freeze! one-second-before-expiry-one)
+                     (s/valid? session) => true
+                     (test-clock/freeze! expiry-time-one)
+                     (s/valid? session) => false))
+
+             (fact "accessing the credentials extends session validity"
+                   (test-clock/freeze! creation-time)
+                   (let [session (s/create-session {})]
+                     (s/valid? session) => true
+                     (test-clock/freeze! one-second-before-expiry-one)
+                     (s/valid? session) => true
+                     (s/get-credentials session) =not=> nil
+                     (test-clock/freeze! one-second-before-expiry-two)
+                     (s/valid? session) => true
+                     (test-clock/freeze! expiry-time-two)
+                     (s/valid? session) => false))))))
