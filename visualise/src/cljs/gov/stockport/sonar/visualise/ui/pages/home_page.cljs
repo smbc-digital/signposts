@@ -4,10 +4,8 @@
             [gov.stockport.sonar.visualise.ui.search.search-control :as sc]
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
             [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]
-            [gov.stockport.sonar.visualise.auth.auth-client :as ac]))
-
-(defonce !app (r/atom {}))
-(defonce !data (r/atom {}))
+            [gov.stockport.sonar.visualise.auth.auth-client :as ac]
+            [gov.stockport.sonar.visualise.state :refer [!app !data]]))
 
 (defn home-page []
   [:div.container-fluid.header

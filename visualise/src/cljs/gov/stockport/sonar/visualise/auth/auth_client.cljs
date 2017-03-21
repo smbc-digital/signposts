@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.auth.auth-client
   (:require [ajax.core :refer [POST]]
-            [accountant.core :as accountant]))
+            [accountant.core :as accountant]
+            [gov.stockport.sonar.visualise.state :refer [initialise!]]))
 
 (defn ->json [x]
   (.stringify js/JSON (clj->js x)))
@@ -12,6 +13,7 @@
   (accountant/navigate! "/"))
 
 (defn handle-logout-response [_]
+  (initialise!)
   (accountant/navigate! "/login"))
 
 (defn attempt-login [creds]
