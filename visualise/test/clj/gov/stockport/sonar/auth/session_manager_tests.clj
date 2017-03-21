@@ -52,17 +52,18 @@
                (let [session (s/create-session {:username "the-username" :password "the-password"})]
                  (s/get-credentials session) => {:username "the-username" :password "the-password"}))
 
-         (fact "sessions based on the same username and password produce the same credentials"
-               (let [session-1 (s/create-session {:username "U" :password "P"})
-                     session-2 (s/create-session {:username "U" :password "P"})]
-                 (= session-1 session-2) => false
-                 (= (s/get-credentials session-1) (s/get-credentials session-2)) => true))
-
          (fact "session not valid once logged out"
                (let [session (s/create-session {})]
                  (s/valid? session) => true
                  (s/logout session)
-                 (s/valid? session) => false)))
+                 (s/valid? session) => false))
+
+         (fact "only a users most recent session is valid"
+               (let [session-1 (s/create-session {:username "wibble"})
+                     session-2 (s/create-session {:username "wibble"})]
+                 (s/get-credentials session-1) => nil
+                 (s/get-credentials session-2) =not=> nil
+                 (s/valid? session-2) => true)))
 
   (facts "about session expiry"
 

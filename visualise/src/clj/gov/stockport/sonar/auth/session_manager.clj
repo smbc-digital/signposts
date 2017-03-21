@@ -19,7 +19,11 @@
 (defn- not-yet-expired? [{:keys [expiry]}]
   (t/before? (t/now) expiry))
 
+(defn- remove-existing-sessions-for-user [{existing-username :username}]
+  (swap! store (fn [store] (reduce merge {} (filter (fn [[_ {:keys [username]}]] (not (= username existing-username))) store)))))
+
 (defn create-session [{:keys [username password] :as creds}]
+  (remove-existing-sessions-for-user creds)
   (let [session-id (session-id)]
     (let [{:keys [secret-key ciphertext]} (crypto/encrypt password)]
       (swap! store assoc session-id (-> creds
