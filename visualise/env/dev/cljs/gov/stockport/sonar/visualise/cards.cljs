@@ -1,8 +1,6 @@
 (ns gov.stockport.sonar.visualise.cards
   (:require [reagent.core :as reagent :refer [atom]]
-            [gov.stockport.sonar.visualise.cards.timelines]
             [gov.stockport.sonar.visualise.cards.flot]
-            [gov.stockport.sonar.visualise.cards.explore]
             [gov.stockport.sonar.visualise.cards.faceted-search]
             [gov.stockport.sonar.visualise.cards.search-control]
             [gov.stockport.sonar.visualise.cards.zz-richard])

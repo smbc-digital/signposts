@@ -1,13 +1,7 @@
 (ns gov.stockport.sonar.visualise.cards.zz-richard
-  (:require [reagent.core :as reagent :refer [atom]]
-            [reagent.session :as session]
-            [gov.stockport.sonar.visualise.core :as core]
-            [gov.stockport.sonar.visualise.ui.explore :as explore]
-            [devcards.core :as dc]
-            [cljs-time.core :as t])
+  (:require [reagent.core :refer [atom]])
   (:require-macros
     [devcards.core
-     :as dc
      :refer [defcard defcard-doc defcard-rg deftest]]))
 
 (defcard-doc
