@@ -9,12 +9,15 @@
 (defn- perform-post [& args]
   (apply POST args))
 
+(defn clear-search-and-navigate-to-login-page []
+  (initialise!)
+  (accountant/navigate! "/login"))
+
 (defn handle-login-response [_]
   (accountant/navigate! "/"))
 
 (defn handle-logout-response [_]
-  (initialise!)
-  (accountant/navigate! "/login"))
+  (clear-search-and-navigate-to-login-page))
 
 (defn attempt-login [creds]
   (perform-post
@@ -30,3 +33,9 @@
     {:headers         {"Content-Type" "application/json"}
      :format          :json
      :handler         handle-logout-response}))
+
+(defn error-handler [response]
+  (if (= (:status response) 401)
+    (do
+      (clear-search-and-navigate-to-login-page))
+    response))
