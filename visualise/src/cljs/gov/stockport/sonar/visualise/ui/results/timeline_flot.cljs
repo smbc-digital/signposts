@@ -30,6 +30,9 @@
 (defonce !item (atom {}))
 (defonce !metad (atom {}))
 
+(defn touch-data-to-force-rebind-click-handler [!data]
+  (swap! !data update :plotclick #(not (or % false))))
+
 (defn draw-graph [!data the-data meta-data options]
   (reset! !metad meta-data)
   (let [flot (.plot js/jQuery (js/jQuery ".flot-timeline") (clj->js the-data) options)]
@@ -37,6 +40,7 @@
       (.highlight flot seriesIndex dataIndex))
     (.one (js/jQuery ".flot-timeline") "plotclick"
           (fn [_ _ item]
+            (touch-data-to-force-rebind-click-handler !data)
             (if item
               (let [{:keys [datapoint dataIndex seriesIndex]} (js->clj item :keywordize-keys true)
                     event-data (last (nth (:data (nth meta-data seriesIndex)) dataIndex))]
