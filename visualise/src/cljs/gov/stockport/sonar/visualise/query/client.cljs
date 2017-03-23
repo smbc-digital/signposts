@@ -5,13 +5,13 @@
 (defn ->json [x]
   (.stringify js/JSON (clj->js x)))
 
-(defn query [query handler]
+(defn query [query query-results-handler]
   (POST "/query"
         {:headers         {"Content-Type" "application/json"}
          :format          :json
          :response-format :json
          :keywords?       true
-         :handler         (fn [response] (handler response))
+         :handler         query-results-handler
          :error-handler   ac/error-handler
          :body            (->json query)}))
 

@@ -24,7 +24,7 @@
 (def jwe-authentication
   (backends/jwe {:secret  privkey
                  :authfn  auth-fn
-                 :unauthorized-handler (fn [_ _] (-> (r/response "") (r/status 401)))
+                 :unauthorized-handler (fn [_ _] (-> (r/response "{}") (r/status 401)))
                  :options {:alg :rsa-oaep
                            :enc :a128cbc-hs256}}))
 

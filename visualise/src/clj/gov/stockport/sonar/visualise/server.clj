@@ -4,6 +4,14 @@
             [ring.adapter.jetty :refer [run-jetty]])
   (:gen-class))
 
- (defn -main [& args]
-   (let [port (Integer/parseInt (or (env :port) "3000"))]
-     (run-jetty app {:port port :join? false})))
+(def !server (atom nil))
+
+(defn bounce-server []
+  (if-let [server @!server] (.stop server))
+  (reset!
+    !server
+    (let [port (Integer/parseInt (or (env :port) "3000"))]
+      (run-jetty app {:port port :join? false}))))
+
+(defn -main [& args]
+  (bounce-server))
