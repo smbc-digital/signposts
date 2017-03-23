@@ -1,0 +1,6 @@
+# use the following command to start the uberjar - need to refer explicitly to the bouncy castle security jars 
+# in addition to the uberjar...
+#
+# java -cp bcpkix-jdk15on-1.56.jar:bcprov-jdk15on-1.56.jar:visualise.jar gov.stockport.sonar.visualise.server
+
+
