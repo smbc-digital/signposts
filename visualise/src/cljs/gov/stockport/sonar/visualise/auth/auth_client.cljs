@@ -1,41 +1,16 @@
 (ns gov.stockport.sonar.visualise.auth.auth-client
-  (:require [ajax.core :refer [POST]]
-            [accountant.core :as accountant]
-            [gov.stockport.sonar.visualise.state :refer [initialise!]]))
+  (:require [gov.stockport.sonar.visualise.util.ajax :as ajax]
+            [gov.stockport.sonar.visualise.util.navigation :refer [navigate-to-home-page navigate-to-login-page]]))
 
-(defn ->json [x]
-  (.stringify js/JSON (clj->js x)))
+(defn handle-successful-login [_]
+  (navigate-to-home-page))
 
-(defn- perform-post [& args]
-  (apply POST args))
+(defn handle-successful-logout [_]
+  (navigate-to-login-page))
 
-(defn clear-search-and-navigate-to-login-page []
-  (initialise!)
-  (accountant/navigate! "/login"))
-
-(defn handle-login-response [_]
-  (accountant/navigate! "/"))
-
-(defn handle-logout-response [_]
-  (clear-search-and-navigate-to-login-page))
-
-(defn attempt-login [creds]
-  (perform-post
-    "/login"
-    {:headers         {"Content-Type" "application/json"}
-     :format          :json
-     :handler         handle-login-response
-     :body            (->json creds)}))
+(defn login [creds]
+  (ajax/post "/login" {:body    creds
+                       :handler handle-successful-login}))
 
 (defn logout []
-  (perform-post
-    "/logout"
-    {:headers         {"Content-Type" "application/json"}
-     :format          :json
-     :handler         handle-logout-response}))
-
-(defn error-handler [response]
-  (if (= (:status response) 401)
-    (do
-      (clear-search-and-navigate-to-login-page))
-    response))
+  (ajax/post "/logout" {:handler handle-successful-logout}))

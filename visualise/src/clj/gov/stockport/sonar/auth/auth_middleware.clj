@@ -9,13 +9,6 @@
 
 (def passphrase (codecs/bytes->hex (hash/sha256 "secret"))) ; passphrase for the key pair
 
-; Generate aes128 encrypted private key
-; protected with passphrase from above
-; openssl genrsa -aes128 -out privkey.pem 2048
-
-; Generate public key from previously created private key.
-; openssl rsa -pubout -in privkey.pem -out pubkey.pem
-
 (def privkey (keys/private-key "config/privkey.pem" passphrase))
 
 (defn auth-fn [{session :user}]

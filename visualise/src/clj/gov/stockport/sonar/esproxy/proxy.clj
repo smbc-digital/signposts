@@ -9,8 +9,13 @@
 
 (def search-url "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch")
 
+(def audit-url "http://localhost:9200/events-audit/user-query")
+
 (defn auth-header [{:keys [username password]}]
   (str "Basic " (String. ^bytes (b64/encode (str username ":" password)) "UTF-8")))
+
+(defn record-query [credentials query]
+  (http/post audit-url ))
 
 (defn perform-query [credentials query]
   (try+
