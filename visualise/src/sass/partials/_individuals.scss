@@ -1,35 +1,70 @@
-.cards > .panel > .panel-heading {
+@mixin card-color($color) {
+  .panel {
+    border-color: $color;
+  }
+  .panel-heading {
+    background-color: $color;
+    border-color: $color;
+  }
+  &.panel-default {
+    border-color: $color;
+  }
+}
+
+.cards > .panel {
 
   color: #486573;
-  font-size: 24px;/* Approximation due to font substitution */
+  font-size: 14px;
   font-weight: 700;
-  line-height: 37px;/* Approximation due to font substitution */
   text-align: left;
+  line-height: 1.2;
 
   background-image: none;
 
+  .panel {
+    border-color: $base-default;
+  }
+  .panel-heading {
+    background-color: $base-default;
+    border-color: $base-default;
+  }
+  &.panel-default {
+    border-color: $base-default;
+  }
+
   &.red {
-    background-color: $base-red;
-  }
-
-  &.blue {
-    background-color: $base-blue;
-  }
-
-  &.green {
-    background-color: $base-green;
-  }
-
-  &.aqua {
-    background-color: $base-aqua;
-  }
-
-  &.purple {
-    background-color: $base-purple;
+    @include card-color($base-red);
   }
 
   &.yellow {
-    background-color: $base-yellow;
+    @include card-color($base-yellow);
+  }
+
+  &.green {
+    @include card-color($base-green);
+  }
+
+  &.aqua {
+    @include card-color($base-aqua);
+  }
+
+  &.purple {
+    @include card-color($base-purple);
+  }
+
+  &.blue {
+    @include card-color($base-blue);
+  }
+
+  .info-label {
+    display: inline;
+  }
+
+  .info {
+    color:  #486573;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
   }
 
 }

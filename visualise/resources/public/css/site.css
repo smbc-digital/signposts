@@ -5870,13 +5870,6 @@ body {
     color: white;
     border-bottom: 1px solid #c6d3e3; }
 
-.card-box {
-  border-radius: 5px;
-  border-width: 2px;
-  border-color: #c6d4e5;
-  border-style: solid;
-  background-color: #f3f7fa; }
-
 .contact-panel {
   float: right;
   width: 50%;
@@ -5897,6 +5890,9 @@ body {
 
 .container-timeline {
   background-color: white; }
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(28, 54, 69, 0.1); }
 
 .fa.fa-map-signs {
   color: #486573;
@@ -5919,16 +5915,6 @@ body {
   letter-spacing: 1.4px;
   text-align: left; }
 
-.info-label {
-  display: inline; }
-
-.info {
-  color: #486573;
-  font-size: 15px;
-  /* Approximation due to font substitution */
-  font-weight: 700;
-  text-align: left; }
-
 .contact-label {
   color: #ffffff;
   font-weight: 700;
@@ -5947,24 +5933,66 @@ body {
   .selected-event .panel-group {
     height: 100%; }
 
-.cards > .panel > .panel-heading {
+.cards > .panel {
   color: #486573;
-  font-size: 24px;
-  /* Approximation due to font substitution */
+  font-size: 14px;
   font-weight: 700;
-  line-height: 37px;
-  /* Approximation due to font substitution */
   text-align: left;
+  line-height: 1.2;
   background-image: none; }
-  .cards > .panel > .panel-heading.red {
-    background-color: #f36624; }
-  .cards > .panel > .panel-heading.blue {
-    background-color: #2e3292; }
-  .cards > .panel > .panel-heading.green {
-    background-color: #8dc702; }
-  .cards > .panel > .panel-heading.aqua {
-    background-color: #01a79d; }
-  .cards > .panel > .panel-heading.purple {
-    background-color: #91278e; }
-  .cards > .panel > .panel-heading.yellow {
-    background-color: #ffc502; }
+  .cards > .panel .panel {
+    border-color: #dddddd; }
+  .cards > .panel .panel-heading {
+    background-color: #dddddd;
+    border-color: #dddddd; }
+  .cards > .panel.panel-default {
+    border-color: #dddddd; }
+  .cards > .panel.red .panel {
+    border-color: #f36624; }
+  .cards > .panel.red .panel-heading {
+    background-color: #f36624;
+    border-color: #f36624; }
+  .cards > .panel.red.panel-default {
+    border-color: #f36624; }
+  .cards > .panel.yellow .panel {
+    border-color: #ffc502; }
+  .cards > .panel.yellow .panel-heading {
+    background-color: #ffc502;
+    border-color: #ffc502; }
+  .cards > .panel.yellow.panel-default {
+    border-color: #ffc502; }
+  .cards > .panel.green .panel {
+    border-color: #8dc702; }
+  .cards > .panel.green .panel-heading {
+    background-color: #8dc702;
+    border-color: #8dc702; }
+  .cards > .panel.green.panel-default {
+    border-color: #8dc702; }
+  .cards > .panel.aqua .panel {
+    border-color: #01a79d; }
+  .cards > .panel.aqua .panel-heading {
+    background-color: #01a79d;
+    border-color: #01a79d; }
+  .cards > .panel.aqua.panel-default {
+    border-color: #01a79d; }
+  .cards > .panel.purple .panel {
+    border-color: #91278e; }
+  .cards > .panel.purple .panel-heading {
+    background-color: #91278e;
+    border-color: #91278e; }
+  .cards > .panel.purple.panel-default {
+    border-color: #91278e; }
+  .cards > .panel.blue .panel {
+    border-color: #2e3292; }
+  .cards > .panel.blue .panel-heading {
+    background-color: #2e3292;
+    border-color: #2e3292; }
+  .cards > .panel.blue.panel-default {
+    border-color: #2e3292; }
+  .cards > .panel .info-label {
+    display: inline; }
+  .cards > .panel .info {
+    color: #486573;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left; }
