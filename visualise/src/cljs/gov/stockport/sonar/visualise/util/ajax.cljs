@@ -24,7 +24,7 @@
   (assoc request :body (->json body)))
 
 (defn default-error-handler [{:keys [status] :as response}]
-  (if (= status 401)
+  (if (>= status 400)
     (navigate-to-login-page)
     response))
 

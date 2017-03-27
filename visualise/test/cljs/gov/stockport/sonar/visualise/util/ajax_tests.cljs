@@ -46,7 +46,7 @@
           (is (= (:headers options) {"Content-Type" "application/json"
                                      "X-CSRF-Token" "some/value"}))))))
 
-  (testing "default error handling navigates to login page on 401"
+  (testing "default error handling navigates to login page on error status >= 400"
 
     (let [calls (atom 0)]
       (with-redefs [n/navigate-to-login-page (fn [] (swap! calls inc) nil)]
@@ -60,6 +60,6 @@
     (let [calls (atom 0)]
       (with-redefs [n/navigate-to-login-page (fn [] (swap! calls inc) nil)]
 
-                   (is (= (l/default-error-handler {:status 403}) {:status 403}))
+                   (is (= (l/default-error-handler {:status 201}) {:status 201}))
 
                    (is (= 0 @calls))))))

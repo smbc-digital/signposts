@@ -4,7 +4,11 @@
 
 (defn navigate-to-login-page []
   (initialise!)
-  (accountant/navigate! "/login"))
+  ; use to window.location.assign() to force a reload
+  ; of the login page which in turn cleans any
+  ; anti-forgery and invalid session tokens
+  ; say if the server is re-started
+  (.assign js/window.location "/login"))
 
 (defn navigate-to-home-page []
   (accountant/navigate! "/"))

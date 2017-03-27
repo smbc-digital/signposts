@@ -52,7 +52,7 @@
 
   :test-paths ["test/clj" "test/cljs"]
 
-  :resource-paths ["resources" "config" "target/cljsbuild"]
+  :resource-paths ["resources" "target/cljsbuild"]
 
   :minify-assets
   {:assets
