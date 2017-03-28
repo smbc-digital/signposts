@@ -18,10 +18,9 @@
 
 (defn individuals-with-scores [events]
   (map
-    (fn [[ikey data :as m]]
+    (fn [[ikey data]]
       (merge
-        {;
-         :ikey  ikey
+        {:ikey  ikey
          :score (apply max (map :score data))}
         (select-keys ikey individual-keys)))
     (group-by-individual events)))
@@ -36,6 +35,3 @@
       (fn [idx m]
         (assoc m :idx idx :color (color idx)))
       (sort-individuals individuals-with-scores))))
-
-
-

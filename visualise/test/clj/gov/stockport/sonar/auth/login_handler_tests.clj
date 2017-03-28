@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.auth.login-handler-tests
   (:require [midje.sweet :refer :all]
+            [gov.stockport.sonar.auth.keys :as keys]
             [gov.stockport.sonar.auth.login-handler :as lh]
             [gov.stockport.sonar.auth.session-manager :as sm]
             [gov.stockport.sonar.esproxy.proxy :as p]
@@ -21,5 +22,5 @@
              (provided
                (p/is-valid-elastic-search-user? ..creds..) => true
                (sm/create-session ..creds..) => ..session..
-               (jwt/encrypt {:user ..session..} lh/pubkey
+               (jwt/encrypt {:user ..session..} keys/pubkey
                             {:alg :rsa-oaep :enc :a128cbc-hs256}) => ..token..)))

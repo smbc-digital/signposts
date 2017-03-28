@@ -57,7 +57,6 @@
     (draw-graph !data fsd meta-data (options {:xaxis (fa/x-axis (:result @!data))
                                               :yaxis (fd/y-axis (:result @!data))}))))
 
-
 (defn flot-component [!data _]
   (fn []
     (reagent/create-class {:should-component-update (fn [& _] true)
