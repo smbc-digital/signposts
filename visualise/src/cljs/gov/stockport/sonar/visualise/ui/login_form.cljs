@@ -1,6 +1,6 @@
 (ns gov.stockport.sonar.visualise.ui.login-form
   (:require [reagent.core :as r]
-            [gov.stockport.sonar.visualise.auth.auth-client :as login]))
+            [gov.stockport.sonar.visualise.auth.auth-client :refer [login]]))
 
 (def initial-state {:username "" :password ""})
 
@@ -22,5 +22,5 @@
           :on-change   #(swap! !local assoc :password (-> % .-target .-value))}]]]
        [:button.btn.btn-primary
         {:on-click (fn [] (let [creds @!local]
-                            (login/attempt-login creds)
+                            (login creds)
                             (reset! !local initial-state)))} "Login"]])))

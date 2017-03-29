@@ -1,19 +1,9 @@
 (ns gov.stockport.sonar.visualise.query.client
-  (:require [ajax.core :refer [GET POST]]
-            [gov.stockport.sonar.visualise.auth.auth-client :as ac]))
+  (:require [gov.stockport.sonar.visualise.util.ajax :refer [post]]))
 
-(defn ->json [x]
-  (.stringify js/JSON (clj->js x)))
-
-(defn query [query handler]
-  (POST "/query"
-        {:headers         {"Content-Type" "application/json"}
-         :format          :json
+(defn search [query query-results-handler]
+  (post "/query"
+        {:body            query
+         :handler         query-results-handler
          :response-format :json
-         :keywords?       true
-         :handler         (fn [response] (handler response))
-         :error-handler   ac/error-handler
-         :body            (->json query)}))
-
-(defn search [aquery handler]
-  (query aquery handler))
+         :keywords?       true}))

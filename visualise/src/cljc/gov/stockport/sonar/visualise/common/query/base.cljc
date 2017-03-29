@@ -1,3 +1,4 @@
+
 (ns gov.stockport.sonar.visualise.common.query.base)
 
 (defn query []

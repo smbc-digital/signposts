@@ -6,18 +6,18 @@
 (defn login-page []
   [:div.container-fluid.header
    [:div.row
-    [:div.column.col-sm-3.stockport
+    [:div.column.col-sm-2.stockport
      [:div.navbar-brand {:href "#"}
       [:img.logo
        {:alt "Stockport MBC",
         :src "/images/stockport_logo.gif"}]]]
 
-    [:div.column.col-sm-9
+    [:div.column.col-sm-10
      [:div.navbar-brand [:i.signpost.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]
       [:div.navbar-brand.title "SIGNPOSTS"]]]]
 
     [:div.row.body
-      [:div.column.container-criteria.col-sm-3]
-      [:div.column.col-sm-9
+      [:div.column.container-criteria.col-sm-2]
+      [:div.column.col-sm-10
        [login-form]]
       ]])

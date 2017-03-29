@@ -2,6 +2,7 @@
   (:require [bidi.ring :refer [make-handler ->ResourcesMaybe ->Resources]]
             [ring.util.response :as rur :refer [response redirect content-type]]
             [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
+            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
             [hiccup.page :refer [include-js include-css html5]]
             [gov.stockport.sonar.visualise.middleware :refer [wrap-middleware]]
             [config.core :refer [env]]
@@ -23,7 +24,9 @@
                 "/css/font-awesome.min.css")])
 
 (defn html [content]
-  (fn [_] (-> (response content) (content-type "text/html"))))
+  (fn [_] (-> (response content)
+              (content-type "text/html")
+              (assoc-in [:cookies "csrf"] *anti-forgery-token*))))
 
 (defn loading-page []
   (html

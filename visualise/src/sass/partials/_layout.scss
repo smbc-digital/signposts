@@ -88,14 +88,6 @@ body {
   }
 }
 
-.card-box {
-  border-radius: 5px;
-  border-width: 2px;
-  border-color:  #c6d4e5;
-  border-style: solid;
-  background-color:  #f3f7fa;
-}
-
 .contact-panel {
   float: right;
   width: 50%;
@@ -112,7 +104,6 @@ body {
   }
 }
 
-
 .container-results {
   background-color: #f3f7fa;
   height: 100vh;
@@ -122,6 +113,9 @@ body {
   background-color: white;
 }
 
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(28, 54, 69, 0.1);
+}
 
 .fa.fa-map-signs {
   color:  #486573;
@@ -143,17 +137,6 @@ body {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 1.4px;
-  text-align: left;
-}
-
-.info-label {
-  display: inline;
-}
-
-.info {
-  color:  #486573;
-  font-size: 15px;/* Approximation due to font substitution */
-  font-weight: 700;
   text-align: left;
 }
 
