@@ -1,0 +1,10 @@
+<service>
+  <id>leenatron</id>
+  <name>RPS Digital Middleware</name>
+  <description>This service runs the RPS Digital middleware.</description>
+  <executable>leenatron.exe</executable>
+  <log mode="roll-by-size">
+	<sizeThreshold>10240</sizeThreshold>
+	<keepFiles>50</keepFiles>
+  </log>
+</service>

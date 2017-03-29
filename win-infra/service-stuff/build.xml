@@ -1,0 +1,72 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="build"
+          DependsOnTargets="clean;ver_ini;install_deps;generate_exe;generate_installers" >
+    <Exec Command="@echo [Done]"/>
+  </Target>
+
+  <PropertyGroup>
+    <BuildVer Condition="'$(BUILD_NUMBER)' == ''">SNAPSHOT</BuildVer>
+    <BuildVer Condition="'$(BUILD_NUMBER)' != ''">$(LEENATRON_VERSION)</BuildVer>
+  </PropertyGroup>
+
+  <Target Name="ver_ini">
+    <Message text="$(BuildVer)" />
+    <WriteLinesToFile
+        File="version.ini"
+        Lines="build_number=$(BuildVer)"
+        Overwrite="true"/>
+  </Target>
+
+  <Target Name="install_deps">
+    <Exec Command="c:\Python27\Scripts\pip install -r ..\requirements.txt"/>
+  </Target>
+
+  <Target Name="generate_exe" DependsOnTargets="clean;ver_ini">
+    <Exec Command="c:\Python27\Scripts\pyinstaller ..\loader.py --onefile -i ^
+             arrow.ico -n leenatron --version-file version.py ^
+             --hidden-import=windows.hidden_imports ^
+             "/>
+  </Target>
+
+  <Target Name="download_winsw" DependsOnTargets="clean">
+      <Exec Command="curl -o msi\lt-service.exe ^
+            http://repo.jenkins-ci.org/releases/com/sun/winsw/winsw/1.16/winsw-1.16-bin.exe"
+              />
+  </Target>
+
+  <Target Name="generate_installers"
+          DependsOnTargets="download_winsw;msi_devbox_iaz">
+  </Target>
+
+  <Target Name="msi_devbox_iaz">
+    <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
+             devbox-iaz\installer.nsi"/>
+    <Exec Command="mv LeenatronIAZ_DevBox.exe ^
+                      LeenatronIAZ[$(BuildVer)]_DevBox.exe"/>
+  </Target>
+  
+
+  <Target Name="devbox" DependsOnTargets="clean;build">
+    <Exec Command="LeenatronIAZ[$(BuildVer)]_DevBox.exe /S"/>
+    <Exec Command="LeenatronCAZ[$(BuildVer)]_DevBox.exe /S"/>
+  </Target>
+
+  <Target Name="int" DependsOnTargets="clean;build">
+    <Exec Command="LeenatronIAZ[$(BuildVer)]_Int.exe /S"/>
+    <Exec Command="LeenatronCAZ[$(BuildVer)]_Int.exe /S"/>
+  </Target>
+
+  <Target Name="clean">
+    <Delete Files="version.ini" />
+    <Exec Command="del /Q *.zip" IgnoreExitCode="True"/>
+    <Exec Command="del /Q *.exe" IgnoreExitCode="True"/>
+    <Exec Command="del /Q *.spec"/>
+    <Delete Files="leenatron.exe" />
+    <Delete Files="msi\lt-service.exe" />
+	<Delete Files="msi\InstallerName.exe" />
+	<RemoveDir Directories="dist/" />
+	<RemoveDir Directories="build/" />
+  </Target>
+
+</Project>
