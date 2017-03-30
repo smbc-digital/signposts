@@ -22,5 +22,5 @@
              (provided
                (p/is-valid-elastic-search-user? ..creds..) => true
                (sm/create-session ..creds..) => ..session..
-               (jwt/encrypt {:user ..session..} keys/pubkey
+               (jwt/encrypt {:user ..session..} @keys/pubkey
                             {:alg :rsa-oaep :enc :a128cbc-hs256}) => ..token..)))

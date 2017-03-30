@@ -9,7 +9,7 @@
 (defn handle-login [{creds :body}]
   (when (not (is-valid-elastic-search-user? creds)) (throw-unauthorized))
   (let [session (sm/create-session creds)
-        token (jwt/encrypt {:user session} pubkey
+        token (jwt/encrypt {:user session} @pubkey
                            {:alg :rsa-oaep :enc :a128cbc-hs256})]
     (assoc-in (response "") [:cookies "token"] token)))
 
