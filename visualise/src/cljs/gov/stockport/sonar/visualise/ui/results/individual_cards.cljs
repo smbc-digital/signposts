@@ -1,5 +1,11 @@
 (ns gov.stockport.sonar.visualise.ui.results.individual-cards
-  (:require [gov.stockport.sonar.visualise.data.people :as people]))
+  (:require [gov.stockport.sonar.visualise.data.people :as people]
+            [cljs-time.core :as t]
+            [cljs-time.format :as f]))
+
+(def age (fn [dob]
+           (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
+             (str " (" years " yrs)"))))
 
 (defn cards [!data]
   (fn []
@@ -20,7 +26,7 @@
                [:i.fa.fa-crosshairs.fa-2x.pull-right
                 {:title    "Show just this person on the graph"
                  :on-click #(swap! !data people/focus-on pkey)}]
-               [:p.info name]
+               [:p.info name (age dob)]
                [:p.info-label "Date of Birth: "]
                [:p.info dob]
                [:p.info-label "Address: "]
