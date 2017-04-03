@@ -40,3 +40,9 @@
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))
+
+(defn focus-on [data pkey]
+  (update data :people (fn [people]
+                         (reduce merge {}
+                                 (map (fn [[k v]] {k (assoc v :display (= k pkey))}) people)))))
+

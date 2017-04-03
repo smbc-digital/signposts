@@ -13,9 +13,13 @@
              [:div.panel.panel-default.card-box {:class color}
               [:div.panel-heading.card-name]
               [:div.panel-body
-               [:input.pull-right {:type      :checkbox
-                                   :checked   display
-                                   :on-change #(swap! !data update-in [:people pkey :display] not)}]
+               [:i.fa.fa-2x.pull-right
+                {:class    (if display "fa-eye" "fa-eye-slash")
+                 :title    (str (if display "Hide" "Show") " this person on the graph")
+                 :on-click #(swap! !data update-in [:people pkey :display] not)}]
+               [:i.fa.fa-crosshairs.fa-2x.pull-right
+                {:title    "Show just this person on the graph"
+                 :on-click #(swap! !data people/focus-on pkey)}]
                [:p.info name]
                [:p.info-label "Date of Birth: "]
                [:p.info dob]

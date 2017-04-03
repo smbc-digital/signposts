@@ -117,4 +117,17 @@
 
              [[{:name "B"} {:rank 1}]
               [{:name "A"} {:rank 4}]
-              [{:name "C"} {:rank 6}]])))))
+              [{:name "C"} {:rank 6}]]))))
+
+  (testing "display toggles"
+
+    (testing "focus"
+      (is (= (people/focus-on {:people {{:name "A"} {:display true}
+                                        {:name "B"} {:display true}
+                                        {:name "C"} {:display false}}}
+                              {:name "B"})
+
+             {:people {{:name "A"} {:display false}
+                       {:name "B"} {:display true}
+                       {:name "C"} {:display false}}}))))
+  )
