@@ -8,6 +8,8 @@
             [gov.stockport.sonar.visualise.ui.results.flot-axes-tests]
             [gov.stockport.sonar.visualise.util.ajax-tests]
             [gov.stockport.sonar.visualise.data.people-tests]
+            [gov.stockport.sonar.visualise.data.timespan-tests]
+            [gov.stockport.sonar.visualise.data.people-tests]
             [gov.stockport.sonar.visualise.util.blur-tests]
             [gov.stockport.sonar.visualise.util.popper-tests]))
 

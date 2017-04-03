@@ -3,7 +3,8 @@
             [cljsjs.flot]
             [cljsjs.flot.plugins.time]
             [gov.stockport.sonar.visualise.ui.results.selected-event :as se]
-            [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
+            [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]
+            [gov.stockport.sonar.visualise.ui.results.date-control :as dc]))
 
 (defn options [m]
   (clj->js

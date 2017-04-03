@@ -4,7 +4,9 @@
             [gov.stockport.sonar.visualise.data.colours :refer [colour-map]]
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
 
-(def single-event {:result [{:timestamp (t/date-time 2016 12 1) :event-type :asbo}]})
+(def single-event {:result   [{:timestamp (t/date-time 2016 12 1) :event-type :asbo}]
+                   :timespan {:from-date (t/date-time 2017)
+                              :to-date   (t/date-time 2018)}})
 
 (def multiple-events {:result [{:timestamp (t/date-time 2016 11 1) :event-type :asbo}
                                {:timestamp (t/date-time 2016 12 1) :event-type :caution}]})
@@ -74,15 +76,10 @@
         (is (= (:timeFormat result) "%Y/%m/%d"))
         (is (= (:minTickSize result) [1 "month"]))))
 
-    (testing "x-axis includes a buffer at each end for a single event"
+    (testing "timespan is used"
       (let [result (fa/x-axis single-event)]
-        (is (t/= (:min result) (t/date-time 2016 11)))
-        (is (t/= (:max result) (t/date-time 2017 1)))))
-
-    (testing "x-axis includes a buffer at each end for multiple events"
-      (let [result (fa/x-axis multiple-events)]
-        (is (t/= (:min result) (t/date-time 2016 10)))
-        (is (t/= (:max result) (t/date-time 2017 1))))))
+        (is (t/= (:min result) (t/date-time 2017)))
+        (is (t/= (:max result) (t/date-time 2018))))))
 
   (testing "y-axis"
 

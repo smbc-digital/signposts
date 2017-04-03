@@ -2,7 +2,8 @@
   (:require [cljs.test :refer-macros [deftest is testing]]
             [cljs-time.core :as t]
             [gov.stockport.sonar.visualise.query.handler :as h]
-            [gov.stockport.sonar.visualise.data.people :as p]))
+            [gov.stockport.sonar.visualise.data.people :as people]
+            [gov.stockport.sonar.visualise.data.timespan :as timespan]))
 
 (deftest results-handler-tests
 
@@ -20,11 +21,13 @@
       (is (= (:score (first (:result @!state))) 1.2))))
 
   (testing "adds information about individuals and people in the dataset"
-    (with-redefs [p/from-data (fn [_] :some-people)]
+    (with-redefs [people/from-data (fn [_] :some-people)
+                  timespan/from-data (fn [_] :some-timespan)]
                  (let [!state (atom {})
                        handler (h/default-handler !state)
                        _ (handler {:took 99
                                    :hits {:total 1234
                                           :hits  [{:_source {}}]}})]
-                   (is (= (:people @!state) :some-people))))))
+                   (is (= (:people @!state) :some-people))
+                   (is (= (:timespan @!state) :some-timespan))))))
 

@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.query.handler
   (:require [gov.stockport.sonar.visualise.util.date :refer [parse-timestamp]]
-            [gov.stockport.sonar.visualise.data.people :as people]))
+            [gov.stockport.sonar.visualise.data.people :as people]
+            [gov.stockport.sonar.visualise.data.timespan :as timespan]))
 
 (defn source-events [response]
   (map #(-> %
@@ -18,4 +19,5 @@
                       (assoc :result (source-events response))
                       (dissoc :point :selected-event)))
     (swap! !data #(-> %
+                      (assoc :timespan (timespan/from-data (:result %)))
                       (assoc :people (people/from-data (:result %)))))))
