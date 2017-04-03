@@ -17,8 +17,7 @@
                                          :bottom 10
                                          :left   10}}
               :lines  {:show false}
-              :points {:show      true
-                       :radius    8
+              :points {:radius    8
                        :fillColor "rgba(255,255,255,0.8"}
               :legend {:show true}})))
 

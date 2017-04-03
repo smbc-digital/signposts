@@ -10,19 +10,34 @@
                                {:timestamp (t/date-time 2016 12 1) :event-type :caution}]})
 
 (def one-person {:result [{:event-type :asbo} {:event-type :caution} {:event-type :zoology}]
-                 :people {{:name "A"} {:data  [{:timestamp 1 :event-type :asbo}
-                                               {:timestamp 4 :event-type :caution}]
-                                       :color :red}}})
+                 :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                                                 {:timestamp 4 :event-type :caution}]
+                                       :color   :red
+                                       :display true}}})
 
 (def two-people {:result [{:event-type :asbo} {:event-type :caution} {:event-type :zoology}]
-                 :people {{:name "A"} {:data  [{:timestamp 1 :event-type :asbo}
-                                               {:timestamp 4 :event-type :caution}]
-                                       :rank  1
-                                       :color :red}
-                          {:name "B"} {:data  [{:timestamp 4 :event-type :zoology}
-                                               {:timestamp 1 :event-type :caution}]
-                                       :rank  2
-                                       :color :blue}}})
+                 :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                                                 {:timestamp 4 :event-type :caution}]
+                                       :rank    1
+                                       :color   :red
+                                       :display true}
+                          {:name "B"} {:data    [{:timestamp 4 :event-type :zoology}
+                                                 {:timestamp 1 :event-type :caution}]
+                                       :rank    2
+                                       :color   :blue
+                                       :display true}}})
+
+(def two-people-one-hidden {:result [{:event-type :asbo} {:event-type :caution} {:event-type :zoology}]
+                            :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                                                            {:timestamp 4 :event-type :caution}]
+                                                  :rank    1
+                                                  :display false
+                                                  :color   :red}
+                                     {:name "B"} {:data    [{:timestamp 4 :event-type :zoology}
+                                                            {:timestamp 1 :event-type :caution}]
+                                                  :rank    2
+                                                  :display true
+                                                  :color   :blue}}})
 
 (deftest flot-axes
 
@@ -74,11 +89,16 @@
     (testing "are derived as series based on people"
 
       (is (= (fa/data-points one-person)
-             [{:color (:red colour-map) :data [[1 3] [4 2]]}]))
+             [{:points {:show true} :color (:red colour-map) :data [[1 3] [4 2]]}]))
 
       (is (= (fa/data-points two-people)
-             [{:color (:red colour-map) :data [[1 3] [4 2]]}
-              {:color (:blue colour-map) :data [[4 1] [1 2]]}])))
+             [{:points {:show true} :color (:red colour-map) :data [[1 3] [4 2]]}
+              {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+
+    (testing "may be turned off if the person is not displayed"
+      (is (= (fa/data-points two-people-one-hidden)
+             [{:points {:show false} :color (:red colour-map) :data [[1 3] [4 2]]}
+              {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
 
     (testing "we can find the specific event based on series and data index"
 

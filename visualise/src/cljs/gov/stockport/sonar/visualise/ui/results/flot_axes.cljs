@@ -26,13 +26,14 @@
 (defn data-points [{:keys [people] :as data}]
   (let [lm (label-map data)]
     (map
-      (fn [[_ {:keys [color data]}]]
-        {:color (get colour-map color)
-         :data  (map
-                  (fn [{:keys [timestamp event-type]}]
-                    [timestamp (get lm event-type)])
-                  data)})
-         people)))
+      (fn [[_ {:keys [color display data]}]]
+        {:points {:show display}
+         :color  (get colour-map color)
+         :data   (map
+                   (fn [{:keys [timestamp event-type]}]
+                     [timestamp (get lm event-type)])
+                   data)})
+      people)))
 
 (defn event-at [data person-index data-index]
   (let [[_ {:keys [data]}] (nth (people/by-rank data) person-index nil)]
