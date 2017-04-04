@@ -5947,6 +5947,8 @@ body {
     border-color: #dddddd; }
   .cards > .panel.panel-default {
     border-color: #dddddd; }
+  .cards > .panel.blur {
+    filter: blur(1px); }
   .cards > .panel.red .panel {
     border-color: #f36624; }
   .cards > .panel.red .panel-heading {

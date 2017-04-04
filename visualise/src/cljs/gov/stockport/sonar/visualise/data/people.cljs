@@ -41,8 +41,19 @@
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))
 
+(defn always-true [& _] true)
+
+(defn always-false [& _] false)
+
 (defn focus-on [data pkey]
-  (update data :people (fn [people]
-                         (reduce merge {}
-                                 (map (fn [[k v]] {k (assoc v :display (= k pkey))}) people)))))
+  (let [focusing? (not (get-in data [:people pkey :focus]))
+        display? (if focusing? = always-true)
+        focus? (if focusing? = always-false)]
+    (-> data
+        (assoc :focused focusing?)
+        (update :people #(reduce merge {}
+                                 (map
+                                   (fn [[k v]]
+                                     {k (assoc v :display (display? k pkey) :focus (focus? k pkey))})
+                                   %))))))
 

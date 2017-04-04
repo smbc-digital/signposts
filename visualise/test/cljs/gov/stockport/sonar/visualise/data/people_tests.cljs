@@ -121,13 +121,48 @@
 
   (testing "display toggles"
 
-    (testing "focus"
+    (testing "focus can be set"
+
       (is (= (people/focus-on {:people {{:name "A"} {:display true}
                                         {:name "B"} {:display true}
                                         {:name "C"} {:display false}}}
                               {:name "B"})
 
-             {:people {{:name "A"} {:display false}
-                       {:name "B"} {:display true}
-                       {:name "C"} {:display false}}}))))
-  )
+             {:people  {{:name "A"} {:display false
+                                     :focus   false}
+                        {:name "B"} {:display true
+                                     :focus   true}
+                        {:name "C"} {:display false
+                                     :focus   false}}
+              :focused true})))
+
+    (testing "focus can be shifted"
+
+      (is (= (people/focus-on {:people  {{:name "A"} {:display false
+                                                      :focus   true}
+                                         {:name "B"} {:display true}
+                                         {:name "C"} {:display false}}
+                               :focused true}
+                              {:name "B"})
+
+             {:people  {{:name "A"} {:display false
+                                     :focus   false}
+                        {:name "B"} {:display true
+                                     :focus   true}
+                        {:name "C"} {:display false
+                                     :focus   false}}
+              :focused true})))
+
+    (testing "focus can be removed"
+
+      (is (= (people/focus-on {:people  {{:name "A"} {:display false}
+                                         {:name "B"} {:display true
+                                                      :focus   true}
+                                         {:name "C"} {:display false}}
+                               :focused true}
+                              {:name "B"})
+
+             {:people  {{:name "A"} {:display true :focus false}
+                        {:name "B"} {:display true :focus false}
+                        {:name "C"} {:display true :focus false}}
+              :focused false})))))
