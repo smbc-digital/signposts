@@ -9,13 +9,18 @@
 (def multiple-events {:result [{:timestamp (t/date-time 2016 11 1) :event-type :asbo}
                                {:timestamp (t/date-time 2016 12 1) :event-type :caution}]})
 
-(def one-person {:result [{:event-type :asbo} {:event-type :caution} {:event-type :zoology}]
+(def one-person {:result [{:timestamp 1 :event-type :asbo}
+                          {:timestamp 4 :event-type :caution}
+                          {:timestamp 2 :event-type :zoology}]
                  :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
                                                  {:timestamp 4 :event-type :caution}]
                                        :color   :red
                                        :display true}}})
 
-(def two-people {:result [{:event-type :asbo} {:event-type :caution} {:event-type :zoology}]
+(def two-people {:result [{:timestamp 1 :event-type :asbo}
+                          {:timestamp 1 :event-type :caution}
+                          {:timestamp 4 :event-type :caution}
+                          {:timestamp 4 :event-type :zoology}]
                  :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
                                                  {:timestamp 4 :event-type :caution}]
                                        :rank    1
@@ -27,7 +32,10 @@
                                        :color   :blue
                                        :display true}}})
 
-(def two-people-one-hidden {:result [{:event-type :asbo} {:event-type :caution} {:event-type :zoology}]
+(def two-people-one-hidden {:result [{:timestamp 1 :event-type :asbo}
+                                     {:timestamp 1 :event-type :caution}
+                                     {:timestamp 4 :event-type :caution}
+                                     {:timestamp 4 :event-type :zoology}]
                             :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
                                                             {:timestamp 4 :event-type :caution}]
                                                   :rank    1
@@ -38,6 +46,23 @@
                                                   :rank    2
                                                   :display true
                                                   :color   :blue}}})
+
+(def colliding-data {:result [{:timestamp 1 :event-type :asbo}
+                              {:timestamp 1 :event-type :asbo}
+                              {:timestamp 1 :event-type :asbo}
+                              {:timestamp 4 :event-type :caution}
+                              {:timestamp 4 :event-type :caution}]
+                     :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                                                     {:timestamp 1 :event-type :asbo}
+                                                     {:timestamp 4 :event-type :caution}]
+                                           :rank    1
+                                           :color   :red
+                                           :display true}
+                              {:name "B"} {:data    [{:timestamp 1 :event-type :asbo}
+                                                     {:timestamp 4 :event-type :caution}]
+                                           :rank    2
+                                           :color   :blue
+                                           :display true}}})
 
 (deftest flot-axes
 
@@ -99,6 +124,11 @@
       (is (= (fa/data-points two-people-one-hidden)
              [{:points {:show false} :color (:red colour-map) :data [[1 3] [4 2]]}
               {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+
+    (testing "events are shifted a little when they land on top of each other"
+      (is (= (fa/data-points colliding-data)
+             [{:points {:show true} :color (:red colour-map) :data [[1 1.9] [1 2] [4 0.95]]}
+              {:points {:show true} :color (:blue colour-map) :data [[1 2.1] [4 1.05]]}])))
 
     (testing "we can find the specific event based on series and data index"
 

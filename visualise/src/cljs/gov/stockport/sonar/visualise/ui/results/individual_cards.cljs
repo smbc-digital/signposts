@@ -7,19 +7,20 @@
            (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
              (str " (" years " yrs)"))))
 
-
-
 (defn cards [!data]
   (fn []
     (let [people (people/by-rank @!data)
           focused? (:focused @!data)]
       (when (not-empty people)
         [:div.cards
-         [:p.results-confirmation "Your search returned " (:total @!data) " event" (if (> (:total @!data) 1) "s") " from " (count people) " individual" (if (> (count people) 1) "s")]
+         [:p.results-confirmation "Your search returned " (:total @!data) " event"
+          (if (> (:total @!data) 1) "s") " from " (count people) " individual" (if (> (count people) 1) "s")]
          (map
            (fn [[{:keys [name dob address] :as pkey} {:keys [color display focus]}]]
              ^{:key (gensym)}
-             [:div.panel.panel-default.card-box {:class (str (cljs.core/name color) (if focused? (if (or focus display) " focus" " blur")))}
+             [:div.panel.panel-default.card-box
+              {:class (str (cljs.core/name color)
+                           (if focused? (if (or focus display) " focus" " blur")))}
               [:div.panel-heading.card-name]
               [:div.panel-body
 

@@ -5938,7 +5938,7 @@ body {
   font-size: 14px;
   font-weight: 700;
   text-align: left;
-  line-height: 1.2;
+  line-height: 1.1;
   background-image: none; }
   .cards > .panel .panel {
     border-color: #dddddd; }
@@ -5948,7 +5948,7 @@ body {
   .cards > .panel.panel-default {
     border-color: #dddddd; }
   .cards > .panel.blur {
-    filter: blur(1px); }
+    filter: blur(2px); }
   .cards > .panel.red .panel {
     border-color: #f36624; }
   .cards > .panel.red .panel-heading {
