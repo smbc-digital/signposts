@@ -10,17 +10,25 @@
 (defn cards [!data]
   (fn []
     (let [people (people/by-rank @!data)
-          focused? (:focused @!data)]
+          display-all? (:display-all? @!data)]
       (when (not-empty people)
         [:div.cards
          [:p.results-confirmation "Your search returned " (:total @!data) " event"
           (if (> (:total @!data) 1) "s") " from " (count people) " individual" (if (> (count people) 1) "s")]
+         [:div.panel.panel-default.card-box
+          [:div.panel-body
+           [:i.fa.fa-2x.pull-right
+            {:class    (if display-all? "fa-toggle-on" "fa-toggle-off")
+             :title    (str (if display-all? "Hide" "Show") " all people on the graph")
+             :on-click #(swap! !data people/display-all)}]
+           [:p.info (if display-all? "Hide everyone" "Show everyone")]]]
+
          (map
-           (fn [[{:keys [name dob address] :as pkey} {:keys [color display focus]}]]
+           (fn [[{:keys [name dob address] :as pkey} {:keys [color display]}]]
              ^{:key (gensym)}
              [:div.panel.panel-default.card-box
               {:class (str (cljs.core/name color)
-                           (if focused? (if (or focus display) " focus" " blur")))}
+                           (if display " focus" " blur"))}
               [:div.panel-heading.card-name]
               [:div.panel-body
 
@@ -28,11 +36,6 @@
                 {:class    (if display "fa-toggle-on" "fa-toggle-off")
                  :title    (str (if display "Hide" "Show") " this person on the graph")
                  :on-click #(swap! !data update-in [:people pkey :display] not)}]
-
-               [:i.fa.fa-2x.pull-right
-                {:class    (if focus "fa-star" "fa-star-o")
-                 :title    (str "Show" (if focus " all people " " only this person ") "on the graph")
-                 :on-click #(swap! !data people/focus-on pkey)}]
 
                [:p.info name (age dob)]
                [:p.info-label "Date of Birth: "]

@@ -24,16 +24,19 @@
   .panel {
     border-color: $base-default;
   }
+
   .panel-heading {
     background-color: $base-default;
     border-color: $base-default;
   }
+
   &.panel-default {
     border-color: $base-default;
   }
 
   &.blur {
-    filter: blur(2px);
+    background-color: $base-default;
+    //filter: blur(1px);
   }
 
   &.red {

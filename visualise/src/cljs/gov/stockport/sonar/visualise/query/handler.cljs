@@ -19,5 +19,6 @@
                       (assoc :result (source-events response))
                       (dissoc :point :selected-event)))
     (swap! !data #(-> %
+                      (assoc :display-all? true)
                       (assoc :timespan (timespan/from-data (:result %)))
                       (assoc :people (people/from-data (:result %)))))))

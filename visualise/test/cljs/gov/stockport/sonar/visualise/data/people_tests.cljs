@@ -121,48 +121,26 @@
 
   (testing "display toggles"
 
-    (testing "focus can be set"
+    (testing "master-switch can be toggled to show everyone"
 
-      (is (= (people/focus-on {:people {{:name "A"} {:display true}
-                                        {:name "B"} {:display true}
-                                        {:name "C"} {:display false}}}
-                              {:name "B"})
+      (is (= (people/display-all {:people       {{:name "A"} {:display true}
+                                                 {:name "B"} {:display true}
+                                                 {:name "C"} {:display false}}
+                                  :display-all? false})
 
-             {:people  {{:name "A"} {:display false
-                                     :focus   false}
-                        {:name "B"} {:display true
-                                     :focus   true}
-                        {:name "C"} {:display false
-                                     :focus   false}}
-              :focused true})))
+             {:people       {{:name "A"} {:display true}
+                             {:name "B"} {:display true}
+                             {:name "C"} {:display true}}
+              :display-all? true})))
 
-    (testing "focus can be shifted"
+    (testing "master-switch can be toggled to show no-one"
 
-      (is (= (people/focus-on {:people  {{:name "A"} {:display false
-                                                      :focus   true}
-                                         {:name "B"} {:display true}
-                                         {:name "C"} {:display false}}
-                               :focused true}
-                              {:name "B"})
+      (is (= (people/display-all {:people       {{:name "A"} {:display true}
+                                                 {:name "B"} {:display true}
+                                                 {:name "C"} {:display false}}
+                                  :display-all? true})
 
-             {:people  {{:name "A"} {:display false
-                                     :focus   false}
-                        {:name "B"} {:display true
-                                     :focus   true}
-                        {:name "C"} {:display false
-                                     :focus   false}}
-              :focused true})))
-
-    (testing "focus can be removed"
-
-      (is (= (people/focus-on {:people  {{:name "A"} {:display false}
-                                         {:name "B"} {:display true
-                                                      :focus   true}
-                                         {:name "C"} {:display false}}
-                               :focused true}
-                              {:name "B"})
-
-             {:people  {{:name "A"} {:display true :focus false}
-                        {:name "B"} {:display true :focus false}
-                        {:name "C"} {:display true :focus false}}
-              :focused false})))))
+             {:people       {{:name "A"} {:display false}
+                             {:name "B"} {:display false}
+                             {:name "C"} {:display false}}
+              :display-all? false})))))
