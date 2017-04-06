@@ -5,8 +5,10 @@
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
 
 (def single-event {:result   [{:timestamp (t/date-time 2016 12 1) :event-type :asbo}]
-                   :timespan {:from-date (t/date-time 2017)
-                              :to-date   (t/date-time 2018)}})
+                   :timespan {:from-date     (t/date-time 2017)
+                              :selected-from (t/date-time 2017)
+                              :to-date       (t/date-time 2018)
+                              :selected-to   (t/date-time 2018)}})
 
 (def multiple-events {:result [{:timestamp (t/date-time 2016 11 1) :event-type :asbo}
                                {:timestamp (t/date-time 2016 12 1) :event-type :caution}]})
