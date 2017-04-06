@@ -44,7 +44,7 @@
   (draw-graph !data (fa/data-points @!data) (options {:xaxis (fa/x-axis @!data)
                                                       :yaxis (fa/y-axis @!data)})))
 
-(defn flot-component [!data _]
+(defn flot-component [!data]
   (fn []
     (reagent/create-class {:should-component-update (fn [& _] true)
                            :reagent-render          flot-render
@@ -56,5 +56,5 @@
     (let [results (:result @!data)]
       (when (not-empty results)
         [:div
-         [flot-component !data (options {:yaxis (fa/y-axis results)})]
+         [flot-component !data @!data]
          [se/selected-event !data]]))))
