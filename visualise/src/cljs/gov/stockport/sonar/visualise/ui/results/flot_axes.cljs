@@ -5,7 +5,14 @@
             [gov.stockport.sonar.visualise.util.blur :as b]
             [gov.stockport.sonar.visualise.util.popper :as p]))
 
-(defn x-axis [{{:keys [from-date to-date]} :timespan}]
+(defn x-axis [{{:keys [selected-from selected-to]} :timespan}]
+  {:mode        "time"
+   :timeFormat  "%Y/%m/%d"
+   :minTickSize [1 "month"]
+   :min         selected-from
+   :max         selected-to})
+
+(defn selector-x-axis [{{:keys [from-date to-date]} :timespan}]
   {:mode        "time"
    :timeFormat  "%Y/%m/%d"
    :minTickSize [1 "month"]

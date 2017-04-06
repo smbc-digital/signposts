@@ -6,5 +6,6 @@
         start (t/minus (apply min times) (t/months 1))
         end (t/plus (apply max times) (t/months 1))]
     {:from-date start
-     :to-date   end}
-    ))
+     :selected-from start
+     :to-date   end
+     :selected-to end}))

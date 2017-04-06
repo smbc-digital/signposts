@@ -12,8 +12,10 @@
       (is (t/= to-date (t/date-time 2017 2)))))
 
   (testing "extracts timespan from multiple events including buffer"
-    (let [{:keys [from-date to-date]} (timespan/from-data [{:timestamp (t/date-time 2016)} {:timestamp (t/date-time 2017)}])]
+    (let [{:keys [from-date to-date selected-from selected-to]} (timespan/from-data [{:timestamp (t/date-time 2016)} {:timestamp (t/date-time 2017)}])]
 
       (is (t/= from-date (t/date-time 2015 12)))
       (is (t/= to-date) (t/date-time 2017 2))
+      (is (t/= selected-from (t/date-time 2015 12)))
+      (is (t/= selected-to) (t/date-time 2017 2))
       )))

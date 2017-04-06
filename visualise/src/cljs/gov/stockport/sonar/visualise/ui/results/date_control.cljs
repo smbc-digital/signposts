@@ -3,8 +3,6 @@
             [cljs-time.format :as tf]
             [clojure.string :as str]))
 
-(def initial-state {:from-date [] :to-date []})
-
 (defn convert-time-str-to-obj [time-as-str]
   (cljs-time.core/date-time
     (js/parseInt (apply str (subvec (str/split time-as-str "") 0 4)))
@@ -14,28 +12,20 @@
 
 
 (defn start-selector [!data]
-  (let [!local (r/atom initial-state)]
-    [:div.form.left-date-selector
-     "Select start date"
-     [:input {:name      "start date"
-              :type      "datetime-local"
-              :on-change #(swap! !local assoc :from-date (-> % .-target .-value))}]
-     [:button.btn.btn-primary
-      {:on-click
-       #(swap! !data (fn [data] (assoc-in data [:timespan :from-date] (convert-time-str-to-obj (:from-date @!local)))))}]]))
+  [:div.form.left-date-selector
+   "From"
+   [:input {:name "start date"
+            :type "date"
+            :on-change
+                  #(swap! !data (fn [data] (assoc-in data [:timespan :from-date] (convert-time-str-to-obj (-> % .-target .-value)))))}]])
 
 
 (defn end-selector [!data]
-  (let [!local (r/atom initial-state)]
-    [:div.form.right-date-selector
-     "Select end date"
-     [:input {:name "start date"
-              :type "datetime-local"
-              :on-change
-                    #(swap! !local assoc :to-date (-> % .-target .-value))}]
-     [:button.btn.btn-primary
-      {:on-click
-       #(swap! !data (fn [data] (assoc-in data [:timespan :to-date] (convert-time-str-to-obj (:to-date @!local)))))}]]))
-
+  [:div.form.right-date-selector.pull-right
+   "To"
+   [:input {:name "start date"
+            :type "date"
+            :on-change
+                  #(swap! !data (fn [data] (assoc-in data [:timespan :to-date] (convert-time-str-to-obj (-> % .-target .-value)))))}]])
 
 
