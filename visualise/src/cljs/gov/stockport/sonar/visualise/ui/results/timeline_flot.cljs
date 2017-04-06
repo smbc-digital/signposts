@@ -5,8 +5,7 @@
             [cljsjs.flot.plugins.selection]
             [cljs-time.coerce :as tc]
             [gov.stockport.sonar.visualise.ui.results.selected-event :as se]
-            [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]
-            [gov.stockport.sonar.visualise.ui.results.date-control :as dc]))
+            [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
 
 (defn options [m]
   (merge m {:grid   {:borderWidth     1
