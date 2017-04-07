@@ -24,13 +24,14 @@
                         (fn [idx [k v]] {k (assoc v :rank (+ 1 idx))})
                         (sort-by (fn [[_ p]] [(- 0 (:score p)) (surname p)]) people)))))
 
-(defn display-all [{:keys [display-all? people] :as data}]
+(defn toggle-display-all [{:keys [display-all? people] :as data}]
   (let [turning-all-on? (not display-all?)
         sufficient-colors? (>= (count c/colour-priority) (count people))
         available-colors (if (and turning-all-on? sufficient-colors?) c/colour-priority [])
         color-stack (popper/poppable available-colors :value-when-empty :black)]
     (-> data
         (assoc :display-all? turning-all-on?)
+        (assoc :color-stack color-stack)
         (update :people
                 (fn [people]
                   (reduce merge {}
@@ -40,12 +41,25 @@
                                 {k (assoc v :display turning-all-on? :color next-color)}))
                             people)))))))
 
+(defn toggle-display-person [{:keys [people color-stack] :as data} pkey]
+  (let [person (get people pkey)
+        turning-on? (not (:display person))]
+    (if turning-on?
+      (update-in data [:people pkey] #(-> %
+                                          (assoc :display true)
+                                          (assoc :color (color-stack))))
+      (do
+        (color-stack (:color person))
+        (update-in data [:people pkey] #(-> %
+                                            (assoc :display false)
+                                            (assoc :color :black)))))))
+
 (defn from-data [data]
   (-> data
       (by-people)
       (with-max-score)
       (with-rank)
-      (display-all)))
+      (toggle-display-all)))
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))

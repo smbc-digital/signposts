@@ -54,28 +54,30 @@
       (with-redefs
         [people/group-keys [:name]]
 
-        (is (= (people/from-data [{:name "N1" :score 1}
-                                  {:name "N3" :score 2}
-                                  {:name "N2" :score 3}
-                                  {:name "N1" :score 4}])
+        (let [result (people/from-data [{:name "N1" :score 1}
+                                        {:name "N3" :score 2}
+                                        {:name "N2" :score 3}
+                                        {:name "N1" :score 4}])]
 
-               {:display-all? true
-                :people       {{:name "N1"} {:data    [{:name "N1" :score 1}
-                                                       {:name "N1" :score 4}]
-                                             :score   4
-                                             :rank    1
-                                             :display true
-                                             :color   :red}
-                               {:name "N2"} {:data    [{:name "N2" :score 3}]
-                                             :score   3
-                                             :rank    2
-                                             :display true
-                                             :color   :yellow}
-                               {:name "N3"} {:data    [{:name "N3" :score 2}]
-                                             :score   2
-                                             :rank    3
-                                             :display true
-                                             :color   :green}}})))))
+          (is (contains? result :color-stack))
+          (is (= (dissoc result :color-stack)
+                 {:display-all? true
+                  :people       {{:name "N1"} {:data    [{:name "N1" :score 1}
+                                                         {:name "N1" :score 4}]
+                                               :score   4
+                                               :rank    1
+                                               :display true
+                                               :color   :red}
+                                 {:name "N2"} {:data    [{:name "N2" :score 3}]
+                                               :score   3
+                                               :rank    2
+                                               :display true
+                                               :color   :yellow}
+                                 {:name "N3"} {:data    [{:name "N3" :score 2}]
+                                               :score   2
+                                               :rank    3
+                                               :display true
+                                               :color   :green}}}))))))
 
   (testing "retrieving people"
 
@@ -93,10 +95,11 @@
 
     (testing "master-switch can be toggled to show everyone"
 
-      (is (= (people/display-all {:people       {{:name "A"} {:display true}
-                                                 {:name "B"} {:display true}
-                                                 {:name "C"} {:display false}}
-                                  :display-all? false})
+      (is (= (-> (people/toggle-display-all {:people       {{:name "A"} {:display true}
+                                                            {:name "B"} {:display true}
+                                                            {:name "C"} {:display false}}
+                                             :display-all? false})
+                 (dissoc :color-stack))
 
              {:people       {{:name "A"} {:display true :color :red}
                              {:name "B"} {:display true :color :yellow}
@@ -105,12 +108,48 @@
 
     (testing "master-switch can be toggled to show no-one"
 
-      (is (= (people/display-all {:people       {{:name "A"} {:display true}
-                                                 {:name "B"} {:display true}
-                                                 {:name "C"} {:display false}}
-                                  :display-all? true})
+      (is (= (-> (people/toggle-display-all {:people       {{:name "A"} {:display true}
+                                                            {:name "B"} {:display true}
+                                                            {:name "C"} {:display false}}
+                                             :display-all? true})
+                 (dissoc :color-stack))
 
              {:people       {{:name "A"} {:display false :color :black}
                              {:name "B"} {:display false :color :black}
                              {:name "C"} {:display false :color :black}}
-              :display-all? false})))))
+              :display-all? false})))
+
+
+    (testing "has an effect on color"
+
+      (testing "individuals can be hidden"
+
+        (let [data (people/toggle-display-all {:people {{:name "A"} {}
+                                                        {:name "B"} {}
+                                                        {:name "C"} {}}})]
+
+          (is (= (-> data
+                     (people/toggle-display-person {:name "A"})
+                     (dissoc :color-stack))
+
+                 {:people       {{:name "A"} {:display false :color :black}
+                                 {:name "B"} {:display true :color :yellow}
+                                 {:name "C"} {:display true :color :green}}
+                  :display-all? true}))))
+
+      (testing "hiding and showing can move color around"
+
+        (let [data (people/toggle-display-all {:people {{:name "A"} {}
+                                                        {:name "B"} {}
+                                                        {:name "C"} {}}})]
+
+          (is (= (-> data
+                     (people/toggle-display-person {:name "A"})
+                     (people/toggle-display-person {:name "C"})
+                     (people/toggle-display-person {:name "A"})
+                     (dissoc :color-stack))
+
+                 {:people       {{:name "A"} {:display true :color :green}
+                                 {:name "B"} {:display true :color :yellow}
+                                 {:name "C"} {:display false :color :black}}
+                  :display-all? true})))))))

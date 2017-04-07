@@ -21,7 +21,7 @@
            [:i.fa.fa-2x.pull-right
             {:class    (if display-all? "fa-toggle-on" "fa-toggle-off")
              :title    (str (if display-all? "Hide" "Show") " all people on the graph")
-             :on-click #(swap! !data people/display-all)}]
+             :on-click #(swap! !data people/toggle-display-all)}]
            [:p.info (if display-all? "Hide everyone" "Show everyone")]]]
 
          (map
@@ -36,7 +36,7 @@
                [:i.fa.fa-2x.pull-right
                 {:class    (if display "fa-toggle-on" "fa-toggle-off")
                  :title    (str (if display "Hide" "Show") " this person on the graph")
-                 :on-click #(swap! !data update-in [:people pkey :display] not)}]
+                 :on-click #(swap! !data people/toggle-display-person pkey)}]
 
                [:p.info name (age dob)]
                [:p.info-label "Date of Birth: "]
