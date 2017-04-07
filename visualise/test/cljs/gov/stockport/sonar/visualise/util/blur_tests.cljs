@@ -8,6 +8,9 @@
 
     (let [blurrer (b/blurrer 1)]
 
+      (is (= (blurrer 2 0)
+          []))
+
       (is (= (blurrer 2 1)
              [2]))
 

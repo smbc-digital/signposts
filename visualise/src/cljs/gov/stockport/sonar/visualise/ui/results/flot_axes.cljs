@@ -35,6 +35,7 @@
     (reduce merge {}
             (map
               (fn [[{:keys [event-type] :as k} events]]
+                (when (= (count events) 0) (println event-type))
                 {k (p/poppable (blurrer (get lm event-type) (count events)))})
               (group-by #(select-keys % [:timestamp :event-type]) result)))))
 
@@ -46,7 +47,11 @@
          :color  (get colour-map color)
          :data   (map
                    (fn [{:keys [timestamp] :as event}]
-                     (let [next-val-fn (get ydp (select-keys event [:timestamp :event-type]))]
+                     (let [ekey (select-keys event [:timestamp :event-type])
+                           next-val-fn (get ydp ekey)]
+                       (when (nil? next-val-fn)
+                         (println "EK" ekey (get ekey ydp))
+                         (println (keys ydp)))
                        [timestamp (next-val-fn)]))
                    data)})
       people)))

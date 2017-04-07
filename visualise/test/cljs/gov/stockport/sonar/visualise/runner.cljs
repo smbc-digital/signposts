@@ -1,5 +1,5 @@
 (ns gov.stockport.sonar.visualise.runner
-  (:require [doo.runner :refer-macros [doo-all-tests]]
+  (:require [doo.runner :refer-macros [doo-tests doo-all-tests]]
             [gov.stockport.sonar.visualise.aggregation.date-spread-tests]
             [gov.stockport.sonar.visualise.ui.facet-tests]
             [gov.stockport.sonar.visualise.ui.search.search-control-tests]
@@ -20,6 +20,9 @@
 
 (enable-console-print!)
 
-(doo-all-tests)
+(doo-all-tests #"gov.stockport.sonar.visualise.*")
+
+; use the following if you want to focus on a single test during development
+;(doo-tests 'gov.stockport.sonar.visualise.util.popper-tests)
 
 ; see https://github.com/bensu/doo for more information

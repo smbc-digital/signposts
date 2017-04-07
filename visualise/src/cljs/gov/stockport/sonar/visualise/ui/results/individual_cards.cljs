@@ -15,6 +15,7 @@
         [:div.cards
          [:p.results-confirmation "Your search returned " (:total @!data) " event"
           (if (> (:total @!data) 1) "s") " from " (count people) " individual" (if (> (count people) 1) "s")]
+
          [:div.panel.panel-default.card-box
           [:div.panel-body
            [:i.fa.fa-2x.pull-right
