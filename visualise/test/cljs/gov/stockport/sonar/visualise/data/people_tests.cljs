@@ -152,4 +152,30 @@
                  {:people       {{:name "A"} {:display true :color :green}
                                  {:name "B"} {:display true :color :yellow}
                                  {:name "C"} {:display false :color :black}}
-                  :display-all? true})))))))
+                  :display-all? true}))))
+
+      (testing "colours can be added when there are more than 6 results"
+
+        (let [data (people/toggle-display-all {:people       {{:name "A"} {}
+                                                              {:name "B"} {}
+                                                              {:name "C"} {}
+                                                              {:name "D"} {}
+                                                              {:name "E"} {}
+                                                              {:name "F"} {}
+                                                              {:name "G"} {}}
+                                               :display-all? true})]
+
+          (is (= (-> data
+                     (people/toggle-display-person {:name "B"})
+                     (people/toggle-display-person {:name "D"})
+                     (people/toggle-display-person {:name "G"})
+                     (dissoc :color-stack))
+
+                 {:people       {{:name "A"} {:display false :color :black}
+                                 {:name "B"} {:display true :color :red}
+                                 {:name "C"} {:display false :color :black}
+                                 {:name "D"} {:display true :color :yellow}
+                                 {:name "E"} {:display false :color :black}
+                                 {:name "F"} {:display false :color :black}
+                                 {:name "G"} {:display true :color :green}}
+                  :display-all? false})))))))

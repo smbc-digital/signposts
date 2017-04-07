@@ -27,7 +27,7 @@
 (defn toggle-display-all [{:keys [display-all? people] :as data}]
   (let [turning-all-on? (not display-all?)
         sufficient-colors? (>= (count c/colour-priority) (count people))
-        available-colors (if (and turning-all-on? sufficient-colors?) c/colour-priority [])
+        available-colors (if (or (not turning-all-on?) (and turning-all-on? sufficient-colors?)) c/colour-priority [])
         color-stack (popper/poppable available-colors :value-when-empty :black)]
     (-> data
         (assoc :display-all? turning-all-on?)
@@ -37,7 +37,7 @@
                   (reduce merge {}
                           (map
                             (fn [[k v]]
-                              (let [next-color (color-stack)]
+                              (let [next-color (if turning-all-on? (color-stack) :black)]
                                 {k (assoc v :display turning-all-on? :color next-color)}))
                             people)))))))
 
