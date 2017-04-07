@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.visualise.ui.results.individual-cards
-  (:require [gov.stockport.sonar.visualise.data.people :as people]
+  (:require [reagent.core :as r]
+            [gov.stockport.sonar.visualise.data.people :as people]
             [cljs-time.core :as t]
             [cljs-time.format :as f]))
 
@@ -25,12 +26,13 @@
            [:p.info (if display-all? "Hide everyone" "Show everyone")]]]
 
          (map
-           (fn [[{:keys [name dob address] :as pkey} {:keys [color display]}]]
+           (fn [[{:keys [name dob address] :as pkey} {:keys [color display collapse?]}]]
              ^{:key (gensym)}
              [:div.panel.panel-default.card-box
               {:class (str (cljs.core/name color)
                            (if display " focus" " blur"))}
-              [:div.panel-heading.card-name]
+              [:div.panel-heading.card-name
+               {:on-click #(swap! !data update-in [:people pkey :collapse?] not)}]
               [:div.panel-body
 
                [:i.fa.fa-2x.pull-right
@@ -38,10 +40,16 @@
                  :title    (str (if display "Hide" "Show") " this person on the graph")
                  :on-click #(swap! !data people/toggle-display-person pkey)}]
 
-               [:p.info name (age dob)]
-               [:p.info-label "Date of Birth: "]
-               [:p.info dob]
-               [:p.info-label "Address: "]
-               [:p.info address]]])
+
+               [:p.info [:i.fa {:class    (if collapse? "fa-arrow-down" "fa-arrow-up")
+                                :on-click #(swap! !data update-in [:people pkey :collapse?] not)}] " " name (age dob)]
+
+               (if (not collapse?)
+                 [:div
+                  [:p.info-label "Date of Birth: "]
+                  [:p.info dob]
+                  [:p.info-label "Address: "]
+                  [:p.info address]])
+               ]])
            people)]))))
 
