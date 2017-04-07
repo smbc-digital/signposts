@@ -76,7 +76,7 @@
       (let [result (fa/x-axis single-event)]
         (is (= (:mode result) "time"))
         (is (= (:timeFormat result) "%Y/%m/%d"))
-        (is (= (:minTickSize result) [1 "month"]))))
+        (is (= (:minTickSize result) [1 "day"]))))
 
     (testing "timespan is used"
       (let [result (fa/x-axis single-event)]

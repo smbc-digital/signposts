@@ -8,7 +8,7 @@
 (defn x-axis [{{:keys [selected-from selected-to]} :timespan}]
   {:mode        "time"
    :timeFormat  "%Y/%m/%d"
-   :minTickSize [1 "month"]
+   :minTickSize [1 "day"]
    :min         selected-from
    :max         selected-to})
 
