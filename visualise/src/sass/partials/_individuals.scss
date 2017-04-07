@@ -11,6 +11,12 @@
   }
 }
 
+.fixed-height {
+  height: 99vh;
+  overflow-y: scroll;
+}
+
+.cards > .fixed-height > .panel,
 .cards > .panel {
 
   color: #486573;
@@ -68,7 +74,7 @@
   }
 
   .info {
-    color:  #486573;
+    color: #486573;
     font-size: 20px;
     font-weight: 700;
     text-align: left;

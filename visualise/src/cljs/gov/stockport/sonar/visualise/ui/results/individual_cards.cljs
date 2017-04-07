@@ -25,31 +25,33 @@
              :on-click #(swap! !data people/toggle-display-all)}]
            [:p.info (if display-all? "Hide everyone" "Show everyone")]]]
 
-         (map
-           (fn [[{:keys [name dob address] :as pkey} {:keys [color display collapse?]}]]
-             ^{:key (gensym)}
-             [:div.panel.panel-default.card-box
-              {:class (str (cljs.core/name color)
-                           (if display " focus" " blur"))}
-              [:div.panel-heading.card-name
-               {:on-click #(swap! !data update-in [:people pkey :collapse?] not)}]
-              [:div.panel-body
+         [:div.fixed-height
 
-               [:i.fa.fa-2x.pull-right
-                {:class    (if display "fa-toggle-on" "fa-toggle-off")
-                 :title    (str (if display "Hide" "Show") " this person on the graph")
-                 :on-click #(swap! !data people/toggle-display-person pkey)}]
+          (map
+            (fn [[{:keys [name dob address] :as pkey} {:keys [color display collapse?]}]]
+              ^{:key (gensym)}
+              [:div.panel.panel-default.card-box
+               {:class (str (cljs.core/name color)
+                            (if display " focus" " blur"))}
+               [:div.panel-heading.card-name
+                {:on-click #(swap! !data update-in [:people pkey :collapse?] not)}]
+               [:div.panel-body
+
+                [:i.fa.fa-2x.pull-right
+                 {:class    (if display "fa-toggle-on" "fa-toggle-off")
+                  :title    (str (if display "Hide" "Show") " this person on the graph")
+                  :on-click #(swap! !data people/toggle-display-person pkey)}]
 
 
-               [:p.info [:i.fa {:class    (if collapse? "fa-arrow-down" "fa-arrow-up")
-                                :on-click #(swap! !data update-in [:people pkey :collapse?] not)}] " " name (age dob)]
+                [:p.info [:i.fa {:class    (if collapse? "fa-arrow-down" "fa-arrow-up")
+                                 :on-click #(swap! !data update-in [:people pkey :collapse?] not)}] " " name (age dob)]
 
-               (if (not collapse?)
-                 [:div
-                  [:p.info-label "Date of Birth: "]
-                  [:p.info dob]
-                  [:p.info-label "Address: "]
-                  [:p.info address]])
-               ]])
-           people)]))))
+                (if (not collapse?)
+                  [:div
+                   [:p.info-label "Date of Birth: "]
+                   [:p.info dob]
+                   [:p.info-label "Address: "]
+                   [:p.info address]])
+                ]])
+            people)]]))))
 

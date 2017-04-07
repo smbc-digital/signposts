@@ -5933,6 +5933,11 @@ body {
   .selected-event .panel-group {
     height: 100%; }
 
+.fixed-height {
+  height: 99vh;
+  overflow-y: scroll; }
+
+.cards > .fixed-height > .panel,
 .cards > .panel {
   color: #486573;
   font-size: 14px;
@@ -5940,59 +5945,83 @@ body {
   text-align: left;
   line-height: 1.1;
   background-image: none; }
+  .cards > .fixed-height > .panel .panel,
   .cards > .panel .panel {
     border-color: #dddddd; }
+  .cards > .fixed-height > .panel .panel-heading,
   .cards > .panel .panel-heading {
     background-color: #dddddd;
     border-color: #dddddd; }
+  .cards > .fixed-height > .panel.panel-default,
   .cards > .panel.panel-default {
     border-color: #dddddd; }
+  .cards > .fixed-height > .panel.blur,
   .cards > .panel.blur {
     background-color: #dddddd; }
+  .cards > .fixed-height > .panel.red .panel,
   .cards > .panel.red .panel {
     border-color: #f36624; }
+  .cards > .fixed-height > .panel.red .panel-heading,
   .cards > .panel.red .panel-heading {
     background-color: #f36624;
     border-color: #f36624; }
+  .cards > .fixed-height > .panel.red.panel-default,
   .cards > .panel.red.panel-default {
     border-color: #f36624; }
+  .cards > .fixed-height > .panel.yellow .panel,
   .cards > .panel.yellow .panel {
     border-color: #ffc502; }
+  .cards > .fixed-height > .panel.yellow .panel-heading,
   .cards > .panel.yellow .panel-heading {
     background-color: #ffc502;
     border-color: #ffc502; }
+  .cards > .fixed-height > .panel.yellow.panel-default,
   .cards > .panel.yellow.panel-default {
     border-color: #ffc502; }
+  .cards > .fixed-height > .panel.green .panel,
   .cards > .panel.green .panel {
     border-color: #8dc702; }
+  .cards > .fixed-height > .panel.green .panel-heading,
   .cards > .panel.green .panel-heading {
     background-color: #8dc702;
     border-color: #8dc702; }
+  .cards > .fixed-height > .panel.green.panel-default,
   .cards > .panel.green.panel-default {
     border-color: #8dc702; }
+  .cards > .fixed-height > .panel.aqua .panel,
   .cards > .panel.aqua .panel {
     border-color: #01a79d; }
+  .cards > .fixed-height > .panel.aqua .panel-heading,
   .cards > .panel.aqua .panel-heading {
     background-color: #01a79d;
     border-color: #01a79d; }
+  .cards > .fixed-height > .panel.aqua.panel-default,
   .cards > .panel.aqua.panel-default {
     border-color: #01a79d; }
+  .cards > .fixed-height > .panel.purple .panel,
   .cards > .panel.purple .panel {
     border-color: #91278e; }
+  .cards > .fixed-height > .panel.purple .panel-heading,
   .cards > .panel.purple .panel-heading {
     background-color: #91278e;
     border-color: #91278e; }
+  .cards > .fixed-height > .panel.purple.panel-default,
   .cards > .panel.purple.panel-default {
     border-color: #91278e; }
+  .cards > .fixed-height > .panel.blue .panel,
   .cards > .panel.blue .panel {
     border-color: #2e3292; }
+  .cards > .fixed-height > .panel.blue .panel-heading,
   .cards > .panel.blue .panel-heading {
     background-color: #2e3292;
     border-color: #2e3292; }
+  .cards > .fixed-height > .panel.blue.panel-default,
   .cards > .panel.blue.panel-default {
     border-color: #2e3292; }
+  .cards > .fixed-height > .panel .info-label,
   .cards > .panel .info-label {
     display: inline; }
+  .cards > .fixed-height > .panel .info,
   .cards > .panel .info {
     color: #486573;
     font-size: 20px;
