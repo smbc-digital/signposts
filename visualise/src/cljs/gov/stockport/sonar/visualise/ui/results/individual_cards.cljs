@@ -37,18 +37,18 @@
          [:div.fixed-height
 
           (map
-            (fn [[{:keys [name dob address] :as pkey} {:keys [color display collapsed?]}]]
+            (fn [[{:keys [name dob address] :as pkey} {:keys [color displayed? collapsed?]}]]
               ^{:key (gensym)}
               [:div.panel.panel-default.card-box
                {:class (str (cljs.core/name color)
-                            (if display " focus" " blur"))}
+                            (if displayed? " focus" " blur"))}
                [:div.panel-heading.card-name
                 {:on-click #(swap! !data update-in [:people pkey :collapsed?] not)}]
                [:div.panel-body
 
                 [:i.fa.fa-2x.pull-right
-                 {:class    (if display "fa-toggle-on" "fa-toggle-off")
-                  :title    (str (if display "Hide" "Show") " this person on the graph")
+                 {:class    (if displayed? "fa-toggle-on" "fa-toggle-off")
+                  :title    (str (if displayed? "Hide" "Show") " this person on the graph")
                   :on-click #(swap! !data people/toggle-display-person pkey)}]
 
 

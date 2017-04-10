@@ -16,57 +16,57 @@
 (def one-person {:result [{:timestamp 1 :event-type :asbo}
                           {:timestamp 4 :event-type :caution}
                           {:timestamp 2 :event-type :zoology}]
-                 :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                 :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
                                                  {:timestamp 4 :event-type :caution}]
-                                       :color   :red
-                                       :display true}}})
+                                       :color      :red
+                                       :displayed? true}}})
 
 (def two-people {:result [{:timestamp 1 :event-type :asbo}
                           {:timestamp 1 :event-type :caution}
                           {:timestamp 4 :event-type :caution}
                           {:timestamp 4 :event-type :zoology}]
-                 :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                 :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
                                                  {:timestamp 4 :event-type :caution}]
-                                       :rank    1
-                                       :color   :red
-                                       :display true}
-                          {:name "B"} {:data    [{:timestamp 4 :event-type :zoology}
+                                       :rank       1
+                                       :color      :red
+                                       :displayed? true}
+                          {:name "B"} {:data       [{:timestamp 4 :event-type :zoology}
                                                  {:timestamp 1 :event-type :caution}]
-                                       :rank    2
-                                       :color   :blue
-                                       :display true}}})
+                                       :rank       2
+                                       :color      :blue
+                                       :displayed? true}}})
 
 (def two-people-one-hidden {:result [{:timestamp 1 :event-type :asbo}
                                      {:timestamp 1 :event-type :caution}
                                      {:timestamp 4 :event-type :caution}
                                      {:timestamp 4 :event-type :zoology}]
-                            :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                            :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
                                                             {:timestamp 4 :event-type :caution}]
-                                                  :rank    1
-                                                  :display false
-                                                  :color   :red}
-                                     {:name "B"} {:data    [{:timestamp 4 :event-type :zoology}
+                                                  :rank       1
+                                                  :displayed? false
+                                                  :color      :red}
+                                     {:name "B"} {:data       [{:timestamp 4 :event-type :zoology}
                                                             {:timestamp 1 :event-type :caution}]
-                                                  :rank    2
-                                                  :display true
-                                                  :color   :blue}}})
+                                                  :rank       2
+                                                  :displayed? true
+                                                  :color      :blue}}})
 
 (def colliding-data {:result [{:timestamp 1 :event-type :asbo}
                               {:timestamp 1 :event-type :asbo}
                               {:timestamp 1 :event-type :asbo}
                               {:timestamp 4 :event-type :caution}
                               {:timestamp 4 :event-type :caution}]
-                     :people {{:name "A"} {:data    [{:timestamp 1 :event-type :asbo}
+                     :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
                                                      {:timestamp 1 :event-type :asbo}
                                                      {:timestamp 4 :event-type :caution}]
-                                           :rank    1
-                                           :color   :red
-                                           :display true}
-                              {:name "B"} {:data    [{:timestamp 1 :event-type :asbo}
+                                           :rank       1
+                                           :color      :red
+                                           :displayed? true}
+                              {:name "B"} {:data       [{:timestamp 1 :event-type :asbo}
                                                      {:timestamp 4 :event-type :caution}]
-                                           :rank    2
-                                           :color   :blue
-                                           :display true}}})
+                                           :rank       2
+                                           :color      :blue
+                                           :displayed? true}}})
 
 (deftest flot-axes
 

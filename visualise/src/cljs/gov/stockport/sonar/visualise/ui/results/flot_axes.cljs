@@ -42,8 +42,8 @@
 (defn data-points [{:keys [people] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)]
     (map
-      (fn [[_ {:keys [color display data]}]]
-        {:points {:show display}
+      (fn [[_ {:keys [color displayed? data]}]]
+        {:points {:show displayed?}
          :color  (get colour-map color)
          :data   (map
                    (fn [{:keys [timestamp] :as event}]

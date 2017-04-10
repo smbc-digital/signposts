@@ -67,19 +67,19 @@
                                                               {:name "N1" :score 4}]
                                                  :score      4
                                                  :rank       1
-                                                 :display    true
+                                                 :displayed? true
                                                  :collapsed? false
                                                  :color      :red}
                                    {:name "N2"} {:data       [{:name "N2" :score 3}]
                                                  :score      3
                                                  :rank       2
-                                                 :display    true
+                                                 :displayed? true
                                                  :collapsed? false
                                                  :color      :yellow}
                                    {:name "N3"} {:data       [{:name "N3" :score 2}]
                                                  :score      2
                                                  :rank       3
-                                                 :display    true
+                                                 :displayed? true
                                                  :collapsed? false
                                                  :color      :green}}}))))))
 
@@ -99,28 +99,28 @@
 
     (testing "master-switch can be toggled to show everyone"
 
-      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:display true}
-                                                              {:name "B"} {:display true}
-                                                              {:name "C"} {:display false}}
+      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:displayed? true}
+                                                              {:name "B"} {:displayed? true}
+                                                              {:name "C"} {:displayed? false}}
                                              :all-displayed? false})
                  (dissoc :color-stack))
 
-             {:people         {{:name "A"} {:display true :color :red}
-                               {:name "B"} {:display true :color :yellow}
-                               {:name "C"} {:display true :color :green}}
+             {:people         {{:name "A"} {:displayed? true :color :red}
+                               {:name "B"} {:displayed? true :color :yellow}
+                               {:name "C"} {:displayed? true :color :green}}
               :all-displayed? true})))
 
     (testing "master-switch can be toggled to show no-one"
 
-      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:display true}
-                                                              {:name "B"} {:display true}
-                                                              {:name "C"} {:display false}}
+      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:displayed? true}
+                                                              {:name "B"} {:displayed? true}
+                                                              {:name "C"} {:displayed? false}}
                                              :all-displayed? true})
                  (dissoc :color-stack))
 
-             {:people         {{:name "A"} {:display false :color :black}
-                               {:name "B"} {:display false :color :black}
-                               {:name "C"} {:display false :color :black}}
+             {:people         {{:name "A"} {:displayed? false :color :black}
+                               {:name "B"} {:displayed? false :color :black}
+                               {:name "C"} {:displayed? false :color :black}}
               :all-displayed? false})))
 
     (testing "master-switch can be toggled to collapse everyone"
@@ -162,9 +162,9 @@
                      (people/toggle-display-person {:name "A"})
                      (dissoc :color-stack))
 
-                 {:people         {{:name "A"} {:display false :color :black}
-                                   {:name "B"} {:display true :color :yellow}
-                                   {:name "C"} {:display true :color :green}}
+                 {:people         {{:name "A"} {:displayed? false :color :black}
+                                   {:name "B"} {:displayed? true :color :yellow}
+                                   {:name "C"} {:displayed? true :color :green}}
                   :all-displayed? true}))))
 
       (testing "hiding and showing can move color around"
@@ -179,9 +179,9 @@
                      (people/toggle-display-person {:name "A"})
                      (dissoc :color-stack))
 
-                 {:people         {{:name "A"} {:display true :color :green}
-                                   {:name "B"} {:display true :color :yellow}
-                                   {:name "C"} {:display false :color :black}}
+                 {:people         {{:name "A"} {:displayed? true :color :green}
+                                   {:name "B"} {:displayed? true :color :yellow}
+                                   {:name "C"} {:displayed? false :color :black}}
                   :all-displayed? true}))))
 
       (testing "colours can be added when there are more than 6 results"
@@ -201,11 +201,11 @@
                      (people/toggle-display-person {:name "G"})
                      (dissoc :color-stack))
 
-                 {:people         {{:name "A"} {:display false :color :black}
-                                   {:name "B"} {:display true :color :red}
-                                   {:name "C"} {:display false :color :black}
-                                   {:name "D"} {:display true :color :yellow}
-                                   {:name "E"} {:display false :color :black}
-                                   {:name "F"} {:display false :color :black}
-                                   {:name "G"} {:display true :color :green}}
+                 {:people         {{:name "A"} {:displayed? false :color :black}
+                                   {:name "B"} {:displayed? true :color :red}
+                                   {:name "C"} {:displayed? false :color :black}
+                                   {:name "D"} {:displayed? true :color :yellow}
+                                   {:name "E"} {:displayed? false :color :black}
+                                   {:name "F"} {:displayed? false :color :black}
+                                   {:name "G"} {:displayed? true :color :green}}
                   :all-displayed? false})))))))

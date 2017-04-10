@@ -52,20 +52,20 @@
                           (map
                             (fn [[k v]]
                               (let [next-color (if turning-all-on? (color-stack) :black)]
-                                {k (assoc v :display turning-all-on? :color next-color)}))
+                                {k (assoc v :displayed? turning-all-on? :color next-color)}))
                             people)))))))
 
 (defn toggle-display-person [{:keys [people color-stack] :as data} pkey]
   (let [person (get people pkey)
-        turning-on? (not (:display person))]
+        turning-on? (not (:displayed? person))]
     (if turning-on?
       (update-in data [:people pkey] #(-> %
-                                          (assoc :display true)
+                                          (assoc :displayed? true)
                                           (assoc :color (color-stack))))
       (do
         (color-stack (:color person))
         (update-in data [:people pkey] #(-> %
-                                            (assoc :display false)
+                                            (assoc :displayed? false)
                                             (assoc :color :black)))))))
 
 (defn from-data [data]
