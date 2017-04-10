@@ -7,8 +7,8 @@
   (map #(-> %
             (update :timestamp parse-timestamp))
        (map
-         (fn [{:keys [_score _source]}]
-           (assoc _source :score _score))
+         (fn [{:keys [_score _source _id]}]
+           (assoc _source :score _score :id _id))
          (-> response :hits :hits))))
 
 (defn default-handler [!data]
@@ -20,4 +20,4 @@
                       (dissoc :point :selected-event)))
     (swap! !data #(-> %
                       (assoc :timespan (timespan/from-data (:result %)))
-                      (merge % (people/from-data (:result %)))))))
+                      (merge % (people/from-data %))))))

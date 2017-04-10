@@ -4,66 +4,47 @@
             [gov.stockport.sonar.visualise.data.colours :refer [colour-map]]
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
 
-(def single-event {:result   [{:timestamp (t/date-time 2016 12 1) :event-type :asbo}]
-                   :timespan {:from-date     (t/date-time 2017)
+(def single-event {:timespan {:from-date     (t/date-time 2017)
                               :selected-from (t/date-time 2017)
                               :to-date       (t/date-time 2018)
-                              :selected-to   (t/date-time 2018)}})
+                              :selected-to   (t/date-time 2018)}
+                   :people   {:a {:data [{:event-type :asbo}]}}})
 
-(def multiple-events {:result [{:timestamp (t/date-time 2016 11 1) :event-type :asbo}
-                               {:timestamp (t/date-time 2016 12 1) :event-type :caution}]})
-
-(def one-person {:result [{:timestamp 1 :event-type :asbo}
-                          {:timestamp 4 :event-type :caution}
-                          {:timestamp 2 :event-type :zoology}]
-                 :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
-                                                 {:timestamp 4 :event-type :caution}]
+(def one-person {:people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
+                                                    {:timestamp 4 :event-type :caution}]
                                        :color      :red
                                        :displayed? true}}})
 
-(def two-people {:result [{:timestamp 1 :event-type :asbo}
-                          {:timestamp 1 :event-type :caution}
-                          {:timestamp 4 :event-type :caution}
-                          {:timestamp 4 :event-type :zoology}]
-                 :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
-                                                 {:timestamp 4 :event-type :caution}]
+(def two-people {:people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
+                                                    {:timestamp 4 :event-type :caution}]
                                        :rank       1
                                        :color      :red
                                        :displayed? true}
                           {:name "B"} {:data       [{:timestamp 4 :event-type :zoology}
-                                                 {:timestamp 1 :event-type :caution}]
+                                                    {:timestamp 1 :event-type :caution}]
                                        :rank       2
                                        :color      :blue
                                        :displayed? true}}})
 
-(def two-people-one-hidden {:result [{:timestamp 1 :event-type :asbo}
-                                     {:timestamp 1 :event-type :caution}
-                                     {:timestamp 4 :event-type :caution}
-                                     {:timestamp 4 :event-type :zoology}]
-                            :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
-                                                            {:timestamp 4 :event-type :caution}]
+(def two-people-one-hidden {:people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
+                                                               {:timestamp 4 :event-type :caution}]
                                                   :rank       1
                                                   :displayed? false
                                                   :color      :red}
                                      {:name "B"} {:data       [{:timestamp 4 :event-type :zoology}
-                                                            {:timestamp 1 :event-type :caution}]
+                                                               {:timestamp 1 :event-type :caution}]
                                                   :rank       2
                                                   :displayed? true
                                                   :color      :blue}}})
 
-(def colliding-data {:result [{:timestamp 1 :event-type :asbo}
-                              {:timestamp 1 :event-type :asbo}
-                              {:timestamp 1 :event-type :asbo}
-                              {:timestamp 4 :event-type :caution}
-                              {:timestamp 4 :event-type :caution}]
-                     :people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
-                                                     {:timestamp 1 :event-type :asbo}
-                                                     {:timestamp 4 :event-type :caution}]
+(def colliding-data {:people {{:name "A"} {:data       [{:timestamp 1 :event-type :asbo}
+                                                        {:timestamp 1 :event-type :asbo}
+                                                        {:timestamp 4 :event-type :caution}]
                                            :rank       1
                                            :color      :red
                                            :displayed? true}
                               {:name "B"} {:data       [{:timestamp 1 :event-type :asbo}
-                                                     {:timestamp 4 :event-type :caution}]
+                                                        {:timestamp 4 :event-type :caution}]
                                            :rank       2
                                            :color      :blue
                                            :displayed? true}}})
@@ -86,10 +67,10 @@
   (testing "y-axis"
 
     (testing "label map is based on event types"
-      (is (= (fa/label-map {:result [{:event-type :asbo}
-                                     {:event-type :zoology}
-                                     {:event-type :caution}
-                                     {:event-type :asbo}]})
+      (is (= (fa/label-map {:people {:a {:data [{:event-type :asbo}]}
+                                     :b {:data [{:event-type :zoology}]}
+                                     :c {:data [{:event-type :caution}]}
+                                     :d {:data [{:event-type :asbo}]}}})
 
              {:zoology 1 :caution 2 :asbo 3})))
 
@@ -104,30 +85,42 @@
         (is (= (:ticks result) [[1 "asbo"]]))))
 
     (testing "ticks are good for multiple event types"
-      (let [result (fa/y-axis multiple-events)]
-        (is (= (:max result) 3))
-        (is (= (:ticks result) [[1 "caution"] [2 "asbo"]])))))
+      (let [result (fa/y-axis two-people)]
+        (is (= (:max result) 4))
+        (is (= (:ticks result) [[1 "zoology"] [2 "caution"] [3 "asbo"]])))))
 
   (testing "data points"
 
-    (testing "are derived as series based on people"
+    (with-redefs
+      [fa/collision-key (fn [event] (select-keys event [:timestamp :event-type]))]
 
-      (is (= (fa/data-points one-person)
-             [{:points {:show true} :color (:red colour-map) :data [[1 3] [4 2]]}]))
+      (testing "are derived as series based on people"
 
-      (is (= (fa/data-points two-people)
-             [{:points {:show true} :color (:red colour-map) :data [[1 3] [4 2]]}
-              {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+        (is (= (fa/data-points one-person)
+               [{:points {:show true} :color (:red colour-map) :data [[1 2] [4 1]]}]))
 
-    (testing "may be turned off if the person is not displayed"
-      (is (= (fa/data-points two-people-one-hidden)
-             [{:points {:show false} :color (:red colour-map) :data [[1 3] [4 2]]}
-              {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+        (is (= (fa/data-points two-people)
+               [{:points {:show true} :color (:red colour-map) :data [[1 3] [4 2]]}
+                {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
 
-    (testing "events are shifted a little when they land on top of each other"
-      (is (= (fa/data-points colliding-data)
-             [{:points {:show true} :color (:red colour-map) :data [[1 1.9] [1 2] [4 0.95]]}
-              {:points {:show true} :color (:blue colour-map) :data [[1 2.1] [4 1.05]]}])))
+      (testing "may be turned off if the person is not displayed"
+        (is (= (fa/data-points two-people-one-hidden)
+               [{:points {:show false} :color (:red colour-map) :data [[1 3] [4 2]]}
+                {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+
+      (testing "events are shifted a little when they land on top of each other"
+        (is (= (fa/data-points colliding-data)
+               [{:points {:show true} :color (:red colour-map) :data [[1 1.9] [1 2] [4 0.95]]}
+                {:points {:show true} :color (:blue colour-map) :data [[1 2.1] [4 1.05]]}]))))
+
+    (testing "collision keys provide appropriate equality"
+      (is (= (fa/collision-key {:timestamp (t/date-time 2017) :event-type :asbo :id 1})
+             (fa/collision-key {:timestamp (t/date-time 2017) :event-type :asbo :id 2}))))
+
+    (testing "collisions are rounded to the nearest day"
+      (is (= (fa/collision-key {:timestamp (t/date-time 2017 1 1 12) :event-type :asbo :id 1})
+             (fa/collision-key {:timestamp (t/date-time 2017 1 1 13) :event-type :asbo :id 2}))))
+
 
     (testing "we can find the specific event based on series and data index"
 

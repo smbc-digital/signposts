@@ -1,7 +1,6 @@
 (ns gov.stockport.sonar.visualise.data.people-tests
   (:require [cljs.test :refer-macros [deftest is testing]]
-            [gov.stockport.sonar.visualise.data.people :as people]
-            [gov.stockport.sonar.visualise.data.colours :as c]))
+            [gov.stockport.sonar.visualise.data.people :as people]))
 
 (deftest people-tests
 
@@ -12,12 +11,17 @@
       (with-redefs
         [people/group-keys [:name :dob]]
 
-        (is (= (people/by-people [{:name "N1" :dob "D1" :other "data-1-1"}
-                                  {:name "N3" :dob "D3" :other "data-3-1"}
-                                  {:name "N2" :dob "D2" :other "data-2-1"}
-                                  {:name "N1" :dob "D1" :other "data-1-2"}])
+        (is (= (people/by-people {:result [{:name "N1" :dob "D1" :other "data-1-1"}
+                                           {:name "N3" :dob "D3" :other "data-3-1"}
+                                           {:name "N2" :dob "D2" :other "data-2-1"}
+                                           {:name "N1" :dob "D1" :other "data-1-2"}]})
 
-               {:people {{:name "N1" :dob "D1"} {:data [{:name "N1" :dob "D1" :other "data-1-1"}
+               {:result [{:name "N1" :dob "D1" :other "data-1-1"}
+                         {:name "N3" :dob "D3" :other "data-3-1"}
+                         {:name "N2" :dob "D2" :other "data-2-1"}
+                         {:name "N1" :dob "D1" :other "data-1-2"}]
+
+                :people {{:name "N1" :dob "D1"} {:data [{:name "N1" :dob "D1" :other "data-1-1"}
                                                         {:name "N1" :dob "D1" :other "data-1-2"}]}
                          {:name "N2" :dob "D2"} {:data [{:name "N2" :dob "D2" :other "data-2-1"}]}
                          {:name "N3" :dob "D3"} {:data [{:name "N3" :dob "D3" :other "data-3-1"}]}}}))))
@@ -54,13 +58,13 @@
       (with-redefs
         [people/group-keys [:name]]
 
-        (let [result (people/from-data [{:name "N1" :score 1}
-                                        {:name "N3" :score 2}
-                                        {:name "N2" :score 3}
-                                        {:name "N1" :score 4}])]
+        (let [result (people/from-data {:result [{:name "N1" :score 1}
+                                                 {:name "N3" :score 2}
+                                                 {:name "N2" :score 3}
+                                                 {:name "N1" :score 4}]})]
 
           (is (contains? result :color-stack))
-          (is (= (dissoc result :color-stack)
+          (is (= (dissoc result :color-stack :result)
                  {:all-displayed? true
                   :all-collapsed? false
                   :people         {{:name "N1"} {:data       [{:name "N1" :score 1}
@@ -93,7 +97,14 @@
 
              [[{:name "B"} {:rank 1}]
               [{:name "A"} {:rank 4}]
-              [{:name "C"} {:rank 6}]]))))
+              [{:name "C"} {:rank 6}]])))
+
+    (testing "all the data can be retrieved"
+      (is (= (people/all-events {:people {{:name "N1"} {:data [{:id 1}
+                                                               {:id 2}]}
+                                          {:name "N2"} {:data [{:id 3}]}
+                                          {:name "N3"} {:data [{:id 4}]}}})
+             [{:id 1} {:id 2} {:id 3} {:id 4}]))))
 
   (testing "showing and hiding people"
 
@@ -208,4 +219,47 @@
                                    {:name "E"} {:displayed? false :color :black}
                                    {:name "F"} {:displayed? false :color :black}
                                    {:name "G"} {:displayed? true :color :green}}
-                  :all-displayed? false})))))))
+                  :all-displayed? false}))))))
+
+  (testing "locking behaviour"
+
+    (let [data {:people {{:name "N1"} {:data    [{:name "N1" :score 1 :id 1}
+                                                 {:name "N1" :score 4 :id 2}]
+                                       :locked? true}
+                         {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
+                         {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
+                                       :locked? true}}
+
+                :result [{:name "N1" :score 5 :id 5}        ; addition to locked items
+                         {:name "N2" :score 6 :id 6}
+                         {:name "N4" :score 7 :id 7}
+                         {:name "N1" :score 1 :id 1}]}]     ; duplicate of locked item
+
+      (testing "we can extract the locked events"
+
+        (is (= (people/locked-events data)
+
+               [{:name "N1" :score 1 :id 1}
+                {:name "N1" :score 4 :id 2}
+                {:name "N3" :score 2 :id 4}])))
+
+      (testing "we can extract the set of locked keys"
+
+        (is (= (people/locked-pkeys data)
+               #{{:name "N1"}
+                 {:name "N3"}})))
+
+      (testing "when locked people already exist they are retained"
+
+        (let [result (:people (people/from-data data))]
+
+          (is (= (select-keys (get result {:name "N1"}) [:data :locked?])
+                 {:data    [{:name "N1" :score 1 :id 1}
+                            {:name "N1" :score 4 :id 2}
+                            {:name "N1" :score 5 :id 5}]}))
+
+          (is (= (select-keys (get result {:name "N2"}) [:data]) {:data [{:name "N2" :score 6 :id 6}]}))
+
+          (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
+
+          (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]})))))))

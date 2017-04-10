@@ -14,7 +14,7 @@
 
 (defn selected-kvs [event]
   (let [event-with-formatted-timestamp (unparse-timestamp event)
-        other-keys (sort (keys (apply dissoc (dissoc event :ikey :timestamp-millis) standard-keys)))]
+        other-keys (sort (keys (apply dissoc (dissoc event :id) standard-keys)))]
     (map
       (fn [k] [k (get event-with-formatted-timestamp k "")])
       (concat standard-keys other-keys))))

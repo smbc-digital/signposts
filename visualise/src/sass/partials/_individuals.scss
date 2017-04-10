@@ -19,6 +19,23 @@
 .cards > .fixed-height > .panel,
 .cards > .panel {
 
+  i.fa:hover {
+    //color: red;
+    opacity: 0.6;
+  }
+
+  i.fa-lock {
+    color: $base-red;
+  }
+
+  i.fa-toggle-on {
+    color: $base-green;
+  }
+
+  i.fa-unlock {
+    filter: alpha(opacity=0.1);
+  }
+
   color: #486573;
   font-size: 14px;
   font-weight: 700;

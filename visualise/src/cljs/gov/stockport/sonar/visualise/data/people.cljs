@@ -1,14 +1,37 @@
 (ns gov.stockport.sonar.visualise.data.people
   (:require [gov.stockport.sonar.visualise.data.colours :as c]
             [gov.stockport.sonar.visualise.util.popper :as popper]
+            [gov.stockport.sonar.visualise.data.merge :as merge]
             [clojure.string :as str]))
 
 (def group-keys [:name :dob :address :postcode])
 
-(defn by-people [data]
-  {:people (reduce merge {}
-                   (map (fn [[k v]] {k {:data v}})
-                        (group-by (fn [m] (select-keys m group-keys)) data)))})
+(defn locked-pkeys [{:keys [people]}]
+  (into #{} (filter not-empty (map (fn [[pkey {:keys [locked?]}]] (when locked? pkey)) people))))
+
+(defn- all-event-data [[_ {:keys [data]}]]
+  data)
+
+(defn- locked-event-data [[_ {:keys [locked? data]}]]
+  (when locked? data))
+
+(defn- extractor-for [extractor]
+  (fn [{:keys [people]}]
+    (reduce concat [] (map extractor people))))
+
+(def all-events (extractor-for all-event-data))
+
+(def locked-events (extractor-for locked-event-data))
+
+(defn by-people [{:keys [result] :as data}]
+  (assoc data :people
+              (reduce merge {}
+                      (map (fn [[k v]] {k {:data v}})
+                           (group-by
+                             (fn [m] (select-keys m group-keys))
+                             ;result
+                             (merge/merge-events (locked-events data) result)
+                             )))))
 
 (defn with-max-score [{:keys [people] :as data}]
   (assoc data :people
@@ -73,10 +96,9 @@
       (by-people)
       (with-max-score)
       (with-rank)
+      (assoc :all-collapsed? true :all-displayed? false)
       (toggle-display-all)
-      (assoc :all-collapsed? true)
       (toggle-collapse-all)))
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))
-

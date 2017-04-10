@@ -19,8 +19,8 @@
    :min         from-date
    :max         to-date})
 
-(defn label-map [{:keys [result]}]
-  (zipmap (reverse (sort (into #{} (map :event-type result)))) (rest (range))))
+(defn label-map [data]
+  (zipmap (reverse (sort (into #{} (map :event-type (people/all-events data))))) (rest (range))))
 
 (defn y-axis [data]
   (let [labels (label-map data)]
@@ -29,15 +29,22 @@
      :position :right
      :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
 
-(defn- y-data-points-avoiding-collisions [{:keys [result] :as data}]
-  (let [lm (label-map data)
+(defn collision-key [{:keys [:timestamp :event-type]}]
+  {:year       (t/year timestamp)
+   :month      (t/month timestamp)
+   :day        (t/day timestamp)
+   :event-type event-type})
+
+(defn- y-data-points-avoiding-collisions [data]
+  (let [events (people/all-events data)
+        lm (label-map data)
         blurrer (b/blurrer 0.1)]
     (reduce merge {}
             (map
               (fn [[{:keys [event-type] :as k} events]]
                 (when (= (count events) 0) (println event-type))
                 {k (p/poppable (blurrer (get lm event-type) (count events)))})
-              (group-by #(select-keys % [:timestamp :event-type]) result)))))
+              (group-by collision-key events)))))
 
 (defn data-points [{:keys [people] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)]
@@ -47,11 +54,9 @@
          :color  (get colour-map color)
          :data   (map
                    (fn [{:keys [timestamp] :as event}]
-                     (let [ekey (select-keys event [:timestamp :event-type])
+                     (let [ekey (collision-key event)
                            next-val-fn (get ydp ekey)]
-                       (when (nil? next-val-fn)
-                         (println "EK" ekey (get ekey ydp))
-                         (println (keys ydp)))
+                       (when (nil? next-val-fn) (println ekey))
                        [timestamp (next-val-fn)]))
                    data)})
       people)))

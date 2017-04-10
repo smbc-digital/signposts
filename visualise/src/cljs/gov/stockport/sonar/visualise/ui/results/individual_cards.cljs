@@ -14,6 +14,9 @@
 (defn collapsed-icon [collapsed?]
   (if collapsed? "fa-arrow-down" "fa-arrow-up"))
 
+(defn locked-icon [locked?]
+  (if locked? "fa-lock" "fa-unlock"))
+
 (defn cards [!data]
   (fn []
     (let [people (people/by-rank @!data)
@@ -43,11 +46,11 @@
          [:div.fixed-height
 
           (map
-            (fn [[{:keys [name dob address] :as pkey} {:keys [color displayed? collapsed?]}]]
+            (fn [[{:keys [name dob address] :as pkey} {:keys [color displayed? collapsed? locked?]}]]
               ^{:key (gensym)}
               [:div.panel.panel-default.card-box
                {:class (str (cljs.core/name color)
-                            (if displayed? " focus" " blur"))}
+                            (when (not displayed?) " blur"))}
                [:div.panel-heading.card-name
                 {:on-click #(swap! !data update-in [:people pkey :collapsed?] not)}]
                [:div.panel-body
@@ -57,6 +60,10 @@
                   :title    (str (if displayed? "Hide" "Show") " this person on the graph")
                   :on-click #(swap! !data people/toggle-display-person pkey)}]
 
+                [:i.fa.fa-2x.pull-right
+                 {:class    (locked-icon locked?)
+                  :title    (str (if locked? "Hide" "Show") " this person on the graph")
+                  :on-click #(swap! !data update-in [:people pkey :locked?] not)}]
 
                 [:p.info [:i.fa {:class    (collapsed-icon collapsed?)
                                  :on-click #(swap! !data update-in [:people pkey :collapsed?] not)}] " " name (age dob)]
