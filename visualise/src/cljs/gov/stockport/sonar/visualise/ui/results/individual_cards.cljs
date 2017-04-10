@@ -8,15 +8,21 @@
            (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
              (str " (" years " yrs)"))))
 
+(defn displayed-icon [displayed?]
+  (if displayed? "fa-toggle-on" "fa-toggle-off"))
 
+(defn collapsed-icon [collapsed?]
+  (if collapsed? "fa-arrow-down" "fa-arrow-up"))
 
 (defn cards [!data]
   (fn []
     (let [people (people/by-rank @!data)
-          display-all? (:all-displayed? @!data)
-          collapse-all? (:all-collapsed? @!data)]
+          all-displayed? (:all-displayed? @!data)
+          all-collapsed? (:all-collapsed? @!data)]
       (when (not-empty people)
         [:div.cards
+
+
          [:p.results-confirmation "Your search returned " (:total @!data) " event"
           (if (> (:total @!data) 1) "s") " from " (count people) " individual" (if (> (count people) 1) "s")]
 
@@ -24,15 +30,15 @@
           [:div.panel-body
 
            [:i.fa.fa-2x.pull-left
-            {:class    (if display-all? "fa-toggle-on" "fa-toggle-off")
-             :title    (str (if display-all? "Hide" "Show") " all people on the graph")
+            {:class    (displayed-icon all-displayed?)
+             :title    (str (if all-displayed? "Hide" "Show") " all people on the graph")
              :on-click #(swap! !data people/toggle-display-all)}]
-           [:p.info (if display-all? "Hide everyone" "Show everyone")]
+           [:p.info (if all-displayed? "Hide everyone" "Show everyone")]
            [:i.fa.fa-2x.pull-left
-            {:class    (if collapse-all? "fa-arrow-down" "fa-arrow-up")
-             :title    (str (if collapse-all? "Expand" "Collapse") " all cards")
+            {:class    (collapsed-icon all-collapsed?)
+             :title    (str (if all-collapsed? "Expand" "Collapse") " all cards")
              :on-click #(swap! !data people/toggle-collapse-all)}]
-           [:p.info (if collapse-all? "Expand all cards"  "Collapse all cards")]]]
+           [:p.info (if all-collapsed? "Expand all cards" "Collapse all cards")]]]
 
          [:div.fixed-height
 
@@ -47,12 +53,12 @@
                [:div.panel-body
 
                 [:i.fa.fa-2x.pull-right
-                 {:class    (if displayed? "fa-toggle-on" "fa-toggle-off")
+                 {:class    (displayed-icon displayed?)
                   :title    (str (if displayed? "Hide" "Show") " this person on the graph")
                   :on-click #(swap! !data people/toggle-display-person pkey)}]
 
 
-                [:p.info [:i.fa {:class    (if collapsed? "fa-arrow-down" "fa-arrow-up")
+                [:p.info [:i.fa {:class    (collapsed-icon collapsed?)
                                  :on-click #(swap! !data update-in [:people pkey :collapsed?] not)}] " " name (age dob)]
 
                 (if (not collapsed?)
