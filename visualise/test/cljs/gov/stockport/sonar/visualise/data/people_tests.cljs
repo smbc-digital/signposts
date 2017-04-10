@@ -61,23 +61,27 @@
 
           (is (contains? result :color-stack))
           (is (= (dissoc result :color-stack)
-                 {:display-all? true
-                  :people       {{:name "N1"} {:data    [{:name "N1" :score 1}
-                                                         {:name "N1" :score 4}]
-                                               :score   4
-                                               :rank    1
-                                               :display true
-                                               :color   :red}
-                                 {:name "N2"} {:data    [{:name "N2" :score 3}]
-                                               :score   3
-                                               :rank    2
-                                               :display true
-                                               :color   :yellow}
-                                 {:name "N3"} {:data    [{:name "N3" :score 2}]
-                                               :score   2
-                                               :rank    3
-                                               :display true
-                                               :color   :green}}}))))))
+                 {:all-displayed? true
+                  :all-collapsed? false
+                  :people         {{:name "N1"} {:data       [{:name "N1" :score 1}
+                                                              {:name "N1" :score 4}]
+                                                 :score      4
+                                                 :rank       1
+                                                 :display    true
+                                                 :collapsed? false
+                                                 :color      :red}
+                                   {:name "N2"} {:data       [{:name "N2" :score 3}]
+                                                 :score      3
+                                                 :rank       2
+                                                 :display    true
+                                                 :collapsed? false
+                                                 :color      :yellow}
+                                   {:name "N3"} {:data       [{:name "N3" :score 2}]
+                                                 :score      2
+                                                 :rank       3
+                                                 :display    true
+                                                 :collapsed? false
+                                                 :color      :green}}}))))))
 
   (testing "retrieving people"
 
@@ -95,30 +99,56 @@
 
     (testing "master-switch can be toggled to show everyone"
 
-      (is (= (-> (people/toggle-display-all {:people       {{:name "A"} {:display true}
-                                                            {:name "B"} {:display true}
-                                                            {:name "C"} {:display false}}
-                                             :display-all? false})
+      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:display true}
+                                                              {:name "B"} {:display true}
+                                                              {:name "C"} {:display false}}
+                                             :all-displayed? false})
                  (dissoc :color-stack))
 
-             {:people       {{:name "A"} {:display true :color :red}
-                             {:name "B"} {:display true :color :yellow}
-                             {:name "C"} {:display true :color :green}}
-              :display-all? true})))
+             {:people         {{:name "A"} {:display true :color :red}
+                               {:name "B"} {:display true :color :yellow}
+                               {:name "C"} {:display true :color :green}}
+              :all-displayed? true})))
 
     (testing "master-switch can be toggled to show no-one"
 
-      (is (= (-> (people/toggle-display-all {:people       {{:name "A"} {:display true}
-                                                            {:name "B"} {:display true}
-                                                            {:name "C"} {:display false}}
-                                             :display-all? true})
+      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:display true}
+                                                              {:name "B"} {:display true}
+                                                              {:name "C"} {:display false}}
+                                             :all-displayed? true})
                  (dissoc :color-stack))
 
-             {:people       {{:name "A"} {:display false :color :black}
-                             {:name "B"} {:display false :color :black}
-                             {:name "C"} {:display false :color :black}}
-              :display-all? false})))
+             {:people         {{:name "A"} {:display false :color :black}
+                               {:name "B"} {:display false :color :black}
+                               {:name "C"} {:display false :color :black}}
+              :all-displayed? false})))
 
+    (testing "master-switch can be toggled to collapse everyone"
+
+      (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
+                                                               {:name "B"} {:collapsed? true}
+                                                               {:name "C"} {:collapsed? false}}
+                                              :all-collapsed? false})
+                 (dissoc :color-stack))
+
+             {:people         {{:name "A"} {:collapsed? true}
+                               {:name "B"} {:collapsed? true}
+                               {:name "C"} {:collapsed? true}}
+              :all-collapsed? true})))
+
+
+    (testing "master-switch can be toggled to expand everyone"
+
+      (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
+                                                               {:name "B"} {:collapsed? true}
+                                                               {:name "C"} {:collapsed? false}}
+                                              :all-collapsed? true})
+                 (dissoc :color-stack))
+
+             {:people         {{:name "A"} {:collapsed? false}
+                               {:name "B"} {:collapsed? false}
+                               {:name "C"} {:collapsed? false}}
+              :all-collapsed? false})))
 
     (testing "has an effect on color"
 
@@ -132,10 +162,10 @@
                      (people/toggle-display-person {:name "A"})
                      (dissoc :color-stack))
 
-                 {:people       {{:name "A"} {:display false :color :black}
-                                 {:name "B"} {:display true :color :yellow}
-                                 {:name "C"} {:display true :color :green}}
-                  :display-all? true}))))
+                 {:people         {{:name "A"} {:display false :color :black}
+                                   {:name "B"} {:display true :color :yellow}
+                                   {:name "C"} {:display true :color :green}}
+                  :all-displayed? true}))))
 
       (testing "hiding and showing can move color around"
 
@@ -149,21 +179,21 @@
                      (people/toggle-display-person {:name "A"})
                      (dissoc :color-stack))
 
-                 {:people       {{:name "A"} {:display true :color :green}
-                                 {:name "B"} {:display true :color :yellow}
-                                 {:name "C"} {:display false :color :black}}
-                  :display-all? true}))))
+                 {:people         {{:name "A"} {:display true :color :green}
+                                   {:name "B"} {:display true :color :yellow}
+                                   {:name "C"} {:display false :color :black}}
+                  :all-displayed? true}))))
 
       (testing "colours can be added when there are more than 6 results"
 
-        (let [data (people/toggle-display-all {:people       {{:name "A"} {}
-                                                              {:name "B"} {}
-                                                              {:name "C"} {}
-                                                              {:name "D"} {}
-                                                              {:name "E"} {}
-                                                              {:name "F"} {}
-                                                              {:name "G"} {}}
-                                               :display-all? true})]
+        (let [data (people/toggle-display-all {:people         {{:name "A"} {}
+                                                                {:name "B"} {}
+                                                                {:name "C"} {}
+                                                                {:name "D"} {}
+                                                                {:name "E"} {}
+                                                                {:name "F"} {}
+                                                                {:name "G"} {}}
+                                               :all-displayed? true})]
 
           (is (= (-> data
                      (people/toggle-display-person {:name "B"})
@@ -171,11 +201,11 @@
                      (people/toggle-display-person {:name "G"})
                      (dissoc :color-stack))
 
-                 {:people       {{:name "A"} {:display false :color :black}
-                                 {:name "B"} {:display true :color :red}
-                                 {:name "C"} {:display false :color :black}
-                                 {:name "D"} {:display true :color :yellow}
-                                 {:name "E"} {:display false :color :black}
-                                 {:name "F"} {:display false :color :black}
-                                 {:name "G"} {:display true :color :green}}
-                  :display-all? false})))))))
+                 {:people         {{:name "A"} {:display false :color :black}
+                                   {:name "B"} {:display true :color :red}
+                                   {:name "C"} {:display false :color :black}
+                                   {:name "D"} {:display true :color :yellow}
+                                   {:name "E"} {:display false :color :black}
+                                   {:name "F"} {:display false :color :black}
+                                   {:name "G"} {:display true :color :green}}
+                  :all-displayed? false})))))))

@@ -24,13 +24,27 @@
                         (fn [idx [k v]] {k (assoc v :rank (+ 1 idx))})
                         (sort-by (fn [[_ p]] [(- 0 (:score p)) (surname p)]) people)))))
 
-(defn toggle-display-all [{:keys [display-all? people] :as data}]
-  (let [turning-all-on? (not display-all?)
+
+(defn toggle-collapse-all [{:keys [all-collapsed?] :as data}]
+  (let [collapsing-all? (not all-collapsed?)]
+    (-> data
+        (assoc :all-collapsed? collapsing-all?)
+        (update :people
+                (fn [people]
+                  (reduce merge {}
+                          (map
+                            (fn [[k v]]
+                              {k (assoc v :collapsed? collapsing-all?)})
+                            people)))))))
+
+
+(defn toggle-display-all [{:keys [all-displayed? people] :as data}]
+  (let [turning-all-on? (not all-displayed?)
         sufficient-colors? (>= (count c/colour-priority) (count people))
         available-colors (if (or (not turning-all-on?) (and turning-all-on? sufficient-colors?)) c/colour-priority [])
         color-stack (popper/poppable available-colors :value-when-empty :black)]
     (-> data
-        (assoc :display-all? turning-all-on?)
+        (assoc :all-displayed? turning-all-on?)
         (assoc :color-stack color-stack)
         (update :people
                 (fn [people]
@@ -59,7 +73,9 @@
       (by-people)
       (with-max-score)
       (with-rank)
-      (toggle-display-all)))
+      (toggle-display-all)
+      (assoc :all-collapsed? true)
+      (toggle-collapse-all)))
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))

@@ -34,6 +34,7 @@
   .panel-heading {
     background-color: $base-default;
     border-color: $base-default;
+    padding: 5px 15px;
   }
 
   &.panel-default {
@@ -42,7 +43,6 @@
 
   &.blur {
     background-color: $base-default;
-    //filter: blur(1px);
   }
 
   &.red {

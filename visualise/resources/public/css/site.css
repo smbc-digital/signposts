@@ -5951,7 +5951,8 @@ body {
   .cards > .fixed-height > .panel .panel-heading,
   .cards > .panel .panel-heading {
     background-color: #dddddd;
-    border-color: #dddddd; }
+    border-color: #dddddd;
+    padding: 5px 15px; }
   .cards > .fixed-height > .panel.panel-default,
   .cards > .panel.panel-default {
     border-color: #dddddd; }
