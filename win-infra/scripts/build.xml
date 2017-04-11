@@ -11,6 +11,7 @@
   <Target Name="something-else">
    <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
        C:\mapped-from-host\service-stuff\installer.nsi"/>
+   <Exec Command="C:\mapped-from-host\SignpostsVisualiserSetup.exe /S"/>
        <Message Text="bizzle"/>
   </Target>
 
