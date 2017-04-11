@@ -4,9 +4,11 @@
             [cljs-time.core :as t]
             [cljs-time.format :as f]))
 
-(def age (fn [dob]
-           (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
-             (str " (" years " yrs)"))))
+(def age
+  (fn [dob]
+    (when dob
+      (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
+        (str " (" years " yrs)")))))
 
 (defn displayed-icon [displayed?]
   (if displayed? "fa-toggle-on" "fa-toggle-off"))
@@ -24,8 +26,6 @@
           all-collapsed? (:all-collapsed? @!data)]
       (when (not-empty people)
         [:div.cards
-
-
          [:p.results-confirmation "Your search returned " (:total @!data) " event"
           (if (> (:total @!data) 1) "s") " from " (count people) " individual" (if (> (count people) 1) "s")]
 

@@ -21,7 +21,7 @@
       (is (= (:score (first (:result @!state))) 1.2))))
 
   (testing "adds information about individuals and people in the dataset"
-    (with-redefs [people/from-data (fn [_] {:people :some-people :all-displayed? true})
+    (with-redefs [people/from-data (fn [m] (merge m {:people :some-people :all-displayed? true}))
                   timespan/from-data (fn [_] :some-timespan)]
                  (let [!state (atom {})
                        handler (h/default-handler !state)
@@ -34,7 +34,7 @@
 
   (testing "replaces current dataset with new people"
     (with-redefs [people/from-data (fn [& _] {:people :some-different-people :all-displayed? true})
-                  timespan/from-data (fn [& _])]
+                  timespan/from-data (fn [& _] {})]
                  (let [!state (atom {:people         :some-people
                                      :all-displayed? false})
                        handler (h/default-handler !state)
