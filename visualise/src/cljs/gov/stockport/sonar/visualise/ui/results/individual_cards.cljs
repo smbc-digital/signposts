@@ -60,10 +60,10 @@
                   :title    (str (if displayed? "Hide" "Show") " this person on the graph")
                   :on-click #(swap! !data people/toggle-display-person pkey)}]
 
-                [:i.fa.fa-2x.pull-right
-                 {:class    (locked-icon locked?)
-                  :title    (str (if locked? "Hide" "Show") " this person on the graph")
-                  :on-click #(swap! !data update-in [:people pkey :locked?] not)}]
+                ;[:i.fa.fa-2x.pull-right
+                ; {:class    (locked-icon locked?)
+                ;  :title    (str (if locked? "Hide" "Show") " this person on the graph")
+                ;  :on-click #(swap! !data update-in [:people pkey :locked?] not)}]
 
                 [:p.info [:i.fa {:class    (collapsed-icon collapsed?)
                                  :on-click #(swap! !data update-in [:people pkey :collapsed?] not)}] " " name (age dob)]
