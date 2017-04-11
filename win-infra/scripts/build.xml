@@ -1,16 +1,16 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Target Name="package">
-      <Exec Command="&quot;C:\apache-ant-1.9.5\bin\ant.bat&quot; ^
-          -f C:\thisone\jarpkg\emulatorpkg\package.xml"
-              />
+  <Target Name="nsis-setup">
+      <Exec Command="C:\mapped-from-host\files\nsis-setup.exe /S"/>
   </Target>
 
-  <Target DependsOnTargets="package" Name="run">
-    <Exec Command="&quot;c:\Program Files\Microsoft SDKs\Azure\Emulator\csrun.exe&quot; ^
-            C:\thisone\jarpkg\emulatorpkg\deploy\WindowsAzurePackage.cspkg ^
-            C:\thisone\jarpkg\emulatorpkg\deploy\ServiceConfiguration.cscfg"
-            />
+  <Target Name="something-else">
+   <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
+       C:\mapped-from-host\service-stuff\installer.nsi"/>
+       <Message Text="bizzle"/>
+  </Target>
+
+  <Target DependsOnTargets="nsis-setup;something-else" Name="run">
   </Target>
 
 </Project>

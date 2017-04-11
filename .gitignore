@@ -14,3 +14,4 @@ pom.xml.asc
 .idea/
 .DS_Store
 win-infra/files/
+*.exe

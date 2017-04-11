@@ -14,7 +14,8 @@ windows: files
 files: \
 	$(FILES_LOC)$(INGEST_JAR) \
 	$(FILES_LOC)elastic.zip \
-	$(FILES_LOC)winsw.exe
+	$(FILES_LOC)winsw.exe \
+	$(FILES_LOC)nsis-setup.exe
 
 $(FILES_LOC)$(INGEST_JAR):
 	cd ingest/; lein clean; lein uberjar
@@ -27,6 +28,10 @@ $(FILES_LOC)elastic.zip:
 $(FILES_LOC)winsw.exe:
 	curl http://repo.jenkins-ci.org/releases/com/sun/winsw/winsw/2.0.3/winsw-2.0.3-bin.exe \
 		-o $(FILES_LOC)winsw.exe
+
+$(FILES_LOC)nsis-setup.exe:
+	curl https://sourceforge.net/projects/nsis/files/NSIS%203/3.01/nsis-3.01-setup.exe/download -L \
+		-o $(FILES_LOC)nsis-setup.exe
 
 .PHONY: clean
 clean:
