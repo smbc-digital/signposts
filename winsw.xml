@@ -1,0 +1,12 @@
+<service>
+  <id>signposts-visualise</id>
+  <name>Signposts Visualiser</name>
+  <description>This service runs the Signposts visualiser app.</description>
+  <workingdirectory>%BASE%\</workingdirectory>
+  <executable>jdk1.8.0_121\bin\java.exe</executable>
+  <arguments>-jar ingest-0.1.0-snapshot-standalone.jar</arguments>
+  <log mode="roll-by-size">
+	<sizeThreshold>10240</sizeThreshold>
+	<keepFiles>50</keepFiles>
+  </log>
+</service>

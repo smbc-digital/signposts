@@ -4,13 +4,17 @@
       <Exec Command="C:\mapped-from-host\files\nsis-setup.exe /S"/>
   </Target>
 
+  <Target Name="choco-setup">
+      <Exec Command="powershell C:\mapped-from-host\scripts\install-choco.ps1"/>
+  </Target>
+
   <Target Name="something-else">
    <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
        C:\mapped-from-host\service-stuff\installer.nsi"/>
        <Message Text="bizzle"/>
   </Target>
 
-  <Target DependsOnTargets="nsis-setup;something-else" Name="run">
+  <Target DependsOnTargets="nsis-setup;choco-setup;something-else" Name="run">
   </Target>
 
 </Project>

@@ -36,5 +36,5 @@ $(FILES_LOC)nsis-setup.exe:
 .PHONY: clean
 clean:
 	rm -f $(FILES_LOC)/*
-	cd win-infra; vagrant destroy -y
+	cd win-infra; vagrant destroy -f
 
