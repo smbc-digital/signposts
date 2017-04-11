@@ -15,7 +15,7 @@ Section
 	DetailPrint $1
 	File "..\files\winsw.exe"
 	File "..\scripts\winsw.exe.config"
-	File "..\files\ingest-0.1.0-snapshot-standalone.jar"
+	File "..\files\visualise.jar"
 	File "winsw.xml"
 	File /r "..\..\Program Files\Java\"
 	DetailPrint "Starting Signposts Visualiser service"

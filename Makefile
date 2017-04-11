@@ -2,7 +2,7 @@ define green
 	@tput setaf 2; echo $1; tput sgr0;
 endef
 
-INGEST_JAR=ingest-0.1.0-SNAPSHOT-standalone.jar
+VISUALISE_JAR=visualise.jar
 FILES_LOC=win-infra/files/
 
 .PHONY: windows
@@ -12,14 +12,16 @@ windows: files
 
 .PHONY: files
 files: \
-	$(FILES_LOC)$(INGEST_JAR) \
+	$(FILES_LOC)$(VISUALISE_JAR) \
 	$(FILES_LOC)elastic.zip \
 	$(FILES_LOC)winsw.exe \
 	$(FILES_LOC)nsis-setup.exe
 
-$(FILES_LOC)$(INGEST_JAR):
-	cd ingest/; lein clean; lein uberjar
-	cp ingest/target/$(INGEST_JAR) $(FILES_LOC)$(INGEST_JAR)
+$(FILES_LOC)$(VISUALISE_JAR):
+	cd visualise/; lein clean; lein uberjar
+	cp visualise/target/$(VISUALISE_JAR) $(FILES_LOC)$(VISUALISE_JAR)
+	cp visualise/deps/bcpkix-jdk15on-1.56.jar $(FILES_LOC)bcpkix-jdk15on-1.56.jar
+	cp visualise/deps/bcprov-jdk15on-1.56.jar $(FILES_LOC)bcprov-jdk15on-1.56.jar
 
 $(FILES_LOC)elastic.zip:
 	curl https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.0.zip \
