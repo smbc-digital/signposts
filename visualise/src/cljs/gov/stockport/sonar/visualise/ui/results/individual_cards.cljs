@@ -4,9 +4,11 @@
             [cljs-time.core :as t]
             [cljs-time.format :as f]))
 
-(def age (fn [dob]
-           (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
-             (str " (" years " yrs)"))))
+(def age
+  (fn [dob]
+    (when dob
+      (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
+        (str " (" years " yrs)")))))
 
 (defn displayed-icon [displayed?]
   (if displayed? "fa-toggle-on" "fa-toggle-off"))
