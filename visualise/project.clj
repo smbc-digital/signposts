@@ -6,7 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring-server "0.4.0"]
-                 [reagent "0.6.0"]
+                 [reagent "0.6.1"]
                  [reagent-utils "0.2.1"]
                  [ring "1.5.0"]
                  [ring/ring-defaults "0.2.1"]
@@ -102,8 +102,7 @@
   :figwheel {:http-server-root "public"
              :server-port      3449
              :nrepl-port       7002
-             :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"
-                                ]
+             :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
              :css-dirs         ["resources/public/css"]
              :ring-handler     gov.stockport.sonar.visualise.handler/app}
 

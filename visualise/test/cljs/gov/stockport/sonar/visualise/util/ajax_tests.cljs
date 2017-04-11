@@ -1,48 +1,47 @@
 (ns gov.stockport.sonar.visualise.util.ajax-tests
   (:require [cljs.test :refer-macros [deftest testing is are use-fixtures]]
-            [stubadub.core :refer [with-stub calls-to]]
-            [reagent.cookies :refer [get-raw]]
+            [reagent.cookies :as rc]
             [gov.stockport.sonar.visualise.util.navigation :as n]
             [gov.stockport.sonar.visualise.util.ajax :as l]))
 
-(def some-handler (fn []))
+(def some-handler (fn [& _]))
 
 (deftest ajax-tests
 
   (testing "should invoke post against supplied url, with default options, json body and supplied handler"
 
-    (with-stub
-      l/perform-post
+    (let [calls (atom nil)]
 
-      ;when
-      (l/post "/some-url" {:body    {:some "body"}
-                           :handler some-handler})
-
-      ;then
-      (is (= 1 (count (calls-to l/perform-post))))
-      (let [[url options] (first (calls-to l/perform-post))]
-        (is (= url "/some-url"))
-        (is (= (:headers options) {"Content-Type" "application/json"}))
-        (is (= (:format options) :json))
-        (is (= (:body options) "{\"some\":\"body\"}"))
-        (is (= (:handler options) some-handler))
-        (is (= (:error-handler options) l/default-error-handler)))))
-
-  (testing "should include csrf anti-forgery-token, url-decoded, if it exists"
-
-    (with-redefs
-      [get-raw (fn [cookie-name] (when (= cookie-name :csrf) "some%2fvalue"))]
-
-      (with-stub
-        l/perform-post
+      (with-redefs
+        [l/perform-post (fn [& args] (reset! calls args))]
 
         ;when
         (l/post "/some-url" {:body    {:some "body"}
                              :handler some-handler})
 
         ;then
-        (is (= 1 (count (calls-to l/perform-post))))
-        (let [[_ options] (first (calls-to l/perform-post))]
+        (let [[url options] @calls]
+          (is (= url "/some-url"))
+          (is (= (:headers options) {"Content-Type" "application/json"}))
+          (is (= (:format options) :json))
+          (is (= (:body options) "{\"some\":\"body\"}"))
+          (is (= (:handler options) some-handler))
+          (is (= (:error-handler options) l/default-error-handler))))))
+
+  (testing "should include csrf anti-forgery-token, url-decoded, if it exists"
+
+    (let [calls (atom nil)]
+
+      (with-redefs
+        [l/perform-post (fn [& args] (reset! calls args))
+         rc/get-raw (fn [cookie-name] (when (= cookie-name :csrf) "some%2fvalue"))]
+
+        ;when
+        (l/post "/some-url" {:body    {:some "body"}
+                             :handler some-handler})
+
+        ;then
+        (let [[_ options] @calls]
           (is (= (:headers options) {"Content-Type" "application/json"
                                      "X-CSRF-Token" "some/value"}))))))
 
@@ -62,4 +61,6 @@
 
                    (is (= (l/default-error-handler {:status 201}) {:status 201}))
 
-                   (is (= 0 @calls))))))
+                   (is (= 0 @calls)))))
+
+  )

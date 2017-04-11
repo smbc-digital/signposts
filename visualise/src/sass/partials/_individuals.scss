@@ -11,25 +11,55 @@
   }
 }
 
+.fixed-height {
+  height: 99vh;
+  overflow-y: scroll;
+}
+
+.cards > .fixed-height > .panel,
 .cards > .panel {
+
+  i.fa:hover {
+    //color: red;
+    opacity: 0.6;
+  }
+
+  i.fa-lock {
+    color: $base-red;
+  }
+
+  i.fa-toggle-on {
+    color: $base-green;
+  }
+
+  i.fa-unlock {
+    filter: alpha(opacity=0.1);
+  }
 
   color: #486573;
   font-size: 14px;
   font-weight: 700;
   text-align: left;
-  line-height: 1.2;
+  line-height: 1.1;
 
   background-image: none;
 
   .panel {
     border-color: $base-default;
   }
+
   .panel-heading {
     background-color: $base-default;
     border-color: $base-default;
+    padding: 5px 15px;
   }
+
   &.panel-default {
     border-color: $base-default;
+  }
+
+  &.blur {
+    background-color: $base-default;
   }
 
   &.red {
@@ -61,7 +91,7 @@
   }
 
   .info {
-    color:  #486573;
+    color: #486573;
     font-size: 20px;
     font-weight: 700;
     text-align: left;

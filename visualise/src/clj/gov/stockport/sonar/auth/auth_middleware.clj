@@ -10,7 +10,7 @@
   (when (sm/valid? session) session))
 
 (def jwe-authentication
-  (backends/jwe {:secret               privkey
+  (backends/jwe {:secret               @privkey
                  :authfn               auth-fn
                  :unauthorized-handler (fn [_ _] (-> (r/response "{}") (r/status 401)))
                  :options              {:alg :rsa-oaep

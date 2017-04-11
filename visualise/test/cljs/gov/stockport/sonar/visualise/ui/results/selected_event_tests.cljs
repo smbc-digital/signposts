@@ -17,6 +17,9 @@
         (testing "should default values for common keys to blanks if they don't exist"
           (is (= (se/selected-kvs {:a "A"}) [[:b ""] [:a "A"]])))
 
+        (testing "should exclude the id key"
+          (is (= (se/selected-kvs {:a "A" :b "B" :id ""}) [[:b "B"] [:a "A"]])))
+
         (testing "should add values for other keys to the end of the list in alphabetical order of key"
           (is (= (se/selected-kvs {:llama "LL" :zebra "ZZ" :aardvark "AA"})
                  [[:b ""]
