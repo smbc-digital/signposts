@@ -7,7 +7,7 @@ FILES_LOC=win-infra/files/
 
 .PHONY: windows
 windows: files
-	cd win-infra; vagrant up
+	cd win-infra; vagrant up --provision
 	$(call green,"[Upped]")
 
 .PHONY: files
@@ -31,3 +31,5 @@ $(FILES_LOC)winsw.exe:
 .PHONY: clean
 clean:
 	rm -f $(FILES_LOC)/*
+	cd win-infra; vagrant destroy -y
+
