@@ -42,7 +42,6 @@
     (reduce merge {}
             (map
               (fn [[{:keys [event-type] :as k} events]]
-                (when (= (count events) 0) (println event-type))
                 {k (p/poppable (blurrer (get lm event-type) (count events)))})
               (group-by collision-key events)))))
 
@@ -56,7 +55,6 @@
                    (fn [{:keys [timestamp] :as event}]
                      (let [ekey (collision-key event)
                            next-val-fn (get ydp ekey)]
-                       (when (nil? next-val-fn) (println ekey))
                        [timestamp (next-val-fn)]))
                    data)})
       people)))

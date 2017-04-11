@@ -7,6 +7,16 @@
             [gov.stockport.sonar.visualise.auth.auth-client :as ac]
             [gov.stockport.sonar.visualise.state :refer [!app !data]]))
 
+(defn results [!data]
+  (when (not-empty (:result @!data))
+    [:div
+     [:div.column.container-results.col-sm-3
+      [:div.column-title.results-title "RESULTS"]
+      [ic/cards !data]]
+
+     [:div.column.container-timeline.col-sm-7
+      [tr/results-tabs !data]]]))
+
 (defn home-page []
   [:div.container-fluid.header
    [:div.row
@@ -26,10 +36,4 @@
     [:div.column.container-criteria.col-sm-2
      [:div.column-title.results-title "SEARCH BY"]
      [sc/search-control !app (h/default-handler !data)]]
-
-    [:div.column.container-results.col-sm-3
-     [:div.column-title.results-title "RESULTS"]
-     [ic/cards !data]]
-
-    [:div.column.container-timeline.col-sm-7
-     [tr/results-tabs !data]]]])
+    [results !data]]])

@@ -26,8 +26,6 @@
           all-collapsed? (:all-collapsed? @!data)]
       (when (not-empty people)
         [:div.cards
-
-
          [:p.results-confirmation "Your search returned " (:total @!data) " event"
           (if (> (:total @!data) 1) "s") " from " (count people) " individual" (if (> (count people) 1) "s")]
 
