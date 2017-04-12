@@ -3,14 +3,18 @@
             [cljsjs.flot]
             [cljsjs.flot.plugins.time]
             [cljsjs.flot.plugins.selection]
+            [cljsjs.flot.plugins.resize]
             [cljs-time.coerce :as tc]
             [gov.stockport.sonar.visualise.ui.results.selected-event :as se]
-            [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
+            [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]
+            [cljs-time.core :as t]
+            [cljs-time.format :as f]
+            [reagent.core :as r]))
 
 (defn options [m]
   (merge m {:grid   {:borderWidth     1
                      :minBorderMargin 20
-                     :labelMagitrgin  10
+                     :labelMargin     10
                      :hoverable       true
                      :clickable       true
                      :backgroundColor {:colors ["#fff" "#e4f4f4"]}
@@ -20,34 +24,55 @@
             :lines  {:show false}
             :points {:radius    8
                      :fillColor "rgba(255,255,255,0.8"}
-            :legend {:show true}}))
+            :legend {:show false}}))
 
-(defn flot-render []
+(defn fmt [timestamp]
+  (f/unparse (f/formatter "d MMMM YYYY") timestamp))
+
+(defn graph-placeholder-with-description [!timespan]
   [:div
    [:div.flot-selected {:style {:width "100%" :height 75}}]
+   (let [{:keys [:selected-from :selected-to]} @!timespan]
+     [:div
+      [:center
+       [:span "graph below shows "]
+       [:strong (fmt selected-from)]
+       [:span " - "]
+       [:strong (fmt selected-to)]]])
    [:div.flot-timeline {:style {:width "100%" :height 500}}]])
 
 (defn touch-data-to-force-rebind-click-handler [!data]
   (swap! !data update :plotinteraction #(not (or % false))))
 
 (defn draw-selector [!data the-data options]
-  (.plot (js/jQuery ".flot-selected")
-         (clj->js the-data)
-         (clj->js (-> options
-                      (assoc-in [:yaxis :max] 0.001)
-                      (assoc :selection {:mode    "x"
-                                         :color   "#2e3292"
-                                         :shape   "round"
-                                         :minSize 10
-                                         }))))
+  (let [!plotselected (atom nil)]
+    (.plot (js/jQuery ".flot-selected")
+           (clj->js the-data)
+           (clj->js (-> options
+                        (assoc :selection {:mode    "x"
+                                           :shape   "round"
+                                           :minSize 1
+                                           }))))
 
-  (.bind (js/jQuery ".flot-selected") "plotselected"
-         (fn [_ ranges]
-           (touch-data-to-force-rebind-click-handler !data)
-           (let [{{:keys [from to]} :xaxis} (js->clj ranges :keywordize-keys true)]
-             (swap! !data (fn [data] (-> data
-                                         (assoc-in [:timespan :selected-from] (tc/from-long from))
-                                         (assoc-in [:timespan :selected-to] (tc/from-long to)))))))))
+    (.bind (js/jQuery ".flot-selected") "plotselected"
+           (fn [_ ranges]
+             (let [{{:keys [from to]} :xaxis} (js->clj ranges :keywordize-keys true)]
+               (reset! !plotselected true)
+               (swap! !data (fn [data] (-> data
+                                           (assoc-in [:timespan :selected-from] (tc/from-long from))
+                                           (assoc-in [:timespan :selected-to] (tc/from-long to))))))))
+
+    (.bind (js/jQuery ".flot-selected") "plotclick"
+           (fn [& _]
+             (if (not @!plotselected)
+               (do
+                 (reset! !plotselected false)
+                 (:timespan
+                   (swap! !data (fn [{:keys [:timespan] :as data}]
+                                  (-> data
+                                      (assoc-in [:timespan :selected-from] (:from-date timespan))
+                                      (assoc-in [:timespan :selected-to] (:to-date timespan)))))))
+               (reset! !plotselected false))))))
 
 (defn draw-graph [!data the-data options]
   (let [flot (.plot js/jQuery (js/jQuery ".flot-timeline") (clj->js the-data) (clj->js options))]
@@ -64,22 +89,39 @@
 
 (defn draw-with [!data]
   (let []
-    (draw-selector !data (fa/data-points @!data) (options {:xaxis (fa/selector-x-axis @!data)
-                                                           :yaxis (fa/y-axis @!data)}))
     (draw-graph !data (fa/data-points @!data) (options {:xaxis (fa/x-axis @!data)
                                                         :yaxis (fa/y-axis @!data)}))))
+
+(defn draw-with-selector [!data]
+  (let []
+    (draw-selector !data (fa/selector-data-points @!data) (options {:xaxis (fa/selector-x-axis @!data)
+                                                                    :yaxis (fa/selector-y-axis @!data)}))))
 
 (defn flot-component [!data]
   (fn []
     (reagent/create-class {:should-component-update (fn [& _] true)
-                           :reagent-render          flot-render
+                           :reagent-render          (fn [] [:div])
                            :component-did-mount     (fn [] (draw-with !data))
                            :component-did-update    (fn [] (draw-with !data))})))
+
+(defn flot-component-s [!data]
+  (fn []
+    (reagent/create-class {:should-component-update (fn [_
+                                                         [_ _ {{prev-from :from-date prev-to :to-date} :timestamp}]
+                                                         [_ _ {{next-from :from-date next-to :to-date} :timestamp}]]
+                                                      true
+                                                      ;(not (and (t/= prev-from next-from) (t/= prev-to next-to)))
+                                                      )
+                           :reagent-render          (fn [] [:div])
+                           :component-did-mount     (fn [] (draw-with-selector !data))
+                           :component-did-update    (fn [] (draw-with-selector !data))})))
 
 (defn timeline-flot [!data]
   (fn []
     (let [results (:result @!data)]
       (when (not-empty results)
         [:div
+         [graph-placeholder-with-description (r/cursor !data [:timespan])]
          [flot-component !data @!data]
+         [flot-component-s !data @!data]
          [se/selected-event !data]]))))

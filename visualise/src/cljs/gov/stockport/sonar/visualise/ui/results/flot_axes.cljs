@@ -29,6 +29,13 @@
      :position :right
      :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
 
+(defn selector-y-axis [data]
+  (let [labels (label-map data)]
+    {:min      0
+     :max      0.5
+     :position :right
+     :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
+
 (defn collision-key [{:keys [:timestamp :event-type]}]
   {:year       (t/year timestamp)
    :month      (t/month timestamp)
@@ -58,6 +65,17 @@
                        [timestamp (next-val-fn)]))
                    data)})
       people)))
+
+(defn selector-data-points [{{:keys [from-date to-date selected-from selected-to]} :timespan}]
+  [{:points {:show false}
+    :lines  {:show false}
+    :data   [[from-date 1] [to-date 1]]}
+
+   {:points {:show true :radius 5 :fill true}
+    :lines  {:show true}
+    :data   [[selected-from 0.25] [selected-to 0.25]]}
+
+   ])
 
 (defn event-at [data person-index data-index]
   (let [[_ {:keys [data]}] (nth (people/by-rank data) person-index nil)]
