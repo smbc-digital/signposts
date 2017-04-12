@@ -4,8 +4,15 @@
       <Exec Command="C:\mapped-from-host\files\nsis-setup.exe /S"/>
   </Target>
 
-  <Target Name="choco-setup">
+  <PropertyGroup>
+          <ChocLocation>c:\ProgramData\chocolatey</ChocLocation>
+  </PropertyGroup>
+  <Target Name="install-choco" Condition="!Exists('c:\ProgramData\chocolatey')">
       <Exec Command="powershell C:\mapped-from-host\scripts\install-choco.ps1"/>
+  </Target>
+
+  <Target Name="install-build-deps" DependsOnTargets="install-choco">
+      <Exec Command="powershell C:\mapped-from-host\scripts\install-build-deps.ps1"/>
   </Target>
 
   <Target Name="something-else">
@@ -15,7 +22,7 @@
        <Message Text="bizzle"/>
   </Target>
 
-  <Target DependsOnTargets="nsis-setup;choco-setup;something-else" Name="run">
+  <Target DependsOnTargets="install-build-deps;something-else" Name="run">
   </Target>
 
 </Project>
