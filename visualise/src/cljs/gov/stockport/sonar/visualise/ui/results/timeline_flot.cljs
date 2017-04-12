@@ -31,7 +31,7 @@
 
 (defn graph-placeholder-with-description [!timespan]
   [:div
-   [:div.flot-selected {:style {:width "100%" :height 75}}]
+   [:div.flot-selected {:style {:width "100%" :height 100}}]
    (let [{:keys [:selected-from :selected-to]} @!timespan]
      [:div
       [:center
@@ -75,7 +75,14 @@
                (reset! !plotselected false))))))
 
 (defn draw-graph [!data the-data options]
-  (let [flot (.plot js/jQuery (js/jQuery ".flot-timeline") (clj->js the-data) (clj->js options))]
+  (let [flot (.plot js/jQuery
+                    (js/jQuery ".flot-timeline")
+                    (clj->js the-data)
+                    (clj->js (-> options
+                                 (assoc :selection {:mode    "x"
+                                                    :shape   "round"
+                                                    :minSize 1
+                                                    }))))]
     (if-let [{:keys [seriesIndex dataIndex]} (:point @!data)]
       (.highlight flot seriesIndex dataIndex))
     (.one (js/jQuery ".flot-timeline") "plotclick"
@@ -85,36 +92,31 @@
               (let [{:keys [datapoint dataIndex seriesIndex]} (js->clj item :keywordize-keys true)]
                 (:selected-event (swap! !data assoc :selected-event (fa/event-at @!data seriesIndex dataIndex)))
                 (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex}))
-              (swap! !data dissoc :point :selected-event))))))
+              (swap! !data dissoc :point :selected-event))))
+
+    (.one (js/jQuery ".flot-timeline") "plotselected"
+          (fn [_ ranges]
+            (let [{{:keys [from to]} :xaxis} (js->clj ranges :keywordize-keys true)]
+              (swap! !data (fn [data] (-> data
+                                          (assoc-in [:timespan :selected-from] (tc/from-long from))
+                                          (assoc-in [:timespan :selected-to] (tc/from-long to))))))))
+
+    ))
 
 (defn draw-with [!data]
   (let []
+    (draw-selector !data (fa/selector-data-points @!data) (options {:xaxis (fa/selector-x-axis @!data)
+                                                                    :yaxis (fa/selector-y-axis @!data)}))
     (draw-graph !data (fa/data-points @!data) (options {:xaxis (fa/x-axis @!data)
                                                         :yaxis (fa/y-axis @!data)}))))
-
-(defn draw-with-selector [!data]
-  (let []
-    (draw-selector !data (fa/selector-data-points @!data) (options {:xaxis (fa/selector-x-axis @!data)
-                                                                    :yaxis (fa/selector-y-axis @!data)}))))
 
 (defn flot-component [!data]
   (fn []
     (reagent/create-class {:should-component-update (fn [& _] true)
-                           :reagent-render          (fn [] [:div])
+                           :reagent-render          (fn [] [:span])
                            :component-did-mount     (fn [] (draw-with !data))
                            :component-did-update    (fn [] (draw-with !data))})))
 
-(defn flot-component-s [!data]
-  (fn []
-    (reagent/create-class {:should-component-update (fn [_
-                                                         [_ _ {{prev-from :from-date prev-to :to-date} :timestamp}]
-                                                         [_ _ {{next-from :from-date next-to :to-date} :timestamp}]]
-                                                      true
-                                                      ;(not (and (t/= prev-from next-from) (t/= prev-to next-to)))
-                                                      )
-                           :reagent-render          (fn [] [:div])
-                           :component-did-mount     (fn [] (draw-with-selector !data))
-                           :component-did-update    (fn [] (draw-with-selector !data))})))
 
 (defn timeline-flot [!data]
   (fn []
@@ -123,5 +125,4 @@
         [:div
          [graph-placeholder-with-description (r/cursor !data [:timespan])]
          [flot-component !data @!data]
-         [flot-component-s !data @!data]
          [se/selected-event !data]]))))
