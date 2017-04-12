@@ -1,0 +1,20 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="install-choco" Condition="!Exists('c:\ProgramData\chocolatey')">
+      <Exec Command="powershell C:\mapped-from-host\install-build-deps\install-choco.ps1"/>
+  </Target>
+
+  <Target Name="install-build-deps" DependsOnTargets="install-choco">
+      <Exec Command="powershell C:\mapped-from-host\install-build-deps\install-build-deps.ps1"/>
+  </Target>
+
+  <Target Name="build-installers" DependsOnTargets="install-build-deps">
+   <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
+       C:\mapped-from-host\build-installers\visualise-installer.nsi"/>
+   <Exec Command="C:\mapped-from-host\SignpostsVisualiseSetup.exe /S"/>
+  </Target>
+
+  <Target DependsOnTargets="build-installers" Name="run">
+  </Target>
+
+</Project>
