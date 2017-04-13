@@ -6,7 +6,7 @@
 (def target-value (fn [elem] (-> elem .-target .-value)))
 
 (defn selected-field [!state control-id {:keys [get-selected-field set-selected-field]}]
-  [:select.input-lg
+  [:select.input-lg.col-sm-9
    {:value     (get-selected-field)
     :on-change #(set-selected-field (target-value %))}
    (map
@@ -19,12 +19,12 @@
   (map
     (fn [{:keys [get-placeholder get-query set-query on-remove] :as sc}]
       [:div.panel.criteria-box
-       [:div.panel-body
+       [:div.panel-body.col-sm-12
 
-        [:div.form-group
+        [:div.form-group.row
          [selected-field !state control-id sc]
          [:button.input-lg.btn.btn-default.remove-criteria.pull-right {:type :button :on-click on-remove} [:i.fa.fa-times]]]
-        [:div.form-group
+        [:div.form-group.row
          [:input.input-lg.col-sm-12
           {:type        :text
            :value       (get-query)
@@ -35,11 +35,11 @@
 
 (defn add-criteria-button [on-click]
   [:div.form-group
-    [:button.btn.btn-block.add-criteria
-     {:on-click on-click}
-     [:div
-      [:i.fa.fa-plus.fa-2x.pull-left]
-      [:p "Add Criteria"]]]])
+   [:button.btn.btn-block.add-criteria
+    {:on-click on-click}
+    [:div
+     [:i.fa.fa-plus.fa-2x.pull-left]
+     [:p "Add Criteria"]]]])
 
 (defn search-button [on-click]
   [:div.form-group
