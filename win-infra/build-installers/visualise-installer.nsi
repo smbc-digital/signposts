@@ -15,6 +15,8 @@ Section
 	DetailPrint $1
 	File "..\files\winsw.exe"
 	File "..\files\visualise.jar"
+	File "..\files\bcpkix-jdk15on-1.56.jar"
+	File "..\files\bcprov-jdk15on-1.56.jar"
 	File "winsw.exe.config"
 	File "winsw.xml"
 	File /r "..\..\Program Files\Java\"

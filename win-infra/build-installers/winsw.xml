@@ -4,7 +4,7 @@
   <description>This service runs the Signposts visualiser app.</description>
   <workingdirectory>%BASE%\</workingdirectory>
   <executable>jdk1.8.0_121\bin\java.exe</executable>
-  <arguments>-jar visualise.jar</arguments>
+  <arguments>-cp * gov.stockport.sonar.visualise.server</arguments>
   <log mode="roll-by-size">
 	<sizeThreshold>10240</sizeThreshold>
 	<keepFiles>50</keepFiles>
