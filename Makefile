@@ -3,6 +3,7 @@ define green
 endef
 
 VISUALISE_JAR=visualise.jar
+INGEST_JAR=ingest-0.1.0-SNAPSHOT-standalone.jar
 FILES_LOC=win-infra/files/
 
 .PHONY: windows
@@ -17,7 +18,12 @@ rdp:
 .PHONY: files
 files: \
 	$(FILES_LOC)$(VISUALISE_JAR) \
+	$(FILES_LOC)$(INGEST_JAR) \
 	$(FILES_LOC)winsw.exe \
+
+$(FILES_LOC)$(INGEST_JAR):
+	cd ingest/; lein clean; lein uberjar
+	cp ingest/target/$(INGEST_JAR) $(FILES_LOC)$(INGEST_JAR)
 
 $(FILES_LOC)$(VISUALISE_JAR):
 	cd visualise/; lein clean; lein uberjar

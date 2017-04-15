@@ -14,13 +14,19 @@
    <Exec Command="C:\mapped-from-host\SignpostsElasticSearchSetup.exe /S"/>
   </Target>
 
-  <Target Name="build-installers" DependsOnTargets="install-build-deps">
+  <Target Name="build-ingest-installer" DependsOnTargets="install-build-deps">
+   <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
+       C:\mapped-from-host\build-installers\ingest-installer.nsi"/>
+   <Exec Command="C:\mapped-from-host\SignpostsIngestSetup.exe /S"/>
+  </Target>
+
+  <Target Name="build-visualise-installer" DependsOnTargets="install-build-deps">
    <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
        C:\mapped-from-host\build-installers\elasticsearch-installer.nsi"/>
    <Exec Command="C:\mapped-from-host\SignpostsVisualiseSetup.exe /S"/>
   </Target>
 
-  <Target DependsOnTargets="build-es-installer" Name="run">
+  <Target DependsOnTargets="build-ingest-installer" Name="run">
   </Target>
 
 </Project>
