@@ -10,6 +10,10 @@ windows: files
 	cd win-infra; vagrant up --provision
 	$(call green,"[Upped]")
 
+.PHONY: rdp
+rdp:
+	cd win-infra; vagrant rdp
+
 .PHONY: files
 files: \
 	$(FILES_LOC)$(VISUALISE_JAR) \

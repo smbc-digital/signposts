@@ -10,5 +10,8 @@ choco install elasticsearch -y
 choco install nsis -y
 choco install procexp -y
 choco install notepadplusplus -y
+choco install kibana -y
+choco install googlechrome -y
+choco install cmder -y
 
 
