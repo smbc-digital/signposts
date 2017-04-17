@@ -8,16 +8,22 @@
       <Exec Command="powershell C:\mapped-from-host\install-build-deps\install-build-deps.ps1"/>
   </Target>
 
-  <Target Name="build-es-installer" DependsOnTargets="install-build-deps">
+<Target Name="install-xpack" 
+        Condition="!Exists('C:\ProgramData\chocolatey\lib\elasticsearch\tools\elasticsearch-5.2.0\plugins\x-pack')"
+        DependsOnTargets="install-build-deps">
+   <Exec Command="bin\elasticsearch-plugin.bat install x-pack --batch"
+         WorkingDirectory="C:\ProgramData\chocolatey\lib\elasticsearch\tools\elasticsearch-5.2.0"
+   />
+  </Target>
+
+  <Target Name="build-es-installer" DependsOnTargets="install-build-deps;install-xpack">
    <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
        C:\mapped-from-host\build-installers\elasticsearch-installer.nsi"/>
-   <Exec Command="C:\mapped-from-host\SignpostsElasticSearchSetup.exe /S"/>
   </Target>
 
   <Target Name="build-ingest-installer" DependsOnTargets="install-build-deps">
    <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
        C:\mapped-from-host\build-installers\ingest-installer.nsi"/>
-   <Exec Command="C:\mapped-from-host\SignpostsIngestSetup.exe /S"/>
   </Target>
 
   <Target Name="build-visualise-installer" DependsOnTargets="install-build-deps">
@@ -26,7 +32,13 @@
    <Exec Command="C:\mapped-from-host\SignpostsVisualiseSetup.exe /S"/>
   </Target>
 
-  <Target DependsOnTargets="build-ingest-installer" Name="run">
+  <Target Name="execute-all-installers" DependsOnTargets="install-build-deps">
+   <Exec Command="C:\mapped-from-host\SignpostsIngestSetup.exe /S"/>
+   <Exec Command="C:\mapped-from-host\SignpostsVisualiseSetup.exe /S"/>
+   <Exec Command="C:\mapped-from-host\SignpostsElasticSearchSetup.exe /S"/>
+  </Target>
+
+  <Target DependsOnTargets="build-es-installer;build-visualise-installer;build-ingest-installer" Name="run">
   </Target>
 
 </Project>

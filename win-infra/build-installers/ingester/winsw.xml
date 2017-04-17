@@ -4,7 +4,7 @@
   <description>This service runs the Signposts data ingester.</description>
   <workingdirectory>%BASE%\</workingdirectory>
   <executable>jdk1.8.0_121\bin\java.exe</executable>
-  <arguments>-cp * gov.stockport.sonar.ingest.utils.bootstrap-demo</arguments>
+  <arguments>-jar ingest-0.1.0-SNAPSHOT-standalone.jar</arguments>
   <log mode="roll-by-size">
 	<sizeThreshold>10240</sizeThreshold>
 	<keepFiles>50</keepFiles>
