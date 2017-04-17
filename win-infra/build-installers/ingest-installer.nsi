@@ -17,6 +17,7 @@ Section
 	File "..\files\ingest-0.1.0-SNAPSHOT-standalone.jar"
 	File "winsw.exe.config"
 	File "ingester\winsw.xml"
+	File "ingester\bootstrap-demo.cmd"
 	File /r "..\..\Program Files\Java\"
 	DetailPrint "Starting Windows Serice for Signposts Ingester"
 	nsExec::Exec '"$INSTDIR\winsw.exe" install' $0
