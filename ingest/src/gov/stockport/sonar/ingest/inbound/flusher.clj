@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.ingest.inbound.flusher
   (:require [gov.stockport.sonar.ingest.inbound.events :as events]
             [gov.stockport.sonar.ingest.elastic.client :as elastic]
-            [gov.stockport.sonar.ingest.util.logging :refer [log]]
+            [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.elastic.event-formatter :as ef]))
 
 ; check events against the schema

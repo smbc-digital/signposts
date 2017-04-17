@@ -5,7 +5,7 @@
             [base64-clj.core :as b64]
             [cheshire.core :refer [generate-string]]
             [clojure.string :as str]
-            [gov.stockport.sonar.ingest.util.logging :refer [log]]
+            [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [me.raynes.fs :as fs]
             [clj-time.core :as t]
             [gov.stockport.sonar.ingest.clock :as clock]))

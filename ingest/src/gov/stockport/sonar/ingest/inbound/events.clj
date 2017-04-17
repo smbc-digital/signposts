@@ -1,8 +1,8 @@
 (ns gov.stockport.sonar.ingest.inbound.events
   (:require [clojure.spec :as s]
             [gov.stockport.sonar.spec.event-spec :as es]
-            [gov.stockport.sonar.ingest.util.dates :as dates]
-            [gov.stockport.sonar.ingest.util.postcode :as p]))
+            [gov.stockport.sonar.ingest.helper.dates :as dates]
+            [gov.stockport.sonar.ingest.helper.postcode :as p]))
 
 (defn- fix-timestamp [{{ts :timestamp} :data :as event}]
   (if (not (dates/iso-date-string? ts))

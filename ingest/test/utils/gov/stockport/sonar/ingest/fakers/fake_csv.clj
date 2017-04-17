@@ -1,6 +1,6 @@
 (ns gov.stockport.sonar.ingest.fakers.fake-csv
   (:require [clojure-csv.core :as csv]
-            [gov.stockport.sonar.ingest.util.dates :refer [date->iso-date-string]])
+            [gov.stockport.sonar.ingest.helper.dates :refer [date->iso-date-string]])
   (:import (org.joda.time DateTime)))
 
 (def coerce

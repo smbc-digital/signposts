@@ -1,6 +1,6 @@
-(ns gov.stockport.sonar.ingest.util.dates
+(ns gov.stockport.sonar.ingest.helper.dates
   (:require [clj-time.format :as f]
-            [gov.stockport.sonar.ingest.util.misc :refer [quietly]]))
+            [gov.stockport.sonar.ingest.helper.misc :refer [quietly]]))
 
 (def not-nil? (complement nil?))
 

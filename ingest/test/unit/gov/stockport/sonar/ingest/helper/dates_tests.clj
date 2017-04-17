@@ -1,8 +1,8 @@
-(ns gov.stockport.sonar.ingest.util.dates-tests
+(ns gov.stockport.sonar.ingest.helper.dates-tests
   (:require [midje.sweet :refer :all]
             [clj-time.core :as t]
             [clj-time.format :as f]
-            [gov.stockport.sonar.ingest.util.dates :as d]
+            [gov.stockport.sonar.ingest.helper.dates :as d]
             [midje.checking.core :as checking]))
 
 (def expected-date (t/date-time 1995 11 19))

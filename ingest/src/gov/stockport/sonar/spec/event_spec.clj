@@ -1,6 +1,6 @@
 (ns gov.stockport.sonar.spec.event-spec
   (:require [clojure.spec :as s]
-            [gov.stockport.sonar.ingest.util.dates :refer [date-string?]]))
+            [gov.stockport.sonar.ingest.helper.dates :refer [date-string?]]))
 
 (s/def ::event (s/keys :req [::event-source ::event-type ::timestamp]
                        :opt [::name ::dob]))

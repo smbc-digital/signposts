@@ -1,5 +1,5 @@
 (ns gov.stockport.sonar.ingest.inbound.event-buffer
-  (:require [gov.stockport.sonar.ingest.util.logging :refer [plog]]))
+  (:require [gov.stockport.sonar.ingest.helper.logging :refer [plog]]))
 
 ; empty buffer is reset and can be GC'd once flushed
 

@@ -1,6 +1,6 @@
-(ns gov.stockport.sonar.ingest.util.postcode-tests
+(ns gov.stockport.sonar.ingest.helper.postcode-tests
   (:require [midje.sweet :refer :all]
-            [gov.stockport.sonar.ingest.util.postcode :as postcode]))
+            [gov.stockport.sonar.ingest.helper.postcode :as postcode]))
 
 (fact "should handle nil postcodes"
       (postcode/extract nil) => nil)

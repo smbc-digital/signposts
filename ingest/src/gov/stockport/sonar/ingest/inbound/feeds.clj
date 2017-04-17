@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.ingest.inbound.feeds
   (:require [gov.stockport.sonar.ingest.inbound.files :as files]
             [gov.stockport.sonar.ingest.config :refer [!config]]
-            [gov.stockport.sonar.ingest.util.logging :refer [log]]
+            [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.inbound.csv :as csv]
             [pandect.algo.sha1 :refer :all]
             [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]

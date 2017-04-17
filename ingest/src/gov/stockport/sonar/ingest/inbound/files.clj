@@ -1,6 +1,6 @@
 (ns gov.stockport.sonar.ingest.inbound.files
   (:require [clojure.java.io :as io]
-            [gov.stockport.sonar.ingest.util.logging :refer [log]])
+            [gov.stockport.sonar.ingest.helper.logging :refer [log]])
   (:import (java.io File)))
 
 (defn mtime [^File file]

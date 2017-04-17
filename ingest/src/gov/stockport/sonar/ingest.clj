@@ -1,5 +1,5 @@
 (ns gov.stockport.sonar.ingest
-  (:require [gov.stockport.sonar.ingest.util.logging :refer [log]]
+  (:require [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.inbound.feeds :as feeds]
             [overtone.at-at :as atat])
