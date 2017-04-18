@@ -51,7 +51,7 @@
            (clj->js (-> options
                         (assoc :selection {:mode    "x"
                                            :shape   "round"
-                                           :minSize 1
+                                           :minSize 10
                                            }))))
 
     (.bind (js/jQuery ".flot-selected") "plotselected"
@@ -85,6 +85,7 @@
                                                     }))))]
     (if-let [{:keys [seriesIndex dataIndex]} (:point @!data)]
       (.highlight flot seriesIndex dataIndex))
+    
     (.one (js/jQuery ".flot-timeline") "plotclick"
           (fn [_ _ item]
             (touch-data-to-force-rebind-click-handler !data)
