@@ -25,7 +25,8 @@
                  [com.andrewmcveigh/cljs-time "0.4.0"]
                  [clj-http "2.3.0"]
                  [buddy "1.3.0"]
-                 [com.cemerick/url "0.1.1"]]
+                 [com.cemerick/url "0.1.1"]
+                 [com.taoensso/timbre "4.10.0"]]
 
   :plugins [[lein-ring "0.11.0"]
             [lein-environ "1.0.2"]
