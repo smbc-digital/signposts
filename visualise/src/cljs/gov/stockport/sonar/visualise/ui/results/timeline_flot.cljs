@@ -33,13 +33,12 @@
 (defn graph-placeholder-with-description [!timespan !data]
   [:div
    (let [{:keys [show-only-highlighted?]} @!data]
-      [:div
+      [:div.highlight-control
        [:i.fa.fa-2x.pull-left
         {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
-         :title    (str (if show-only-highlighted? "Hide" "Show") " all people on the graph")
          :on-click #(swap! !data people/toggle-show-only-highlighted)
          }]
-       [:p.info (if show-only-highlighted? "Show everyone" "Show only highlighted")]])
+       [:p.info (if show-only-highlighted? "Showing highlighted people" "Showing everyone")]])
 
    [:div.flot-selected {:style {:width "100%" :height 100}}]
 

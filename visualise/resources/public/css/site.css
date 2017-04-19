@@ -6037,3 +6037,9 @@ body {
     font-size: 20px;
     font-weight: 700;
     text-align: left; }
+
+div.highlight-control {
+  margin-left: 22px;
+  margin-top: 14px; }
+  div.highlight-control i {
+    margin-top: -4px; }

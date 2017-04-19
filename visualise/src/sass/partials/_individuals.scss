@@ -58,10 +58,6 @@
     border-color: $base-default;
   }
 
-  //&.blur {
-  //  background-color: $base-default;
-  //}
-
   &.red {
     @include card-color($base-red);
   }
