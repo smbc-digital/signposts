@@ -1,11 +1,30 @@
 body {
   background-color: #f3f7fa;
 }
+
 .stockport {
   background: $sp-dark-green;
 
   img {
     width: 100%;
+  }
+
+}
+
+div.busy {
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0.8;
+  background-color: gray;
+
+  .spinner {
+    margin-top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
 }
@@ -92,7 +111,7 @@ body {
   float: right;
   width: 50%;
   border-radius: 5px;
-  background-color:  #71c573;
+  background-color: #71c573;
   height: 100%;
   position: absolute;
   right: 0;
@@ -118,14 +137,14 @@ body {
 }
 
 .fa.fa-map-signs {
-  color:  #486573;
-  font-size: 36px;/* Approximation due to font substitution */
+  color: #486573;
+  font-size: 36px; /* Approximation due to font substitution */
   font-weight: 400;
   text-align: left;
 }
 
 .title {
-  color:  #486573;
+  color: #486573;
   font-size: 36px;
   font-weight: 400;
   letter-spacing: 4.8px;
@@ -133,7 +152,7 @@ body {
 }
 
 .results-title {
-  color:  #476575;
+  color: #476575;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 1.4px;
@@ -141,13 +160,13 @@ body {
 }
 
 .contact-label {
-  color:  #ffffff;
+  color: #ffffff;
   font-weight: 700;
   text-align: left;
 }
 
 .results-confirmation {
-  color:  #476575;
+  color: #476575;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 1.4px;

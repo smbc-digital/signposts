@@ -17,8 +17,15 @@
      [:div.column.container-timeline.col-sm-7
       [tr/results-tabs !data]]]))
 
+(defn search-in-progress []
+  (when (:search-in-progress @!app)
+    [:div.busy
+     [:div.spinner
+      [:i.fa.fa-spin.fa-refresh.fa-5x]]]))
+
 (defn home-page []
   [:div.container-fluid.header
+   [search-in-progress]
    [:div.row
     [:div.column.col-sm-2.stockport
      [:div.navbar-brand {:href "#"}
