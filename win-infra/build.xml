@@ -11,6 +11,9 @@
 <Target Name="install-xpack" 
         Condition="!Exists('C:\ProgramData\chocolatey\lib\elasticsearch\tools\elasticsearch-5.2.0\plugins\x-pack')"
         DependsOnTargets="install-build-deps">
+   <Exec Command="bin\kibana-plugin.bat install x-pack --batch"
+       WorkingDirectory="C:\ProgramData\chocolatey\lib\kibana\tools\kibana-5.2.1-windows-x86"
+   />
    <Exec Command="bin\elasticsearch-plugin.bat install x-pack --batch"
          WorkingDirectory="C:\ProgramData\chocolatey\lib\elasticsearch\tools\elasticsearch-5.2.0"
    />
