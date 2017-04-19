@@ -52,6 +52,8 @@
                 {k (p/new-stack (blurrer (get lm event-type) (count events)))})
               (group-by collision-key events)))))
 
+(def by-highlighted? (fn [[_ pdata]] (:highlighted? pdata)))
+
 (defn data-points [{:keys [people show-only-highlighted?] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)]
     (map
@@ -65,7 +67,7 @@
                            pop (:pop stack)]
                        [timestamp (pop)]))
                    data)})
-      people)))
+      (sort-by by-highlighted? people))))
 
 (defn selector-data-points [{{:keys [from-date to-date selected-from selected-to]} :timespan}]
   [{:points {:show false}

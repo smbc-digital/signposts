@@ -23,8 +23,7 @@
                                        :bottom 10
                                        :left   10}}
             :lines  {:show false}
-            :points {:radius    8
-                     :fillColor "rgba(255,255,255,0.8"}
+            :points {:radius 8}
             :legend {:show false}}))
 
 (defn fmt [timestamp]
@@ -33,12 +32,12 @@
 (defn graph-placeholder-with-description [!timespan !data]
   [:div
    (let [{:keys [show-only-highlighted?]} @!data]
-      [:div.highlight-control
-       [:i.fa.fa-2x.pull-left
-        {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
-         :on-click #(swap! !data people/toggle-show-only-highlighted)
-         }]
-       [:p.info (if show-only-highlighted? "Showing highlighted people" "Showing everyone")]])
+     [:div.highlight-control
+      [:i.fa.fa-2x.pull-left
+       {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
+        :on-click #(swap! !data people/toggle-show-only-highlighted)
+        }]
+      [:p.info (if show-only-highlighted? "Showing highlighted people" "Showing everyone")]])
 
    [:div.flot-selected {:style {:width "100%" :height 100}}]
 
