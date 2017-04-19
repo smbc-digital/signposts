@@ -1,5 +1,7 @@
 (ns gov.stockport.sonar.visualise.data.people-tests
   (:require [cljs.test :refer-macros [deftest is testing]]
+            [gov.stockport.sonar.visualise.util.stack :as s]
+            [gov.stockport.sonar.visualise.data.colours :as c]
             [gov.stockport.sonar.visualise.data.people :as people]))
 
 (deftest people-tests
@@ -65,27 +67,22 @@
 
           (is (contains? result :color-stack))
           (is (= (dissoc result :color-stack :result)
-                 {:all-displayed? true
-                  :all-collapsed? false
-                  :people         {{:name "N1"} {:data       [{:name "N1" :score 1}
-                                                              {:name "N1" :score 4}]
-                                                 :score      4
-                                                 :rank       1
-                                                 :displayed? true
-                                                 :collapsed? false
-                                                 :color      :red}
-                                   {:name "N2"} {:data       [{:name "N2" :score 3}]
-                                                 :score      3
-                                                 :rank       2
-                                                 :displayed? true
-                                                 :collapsed? false
-                                                 :color      :yellow}
-                                   {:name "N3"} {:data       [{:name "N3" :score 2}]
-                                                 :score      2
-                                                 :rank       3
-                                                 :displayed? true
-                                                 :collapsed? false
-                                                 :color      :green}}}))))))
+                 {:show-only-highlighted? false
+                  :all-collapsed?         false
+                  :highlighting-allowed?  true
+                  :people                 {{:name "N1"} {:data       [{:name "N1" :score 1}
+                                                                      {:name "N1" :score 4}]
+                                                         :score      4
+                                                         :rank       1
+                                                         :collapsed? false}
+                                           {:name "N2"} {:data       [{:name "N2" :score 3}]
+                                                         :score      3
+                                                         :rank       2
+                                                         :collapsed? false}
+                                           {:name "N3"} {:data       [{:name "N3" :score 2}]
+                                                         :score      2
+                                                         :rank       3
+                                                         :collapsed? false}}}))))))
 
   (testing "retrieving people"
 
@@ -106,160 +103,173 @@
                                           {:name "N3"} {:data [{:id 4}]}}})
              [{:id 1} {:id 2} {:id 3} {:id 4}]))))
 
-  (testing "showing and hiding people"
+  (testing "showing and hiding highlighted people"
 
-    (testing "master-switch can be toggled to show everyone"
+    (is (= (-> (people/toggle-show-only-highlighted {:show-only-highlighted? false})
+               (dissoc :color-stack))
 
-      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:displayed? true}
-                                                              {:name "B"} {:displayed? true}
-                                                              {:name "C"} {:displayed? false}}
-                                             :all-displayed? false})
+           {:show-only-highlighted? true}))
+
+    (is (= (-> (people/toggle-show-only-highlighted {:show-only-highlighted? true})
+               (dissoc :color-stack))
+
+           {:show-only-highlighted? false})))
+
+  (testing "master-switch can be toggled to collapse everyone"
+
+    (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
+                                                             {:name "B"} {:collapsed? true}
+                                                             {:name "C"} {:collapsed? false}}
+                                            :all-collapsed? false})
+               (dissoc :color-stack))
+
+           {:people         {{:name "A"} {:collapsed? true}
+                             {:name "B"} {:collapsed? true}
+                             {:name "C"} {:collapsed? true}}
+            :all-collapsed? true})))
+
+
+  (testing "master-switch can be toggled to expand everyone"
+
+    (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
+                                                             {:name "B"} {:collapsed? true}
+                                                             {:name "C"} {:collapsed? false}}
+                                            :all-collapsed? true})
+               (dissoc :color-stack))
+
+           {:people         {{:name "A"} {:collapsed? false}
+                             {:name "B"} {:collapsed? false}
+                             {:name "C"} {:collapsed? false}}
+            :all-collapsed? false})))
+
+  (testing "highlights and colors"
+
+
+    (testing "you can only highlight people when colours are available"
+
+      (is (= (-> {:people      {{:name "A"} {}
+                                {:name "B"} {}
+                                {:name "C"} {}}
+                  :color-stack (s/new-stack [:red :green])}
+                 (people/toggle-highlight-person {:name "B"})
+                 (people/toggle-highlight-person {:name "A"})
                  (dissoc :color-stack))
 
-             {:people         {{:name "A"} {:displayed? true :color :red}
-                               {:name "B"} {:displayed? true :color :yellow}
-                               {:name "C"} {:displayed? true :color :green}}
-              :all-displayed? true})))
+             {:people                {{:name "A"} {:highlighted? true
+                                                   :color        :green}
+                                      {:name "B"} {:highlighted? true
+                                                   :color        :red}
+                                      {:name "C"} {}}
+              :highlighting-allowed? false
+              })
+          )
 
-    (testing "master-switch can be toggled to show no-one"
+      )
 
-      (is (= (-> (people/toggle-display-all {:people         {{:name "A"} {:displayed? true}
-                                                              {:name "B"} {:displayed? true}
-                                                              {:name "C"} {:displayed? false}}
-                                             :all-displayed? true})
-                 (dissoc :color-stack))
+    )
 
-             {:people         {{:name "A"} {:displayed? false :color :black}
-                               {:name "B"} {:displayed? false :color :black}
-                               {:name "C"} {:displayed? false :color :black}}
-              :all-displayed? false})))
+  ;(testing "has an effect on color"
+  ;
+  ;  (testing "individuals can be hidden"
+  ;
+  ;    (let [data (people/toggle-show-only-highlighted {:people {{:name "A"} {}
+  ;                                                              {:name "B"} {}
+  ;                                                              {:name "C"} {}}})]
+  ;
+  ;      (is (= (-> data
+  ;                 (people/toggle-display-person {:name "A"})
+  ;                 (dissoc :color-stack))
+  ;
+  ;             {:people                 {{:name "A"} {:highlighted? false :color :black}
+  ;                                       {:name "B"} {:highlighted? true :color :yellow}
+  ;                                       {:name "C"} {:highlighted? true :color :green}}
+  ;              :show-only-highlighted? true}))))
+  ;
+  ;  (testing "hiding and showing can move color around"
+  ;
+  ;    (let [data (people/toggle-show-only-highlighted {:people {{:name "A"} {}
+  ;                                                              {:name "B"} {}
+  ;                                                              {:name "C"} {}}})]
+  ;
+  ;      (is (= (-> data
+  ;                 (people/toggle-display-person {:name "A"})
+  ;                 (people/toggle-display-person {:name "C"})
+  ;                 (people/toggle-display-person {:name "A"})
+  ;                 (dissoc :color-stack))
+  ;
+  ;             {:people                 {{:name "A"} {:highlighted? true :color :green}
+  ;                                       {:name "B"} {:highlighted? true :color :yellow}
+  ;                                       {:name "C"} {:highlighted? false :color :black}}
+  ;              :show-only-highlighted? true}))))
+  ;
+  ;  (testing "colours can be added when there are more than 6 results"
+  ;
+  ;    (let [data (people/toggle-show-only-highlighted {:people                 {{:name "A"} {}
+  ;                                                                              {:name "B"} {}
+  ;                                                                              {:name "C"} {}
+  ;                                                                              {:name "D"} {}
+  ;                                                                              {:name "E"} {}
+  ;                                                                              {:name "F"} {}
+  ;                                                                              {:name "G"} {}}
+  ;                                                     :show-only-highlighted? true})]
+  ;
+  ;      (is (= (-> data
+  ;                 (people/toggle-display-person {:name "B"})
+  ;                 (people/toggle-display-person {:name "D"})
+  ;                 (people/toggle-display-person {:name "G"})
+  ;                 (dissoc :color-stack))
+  ;
+  ;             {:people                 {{:name "A"} {:highlighted? false :color :black}
+  ;                                       {:name "B"} {:highlighted? true :color :red}
+  ;                                       {:name "C"} {:highlighted? false :color :black}
+  ;                                       {:name "D"} {:highlighted? true :color :yellow}
+  ;                                       {:name "E"} {:highlighted? false :color :black}
+  ;                                       {:name "F"} {:highlighted? false :color :black}
+  ;                                       {:name "G"} {:highlighted? true :color :green}}
+  ;              :show-only-highlighted? false}))))
+  ;
+  ;  )
+  )
 
-    (testing "master-switch can be toggled to collapse everyone"
+(testing "locking behaviour"
 
-      (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
-                                                               {:name "B"} {:collapsed? true}
-                                                               {:name "C"} {:collapsed? false}}
-                                              :all-collapsed? false})
-                 (dissoc :color-stack))
+  (let [data {:people {{:name "N1"} {:data    [{:name "N1" :score 1 :id 1}
+                                               {:name "N1" :score 4 :id 2}]
+                                     :locked? true}
+                       {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
+                       {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
+                                     :locked? true}}
 
-             {:people         {{:name "A"} {:collapsed? true}
-                               {:name "B"} {:collapsed? true}
-                               {:name "C"} {:collapsed? true}}
-              :all-collapsed? true})))
+              :result [{:name "N1" :score 5 :id 5}          ; addition to locked items
+                       {:name "N2" :score 6 :id 6}
+                       {:name "N4" :score 7 :id 7}
+                       {:name "N1" :score 1 :id 1}]}]       ; duplicate of locked item
 
+    (testing "we can extract the locked events"
 
-    (testing "master-switch can be toggled to expand everyone"
+      (is (= (people/locked-events data)
 
-      (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
-                                                               {:name "B"} {:collapsed? true}
-                                                               {:name "C"} {:collapsed? false}}
-                                              :all-collapsed? true})
-                 (dissoc :color-stack))
+             [{:name "N1" :score 1 :id 1}
+              {:name "N1" :score 4 :id 2}
+              {:name "N3" :score 2 :id 4}])))
 
-             {:people         {{:name "A"} {:collapsed? false}
-                               {:name "B"} {:collapsed? false}
-                               {:name "C"} {:collapsed? false}}
-              :all-collapsed? false})))
+    (testing "we can extract the set of locked keys"
 
-    (testing "has an effect on color"
+      (is (= (people/locked-pkeys data)
+             #{{:name "N1"}
+               {:name "N3"}})))
 
-      (testing "individuals can be hidden"
+    (testing "when locked people already exist they are retained"
 
-        (let [data (people/toggle-display-all {:people {{:name "A"} {}
-                                                        {:name "B"} {}
-                                                        {:name "C"} {}}})]
+      (let [result (:people (people/from-data data))]
 
-          (is (= (-> data
-                     (people/toggle-display-person {:name "A"})
-                     (dissoc :color-stack))
+        (is (= (select-keys (get result {:name "N1"}) [:data :locked?])
+               {:data [{:name "N1" :score 1 :id 1}
+                       {:name "N1" :score 4 :id 2}
+                       {:name "N1" :score 5 :id 5}]}))
 
-                 {:people         {{:name "A"} {:displayed? false :color :black}
-                                   {:name "B"} {:displayed? true :color :yellow}
-                                   {:name "C"} {:displayed? true :color :green}}
-                  :all-displayed? true}))))
+        (is (= (select-keys (get result {:name "N2"}) [:data]) {:data [{:name "N2" :score 6 :id 6}]}))
 
-      (testing "hiding and showing can move color around"
+        (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
 
-        (let [data (people/toggle-display-all {:people {{:name "A"} {}
-                                                        {:name "B"} {}
-                                                        {:name "C"} {}}})]
-
-          (is (= (-> data
-                     (people/toggle-display-person {:name "A"})
-                     (people/toggle-display-person {:name "C"})
-                     (people/toggle-display-person {:name "A"})
-                     (dissoc :color-stack))
-
-                 {:people         {{:name "A"} {:displayed? true :color :green}
-                                   {:name "B"} {:displayed? true :color :yellow}
-                                   {:name "C"} {:displayed? false :color :black}}
-                  :all-displayed? true}))))
-
-      (testing "colours can be added when there are more than 6 results"
-
-        (let [data (people/toggle-display-all {:people         {{:name "A"} {}
-                                                                {:name "B"} {}
-                                                                {:name "C"} {}
-                                                                {:name "D"} {}
-                                                                {:name "E"} {}
-                                                                {:name "F"} {}
-                                                                {:name "G"} {}}
-                                               :all-displayed? true})]
-
-          (is (= (-> data
-                     (people/toggle-display-person {:name "B"})
-                     (people/toggle-display-person {:name "D"})
-                     (people/toggle-display-person {:name "G"})
-                     (dissoc :color-stack))
-
-                 {:people         {{:name "A"} {:displayed? false :color :black}
-                                   {:name "B"} {:displayed? true :color :red}
-                                   {:name "C"} {:displayed? false :color :black}
-                                   {:name "D"} {:displayed? true :color :yellow}
-                                   {:name "E"} {:displayed? false :color :black}
-                                   {:name "F"} {:displayed? false :color :black}
-                                   {:name "G"} {:displayed? true :color :green}}
-                  :all-displayed? false}))))))
-
-  (testing "locking behaviour"
-
-    (let [data {:people {{:name "N1"} {:data    [{:name "N1" :score 1 :id 1}
-                                                 {:name "N1" :score 4 :id 2}]
-                                       :locked? true}
-                         {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
-                         {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
-                                       :locked? true}}
-
-                :result [{:name "N1" :score 5 :id 5}        ; addition to locked items
-                         {:name "N2" :score 6 :id 6}
-                         {:name "N4" :score 7 :id 7}
-                         {:name "N1" :score 1 :id 1}]}]     ; duplicate of locked item
-
-      (testing "we can extract the locked events"
-
-        (is (= (people/locked-events data)
-
-               [{:name "N1" :score 1 :id 1}
-                {:name "N1" :score 4 :id 2}
-                {:name "N3" :score 2 :id 4}])))
-
-      (testing "we can extract the set of locked keys"
-
-        (is (= (people/locked-pkeys data)
-               #{{:name "N1"}
-                 {:name "N3"}})))
-
-      (testing "when locked people already exist they are retained"
-
-        (let [result (:people (people/from-data data))]
-
-          (is (= (select-keys (get result {:name "N1"}) [:data :locked?])
-                 {:data    [{:name "N1" :score 1 :id 1}
-                            {:name "N1" :score 4 :id 2}
-                            {:name "N1" :score 5 :id 5}]}))
-
-          (is (= (select-keys (get result {:name "N2"}) [:data]) {:data [{:name "N2" :score 6 :id 6}]}))
-
-          (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
-
-          (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]})))))))
+        (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]}))))))

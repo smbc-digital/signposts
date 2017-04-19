@@ -1,6 +1,6 @@
 (ns gov.stockport.sonar.visualise.data.people
   (:require [gov.stockport.sonar.visualise.data.colours :as c]
-            [gov.stockport.sonar.visualise.util.popper :as popper]
+            [gov.stockport.sonar.visualise.util.stack :as s]
             [gov.stockport.sonar.visualise.data.merge :as merge]
             [clojure.string :as str]))
 
@@ -60,45 +60,34 @@
                               {k (assoc v :collapsed? collapsing-all?)})
                             people)))))))
 
+(defn toggle-show-only-highlighted [{:keys [show-only-highlighted?] :as data}]
+  (assoc data :show-only-highlighted? (not show-only-highlighted?)))
 
-(defn toggle-display-all [{:keys [all-displayed? people] :as data}]
-  (let [turning-all-on? (not all-displayed?)
-        sufficient-colors? (>= (count c/colour-priority) (count people))
-        available-colors (if (or (not turning-all-on?) (and turning-all-on? sufficient-colors?)) c/colour-priority [])
-        color-stack (popper/poppable available-colors :value-when-empty :black)]
+(defn toggle-highlight-person [{:keys [people color-stack] :as data} pkey]
+  (let [{:keys [pop push is-empty?]} color-stack
+        person (get people pkey)
+        turning-on? (not (:highlighted? person))]
+    (-> (if turning-on?
+          (update-in data [:people pkey] #(-> %
+                                              (assoc :highlighted? true)
+                                              (assoc :color (pop))))
+          (do
+            (push (:color person))
+            (update-in data [:people pkey] #(-> %
+                                                (assoc :highlighted? false)
+                                                (assoc :color :black)))))
+        (assoc :highlighting-allowed? (not (is-empty?))))))
+
+
+  (defn from-data [data]
     (-> data
-        (assoc :all-displayed? turning-all-on?)
-        (assoc :color-stack color-stack)
-        (update :people
-                (fn [people]
-                  (reduce merge {}
-                          (map
-                            (fn [[k v]]
-                              (let [next-color (if turning-all-on? (color-stack) :black)]
-                                {k (assoc v :displayed? turning-all-on? :color next-color)}))
-                            people)))))))
+        (by-people)
+        (with-max-score)
+        (with-rank)
+        (assoc :all-collapsed? true :show-only-highlighted? true :highlighting-allowed? true)
+        (toggle-show-only-highlighted)
+        (toggle-collapse-all)
+        (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))))
 
-(defn toggle-display-person [{:keys [people color-stack] :as data} pkey]
-  (let [person (get people pkey)
-        turning-on? (not (:displayed? person))]
-    (if turning-on?
-      (update-in data [:people pkey] #(-> %
-                                          (assoc :displayed? true)
-                                          (assoc :color (color-stack))))
-      (do
-        (color-stack (:color person))
-        (update-in data [:people pkey] #(-> %
-                                            (assoc :displayed? false)
-                                            (assoc :color :black)))))))
-
-(defn from-data [data]
-  (-> data
-      (by-people)
-      (with-max-score)
-      (with-rank)
-      (assoc :all-collapsed? true :all-displayed? false)
-      (toggle-display-all)
-      (toggle-collapse-all)))
-
-(defn by-rank [{:keys [people]}]
-  (sort-by (fn [[_ {:keys [rank]}]] rank) people))
+  (defn by-rank [{:keys [people]}]
+    (sort-by (fn [[_ {:keys [rank]}]] rank) people))

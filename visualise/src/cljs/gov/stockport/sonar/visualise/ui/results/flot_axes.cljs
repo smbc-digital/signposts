@@ -3,7 +3,7 @@
             [gov.stockport.sonar.visualise.data.colours :refer [colour-map]]
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.util.blur :as b]
-            [gov.stockport.sonar.visualise.util.popper :as p]))
+            [gov.stockport.sonar.visualise.util.stack :as p]))
 
 (defn x-axis [{{:keys [selected-from selected-to]} :timespan}]
   {:mode        "time"
@@ -49,20 +49,21 @@
     (reduce merge {}
             (map
               (fn [[{:keys [event-type] :as k} events]]
-                {k (p/poppable (blurrer (get lm event-type) (count events)))})
+                {k (p/new-stack (blurrer (get lm event-type) (count events)))})
               (group-by collision-key events)))))
 
-(defn data-points [{:keys [people] :as data}]
+(defn data-points [{:keys [people show-only-highlighted?] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)]
     (map
-      (fn [[_ {:keys [color displayed? data]}]]
-        {:points {:show displayed?}
-         :color  (get colour-map color)
+      (fn [[_ {:keys [color highlighted? data]}]]
+        {:points {:show (or (not show-only-highlighted?) highlighted?)}
+         :color  (get colour-map (or color :black))
          :data   (map
                    (fn [{:keys [timestamp] :as event}]
                      (let [ekey (collision-key event)
-                           next-val-fn (get ydp ekey)]
-                       [timestamp (next-val-fn)]))
+                           stack (get ydp ekey)
+                           pop (:pop stack)]
+                       [timestamp (pop)]))
                    data)})
       people)))
 

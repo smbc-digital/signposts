@@ -3,7 +3,7 @@
             [gov.stockport.sonar.auth.crypto :as crypto])
   (:import (java.util UUID)))
 
-  (def max-session-idle-minutes 5)
+(def max-session-idle-minutes 15)
 
 (def store (atom {}))
 

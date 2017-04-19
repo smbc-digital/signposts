@@ -5968,9 +5968,6 @@ body {
   .cards > .fixed-height > .panel.panel-default,
   .cards > .panel.panel-default {
     border-color: #dddddd; }
-  .cards > .fixed-height > .panel.blur,
-  .cards > .panel.blur {
-    background-color: #dddddd; }
   .cards > .fixed-height > .panel.red .panel,
   .cards > .panel.red .panel {
     border-color: #f36624; }

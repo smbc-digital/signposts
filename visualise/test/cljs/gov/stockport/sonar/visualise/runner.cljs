@@ -12,7 +12,7 @@
             [gov.stockport.sonar.visualise.data.timespan-tests]
             [gov.stockport.sonar.visualise.data.people-tests]
             [gov.stockport.sonar.visualise.util.blur-tests]
-            [gov.stockport.sonar.visualise.util.popper-tests]))
+            [gov.stockport.sonar.visualise.util.stack-tests]))
 
 ; run the tests from the command line with
 ; lein doo phantom test [auto|once]
@@ -24,6 +24,6 @@
 (doo-all-tests #"gov.stockport.sonar.visualise.*")
 
 ; use the following if you want to focus on a single test during development
-;(doo-tests 'gov.stockport.sonar.visualise.util.popper-tests)
+;(doo-tests 'gov.stockport.sonar.visualise.util.stack-tests)
 
 ; see https://github.com/bensu/doo for more information
