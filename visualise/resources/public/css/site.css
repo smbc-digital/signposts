@@ -5821,6 +5821,20 @@ body {
   .stockport img {
     width: 100%; }
 
+div.busy {
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0.8;
+  background-color: gray; }
+  div.busy .spinner {
+    margin-top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+
 .signpost {
   margin-top: 6px; }
 
@@ -5968,9 +5982,6 @@ body {
   .cards > .fixed-height > .panel.panel-default,
   .cards > .panel.panel-default {
     border-color: #dddddd; }
-  .cards > .fixed-height > .panel.blur,
-  .cards > .panel.blur {
-    background-color: #dddddd; }
   .cards > .fixed-height > .panel.red .panel,
   .cards > .panel.red .panel {
     border-color: #f36624; }
@@ -6040,3 +6051,9 @@ body {
     font-size: 20px;
     font-weight: 700;
     text-align: left; }
+
+div.highlight-control {
+  margin-left: 22px;
+  margin-top: 14px; }
+  div.highlight-control i {
+    margin-top: -4px; }

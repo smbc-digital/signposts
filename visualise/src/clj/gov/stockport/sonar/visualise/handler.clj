@@ -9,7 +9,10 @@
             [gov.stockport.sonar.esproxy.proxy :as proxy]
             [gov.stockport.sonar.auth.login-handler :as login]
             [buddy.auth :refer [authenticated?]]
-            [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]]))
+            [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]])
+  (:import (java.util UUID)))
+
+(defonce version (UUID/randomUUID))
 
 (def mount-target
   [:div#app
@@ -20,7 +23,7 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name    "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-css (if (env :dev) "/css/site.css" "/css/site.min.css")
+   (include-css (str (if (env :dev) "/css/site.css" "/css/site.min.css") "?v=" version)
                 "/css/font-awesome.min.css")])
 
 (defn html [content]
@@ -34,7 +37,7 @@
       (head)
       [:body
        mount-target
-       (include-js "/js/app.js")])))
+       (include-js (str "/js/app.js?v=" version))])))
 
 (defn cards-page []
   (html

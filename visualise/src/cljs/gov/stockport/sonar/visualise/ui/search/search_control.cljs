@@ -49,12 +49,17 @@
      [:i.fa.fa-search.fa-2x.pull-left]
      [:p "Search"]]]])
 
-(defn search-control [!state query-handler]
+(defn search-control [!app query-handler]
   (let [control-id (gensym "search-control-")]
-    (state/init-search-control !state control-id)
+    (state/init-search-control !app control-id)
     (fn []
       `[:div.search-control.panel-body
 
-        ~@(search-criteria !state control-id)
-        ~[add-criteria-button #(state/add-search-criteria !state control-id)]
-        ~[search-button #(search (query/extract-query (state/get-all-search-criteria !state control-id)) query-handler)]])))
+        ~@(search-criteria !app control-id)
+        ~[add-criteria-button #(state/add-search-criteria !app control-id)]
+        ~[search-button (fn []
+                          (swap! !app assoc :search-in-progress true)
+                          (search (query/extract-query (state/get-all-search-criteria !app control-id))
+                                  (fn [results]
+                                    (query-handler results)
+                                    (swap! !app assoc :search-in-progress false))))]])))

@@ -7,6 +7,7 @@
             [cljs-time.coerce :as tc]
             [gov.stockport.sonar.visualise.ui.results.selected-event :as se]
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]
+            [gov.stockport.sonar.visualise.data.people :as people]
             [cljs-time.core :as t]
             [cljs-time.format :as f]
             [reagent.core :as r]))
@@ -22,16 +23,24 @@
                                        :bottom 10
                                        :left   10}}
             :lines  {:show false}
-            :points {:radius    8
-                     :fillColor "rgba(255,255,255,0.8"}
+            :points {:radius 8}
             :legend {:show false}}))
 
 (defn fmt [timestamp]
   (f/unparse (f/formatter "d MMMM YYYY") timestamp))
 
-(defn graph-placeholder-with-description [!timespan]
+(defn graph-placeholder-with-description [!timespan !data]
   [:div
+   (let [{:keys [show-only-highlighted?]} @!data]
+     [:div.highlight-control
+      [:i.fa.fa-2x.pull-left
+       {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
+        :on-click #(swap! !data people/toggle-show-only-highlighted)
+        }]
+      [:p.info (if show-only-highlighted? "Showing highlighted people" "Showing everyone")]])
+
    [:div.flot-selected {:style {:width "100%" :height 100}}]
+
    (let [{:keys [:selected-from :selected-to]} @!timespan]
      [:div
       [:center
@@ -51,7 +60,7 @@
            (clj->js (-> options
                         (assoc :selection {:mode    "x"
                                            :shape   "round"
-                                           :minSize 1
+                                           :minSize 10
                                            }))))
 
     (.bind (js/jQuery ".flot-selected") "plotselected"
@@ -85,6 +94,7 @@
                                                     }))))]
     (if-let [{:keys [seriesIndex dataIndex]} (:point @!data)]
       (.highlight flot seriesIndex dataIndex))
+
     (.one (js/jQuery ".flot-timeline") "plotclick"
           (fn [_ _ item]
             (touch-data-to-force-rebind-click-handler !data)
@@ -123,6 +133,6 @@
     (let [results (:result @!data)]
       (when (not-empty results)
         [:div
-         [graph-placeholder-with-description (r/cursor !data [:timespan])]
+         [graph-placeholder-with-description (r/cursor !data [:timespan]) !data]
          [flot-component !data @!data]
          [se/selected-event !data]]))))

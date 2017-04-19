@@ -19,4 +19,4 @@
    :aqua   "#01a79d"
    :blue   "#2e3292"
    :purple "#91278e"
-   :black  "#000000"})
+   :black  "rgba(0,0,0,0.4)"})
