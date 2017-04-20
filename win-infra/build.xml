@@ -11,7 +11,7 @@
 <Target Name="install-xpack" 
         Condition="!Exists('C:\ProgramData\chocolatey\lib\elasticsearch\tools\elasticsearch-5.2.0\plugins\x-pack')"
         DependsOnTargets="install-build-deps">
-   <Exec Command="bin\kibana-plugin.bat install x-pack --batch"
+   <Exec Command="bin\kibana-plugin.bat install x-pack"
        WorkingDirectory="C:\ProgramData\chocolatey\lib\kibana\tools\kibana-5.2.1-windows-x86"
    />
    <Exec Command="bin\elasticsearch-plugin.bat install x-pack --batch"
@@ -31,8 +31,7 @@
 
   <Target Name="build-visualise-installer" DependsOnTargets="install-build-deps">
    <Exec Command="&quot;C:\Program Files (x86)\NSIS\makensis&quot; ^
-       C:\mapped-from-host\build-installers\elasticsearch-installer.nsi"/>
-   <Exec Command="C:\mapped-from-host\SignpostsVisualiseSetup.exe /S"/>
+       C:\mapped-from-host\build-installers\visualise-installer.nsi"/>
   </Target>
 
   <Target Name="execute-all-installers" DependsOnTargets="install-build-deps">
