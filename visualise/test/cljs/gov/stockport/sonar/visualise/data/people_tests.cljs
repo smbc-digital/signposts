@@ -229,7 +229,21 @@
   ;              :show-only-highlighted? false}))))
   ;
   ;  )
-  )
+
+  (testing "printing a summary of results"
+    (testing "multiple events from multiple people"
+      (let [data {:people {{:name "N1"} {:data [{:name "N1" :score 1 :id 1}
+                                                {:name "N1" :score 4 :id 2}]}
+                           {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
+                           {:name "N3"} {:data [{:name "N3" :score 2 :id 4}]}}
+                  :total  4}]
+        (is (= (people/results-summary data)
+               "Your search returned 4 events from 3 people"))))
+    (testing "single event from 1 person"
+      (let [data {:people {{:name "N1"} {:data [{:name "N1" :score 1 :id 1}]}}
+                  :total  1}]
+        (is (= (people/results-summary data)
+               "Your search returned 1 event from 1 person"))))))
 
 (testing "locking behaviour"
 
@@ -273,3 +287,5 @@
         (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
 
         (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]}))))))
+
+

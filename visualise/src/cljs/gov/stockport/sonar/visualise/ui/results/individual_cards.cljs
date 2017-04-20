@@ -25,8 +25,8 @@
           highlighting-allowed? (:highlighting-allowed? @!data)]
       (when (not-empty people)
         [:div.cards
+         [:p (people/results-summary @!data)]
          [:p "You can select up to 6 individuals to highlight"]
-
          [:div.fixed-height
           (map
             (fn [[{:keys [name dob address] :as pkey} {:keys [color highlighted? collapsed? locked?]}]]

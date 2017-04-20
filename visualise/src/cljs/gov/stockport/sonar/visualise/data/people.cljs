@@ -79,15 +79,23 @@
         (assoc :highlighting-allowed? (not (is-empty?))))))
 
 
-  (defn from-data [data]
-    (-> data
-        (by-people)
-        (with-max-score)
-        (with-rank)
-        (assoc :all-collapsed? true :show-only-highlighted? true :highlighting-allowed? true)
-        (toggle-show-only-highlighted)
-        (toggle-collapse-all)
-        (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))))
+(defn from-data [data]
+  (-> data
+      (by-people)
+      (with-max-score)
+      (with-rank)
+      (assoc :all-collapsed? true :show-only-highlighted? true :highlighting-allowed? true)
+      (toggle-show-only-highlighted)
+      (toggle-collapse-all)
+      (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))))
 
-  (defn by-rank [{:keys [people]}]
-    (sort-by (fn [[_ {:keys [rank]}]] rank) people))
+(defn by-rank [{:keys [people]}]
+  (sort-by (fn [[_ {:keys [rank]}]] rank) people))
+
+(defn results-summary [data]
+  (defn num-people-summary [data]
+    (let [num-people (count (:people data))]
+      (str num-people (if (> num-people 1) " people" " person"))))
+  (defn num-events-summary [data]
+    (str (:total data) " event" (if (> (:total data) 1) "s")))
+  (str "Your search returned " (num-events-summary data) " from " (num-people-summary data)))
