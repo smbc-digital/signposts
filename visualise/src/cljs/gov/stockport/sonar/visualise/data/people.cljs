@@ -30,8 +30,8 @@
                            (group-by
                              (fn [m] (select-keys m group-keys))
                              ;result
-                             (merge/merge-events (locked-events data) result)
-                             )))))
+                             (merge/merge-events (locked-events data) result))))))
+
 
 (defn with-max-score [{:keys [people] :as data}]
   (assoc data :people
