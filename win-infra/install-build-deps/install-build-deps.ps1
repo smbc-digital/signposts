@@ -1,6 +1,10 @@
 ######################################################
 # Install deps to do build
-######################################################
+#################################################
+
+# reload env in case choco has just been installed
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
 choco install jdk8 -y
 choco install elasticsearch -y
 choco install nsis -y
