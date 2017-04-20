@@ -58,7 +58,7 @@
   (let [ydp (y-data-points-avoiding-collisions data)]
     (map
       (fn [[_ {:keys [color highlighted? data]}]]
-        {:points {:show (or (not show-only-highlighted?) highlighted?)}
+        {:points {:fill 0.6 :fillColor false :show (or (not show-only-highlighted?) highlighted?)}
          :color  (get colour-map (or color :black))
          :data   (map
                    (fn [{:keys [timestamp] :as event}]
