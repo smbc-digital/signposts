@@ -37,7 +37,7 @@
        {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
         :on-click #(swap! !data people/toggle-show-only-highlighted)
         }]
-      [:p.info (if show-only-highlighted? "Click to show everyone" "Click to show highlighted people only")]])
+      [:p.info "Show highlighted individuals only"]])
 
    [:div.flot-selected {:style {:width "100%" :height 100}}]
 
