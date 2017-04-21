@@ -45,7 +45,7 @@
 (defn- y-data-points-avoiding-collisions [data]
   (let [events (people/all-events data)
         lm (label-map data)
-        blurrer (b/blurrer 0.1)]
+        blurrer (b/blurrer 0.1 0.4)]
     (reduce merge {}
             (map
               (fn [[{:keys [event-type] :as k} events]]
