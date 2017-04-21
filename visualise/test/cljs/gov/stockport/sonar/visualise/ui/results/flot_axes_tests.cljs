@@ -13,18 +13,18 @@
 (def one-person {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
                                                       {:timestamp 4 :event-type :caution}]
                                        :color        :red
-                                       :highlighted? true}}})
+                                       :highlighted? false}}})
 
 (def two-people {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
                                                       {:timestamp 4 :event-type :caution}]
                                        :rank         1
                                        :color        :red
-                                       :highlighted? true}
+                                       :highlighted? false}
                           {:name "B"} {:data         [{:timestamp 4 :event-type :zoology}
                                                       {:timestamp 1 :event-type :caution}]
                                        :rank         2
                                        :color        :blue
-                                       :highlighted? true}}})
+                                       :highlighted? false}}})
 
 (def two-people-one-highlighted {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
                                                                       {:timestamp 4 :event-type :caution}]
@@ -50,12 +50,12 @@
                                                           {:timestamp 4 :event-type :caution}]
                                            :rank         1
                                            :color        :red
-                                           :highlighted? true}
+                                           :highlighted? false}
                               {:name "B"} {:data         [{:timestamp 1 :event-type :asbo}
                                                           {:timestamp 4 :event-type :caution}]
                                            :rank         2
                                            :color        :blue
-                                           :highlighted? true}}})
+                                           :highlighted? false}}})
 
 (deftest flot-axes
 
@@ -115,13 +115,13 @@
 
         (is (= (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? true))
                [{:points {:show false} :color (:black colour-map) :data [[1 3] [4 2]]}
-                {:points {:show true} :color (:red colour-map) :data [[4 1] [1 2]]}])))
+                {:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
 
       (testing "will all be shown if showing all people"
 
         (is (= (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? false))
                [{:points {:show true} :color (:black colour-map) :data [[1 3] [4 2]]}
-                {:points {:show true} :color (:red colour-map) :data [[4 1] [1 2]]}])))
+                {:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
 
       (testing "events are shifted a little when they land on top of each other"
         (is (= (fa/data-points colliding-data)
@@ -133,9 +133,9 @@
                [{:points {:show true} :color (:black colour-map) :data [[2 1]]}
                 {:points {:show true} :color (:black colour-map) :data [[4 1]]}
                 {:points {:show true} :color (:black colour-map) :data [[5 1]]}
-                {:points {:show true} :color (:black colour-map) :data [[1 1]]}
-                {:points {:show true} :color (:black colour-map) :data [[3 1]]}
-                {:points {:show true} :color (:black colour-map) :data [[6 1]]}])))
+                {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[1 1]]}
+                {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[3 1]]}
+                {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[6 1]]}])))
       )
 
     (testing "collision keys provide appropriate equality"

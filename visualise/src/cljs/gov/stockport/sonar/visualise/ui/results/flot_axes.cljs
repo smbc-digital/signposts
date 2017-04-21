@@ -58,7 +58,8 @@
   (let [ydp (y-data-points-avoiding-collisions data)]
     (map
       (fn [[_ {:keys [color highlighted? data]}]]
-        {:points {:fill 0.6 :fillColor false :show (or (not show-only-highlighted?) highlighted?)}
+        {:points (-> {:show (or (not show-only-highlighted?) highlighted?)}
+                     (merge (when highlighted? {:fill 0.8 :fillColor false})))
          :color  (get colour-map (or color :black))
          :data   (map
                    (fn [{:keys [timestamp] :as event}]
@@ -76,9 +77,7 @@
 
    {:points {:show true :radius 5 :fill true}
     :lines  {:show true}
-    :data   [[selected-from 0.25] [selected-to 0.25]]}
-
-   ])
+    :data   [[selected-from 0.25] [selected-to 0.25]]}])
 
 (defn event-at [data person-index data-index]
   (let [[_ {:keys [data]}] (nth (people/by-rank data) person-index nil)]
