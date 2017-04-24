@@ -52,25 +52,35 @@
                 {k (p/new-stack (blurrer (get lm event-type) (count events)))})
               (group-by collision-key events)))))
 
-(def by-highlighted? (fn [[_ pdata]] (:highlighted? pdata)))
+(def by-highlighted? (fn [[_ pdata]] ((juxt :highlighted? :rank ) pdata)))
 
 (defn data-points [{:keys [people show-only-highlighted?] :as data}]
-  (let [ydp (y-data-points-avoiding-collisions data)]
-    (map
-      (fn [[_ {:keys [color highlighted? data]}]]
-        {:points (-> {:show (or (not show-only-highlighted?) highlighted?)}
-                     (merge (when highlighted? {:fill 0.8 :fillColor false})))
-         :color  (get colour-map (or color :black))
-         :data   (map
-                   (fn [{:keys [timestamp] :as event}]
-                     (let [ekey (collision-key event)
-                           stack (get ydp ekey)
-                           pop (:pop stack)]
-                       [timestamp (pop)]))
-                   data)})
-      ;(sort-by by-highlighted? people)
-      people
-      )))
+  (let [ydp (y-data-points-avoiding-collisions data)
+        !event-map (atom {})]
+    {:event-map !event-map
+     :data      (map-indexed
+                  (fn [seriesIdx [_ {:keys [color highlighted? data]}]]
+                    {:points (-> {:show (or (not show-only-highlighted?) highlighted?)}
+                                 (merge (when highlighted? {:fill 0.8 :fillColor false})))
+                     :color  (get colour-map (or color :black))
+                     :data   (map-indexed
+                               (fn [dataIdx {:keys [timestamp] :as event}]
+                                 (swap! !event-map
+                                        #(-> %
+                                             (assoc-in [seriesIdx dataIdx] event)
+                                             (assoc (:id event) {:seriesIndex seriesIdx :dataIndex dataIdx})))
+                                 (let [ekey (collision-key event)
+                                       stack (get ydp ekey)
+                                       pop (:pop stack)]
+                                   [timestamp (pop)]))
+                               data)})
+                  (sort-by by-highlighted? people))}))
+
+(defn event-at [!event-map series-idx data-idx]
+  (get-in @!event-map [series-idx data-idx]))
+
+(defn position-for [!event-map {:keys [id]}]
+  (get @!event-map id))
 
 (defn selector-data-points [{{:keys [from-date to-date selected-from selected-to]} :timespan}]
   [{:points {:show false}
@@ -81,6 +91,3 @@
     :lines  {:show true}
     :data   [[selected-from 0.25] [selected-to 0.25]]}])
 
-(defn event-at [data person-index data-index]
-  (let [[_ {:keys [data]}] (nth (people/by-rank data) person-index nil)]
-    (nth data data-index {})))

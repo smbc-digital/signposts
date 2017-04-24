@@ -83,24 +83,25 @@
                                       (assoc-in [:timespan :selected-to] (:to-date timespan)))))))
                (reset! !plotselected false))))))
 
-(defn draw-graph [!data the-data options]
+(defn draw-graph [!data {:keys [data event-map]} options]
   (let [flot (.plot js/jQuery
                     (js/jQuery ".flot-timeline")
-                    (clj->js the-data)
+                    (clj->js data)
                     (clj->js (-> options
                                  (assoc :selection {:mode    "x"
                                                     :shape   "round"
                                                     :minSize 1
                                                     }))))]
-    (if-let [{:keys [seriesIndex dataIndex]} (:point @!data)]
+
+    (if-let [{:keys [seriesIndex dataIndex]} (fa/position-for event-map (:selected-event @!data))]
       (.highlight flot seriesIndex dataIndex))
 
     (.one (js/jQuery ".flot-timeline") "plotclick"
           (fn [_ _ item]
             (touch-data-to-force-rebind-click-handler !data)
             (if item
-              (let [{:keys [datapoint dataIndex seriesIndex]} (js->clj item :keywordize-keys true)]
-                (:selected-event (swap! !data assoc :selected-event (fa/event-at @!data seriesIndex dataIndex)))
+              (let [{:keys [datapoint seriesIndex dataIndex]} (js->clj item :keywordize-keys true)]
+                (:selected-event (swap! !data assoc :selected-event (fa/event-at event-map seriesIndex dataIndex)))
                 (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex}))
               (swap! !data dissoc :point :selected-event))))
 
@@ -109,9 +110,7 @@
             (let [{{:keys [from to]} :xaxis} (js->clj ranges :keywordize-keys true)]
               (swap! !data (fn [data] (-> data
                                           (assoc-in [:timespan :selected-from] (tc/from-long from))
-                                          (assoc-in [:timespan :selected-to] (tc/from-long to))))))))
-
-    ))
+                                          (assoc-in [:timespan :selected-to] (tc/from-long to))))))))))
 
 (defn draw-with [!data]
   (let []
