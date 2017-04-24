@@ -68,7 +68,9 @@
                            pop (:pop stack)]
                        [timestamp (pop)]))
                    data)})
-      (sort-by by-highlighted? people))))
+      ;(sort-by by-highlighted? people)
+      people
+      )))
 
 (defn selector-data-points [{{:keys [from-date to-date selected-from selected-to]} :timespan}]
   [{:points {:show false}
