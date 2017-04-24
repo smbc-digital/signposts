@@ -26,6 +26,10 @@
                  [clj-http "2.3.0"]
                  [buddy "1.3.0"]
                  [com.cemerick/url "0.1.1"]
+                 [org.slf4j/log4j-over-slf4j "1.7.14"]
+                 [org.slf4j/jul-to-slf4j "1.7.14"]
+                 [org.slf4j/jcl-over-slf4j "1.7.14"]
+                 [com.fzakaria/slf4j-timbre "0.3.5"]
                  [com.taoensso/timbre "4.10.0"]]
 
   :plugins [[lein-ring "0.11.0"]
