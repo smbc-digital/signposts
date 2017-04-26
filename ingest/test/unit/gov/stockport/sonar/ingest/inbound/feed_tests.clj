@@ -6,7 +6,8 @@
             [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.inbound.csv :as csv]
             [pandect.algo.sha1 :refer [sha1]]
-            [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer])
+            [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]
+            [gov.stockport.sonar.ingest.inbound.flusher :as flusher])
   (:import (java.io StringReader BufferedReader)))
 
 (def file-content (fn [string] (BufferedReader. (StringReader. string))))
@@ -72,17 +73,10 @@
 
          (defn dummy-mapper [idx line] {:line-number idx :line line})
 
-         (fact "hash is based on the feed file name"
-               (feeds/feed-hash ..file..) => ..sha..
-               (provided
-                 (files/fname ..file..) => ..fname..
-                 (sha1 ..fname..) => ..sha..))
-
-         (fact "feed processing employs a buffer with a hash based on the feed file"
+         (fact "feed processing employs a buffer"
                (feeds/process-feed ..file..) => ..result..
                (provided
-                 (feeds/feed-hash ..file..) => ..some-hash..
-                 (buffer/create-buffer (as-checker #(= (:feed-hash %) ..some-hash..))) => ..buffer..
+                 (buffer/create-buffer (as-checker #(= (:flush-fn %) flusher/flush-events))) => ..buffer..
                  (feeds/process-with-buffer ..file.. ..buffer..) => ..result..))
 
          (fact "it parses the csv queues the results in the event buffer, and flushes once at the end"

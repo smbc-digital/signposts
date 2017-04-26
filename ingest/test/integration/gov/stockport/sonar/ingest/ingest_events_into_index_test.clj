@@ -13,12 +13,12 @@
   [(before :facts
            (do
              (fsutil/configure-temp-inbound-file-system)
-             (esc/try-delete "/events-integration-test-*")))]
+             (esc/try-delete "/events-integration-test")))]
 
   (fact "it should load an event from the simplest feed into elastic search"
         (write-test-feed)
         (let [invocation-results (invoke)
-              index-name "events-integration-test-*"]
+              index-name "events-integration-test"]
           (count invocation-results) => 1
           (get-in (esc/query (str "/" index-name "/_stats")) [:_all :total :docs :count]) => 1))
 
@@ -26,7 +26,7 @@
         (write-test-feed)
         (let [invocation-results (invoke)
               second-invocation-results (invoke)
-              index-name "events-integration-test-*"]
+              index-name "events-integration-test"]
           (count invocation-results) => 1
           (count second-invocation-results) => 0
           (get-in (esc/query (str "/" index-name "/_stats")) [:_all :total :docs :count]) => 1)))

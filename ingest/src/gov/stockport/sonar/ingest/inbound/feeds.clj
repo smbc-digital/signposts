@@ -3,7 +3,6 @@
             [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.inbound.csv :as csv]
-            [pandect.algo.sha1 :refer :all]
             [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]
             [gov.stockport.sonar.ingest.inbound.flusher :as flusher]))
 
@@ -26,12 +25,9 @@
         (queue (csv-mapper line-number data)))
       (flush))))
 
-(defn feed-hash [file]
-  (sha1 (files/fname file)))
-
 (defn process-feed [file]
   (process-with-buffer file (buffer/create-buffer
-                              {:capacity (:batch-size @!config) :flush-fn flusher/flush-events :feed-hash (feed-hash file)})))
+                              {:capacity (:batch-size @!config) :flush-fn flusher/flush-events})))
 
 (defn process-feed-file [file]
   (try

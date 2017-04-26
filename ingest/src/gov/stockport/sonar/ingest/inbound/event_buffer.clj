@@ -5,8 +5,8 @@
 
 ; need some feed meta-data in here so that we can build the index name consistently
 
-(defn empty-buffer [{:keys [capacity feed-hash]}]
-  {:capacity capacity :qty 0 :events [] :feed-hash feed-hash})
+(defn empty-buffer [{:keys [capacity]}]
+  {:capacity capacity :qty 0 :events []})
 
 (defn- full [{:keys [capacity qty]}]
   (>= qty capacity))

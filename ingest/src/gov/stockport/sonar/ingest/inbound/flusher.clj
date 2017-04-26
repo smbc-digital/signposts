@@ -9,7 +9,7 @@
 ; post via ES client
 ; report could be sent forwards to separate service ? channel ?
 
-(defn flush-events [{:keys [events feed-hash]}]
+(defn flush-events [{:keys [events]}]
   (let [validated (map (comp events/enhance events/normalise events/validate) events)
         valid-events (map :data (filter #(not (:error %)) validated))
         valid-qty (count valid-events)]
@@ -17,4 +17,4 @@
       (merge
         {:valid-events valid-qty :invalid-events (- valid-qty (count valid-events))}
         (elastic/post-bulk-data
-          (ef/bulk-format-events feed-hash valid-events))))))
+          (ef/bulk-format-events valid-events))))))
