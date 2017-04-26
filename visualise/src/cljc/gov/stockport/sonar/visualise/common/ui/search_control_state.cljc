@@ -96,6 +96,14 @@
 (defn get-all-search-criteria [!state control-id]
   (sort-by :id (vals (get-in @!state (path control-id :search-criteria)))))
 
+(defn extract-query-defs [search-criteria]
+  (map
+    (fn [{:keys [get-field-type get-field-name get-query]}]
+      {:field-type (get-field-type)
+       :field-name (get-field-name)
+       :query      (get-query)})
+    search-criteria))
+
 (defn init-search-control [!state control-id]
   (add-search-control !state control-id)
   (add-search-criteria !state control-id))

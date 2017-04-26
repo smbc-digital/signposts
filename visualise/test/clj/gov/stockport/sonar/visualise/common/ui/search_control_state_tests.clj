@@ -58,3 +58,18 @@
                 (count (s/get-all-search-criteria !state :control-id)) => 1
                 (on-remove)
                 (count (s/get-all-search-criteria !state :control-id)) => 0))))
+
+(defn supply [val] (fn [] val))
+
+(facts "should extract query details"
+       (s/extract-query-defs [{:get-field-name (supply :name)
+                               :get-query      (supply "Zeshan")
+                               :get-field-type (supply :match-text)}
+                              {:get-field-name (supply :address)
+                               :get-query      (supply "SK4")
+                               :get-field-type (supply :match-text)}]) => [{:field-type :match-text
+                                                                            :field-name :name
+                                                                            :query      "Zeshan"}
+                                                                           {:field-type :match-text
+                                                                            :field-name :address
+                                                                            :query      "SK4"}])

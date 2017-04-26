@@ -1,6 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-control
   (:require [gov.stockport.sonar.visualise.common.ui.search-control-state :as state]
-            [gov.stockport.sonar.visualise.common.ui.search-control-query :as query]
             [gov.stockport.sonar.visualise.query.client :refer [search]]))
 
 (def target-value (fn [elem] (-> elem .-target .-value)))
@@ -59,7 +58,7 @@
         ~[add-criteria-button #(state/add-search-criteria !app control-id)]
         ~[search-button (fn []
                           (swap! !app assoc :search-in-progress true)
-                          (search (query/extract-query (state/get-all-search-criteria !app control-id))
+                          (search (state/extract-query-defs (state/get-all-search-criteria !app control-id))
                                   (fn [results]
                                     (query-handler results)
                                     (swap! !app assoc :search-in-progress false))))]])))

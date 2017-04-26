@@ -2,11 +2,11 @@
   (:require [midje.sweet :refer :all]
             [clj-http.client :as http]
             [gov.stockport.sonar.esproxy.proxy :as proxy]
+            [gov.stockport.sonar.esproxy.es-query-builder :as qb]
             [gov.stockport.sonar.auth.session-manager :as sm]
             [buddy.core.codecs.base64 :as b64]))
 
 (fact "about sending queries to elastic search"
-
 
       (fact "adds auth credentials to the outbound request when performing query"
             (proxy/perform-query ..creds.. ..query..) => {"some" "value"}
@@ -27,9 +27,10 @@
       (fact "should add auth credentials to the outbound request"
 
             (proxy/handle-query-request {:identity ..session..
-                                         :body     ..query..}) => {:body ..result.. :status 200 :headers {}}
+                                         :body     ..query-defs..}) => {:body ..result.. :status 200 :headers {}}
             (provided
               (sm/get-credentials ..session..) => ..creds..
+              (qb/build-es-query ..query-defs..) => ..query..
               (proxy/perform-query ..creds.. ..query..) => ..result..))
 
       (fact "should not send empty query if there is no body supplied"

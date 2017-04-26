@@ -6,6 +6,7 @@
             [buddy.auth :refer [throw-unauthorized]]
             [buddy.core.codecs.base64 :as b64]
             [gov.stockport.sonar.auth.session-manager :as sm]
+            [gov.stockport.sonar.esproxy.es-query-builder :as qb]
             [taoensso.timbre :refer [info]]))
 
 (def search-url "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch")
@@ -28,8 +29,9 @@
     (catch Exception _ false)))
 
 (defn handle-query-request [{session :identity :as request}]
-  (if-let [query (:body request)]
-    (let [{:keys [username] :as credentials} (sm/get-credentials session)]
+  (if-let [query-defs (:body request)]
+    (let [{:keys [username] :as credentials} (sm/get-credentials session)
+          query (qb/build-es-query query-defs)]
       (info (str "User [" username "] performed query: " query))
       (response (perform-query credentials query)))
     (response {})))

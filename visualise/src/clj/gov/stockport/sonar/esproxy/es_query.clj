@@ -1,5 +1,4 @@
-
-(ns gov.stockport.sonar.visualise.common.query.base)
+(ns gov.stockport.sonar.esproxy.es-query)
 
 (defn query []
   {})
