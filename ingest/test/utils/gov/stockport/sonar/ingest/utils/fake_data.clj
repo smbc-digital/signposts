@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.ingest.utils.fake-data
   (:require [clj-time.core :as t]
             [clj-time.format :as f]
+            [gov.stockport.sonar.ingest.faking.addresses :as a]
             [clojure.string :as str])
   (:use faker.name
         faker.address
@@ -25,9 +26,6 @@
 (defn dob []
   (t/date-midnight (+ 1995 (rand-int 10)) (+ 1 (rand-int 11)) (+ 1 (rand-int 27))))
 
-(defn address []
-  (str/join "," [(street-address) (uk-county) (uk-postcode)]))
-
 (defn time-in-last-2-years []
   (t/minus (t/now) (t/days (rand-int (* 2 365)))))
 
@@ -36,7 +34,7 @@
 (defn person []
   {:name    (rand-nth people)
    :dob     (f/unparse (:date f/formatters) (dob))
-   :address (address)})
+   :address (a/flat-stockport-street-address)})
 
 (defn event [person]
   (let [{:keys [:event-source :event-type]} (rand-event-source)]

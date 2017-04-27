@@ -72,6 +72,9 @@
 (defn stockport-street-address []
   (address-in-street (rand-nth street-pool)))
 
+(defn flat-stockport-street-address []
+  (str/join "," (vals (stockport-street-address))))
+
 
 
 

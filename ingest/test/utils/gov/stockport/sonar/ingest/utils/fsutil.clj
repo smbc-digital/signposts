@@ -7,8 +7,8 @@
             [clojure.string :as str]))
 
 (defn configure-temp-inbound-file-system []
-  (let [;fsroot (fs/file "/tmp/sonar-integration-test")]
-        fsroot (fs/temp-dir "sonar-fake-data-test")]
+  (let [fsroot (fs/file "/tmp/sonar-integration-test")]
+        ;fsroot (fs/temp-dir "sonar-fake-data-test")]
     (fs/mkdir (fs/file fsroot "ready"))
     (fs/mkdir (fs/file fsroot "processed"))
     (fs/mkdir (fs/file fsroot "failed"))

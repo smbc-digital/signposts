@@ -1,12 +1,14 @@
 (ns gov.stockport.sonar.ingest.utils.quick-and-dirty
   (:require [gov.stockport.sonar.ingest.config :refer [!config]]
             [gov.stockport.sonar.ingest.utils.fake-data :as fd]
+            [gov.stockport.sonar.ingest.faking.events.event-stream :as es]
             [gov.stockport.sonar.ingest.utils.fsutil :as fs]
-            [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]))
+            [gov.stockport.sonar.ingest.client.elastic-search-client :as esc]
+            [gov.stockport.sonar.ingest.faking.events.event-formats :as ef]))
 
 (defn write-some-fake-data [amount]
   (fs/configure-temp-inbound-file-system)
-  (let [data (group-by :event-source (take amount (fd/timelines)))]
+  (let [data (group-by :event-source (take amount (map ef/format-event (es/timelines))))]
     (doall (map fs/spit-test-feed (vals data)))))
 
 (defn create-kibana-index []

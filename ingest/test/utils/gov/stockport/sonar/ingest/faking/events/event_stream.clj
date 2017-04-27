@@ -4,6 +4,7 @@
             [gov.stockport.sonar.ingest.faking.events.schools :refer [school-events]]
             [gov.stockport.sonar.ingest.faking.events.eis :refer [eis-events]]
             [gov.stockport.sonar.ingest.faking.events.simple :refer [simple-events]]
+            [gov.stockport.sonar.ingest.faking.events.event-formats :as ef]
             [clojure.walk :as walk]
             [clj-time.format :as f]
             [clojure.string :as str]))
@@ -49,3 +50,4 @@
 (defn timelines
   ([] (timelines []))
   ([events] (lazy-seq (concat (timeline) (timelines events)))))
+
