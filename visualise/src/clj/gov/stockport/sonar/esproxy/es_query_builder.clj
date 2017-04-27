@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.esproxy.es-query-builder
   (:require [gov.stockport.sonar.esproxy.es-query :as es]))
 
-(defmulti parse-query-def (fn [_ {:keys [field-type]}] field-type) :default :default)
+(defmulti parse-query-def (fn [_ {:keys [field-type]}] (keyword field-type)) :default :default)
 
 (defmethod parse-query-def :age-less-than
   [qip {:keys [query field-name]}]
