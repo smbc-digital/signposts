@@ -8,7 +8,9 @@
 
 (defn write-some-fake-data [amount]
   (fs/configure-temp-inbound-file-system)
-  (let [data (group-by :event-source (take amount (map ef/format-event (es/timelines))))]
+  (let [;stream (map ef/format-event (es/timelines))
+        stream (fd/timelines)
+        data (group-by :event-source (take amount stream))]
     (doall (map fs/spit-test-feed (vals data)))))
 
 (defn create-kibana-index []
