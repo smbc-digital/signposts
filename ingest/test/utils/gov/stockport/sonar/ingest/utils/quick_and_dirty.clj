@@ -11,9 +11,11 @@
 
 (defn create-kibana-index []
   (println "setting default kibana index to events-*")
-  (esc/post-json-to-es {:path    "/.kibana/index-pattern/events-*?op_type=create"
-                        :payload {:title         "events-*"
-                                  :timeFieldName "timestamp"}})
-  (esc/post-json-to-es {:path    "/.kibana/config/5.1.1"
-                        :payload {:buildNum     14566
-                                  :defaultIndex "events-*"}}))
+  (try
+    (esc/post-json-to-es {:path    "/.kibana/index-pattern/events-*?op_type=create"
+                          :payload {:title         "events-*"
+                                    :timeFieldName "timestamp"}})
+    (esc/post-json-to-es {:path    "/.kibana/config/5.1.1"
+                          :payload {:buildNum     14566
+                                    :defaultIndex "events-*"}})
+    (catch Exception _)))
