@@ -24,12 +24,4 @@
 
     (testing "it renders a search button"
       (->render (search-control !state (fn [])))
-      (is (= (dommy/text (submit-button)) "Search")))
-
-    ;(testing "it includes a named field"
-    ;  (with-stub c/search
-    ;             (->render (search-control !state :some-handler))
-    ;             (sim/click (submit-button) nil)
-    ;             (is (= (count (calls-to c/search)) 1))
-    ;             (is (= (first (calls-to c/search)) '(:some-handler [{:name "Jim"}])))))
-    ))
+      (is (= (dommy/text (submit-button)) "Search")))))

@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.results.selected-event
   (:require [clojure.string :as str]
-            [reagent.core :as r]
-            [cljs-time.format :as f]))
+            [cljs-time.format :as f]
+            [gov.stockport.sonar.visualise.ui.results.signposting :as s]))
 
 (def standard-keys [:name :dob :address :postcode :timestamp :score])
 
@@ -25,24 +25,30 @@
 (defn rows [event]
   (map row (selected-kvs event)))
 
+(defn signpost-fields [event]
+  (println event)
+  (let [signpost (s/signpost-for event)]
+    (map
+      (fn [{:keys [name value]}]
+        [:tr [:th name] [:td value]])
+      (:fields signpost))))
+
 (defn selected-event [!data]
   (fn []
     (let [selected (:selected-event @!data)]
       (when (not-empty selected)
         [:div.selected-event
          [:div.panel-group
-          [:div.panel.panel-default.event-details
-           [:div.panel-heading "SELECTED EVENT"]
+          [:div.panel.panel-default.event-details.col-sm-5
+           [:div.panel-heading (:event-type selected)]
            [:div.panel-body
             [:table.table-striped.table-condensed.results.selected-results
              `[:tbody
                ~@(rows selected)]
              ]]]
-          [:div.panel.panel-default.contact-panel
-           [:div.panel-heading.contact-heading "CONTACT"]
+          [:div.panel.panel-default.contact-panel.col-sm-7
+           [:div.panel-heading.contact-heading "SIGNPOST"]
            [:div.panel-body
-            [:p.contact-label "System"]
-            [:p.contact-label "Name"]
-            [:p.contact-label "Number"]
-            [:p.contact-label "Email"]]]
-          ]]))))
+            [:table.table-condensed.results.selected-results
+            `[:tbody
+              ~@(signpost-fields selected)]]]]]]))))
