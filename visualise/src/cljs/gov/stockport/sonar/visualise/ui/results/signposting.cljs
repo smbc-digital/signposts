@@ -27,7 +27,6 @@
                          (get-in signposts [:default :default]))]
      (map
        (fn [{:keys [name default source]}]
-         (println name event)
          {:name  name
           :value (get event source default)})
        (:fields definitions)))})

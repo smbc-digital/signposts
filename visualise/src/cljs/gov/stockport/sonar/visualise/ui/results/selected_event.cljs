@@ -26,7 +26,6 @@
   (map row (selected-kvs event)))
 
 (defn signpost-fields [event]
-  (println event)
   (let [signpost (s/signpost-for event)]
     (map
       (fn [{:keys [name value]}]

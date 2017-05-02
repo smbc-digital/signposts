@@ -23,9 +23,9 @@
 
 (enable-console-print!)
 
-;(doo-all-tests #"gov.stockport.sonar.visualise.*")
+(doo-all-tests #"gov.stockport.sonar.visualise.*")
 
 ; use the following if you want to focus on a single test during development
-(doo-tests 'gov.stockport.sonar.visualise.ui.results.signposting-tests)
+;(doo-tests 'gov.stockport.sonar.visualise.ui.results.signposting-tests)
 
 ; see https://github.com/bensu/doo for more information
