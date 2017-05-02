@@ -50,3 +50,8 @@
             (proxy/is-valid-elastic-search-user? ..creds..) => false
             (provided
               (proxy/perform-query ..creds.. {}) =throws=> (ex-info "Unauthorized" {}))))
+
+(fact "keeps session alive by pinging the session manager"
+      (proxy/handle-keep-alive {:identity ..session..}) => {:body {} :status 200 :headers {}}
+      (provided
+        (sm/ping! ..session..) => nil))

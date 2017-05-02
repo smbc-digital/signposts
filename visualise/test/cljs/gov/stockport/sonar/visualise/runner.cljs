@@ -4,6 +4,7 @@
             [gov.stockport.sonar.visualise.ui.facet-tests]
             [gov.stockport.sonar.visualise.ui.search.search-control-tests]
             [gov.stockport.sonar.visualise.query.handler-tests]
+            [gov.stockport.sonar.visualise.query.client-tests]
             [gov.stockport.sonar.visualise.results.selected-event-tests]
             [gov.stockport.sonar.visualise.ui.results.flot-axes-tests]
             [gov.stockport.sonar.visualise.util.ajax-tests]

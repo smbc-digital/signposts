@@ -35,3 +35,7 @@
       (info (str "User [" username "] performed query: " query))
       (response (perform-query credentials query)))
     (response {})))
+
+(defn handle-keep-alive [{session :identity}]
+  (sm/ping! session)
+  (response {}))

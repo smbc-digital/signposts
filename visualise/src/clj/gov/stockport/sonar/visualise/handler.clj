@@ -56,6 +56,7 @@
                             :post :do-login}]
                  ["/logout" {:post :do-logout}]
                  ["/query" {:post :es-query}]
+                 ["/keep-alive" {:post :keep-alive}]
                  ["" (->ResourcesMaybe {:prefix "public/"})]
                  [true :404]]])
 
@@ -65,12 +66,13 @@
       (redirect "/login")
       (handler req))))
 
-(def handlers {:login     (loading-page)
-               :do-login  login/handle-login
-               :do-logout login/handle-logout
-               :404       not-found-404
-               :app       (redirect-if-not-auth (loading-page))
-               :es-query  proxy/handle-query-request})
+(def handlers {:login      (loading-page)
+               :do-login   login/handle-login
+               :do-logout  login/handle-logout
+               :404        not-found-404
+               :app        (redirect-if-not-auth (loading-page))
+               :es-query   proxy/handle-query-request
+               :keep-alive proxy/handle-keep-alive})
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 

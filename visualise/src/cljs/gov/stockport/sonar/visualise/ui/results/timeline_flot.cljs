@@ -8,6 +8,7 @@
             [gov.stockport.sonar.visualise.ui.results.selected-event :as se]
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]
             [gov.stockport.sonar.visualise.data.people :as people]
+            [gov.stockport.sonar.visualise.util.keep-alive :refer [with-keep-alive]]
             [cljs-time.core :as t]
             [cljs-time.format :as f]
             [reagent.core :as r]))
@@ -35,7 +36,7 @@
      [:div.highlight-control
       [:i.fa.fa-2x.pull-left
        {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
-        :on-click #(swap! !data people/toggle-show-only-highlighted)
+        :on-click (with-keep-alive #(swap! !data people/toggle-show-only-highlighted))
         }]
       [:p.info "Show highlighted individuals only"]])
 
@@ -123,8 +124,8 @@
   (fn []
     (reagent/create-class {:should-component-update (fn [& _] true)
                            :reagent-render          (fn [] [:span])
-                           :component-did-mount     (fn [] (draw-with !data))
-                           :component-did-update    (fn [] (draw-with !data))})))
+                           :component-did-mount     (with-keep-alive (fn [] (draw-with !data)))
+                           :component-did-update    (with-keep-alive (fn [] (draw-with !data)))})))
 
 
 (defn timeline-flot [!data]

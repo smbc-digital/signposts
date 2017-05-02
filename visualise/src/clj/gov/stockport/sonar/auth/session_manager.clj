@@ -3,7 +3,7 @@
             [gov.stockport.sonar.auth.crypto :as crypto])
   (:import (java.util UUID)))
 
-(def max-session-idle-minutes 15)
+(def max-session-idle-minutes 5)
 
 (def store (atom {}))
 
@@ -38,6 +38,11 @@
     (not (nil? session-id))
     (contains? @store session-id)
     (not-yet-expired? (get @store session-id))))
+
+(defn ping! [{:keys [session-id] :as session}]
+  (when (valid? session)
+    (swap! store update-in [session-id] with-expiry))
+  nil)
 
 (defn get-credentials [{:keys [session-id session-key] :as session}]
   (when (valid? session)

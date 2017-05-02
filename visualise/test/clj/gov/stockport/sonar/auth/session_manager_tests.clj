@@ -100,4 +100,28 @@
                      (test-clock/freeze! one-second-before-expiry-two)
                      (s/valid? session) => true
                      (test-clock/freeze! expiry-time-two)
-                     (s/valid? session) => false))))))
+                     (s/valid? session) => false))
+
+             (fact "pinging can keep a session alive"
+                   (test-clock/freeze! creation-time)
+                   (let [session (s/create-session {})]
+                     (s/valid? session) => true
+                     (test-clock/freeze! one-second-before-expiry-one)
+                     (s/valid? session) => true
+                     (s/ping! session) => nil
+                     (test-clock/freeze! one-second-before-expiry-two)
+                     (s/valid? session) => true
+                     (test-clock/freeze! expiry-time-two)
+                     (s/valid? session) => false))
+
+             (fact "ping! doesn't extend the life of an invalid session"
+                   (test-clock/freeze! creation-time)
+                   (let [session (s/create-session {})]
+                     (s/valid? session) => true
+                     (test-clock/freeze! expiry-time-one)
+                     (s/valid? session) => false
+                     (s/ping! session) => nil
+                     (test-clock/freeze! one-second-before-expiry-two)
+                     (s/valid? session) => false))
+
+             ))))

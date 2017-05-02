@@ -2,6 +2,7 @@
   (:require [gov.stockport.sonar.visualise.data.colours :as c]
             [gov.stockport.sonar.visualise.util.stack :as s]
             [gov.stockport.sonar.visualise.data.merge :as merge]
+            [gov.stockport.sonar.visualise.query.client :refer [keep-alive]]
             [clojure.string :as str]))
 
 (def group-keys [:name :dob :address :postcode])

@@ -61,6 +61,4 @@
 
                    (is (= (l/default-error-handler {:status 201}) {:status 201}))
 
-                   (is (= 0 @calls)))))
-
-  )
+                   (is (= 0 @calls))))))
