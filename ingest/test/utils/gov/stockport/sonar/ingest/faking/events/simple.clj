@@ -2,9 +2,7 @@
   (:require [gov.stockport.sonar.ingest.faking.helpers :as h]))
 
 (def event-sources
-  [{:event-source :HOMES
-    :event-types  [:ARREARS :VISIT]}
-   {:event-source :GMP
+  [{:event-source :GMP
     :event-types  [:ASBO :CAUTION]}])
 
 (defn rand-event-source []

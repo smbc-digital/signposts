@@ -48,7 +48,7 @@
 
 (defn durations [min-week-gaps max-duration]
   (let [gappy (gappy-numbers-fn min-week-gaps)
-        start (t/minus (t/now) (t/days (* 3 365)))]
+        start (t/minus (t/now) (t/days (* 5 365)))]
     (map (fn [n]
            {:timestamp (t/plus start (t/days n))
             :duration  (+ 1 (rand-int max-duration))}) (rest (gappy)))))

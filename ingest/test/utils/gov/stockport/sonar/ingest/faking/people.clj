@@ -3,6 +3,7 @@
             [faker.name :as name]
             [gov.stockport.sonar.ingest.faking.helpers :as h]
             [gov.stockport.sonar.ingest.faking.config :as cfg]
+            [gov.stockport.sonar.ingest.faking.helpers :refer [make]]
             [gov.stockport.sonar.ingest.faking.phone :as phone])
   (:import (java.util UUID)))
 
@@ -40,10 +41,10 @@
 (defn child [family-name]
   (let [name-fn (likely-related)]
     (->
-      {:name (name-fn family-name)
-       :dob  (child-dob)
-       :uid  (UUID/randomUUID)}
-      )))
+      {:name                (name-fn family-name)
+       :dob                 (child-dob)
+       :uid                 (UUID/randomUUID)
+       :unique-pupil-number (make "############")})))
 
 (defn adult
   ([]
@@ -52,6 +53,7 @@
    (let [name-fn (weight-fn)]
      {:name (name-fn family-name)
       :dob  (adult-dob)
+      :nino (make "??-##-##-##-?")
       :uid  (UUID/randomUUID)})))
 
 (defn employee []

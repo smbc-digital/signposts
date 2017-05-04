@@ -43,11 +43,9 @@
                                :columns "data3"}})
 
        (fact "kebab-cases the column keys"
-             ((csv/mapper "some-Interesting,\"more data\",ColumnSettings") 3 "data1,\"wibble mcping\",data3")
+             ((csv/mapper "some-Interesting,\"more data\",ColumnSettings,with_underscores") 3 "data1,\"wibble mcping\",data3,argh")
              => {:line-number 3
                  :data        {:some-interesting "data1"
                                :more-data        "wibble mcping"
-                               :column-settings  "data3"}})
-
-       )
-
+                               :column-settings  "data3"
+                               :with-underscores "argh"}}))

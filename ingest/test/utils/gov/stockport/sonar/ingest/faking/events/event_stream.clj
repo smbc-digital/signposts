@@ -3,6 +3,7 @@
             [gov.stockport.sonar.ingest.faking.helpers :as h]
             [gov.stockport.sonar.ingest.faking.events.schools :refer [school-events]]
             [gov.stockport.sonar.ingest.faking.events.eis :refer [eis-events]]
+            [gov.stockport.sonar.ingest.faking.events.homes :refer [homes-events]]
             [gov.stockport.sonar.ingest.faking.events.simple :refer [simple-events]]
             [gov.stockport.sonar.ingest.faking.events.event-formats :as ef]
             [clojure.walk :as walk]
@@ -45,6 +46,7 @@
                      (fn [events-fn] (events-fn household))
                      [school-events
                       eis-events
+                      homes-events
                       simple-events]))))))
 
 (defn timelines
