@@ -44,8 +44,7 @@
               [:div.panel.panel-default.card-box
                {:class (str (and color (cljs.core/name color))
                             (when (not highlighted?) " blur"))}
-               [:div.panel-heading.card-name
-                {:on-click #(swap! !data update-in [:people pkey :collapsed?] not)}]
+               [:div.panel-heading.card-name]
                [:div.panel-body
 
                 (if (or highlighted? highlighting-allowed?)
