@@ -79,16 +79,22 @@
                                                 (assoc :color :black)))))
         (assoc :highlighting-allowed? (not (is-empty?))))))
 
+(defn- sufficient-colors-for-people? [{:keys [people]}]
+  (<= (count people) (count c/colour-priority)))
+
+(defn with-initial-color [{:keys [people] :as data}]
+  (if (sufficient-colors-for-people? data)
+    (reduce toggle-highlight-person data (keys people))
+    data))
 
 (defn from-data [data]
   (-> data
       (by-people)
       (with-max-score)
       (with-rank)
-      (assoc :all-collapsed? true :show-only-highlighted? true :highlighting-allowed? true)
-      (toggle-show-only-highlighted)
-      (toggle-collapse-all)
-      (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))))
+      (assoc :all-collapsed? false :show-only-highlighted? false :highlighting-allowed? true)
+      (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))
+      (with-initial-color)))
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))

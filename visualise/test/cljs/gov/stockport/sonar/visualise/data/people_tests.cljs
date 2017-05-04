@@ -57,32 +57,74 @@
                                        :rank  1}}})))
 
     (testing "comes together with everyone displayed to start with"
+
       (with-redefs
-        [people/group-keys [:name]]
+        [people/group-keys [:name]
+         c/colour-priority [:red :blue]]
 
-        (let [result (people/from-data {:result [{:name "N1" :score 1}
-                                                 {:name "N3" :score 2}
-                                                 {:name "N2" :score 3}
-                                                 {:name "N1" :score 4}]})]
+        (testing "with people not highlighted already if too many"
 
-          (is (contains? result :color-stack))
-          (is (= (dissoc result :color-stack :result)
-                 {:show-only-highlighted? false
-                  :all-collapsed?         false
-                  :highlighting-allowed?  true
-                  :people                 {{:name "N1"} {:data       [{:name "N1" :score 1}
-                                                                      {:name "N1" :score 4}]
-                                                         :score      4
-                                                         :rank       1
-                                                         :collapsed? false}
-                                           {:name "N2"} {:data       [{:name "N2" :score 3}]
-                                                         :score      3
-                                                         :rank       2
-                                                         :collapsed? false}
-                                           {:name "N3"} {:data       [{:name "N3" :score 2}]
-                                                         :score      2
-                                                         :rank       3
-                                                         :collapsed? false}}}))))))
+          (let [result (people/from-data {:result [{:name "N1" :score 1}
+                                                   {:name "N3" :score 2}
+                                                   {:name "N2" :score 3}
+                                                   {:name "N1" :score 4}]})]
+
+            (is (contains? result :color-stack))
+            (is (= (dissoc result :color-stack :result)
+                   {:show-only-highlighted? false
+                    :all-collapsed?         false
+                    :highlighting-allowed?  true
+                    :people                 {{:name "N1"} {:data         [{:name "N1" :score 1}
+                                                                          {:name "N1" :score 4}]
+                                                           :score        4
+                                                           :rank         1}
+                                             {:name "N2"} {:data         [{:name "N2" :score 3}]
+                                                           :score        3
+                                                           :rank         2}
+                                             {:name "N3"} {:data         [{:name "N3" :score 2}]
+                                                           :score        2
+                                                           :rank         3}}}))))
+
+
+        (testing "with some people highlighted already if sufficient colors exist"
+
+          (let [result (people/from-data {:result [{:name "N1" :score 1}
+                                                   {:name "N1" :score 4}]})]
+
+            (is (contains? result :color-stack))
+            (is (= (dissoc result :color-stack :result)
+                   {:show-only-highlighted? false
+                    :all-collapsed?         false
+                    :highlighting-allowed?  true
+                    :people                 {{:name "N1"} {:data         [{:name "N1" :score 1}
+                                                                          {:name "N1" :score 4}]
+                                                           :score        4
+                                                           :rank         1
+                                                           :highlighted? true
+                                                           :color        :red}}}))))
+
+        (testing "with all people highlighted already if sufficient colors exist"
+
+          (let [result (people/from-data {:result [{:name "N1" :score 1}
+                                                   {:name "N2" :score 3}
+                                                   {:name "N1" :score 4}]})]
+
+            (is (contains? result :color-stack))
+            (is (= (dissoc result :color-stack :result)
+                   {:show-only-highlighted? false
+                    :all-collapsed?         false
+                    :highlighting-allowed?  false
+                    :people                 {{:name "N1"} {:data         [{:name "N1" :score 1}
+                                                                          {:name "N1" :score 4}]
+                                                           :score        4
+                                                           :rank         1
+                                                           :highlighted? true
+                                                           :color        :red}
+                                             {:name "N2"} {:data         [{:name "N2" :score 3}]
+                                                           :score        3
+                                                           :rank         2
+                                                           :highlighted? true
+                                                           :color        :blue}}})))))))
 
   (testing "retrieving people"
 
@@ -144,7 +186,6 @@
 
   (testing "highlights and colors"
 
-
     (testing "you can only highlight people when colours are available"
 
       (is (= (-> {:people      {{:name "A"} {}
@@ -160,75 +201,7 @@
                                       {:name "B"} {:highlighted? true
                                                    :color        :red}
                                       {:name "C"} {}}
-              :highlighting-allowed? false
-              })
-          )
-
-      )
-
-    )
-
-  ;(testing "has an effect on color"
-  ;
-  ;  (testing "individuals can be hidden"
-  ;
-  ;    (let [data (people/toggle-show-only-highlighted {:people {{:name "A"} {}
-  ;                                                              {:name "B"} {}
-  ;                                                              {:name "C"} {}}})]
-  ;
-  ;      (is (= (-> data
-  ;                 (people/toggle-display-person {:name "A"})
-  ;                 (dissoc :color-stack))
-  ;
-  ;             {:people                 {{:name "A"} {:highlighted? false :color :black}
-  ;                                       {:name "B"} {:highlighted? true :color :yellow}
-  ;                                       {:name "C"} {:highlighted? true :color :green}}
-  ;              :show-only-highlighted? true}))))
-  ;
-  ;  (testing "hiding and showing can move color around"
-  ;
-  ;    (let [data (people/toggle-show-only-highlighted {:people {{:name "A"} {}
-  ;                                                              {:name "B"} {}
-  ;                                                              {:name "C"} {}}})]
-  ;
-  ;      (is (= (-> data
-  ;                 (people/toggle-display-person {:name "A"})
-  ;                 (people/toggle-display-person {:name "C"})
-  ;                 (people/toggle-display-person {:name "A"})
-  ;                 (dissoc :color-stack))
-  ;
-  ;             {:people                 {{:name "A"} {:highlighted? true :color :green}
-  ;                                       {:name "B"} {:highlighted? true :color :yellow}
-  ;                                       {:name "C"} {:highlighted? false :color :black}}
-  ;              :show-only-highlighted? true}))))
-  ;
-  ;  (testing "colours can be added when there are more than 6 results"
-  ;
-  ;    (let [data (people/toggle-show-only-highlighted {:people                 {{:name "A"} {}
-  ;                                                                              {:name "B"} {}
-  ;                                                                              {:name "C"} {}
-  ;                                                                              {:name "D"} {}
-  ;                                                                              {:name "E"} {}
-  ;                                                                              {:name "F"} {}
-  ;                                                                              {:name "G"} {}}
-  ;                                                     :show-only-highlighted? true})]
-  ;
-  ;      (is (= (-> data
-  ;                 (people/toggle-display-person {:name "B"})
-  ;                 (people/toggle-display-person {:name "D"})
-  ;                 (people/toggle-display-person {:name "G"})
-  ;                 (dissoc :color-stack))
-  ;
-  ;             {:people                 {{:name "A"} {:highlighted? false :color :black}
-  ;                                       {:name "B"} {:highlighted? true :color :red}
-  ;                                       {:name "C"} {:highlighted? false :color :black}
-  ;                                       {:name "D"} {:highlighted? true :color :yellow}
-  ;                                       {:name "E"} {:highlighted? false :color :black}
-  ;                                       {:name "F"} {:highlighted? false :color :black}
-  ;                                       {:name "G"} {:highlighted? true :color :green}}
-  ;              :show-only-highlighted? false}))))
-  ;
-  ;  )
+              :highlighting-allowed? false}))))
 
   (testing "printing a summary of results"
     (testing "multiple events from multiple people"
@@ -287,5 +260,3 @@
         (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
 
         (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]}))))))
-
-
