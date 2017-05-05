@@ -4,10 +4,10 @@
 
 (def initial-state {:username "" :password ""})
 
-(defn- perform-search [!local]
+(defn- perform-login [!local]
   (let [creds @!local]
-    (login creds)
-    (reset! !local initial-state)))
+    (reset! !local initial-state)
+    (login creds)))
 
 (defn login-form []
   (let [!local (r/atom initial-state)]
@@ -25,6 +25,6 @@
           {:type      :password
            :value     (:password @!local)
            :on-change #(swap! !local assoc :password (-> % .-target .-value))
-           :on-key-up #(when (= 13 (-> % .-keyCode)) (perform-search !local))}]]]
+           :on-key-up #(when (= 13 (-> % .-keyCode)) (perform-login !local))}]]]
        [:button.btn.btn-primary
-        {:on-click (fn [] (perform-search !local))} "Login"]])))
+        {:on-click (fn [] (perform-login !local))} "Login"]])))

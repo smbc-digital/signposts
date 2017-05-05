@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.visualise.util.ajax
   (:require [ajax.core :refer [POST]]
+            [gov.stockport.sonar.visualise.state :refer [!app]]
             [gov.stockport.sonar.visualise.util.navigation :refer [navigate-to-login-page]]
             [reagent.cookies :refer [get-raw]]
             [cemerick.url :refer [url-decode]]))
@@ -31,6 +32,19 @@
 (defn with-error-handling [request]
   (assoc request :error-handler default-error-handler))
 
+(defn wrapped-handler [handler]
+  (fn [& args]
+    (try
+      (apply handler args)
+      (finally
+        (swap! !app assoc :ajax-in-progress false)))))
+
+(defn with-in-progress [{:keys [handler error-handler] :as request}]
+  (swap! !app assoc :ajax-in-progress true)
+  (-> request
+      (assoc :handler (wrapped-handler handler)
+             :error-handler (wrapped-handler error-handler))))
+
 (defn post [url request]
   (perform-post
     url
@@ -38,4 +52,5 @@
         (with-common-options)
         (with-csrf-header)
         (with-json)
-        (with-error-handling))))
+        (with-error-handling)
+        (with-in-progress))))

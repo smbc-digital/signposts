@@ -1,8 +1,11 @@
 (ns gov.stockport.sonar.visualise.ui.pages.login-page
-  (:require [gov.stockport.sonar.visualise.ui.login-form :refer [login-form]]))
+  (:require [gov.stockport.sonar.visualise.ui.login-form :refer [login-form]]
+            [gov.stockport.sonar.visualise.state :refer [!app]]
+            [gov.stockport.sonar.visualise.ui.busy :as busy]))
 
 (defn login-page []
   [:div.container-fluid.header
+   [busy/overlay]
    [:div.row.stockport
     [:div.column.col-sm-2
      [:img {:src "/images/stockport_logo.gif" :alt "Stockport MBC"}]]

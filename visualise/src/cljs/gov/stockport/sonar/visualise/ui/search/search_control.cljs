@@ -57,8 +57,6 @@
         ~@(search-criteria !app control-id)
         ~[add-criteria-button #(state/add-search-criteria !app control-id)]
         ~[search-button (fn []
-                          (swap! !app assoc :search-in-progress true)
-                          (search (state/extract-query-defs (state/get-all-search-criteria !app control-id))
-                                  (fn [results]
-                                    (query-handler results)
-                                    (swap! !app assoc :search-in-progress false))))]])))
+                          (search
+                            (state/extract-query-defs (state/get-all-search-criteria !app control-id))
+                            query-handler))]])))
