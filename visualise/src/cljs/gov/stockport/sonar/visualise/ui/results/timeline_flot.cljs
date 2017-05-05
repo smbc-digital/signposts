@@ -32,8 +32,9 @@
 
 (defn graph-placeholder-with-description [!timespan !data]
   [:div
-   (let [{:keys [show-only-highlighted?]} @!data]
+   (let [{:keys [show-only-highlighted? show-only-highlighted-disabled?]} @!data]
      [:div.highlight-control
+      (when show-only-highlighted-disabled? {:class "disabled"})
       [:i.fa.fa-2x.pull-left
        {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
         :on-click (with-keep-alive #(swap! !data people/toggle-show-only-highlighted))

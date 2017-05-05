@@ -5,4 +5,9 @@ div.highlight-control {
   i {
     margin-top: -4px;
   }
+
+  &.disabled {
+    filter: opacity(.2);
+  }
+
 }

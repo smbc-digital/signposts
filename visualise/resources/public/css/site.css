@@ -6055,3 +6055,5 @@ div.highlight-control {
   margin-top: 14px; }
   div.highlight-control i {
     margin-top: -4px; }
+  div.highlight-control.disabled {
+    filter: opacity(0.2); }

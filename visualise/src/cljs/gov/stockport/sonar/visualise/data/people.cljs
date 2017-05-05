@@ -33,7 +33,6 @@
                              ;result
                              (merge/merge-events (locked-events data) result))))))
 
-
 (defn with-max-score [{:keys [people] :as data}]
   (assoc data :people
               (reduce merge {}
@@ -48,7 +47,6 @@
                         (fn [idx [k v]] {k (assoc v :rank (+ 1 idx))})
                         (sort-by (fn [[_ p]] [(- 0 (:score p)) (surname p)]) people)))))
 
-
 (defn toggle-collapse-all [{:keys [all-collapsed?] :as data}]
   (let [collapsing-all? (not all-collapsed?)]
     (-> data
@@ -61,8 +59,22 @@
                               {k (assoc v :collapsed? collapsing-all?)})
                             people)))))))
 
-(defn toggle-show-only-highlighted [{:keys [show-only-highlighted?] :as data}]
-  (assoc data :show-only-highlighted? (not show-only-highlighted?)))
+(defn toggle-show-only-highlighted [{:keys [show-only-highlighted? show-only-highlighted-disabled?] :as data}]
+  (assoc
+    data
+    :show-only-highlighted?
+    (if show-only-highlighted-disabled? show-only-highlighted? (not show-only-highlighted?))))
+
+(defn all-or-none-highlighted? [{:keys [people]}]
+  (= 1 (count (distinct (map (fn [[_ {:keys [highlighted?]}]] (or highlighted? false)) people)))))
+
+(defn enable-or-disable-show-only-highlighted-disabled [data]
+  (assoc data :show-only-highlighted-disabled? (all-or-none-highlighted? data)))
+
+(defn enable-or-disable-show-only-highlighted [{:keys [show-only-highlighted-disabled?] :as data}]
+  (if show-only-highlighted-disabled?
+    (assoc data :show-only-highlighted? false)
+    data))
 
 (defn toggle-highlight-person [{:keys [people color-stack] :as data} pkey]
   (let [{:keys [pop push is-empty?]} color-stack
@@ -77,7 +89,9 @@
             (update-in data [:people pkey] #(-> %
                                                 (assoc :highlighted? false)
                                                 (assoc :color :black)))))
-        (assoc :highlighting-allowed? (not (is-empty?))))))
+        (assoc :highlighting-allowed? (not (is-empty?)))
+        (enable-or-disable-show-only-highlighted-disabled)
+        (enable-or-disable-show-only-highlighted))))
 
 (defn- sufficient-colors-for-people? [{:keys [people]}]
   (<= (count people) (count c/colour-priority)))
@@ -92,7 +106,10 @@
       (by-people)
       (with-max-score)
       (with-rank)
-      (assoc :all-collapsed? false :show-only-highlighted? false :highlighting-allowed? true)
+      (assoc :all-collapsed? false
+             :show-only-highlighted? false
+             :show-only-highlighted-disabled? true
+             :highlighting-allowed? true)
       (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))
       (with-initial-color)))
 
