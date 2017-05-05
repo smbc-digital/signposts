@@ -26,14 +26,10 @@
 (defn home-page []
   [:div.container-fluid.header
    [search-in-progress]
-   [:div.row
-    [:div.column.col-sm-2.stockport
-     [:div.navbar-brand {:href "#"}
-      [:img.logo
-       {:alt "Stockport MBC",
-        :src "/images/stockport_logo.gif"}]]]
-
-    [:div.column.col-sm-10
+   [:div.row.stockport
+    [:div.column.col-sm-2
+     [:img {:src   "/images/stockport_logo.gif" :alt "Stockport MBC"}]]
+    [:div.column.col-sm-10.signposts
      [:div.navbar-brand [:i.signpost.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]
       [:div.navbar-brand.title "SIGNPOSTS"]]
      [:div.form

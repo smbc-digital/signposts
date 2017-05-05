@@ -5819,7 +5819,10 @@ body {
 .stockport {
   background: #1d2932; }
   .stockport img {
-    width: 100%; }
+    width: 100%;
+    margin-top: 10px; }
+  .stockport .signposts {
+    background: #f3f7fa; }
 
 div.busy {
   z-index: 100;
