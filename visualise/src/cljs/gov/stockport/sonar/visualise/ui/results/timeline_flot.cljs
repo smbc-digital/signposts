@@ -52,7 +52,7 @@
 
 
 (defn graph-placeholder-with-description [!timespan !data]
-  [:div
+  [:div.graph
    (let [{:keys [show-only-highlighted? show-only-highlighted-disabled?]} @!data]
      [:div.highlight-control
       (when show-only-highlighted-disabled? {:class "disabled"})
@@ -65,11 +65,11 @@
    ;[:div.flot-selected {:style {:width "100%" :height 100}}]
 
    (let [{:keys [:selected-from :selected-to]} @!timespan]
-     [:div
+     [:div.showing
       [:center
-       [:span "graph below shows "]
+       [:span "from "]
        [:strong (fmt selected-from)]
-       [:span " - "]
+       [:span " to "]
        [:strong (fmt selected-to)]]])
    [:div.flot-timeline-container
     [alternative-graph-controls !timespan]

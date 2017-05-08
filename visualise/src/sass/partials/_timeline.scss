@@ -1,36 +1,57 @@
-div.highlight-control {
-  margin-left: 22px;
-  margin-top: 14px;
+.graph {
 
-  i {
-    margin-top: -4px;
-  }
 
-  &.disabled {
-    filter: opacity(.2);
-  }
+  div.highlight-control {
 
-}
-
-.flot-timeline-container {
-
-  position: relative;
-
-  .graph-controls {
-    position: absolute;
-    left: 30px;
-    top: 40px;
-    z-index: 1;
+    margin-left: 22px;
+    margin-top: 14px;
 
     i {
-      margin: 0px 10px;
-
-      &.disabled {
-        filter: opacity(0.2);
-      }
-
-      &:hover:not(.disabled) {
+      margin-top: -4px;
+      cursor: pointer;
+      &:hover {
         color: green;
+        filter: opacity(0.6);
+      }
+    }
+
+    &.disabled {
+      filter: opacity(.2);
+    }
+
+  }
+
+  .showing {
+    font-size: 1.8em;
+    margin-left: -50px;
+  }
+
+  .flot-timeline-container {
+
+    position: relative;
+
+    .graph-controls {
+
+      @include disable-selection;
+
+      position: absolute;
+      left: 30px;
+      top: 40px;
+      z-index: 1;
+
+      i {
+        margin: 0px 10px;
+
+        &.disabled {
+          filter: opacity(0.2);
+        }
+
+        &:hover:not(.disabled) {
+          opacity: 0.6;
+          cursor: pointer;
+          color: green;
+        }
+
       }
 
     }

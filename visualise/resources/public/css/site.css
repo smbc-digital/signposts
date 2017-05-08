@@ -5962,7 +5962,8 @@ div.busy {
   background-image: none; }
   .cards > .fixed-height > .panel i.fa:hover,
   .cards > .panel i.fa:hover {
-    opacity: 0.6; }
+    opacity: 0.6;
+    cursor: pointer; }
   .cards > .fixed-height > .panel i.fa-lock,
   .cards > .panel i.fa-lock {
     color: #f36624; }
@@ -6053,24 +6054,39 @@ div.busy {
     font-weight: 700;
     text-align: left; }
 
-div.highlight-control {
+.graph div.highlight-control {
   margin-left: 22px;
   margin-top: 14px; }
-  div.highlight-control i {
-    margin-top: -4px; }
-  div.highlight-control.disabled {
+  .graph div.highlight-control i {
+    margin-top: -4px;
+    cursor: pointer; }
+    .graph div.highlight-control i:hover {
+      color: green;
+      filter: opacity(0.6); }
+  .graph div.highlight-control.disabled {
     filter: opacity(0.2); }
-
-.flot-timeline-container {
+.graph .showing {
+  font-size: 1.8em;
+  margin-left: -50px; }
+.graph .flot-timeline-container {
   position: relative; }
-  .flot-timeline-container .graph-controls {
+  .graph .flot-timeline-container .graph-controls {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: 0;
     position: absolute;
     left: 30px;
     top: 40px;
     z-index: 1; }
-    .flot-timeline-container .graph-controls i {
+    .graph .flot-timeline-container .graph-controls i {
       margin: 0px 10px; }
-      .flot-timeline-container .graph-controls i.disabled {
+      .graph .flot-timeline-container .graph-controls i.disabled {
         filter: opacity(0.2); }
-      .flot-timeline-container .graph-controls i:hover:not(.disabled) {
+      .graph .flot-timeline-container .graph-controls i:hover:not(.disabled) {
+        opacity: 0.6;
+        cursor: pointer;
         color: green; }
