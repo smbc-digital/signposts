@@ -91,14 +91,14 @@
         (is (= (:min result) 0))
         (is (= (:position result) :right))))
 
-    (testing "ticks are good for single event type"
+    (testing "ticks are good for single event type plus one to make space for controls"
       (let [result (fa/y-axis single-event)]
-        (is (= (:max result) 2))
+        (is (= (:max result) 3))
         (is (= (:ticks result) [[1 "asbo"]]))))
 
-    (testing "ticks are good for multiple event types"
+    (testing "ticks are good for multiple event types plus one to make space for controls"
       (let [result (fa/y-axis two-people)]
-        (is (= (:max result) 4))
+        (is (= (:max result) 5))
         (is (= (:ticks result) [[1 "zoology"] [2 "caution"] [3 "asbo"]])))))
 
   (testing "collision keys"
