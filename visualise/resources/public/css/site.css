@@ -6058,11 +6058,13 @@ div.busy {
   margin-left: 22px;
   margin-top: 14px; }
   .graph div.highlight-control i {
-    margin-top: -4px;
-    cursor: pointer; }
-    .graph div.highlight-control i:hover {
-      color: green;
-      filter: opacity(0.6); }
+    margin-top: -4px; }
+    .graph div.highlight-control i.disabled {
+      filter: opacity(0.2); }
+    .graph div.highlight-control i:hover:not(.disabled) {
+      opacity: 0.6;
+      cursor: pointer;
+      color: green; }
   .graph div.highlight-control.disabled {
     filter: opacity(0.2); }
 .graph .showing {

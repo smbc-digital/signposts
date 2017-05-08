@@ -8,11 +8,17 @@
 
     i {
       margin-top: -4px;
-      cursor: pointer;
-      &:hover {
-        color: green;
-        filter: opacity(0.6);
+
+      &.disabled {
+        filter: opacity(0.2);
       }
+
+      &:hover:not(.disabled) {
+        opacity: 0.6;
+        cursor: pointer;
+        color: green;
+      }
+
     }
 
     &.disabled {

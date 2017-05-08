@@ -12,29 +12,17 @@
    :min         selected-from
    :max         selected-to})
 
-(defn selector-x-axis [{{:keys [from-date to-date]} :timespan}]
-  {:mode        "time"
-   :timeFormat  "%Y/%m/%d"
-   :minTickSize [1 "month"]
-   :min         from-date
-   :max         to-date})
-
 (defn label-map [data]
   (zipmap (reverse (sort (into #{} (map :event-type (people/all-events data))))) (rest (range))))
 
 (defn y-axis [data]
   (let [labels (label-map data)]
-    {:min      0
-     :max      (+ 2 (count labels))
-     :position :right
-     :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
-
-(defn selector-y-axis [data]
-  (let [labels (label-map data)]
-    {:min      0
-     :max      0.5
-     :position :right
-     :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
+    {:min       0
+     :max       (+ 2 (count labels))
+     :zoomRange false
+     :panRange  false
+     :position  :right
+     :ticks     (map (fn [[k v]] [v (name k)]) labels)}))
 
 (defn collision-key [{:keys [:timestamp :event-type]}]
   {:year       (t/year timestamp)
@@ -52,7 +40,7 @@
                 {k (p/new-stack (blurrer (get lm event-type) (count events)))})
               (group-by collision-key events)))))
 
-(def by-highlighted? (fn [[_ pdata]] ((juxt :highlighted? :rank ) pdata)))
+(def by-highlighted? (fn [[_ pdata]] ((juxt :highlighted? :rank) pdata)))
 
 (defn data-points [{:keys [people show-only-highlighted?] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)
@@ -81,13 +69,3 @@
 
 (defn position-for [!event-map {:keys [id]}]
   (get @!event-map id))
-
-(defn selector-data-points [{{:keys [from-date to-date selected-from selected-to]} :timespan}]
-  [{:points {:show false}
-    :lines  {:show false}
-    :data   [[from-date 1] [to-date 1]]}
-
-   {:points {:show true :radius 5 :fill true}
-    :lines  {:show true}
-    :data   [[selected-from 0.25] [selected-to 0.25]]}])
-

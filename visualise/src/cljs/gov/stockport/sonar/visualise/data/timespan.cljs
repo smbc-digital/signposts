@@ -58,10 +58,11 @@
                         (or (t/= selected-to to-date) (t/after? selected-to to-date)))
         fully-left? (or (t/= selected-from from-date) (t/before? selected-from from-date))
         fully-right? (or (t/= selected-to to-date) (t/after? selected-to to-date))
-        fully-in? false]
+        fully-in? false
+        reset? (and (t/= selected-from from-date) (t/= selected-to to-date))]
     {:scroll-left  (if fully-left? :disabled :enabled)
      :scroll-right (if fully-right? :disabled :enabled)
-     :reset        (if fully-out? :disabled :enabled)
+     :reset        (if reset? :disabled :enabled)
      :zoom-in      (if fully-in? :disabled :enabled)
      :zoom-out     (if fully-out? :disabled :enabled)}))
 

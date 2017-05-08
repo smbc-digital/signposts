@@ -19,9 +19,12 @@
           (is (= query body))
           (is (= query-results-handler handler))
           (is (= response-format :json))
-          (is (= keywords? true))))
+          (is (= keywords? true)))))
 
-      (testing "keep-alive is basic post with null handler"
+    (with-redefs
+      [ajax/post-and-forget (fn [& args] (reset! !last-call args))]
+
+      (testing "keep-alive is fire and forget post with null handler"
         (c/keep-alive)
         (let [[url {:keys [handler]}] @!last-call]
           (is (= "/keep-alive" url))

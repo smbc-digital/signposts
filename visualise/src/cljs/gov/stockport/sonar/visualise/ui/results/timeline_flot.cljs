@@ -2,7 +2,7 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [cljsjs.flot]
             [cljsjs.flot.plugins.time]
-            [cljsjs.flot.plugins.selection]
+            [cljsjs.flot.plugins.navigate]
             [cljsjs.flot.plugins.resize]
             [cljs-time.coerce :as tc]
             [gov.stockport.sonar.visualise.ui.results.selected-event :as se]
@@ -24,6 +24,11 @@
                      :margin          {:top    10
                                        :bottom 10
                                        :left   10}}
+            :pan    {:interactive true
+                     :cursor      :move
+                     :frameRate   20}
+            :zoom   {:interactive true
+                     :cursor      :move}
             :lines  {:show false}
             :points {:radius 8}
             :legend {:show false}}))
@@ -31,116 +36,91 @@
 (defn fmt [timestamp]
   (f/unparse (f/formatter "d MMMM YYYY") timestamp))
 
-(defn alternative-graph-controls [!timespan]
-  (let [{:keys [scroll-left scroll-right zoom-in zoom-out reset]} (timespan/control-state !timespan)]
-    [:div.graph-controls
-     [:i.fa.fa-2x.fa-arrow-left
-      {:class    scroll-left
-       :on-click (fn [_] (timespan/scroll-left !timespan))}]
-     [:i.fa.fa-2x.fa-search-plus
-      {:class    zoom-in
-       :on-click (fn [_] (timespan/zoom-in !timespan))}]
-     [:i.fa.fa-2x.fa-search-minus
-      {:class    zoom-out
-       :on-click (fn [_] (timespan/zoom-out !timespan))}]
-     [:i.fa.fa-2x.fa-arrow-right
-      {:class    scroll-right
-       :on-click (fn [_] (timespan/scroll-right !timespan))}]
-     [:i.fa.fa-2x.fa-undo
-      {:class    reset
-       :on-click (fn [_] (timespan/reset !timespan))}]]))
+(defn alternative-graph-controls []
+  [:div.graph-controls
+   [:i.fa.fa-2x.fa-arrow-left.pan-left]
+   [:i.fa.fa-2x.fa-search-plus.zoom-in]
+   [:i.fa.fa-2x.fa-search-minus.zoom-out]
+   [:i.fa.fa-2x.fa-arrow-right.pan-right]])
 
-
-(defn graph-placeholder-with-description [!timespan !data]
+(defn graph-placeholder [!data]
   [:div.graph
    (let [{:keys [show-only-highlighted? show-only-highlighted-disabled?]} @!data]
      [:div.highlight-control
       (when show-only-highlighted-disabled? {:class "disabled"})
       [:i.fa.fa-2x.pull-left
        {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
-        :on-click (with-keep-alive #(swap! !data people/toggle-show-only-highlighted))
-        }]
+        :on-click (with-keep-alive #(swap! !data people/toggle-show-only-highlighted))}]
       [:p.info "Show highlighted individuals only"]])
 
-   ;[:div.flot-selected {:style {:width "100%" :height 100}}]
-
-   (let [{:keys [:selected-from :selected-to]} @!timespan]
-     [:div.showing
-      [:center
-       [:span "from "]
-       [:strong (fmt selected-from)]
-       [:span " to "]
-       [:strong (fmt selected-to)]]])
+   [:div.showing
+    [:center
+     [:span "from "]
+     [:strong.from ""]
+     [:span " to "]
+     [:strong.to ""]]]
    [:div.flot-timeline-container
-    [alternative-graph-controls !timespan]
+    [alternative-graph-controls]
     [:div.flot-timeline {:style {:width "100%" :height 500}}]]])
 
-(defn touch-data-to-force-rebind-click-handler [!data]
-  (swap! !data update :plotinteraction #(not (or % false))))
+(defn currently-displayed-range [flot]
+  (let [{:keys [min max]} (-> (.getOptions flot)
+                              .-xaxes
+                              first
+                              (js->clj :keywordize-keys true))]
+    {:displayed-from (tc/from-long min)
+     :displayed-to   (tc/from-long max)}))
 
-(defn draw-selector [!data the-data options]
-  (let [!plotselected (atom nil)]
-    (.plot (js/jQuery ".flot-selected")
-           (clj->js the-data)
-           (clj->js (-> options
-                        (assoc :selection {:mode    "x"
-                                           :shape   "round"
-                                           :minSize 10
-                                           }))))
-
-    (.bind (js/jQuery ".flot-selected") "plotselected"
-           (fn [_ ranges]
-             (let [{{:keys [from to]} :xaxis} (js->clj ranges :keywordize-keys true)]
-               (reset! !plotselected true)
-               (swap! !data (fn [data] (-> data
-                                           (assoc-in [:timespan :selected-from] (tc/from-long from))
-                                           (assoc-in [:timespan :selected-to] (tc/from-long to))))))))
-
-    (.bind (js/jQuery ".flot-selected") "plotclick"
-           (fn [& _]
-             (if (not @!plotselected)
-               (do
-                 (reset! !plotselected false)
-                 (:timespan
-                   (swap! !data (fn [{:keys [:timespan] :as data}]
-                                  (-> data
-                                      (assoc-in [:timespan :selected-from] (:from-date timespan))
-                                      (assoc-in [:timespan :selected-to] (:to-date timespan)))))))
-               (reset! !plotselected false))))))
+(defn update-displayed-date-range [flot]
+  (let [{:keys [displayed-from displayed-to]} (currently-displayed-range flot)]
+    (-> (js/jQuery ".showing .from")
+        (.html (fmt displayed-from)))
+    (-> (js/jQuery ".showing .to")
+        (.html (fmt displayed-to)))))
 
 (defn draw-graph [!data {:keys [data event-map]} options]
   (let [flot (.plot js/jQuery
                     (js/jQuery ".flot-timeline")
                     (clj->js data)
-                    (clj->js (-> options
-                                 (assoc :selection {:mode    "x"
-                                                    :shape   "round"
-                                                    :minSize 20
-                                                    }))))]
+                    (clj->js options))]
+
+    (update-displayed-date-range flot)
 
     (if-let [{:keys [seriesIndex dataIndex]} (fa/position-for event-map (:selected-event @!data))]
       (.highlight flot seriesIndex dataIndex))
 
-    (.one (js/jQuery ".flot-timeline") "plotclick"
-          (fn [_ _ item]
-            (touch-data-to-force-rebind-click-handler !data)
-            (if item
-              (let [{:keys [datapoint seriesIndex dataIndex]} (js->clj item :keywordize-keys true)]
-                (:selected-event (swap! !data assoc :selected-event (fa/event-at event-map seriesIndex dataIndex)))
-                (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex}))
-              (swap! !data dissoc :point :selected-event))))
+    (.bind (js/jQuery ".flot-timeline") "plotclick"
+           (fn [_ _ item]
+             (when item
+               (let [{:keys [datapoint seriesIndex dataIndex]} (js->clj item :keywordize-keys true)
+                     {:keys [displayed-from displayed-to]} (currently-displayed-range flot)]
+                 (:selected-event
+                   (swap! !data #(-> %
+                                     (assoc :selected-event (fa/event-at event-map seriesIndex dataIndex))
+                                     (assoc-in [:timespan :selected-from] displayed-from)
+                                     (assoc-in [:timespan :selected-to] displayed-to))))
+                 (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex})))))
 
-    (.one (js/jQuery ".flot-timeline") "plotselected"
-          (fn [_ ranges]
-            (let [{{:keys [from to]} :xaxis} (js->clj ranges :keywordize-keys true)]
-              (swap! !data (fn [data] (-> data
-                                          (assoc-in [:timespan :selected-from] (tc/from-long from))
-                                          (assoc-in [:timespan :selected-to] (tc/from-long to))))))))))
+    (.bind (js/jQuery ".flot-timeline") "plotpan plotzoom" (with-keep-alive (fn [& _] (update-displayed-date-range flot))))
+
+    (.bind (js/jQuery ".graph-controls .zoom-in") "click"
+           (fn [& _]
+             (.zoom flot)))
+
+    (.bind (js/jQuery ".graph-controls .zoom-out") "click"
+           (fn [& _]
+             (.zoomOut flot)))
+
+    (.bind (js/jQuery ".graph-controls .pan-left") "click"
+           (fn [& _]
+             (.pan flot (clj->js {:left 20}))))
+
+    (.bind (js/jQuery ".graph-controls .pan-right") "click"
+           (fn [& _]
+             (.pan flot (clj->js {:left -20}))))))
 
 (defn draw-with [!data]
   (let []
-    ;(draw-selector !data (fa/selector-data-points @!data) (options {:xaxis (fa/selector-x-axis @!data)
-    ;                                                                :yaxis (fa/selector-y-axis @!data)}))
     (draw-graph !data (fa/data-points @!data) (options {:xaxis (fa/x-axis @!data)
                                                         :yaxis (fa/y-axis @!data)}))))
 
@@ -157,6 +137,6 @@
     (let [results (:result @!data)]
       (when (not-empty results)
         [:div
-         [graph-placeholder-with-description (r/cursor !data [:timespan]) !data]
+         [graph-placeholder !data]
          [flot-component !data @!data]
          [se/selected-event !data]]))))

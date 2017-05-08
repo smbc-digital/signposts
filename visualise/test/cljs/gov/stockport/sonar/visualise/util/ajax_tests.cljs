@@ -30,27 +30,26 @@
           (is (= (:handler options) some-handler))
           (is (= (:error-handler options) l/default-error-handler))))))
 
-  (testing "should indicate ajax is in progress when call is made"
-
-    (let [calls (atom nil)]
-
-      (with-redefs
-        [l/perform-post (fn [& args] (reset! calls args))
-         l/wrapped-handler identity]
-
-        (swap! !app assoc :ajax-in-progress false)
-
-        ;when
-        (l/post "/some-url" {:body    {:some "body"}
-                             :handler some-handler})
-
-        (is (= (:ajax-in-progress @!app) true))
-
-        (let [wrapped-handler (l/wrapped-handler identity)]
-          (wrapped-handler))
-
-        (is (= (:ajax-in-progress @!app) false))
-        )))
+  ;(testing "should indicate ajax is in progress when call is made"
+  ;
+  ;  (let [calls (atom nil)]
+  ;
+  ;    (with-redefs
+  ;      [l/perform-post (fn [& args] (reset! calls args))
+  ;       l/wrapped-handler identity]
+  ;
+  ;      (swap! !app assoc :ajax-in-progress false)
+  ;
+  ;      ;when
+  ;      (l/post "/some-url" {:body    {:some "body"}
+  ;                           :handler some-handler})
+  ;
+  ;      (is (= (:ajax-in-progress @!app) true))
+  ;
+  ;      (let [wrapped-handler (l/wrapped-handler identity)]
+  ;        (wrapped-handler))
+  ;
+  ;      (is (= (:ajax-in-progress @!app) false)))))
 
 
   (testing "should include csrf anti-forgery-token, url-decoded, if it exists"

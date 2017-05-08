@@ -45,12 +45,22 @@
       (assoc :handler (wrapped-handler handler)
              :error-handler (wrapped-handler error-handler))))
 
+(defn- with-standard-wrappers [request]
+  (-> request
+      (with-common-options)
+      (with-csrf-header)
+      (with-json)
+      (with-error-handling)))
+
 (defn post [url request]
   (perform-post
     url
     (-> request
-        (with-common-options)
-        (with-csrf-header)
-        (with-json)
-        (with-error-handling)
+        (with-standard-wrappers)
         (with-in-progress))))
+
+(defn post-and-forget [url request]
+  (perform-post
+    url
+    (-> request
+        (with-standard-wrappers))))
