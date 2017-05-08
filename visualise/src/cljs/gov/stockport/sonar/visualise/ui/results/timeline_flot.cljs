@@ -32,18 +32,24 @@
   (f/unparse (f/formatter "d MMMM YYYY") timestamp))
 
 (defn alternative-graph-controls [!timespan]
-  [:div.graph-controls
-   [:i.fa.fa-2x.fa-arrow-left.scroll-left
-    {:class :disabled
-     :on-click (fn [_] (timespan/scroll-left !timespan))}]
-   [:i.fa.fa-2x.fa-search-plus.zoom-in
-    {:on-click (fn [_] (timespan/zoom-in !timespan))}]
-   [:i.fa.fa-2x.fa-search-minus.zoom-out
-    {:class :disabled
-     :on-click (fn [_] (timespan/zoom-out !timespan))}]
-   [:i.fa.fa-2x.fa-arrow-right..scroll-right
-    {:class :disabled
-     :on-click (fn [_] (timespan/scroll-right !timespan))}]])
+  (let [{:keys [scroll-left scroll-right zoom-in zoom-out reset]} (timespan/control-state !timespan)]
+    [:div.graph-controls
+     [:i.fa.fa-2x.fa-arrow-left
+      {:class    scroll-left
+       :on-click (fn [_] (timespan/scroll-left !timespan))}]
+     [:i.fa.fa-2x.fa-search-plus
+      {:class    zoom-in
+       :on-click (fn [_] (timespan/zoom-in !timespan))}]
+     [:i.fa.fa-2x.fa-search-minus
+      {:class    zoom-out
+       :on-click (fn [_] (timespan/zoom-out !timespan))}]
+     [:i.fa.fa-2x.fa-arrow-right
+      {:class    scroll-right
+       :on-click (fn [_] (timespan/scroll-right !timespan))}]
+     [:i.fa.fa-2x.fa-undo
+      {:class    reset
+       :on-click (fn [_] (timespan/reset !timespan))}]]))
+
 
 (defn graph-placeholder-with-description [!timespan !data]
   [:div
@@ -56,7 +62,7 @@
         }]
       [:p.info "Show highlighted individuals only"]])
 
-   [:div.flot-selected {:style {:width "100%" :height 100}}]
+   ;[:div.flot-selected {:style {:width "100%" :height 100}}]
 
    (let [{:keys [:selected-from :selected-to]} @!timespan]
      [:div
@@ -109,7 +115,7 @@
                     (clj->js (-> options
                                  (assoc :selection {:mode    "x"
                                                     :shape   "round"
-                                                    :minSize 1
+                                                    :minSize 20
                                                     }))))]
 
     (if-let [{:keys [seriesIndex dataIndex]} (fa/position-for event-map (:selected-event @!data))]
@@ -133,8 +139,8 @@
 
 (defn draw-with [!data]
   (let []
-    (draw-selector !data (fa/selector-data-points @!data) (options {:xaxis (fa/selector-x-axis @!data)
-                                                                    :yaxis (fa/selector-y-axis @!data)}))
+    ;(draw-selector !data (fa/selector-data-points @!data) (options {:xaxis (fa/selector-x-axis @!data)
+    ;                                                                :yaxis (fa/selector-y-axis @!data)}))
     (draw-graph !data (fa/data-points @!data) (options {:xaxis (fa/x-axis @!data)
                                                         :yaxis (fa/y-axis @!data)}))))
 
