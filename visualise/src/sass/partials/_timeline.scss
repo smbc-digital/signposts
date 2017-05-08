@@ -11,3 +11,30 @@ div.highlight-control {
   }
 
 }
+
+.flot-timeline-container {
+
+  position: relative;
+
+  .graph-controls {
+    position: absolute;
+    left: 30px;
+    top: 40px;
+    z-index: 1;
+
+    i {
+      margin: 0px 10px;
+
+      &.disabled {
+        filter: opacity(0.2);
+      }
+
+      &:hover:not(.disabled) {
+        color: green;
+      }
+
+    }
+
+  }
+
+}

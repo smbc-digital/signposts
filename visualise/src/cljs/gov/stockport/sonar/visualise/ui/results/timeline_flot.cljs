@@ -9,6 +9,7 @@
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.util.keep-alive :refer [with-keep-alive]]
+            [gov.stockport.sonar.visualise.data.timespan :as timespan]
             [cljs-time.core :as t]
             [cljs-time.format :as f]
             [reagent.core :as r]))
@@ -30,6 +31,20 @@
 (defn fmt [timestamp]
   (f/unparse (f/formatter "d MMMM YYYY") timestamp))
 
+(defn alternative-graph-controls [!timespan]
+  [:div.graph-controls
+   [:i.fa.fa-2x.fa-arrow-left.scroll-left
+    {:class :disabled
+     :on-click (fn [_] (timespan/scroll-left !timespan))}]
+   [:i.fa.fa-2x.fa-search-plus.zoom-in
+    {:on-click (fn [_] (timespan/zoom-in !timespan))}]
+   [:i.fa.fa-2x.fa-search-minus.zoom-out
+    {:class :disabled
+     :on-click (fn [_] (timespan/zoom-out !timespan))}]
+   [:i.fa.fa-2x.fa-arrow-right..scroll-right
+    {:class :disabled
+     :on-click (fn [_] (timespan/scroll-right !timespan))}]])
+
 (defn graph-placeholder-with-description [!timespan !data]
   [:div
    (let [{:keys [show-only-highlighted? show-only-highlighted-disabled?]} @!data]
@@ -50,7 +65,9 @@
        [:strong (fmt selected-from)]
        [:span " - "]
        [:strong (fmt selected-to)]]])
-   [:div.flot-timeline {:style {:width "100%" :height 500}}]])
+   [:div.flot-timeline-container
+    [alternative-graph-controls !timespan]
+    [:div.flot-timeline {:style {:width "100%" :height 500}}]]])
 
 (defn touch-data-to-force-rebind-click-handler [!data]
   (swap! !data update :plotinteraction #(not (or % false))))

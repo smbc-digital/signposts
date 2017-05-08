@@ -6060,3 +6060,17 @@ div.highlight-control {
     margin-top: -4px; }
   div.highlight-control.disabled {
     filter: opacity(0.2); }
+
+.flot-timeline-container {
+  position: relative; }
+  .flot-timeline-container .graph-controls {
+    position: absolute;
+    left: 30px;
+    top: 40px;
+    z-index: 1; }
+    .flot-timeline-container .graph-controls i {
+      margin: 0px 10px; }
+      .flot-timeline-container .graph-controls i.disabled {
+        filter: opacity(0.2); }
+      .flot-timeline-container .graph-controls i:hover:not(.disabled) {
+        color: green; }

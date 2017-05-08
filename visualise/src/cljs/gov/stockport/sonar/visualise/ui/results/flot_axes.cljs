@@ -25,7 +25,7 @@
 (defn y-axis [data]
   (let [labels (label-map data)]
     {:min      0
-     :max      (+ 1 (count labels))
+     :max      (+ 2 (count labels))
      :position :right
      :ticks    (map (fn [[k v]] [v (name k)]) labels)}))
 
