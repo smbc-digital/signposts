@@ -5,12 +5,16 @@
             [gov.stockport.sonar.visualise.util.blur :as b]
             [gov.stockport.sonar.visualise.util.stack :as p]))
 
-(defn x-axis [{{:keys [selected-from selected-to]} :timespan}]
+(def fortnight-in-millis (* 1000 60 60 24 14))
+
+(defn x-axis [{{:keys [selected-from selected-to from-date to-date]} :timespan}]
   {:mode        "time"
    :timeFormat  "%Y/%m/%d"
    :minTickSize [1 "day"]
    :min         selected-from
-   :max         selected-to})
+   :max         selected-to
+   :zoomRange   [fortnight-in-millis nil]
+   :panRange    [from-date to-date]})
 
 (defn label-map [data]
   (zipmap (reverse (sort (into #{} (map :event-type (people/all-events data))))) (rest (range))))
