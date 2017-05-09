@@ -2,7 +2,8 @@
   (:require [clojure.spec :as s]
             [gov.stockport.sonar.spec.event-spec :as es]
             [gov.stockport.sonar.ingest.helper.dates :as dates]
-            [gov.stockport.sonar.ingest.helper.postcode :as p]))
+            [gov.stockport.sonar.ingest.helper.postcode :as p]
+            [gov.stockport.sonar.ingest.clock :as clock]))
 
 (defn- fix-timestamp [{{ts :timestamp} :data :as event}]
   (if (not (dates/iso-date-string? ts))
@@ -25,7 +26,15 @@
       (fix-timestamp)
       (fix-dob)))
 
-(defn enhance [event]
+(defn with-postcode [event]
   (if (not (nil? (get-in event [:data :postcode])))
-      event
-      (assoc-in event [:data :postcode] (p/extract (get-in event [:data :address])))))
+    event
+    (assoc-in event [:data :postcode] (p/extract (get-in event [:data :address])))))
+
+(defn with-ingestion-timestamp [event]
+  (assoc-in event [:data :ingestion-timestamp] (dates/date->iso-date-string (clock/now))))
+
+(defn enhance [event]
+  (-> event
+      (with-postcode)
+      (with-ingestion-timestamp)))

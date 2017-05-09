@@ -1,6 +1,8 @@
 (ns gov.stockport.sonar.ingest.inbound.events-tests
   (:require [midje.sweet :refer :all]
-            [gov.stockport.sonar.ingest.inbound.events :as events]))
+            [gov.stockport.sonar.ingest.inbound.events :as events]
+            [gov.stockport.sonar.ingest.clock :as clock]
+            [clj-time.core :as t]))
 
 (def valid-event {:line-number 1 :data {:event-source "SOURCE"
                                         :event-type   "TYPE"
@@ -49,7 +51,13 @@
              (let [result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
                                                                  :postcode nil}})]
                (get-in result [:data :postcode]) => "SK1 1AB"))
-       )
+
+       (fact "adds an ingestion timestamp"
+             (let [some-time (t/date-time 2017)
+                   _ (clock/freeze! some-time)
+                   result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
+                                                                 :postcode nil}})]
+               (get-in result [:data :ingestion-timestamp]) => "2017-01-01T00:00:00.000Z")))
 
 
 
