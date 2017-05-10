@@ -44,4 +44,3 @@
                        ]
                    (is (= (:people @!state) :some-different-people))
                    (is (= (:show-only-highlighted? @!state) true))))))
-

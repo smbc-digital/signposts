@@ -139,7 +139,6 @@
                            :component-did-mount     (with-keep-alive (fn [] (draw-with !data)))
                            :component-did-update    (with-keep-alive (fn [] (draw-with !data)))})))
 
-
 (defn timeline-flot [!data]
   (fn []
     (let [results (:result @!data)]

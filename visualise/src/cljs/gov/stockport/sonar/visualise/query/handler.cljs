@@ -13,12 +13,12 @@
 
 (defn default-handler [!data]
   (fn [response]
-    (swap! !data #(-> %
-                      (assoc :search-uuid (random-uuid))
-                      (assoc :total (-> response :hits :total))
-                      (assoc :took-millis (-> response :took))
-                      (assoc :result (source-events response))
-                      (dissoc :point :selected-event)
-                      (people/from-data)))
-    (swap! !data #(-> %
-                      (assoc :timespan (timespan/from-data %))))))
+    (let [results (source-events response)]
+      (swap! !data #(-> %
+                        (assoc :search-uuid (random-uuid))
+                        (assoc :total (-> response :hits :total))
+                        (assoc :took-millis (-> response :took))
+                        (assoc :result results)
+                        (dissoc :point :selected-event)
+                        (people/from-data)
+                        (assoc :timespan (timespan/from-data {:result results})))))))
