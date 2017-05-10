@@ -14,7 +14,7 @@
        [:option {:value target} description])
      (state/available-fields !state control-id))])
 
-(defn search-criteria [!state control-id]
+(defn search-criteria [!state control-id perform-search]
   (map
     (fn [{:keys [get-placeholder get-query set-query on-remove] :as sc}]
       [:div.panel.criteria-box
@@ -28,7 +28,8 @@
           {:type        :text
            :value       (get-query)
            :placeholder (get-placeholder)
-           :on-change   #(set-query (target-value %))}]
+           :on-change   #(set-query (target-value %))
+           :on-key-up   #(when (= 13 (-> % .-keyCode)) (perform-search))}]
          ]]])
     (state/get-all-search-criteria !state control-id)))
 
@@ -49,14 +50,14 @@
      [:p "Search"]]]])
 
 (defn search-control [!app query-handler]
-  (let [control-id (gensym "search-control-")]
+  (let [control-id (gensym "search-control-")
+        search-fn (fn [] (search
+                    (state/extract-query-defs (state/get-all-search-criteria !app control-id))
+                    query-handler))]
     (state/init-search-control !app control-id)
     (fn []
       `[:div.search-control.panel-body
 
-        ~@(search-criteria !app control-id)
+        ~@(search-criteria !app control-id search-fn)
         ~[add-criteria-button #(state/add-search-criteria !app control-id)]
-        ~[search-button (fn []
-                          (search
-                            (state/extract-query-defs (state/get-all-search-criteria !app control-id))
-                            query-handler))]])))
+        ~[search-button search-fn]])))
