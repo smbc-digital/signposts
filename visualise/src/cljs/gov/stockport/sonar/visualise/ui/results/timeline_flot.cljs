@@ -1,5 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.results.timeline-flot
-  (:require [reagent.core :as reagent :refer [atom]]
+  (:require [reagent.core :as reagent]
             [cljsjs.flot]
             [cljsjs.flot.plugins.time]
             [cljsjs.flot.plugins.navigate]
@@ -9,10 +9,9 @@
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.util.keep-alive :refer [with-keep-alive]]
-            [gov.stockport.sonar.visualise.data.timespan :as timespan]
-            [cljs-time.core :as t]
-            [cljs-time.format :as f]
-            [reagent.core :as r]))
+            [cljs-time.format :as f]))
+
+(def !local (atom {}))
 
 (defn options [m]
   (merge m {:grid   {:borderWidth     1
@@ -63,7 +62,7 @@
     [alternative-graph-controls]
     [:div.flot-timeline {:style {:width "100%" :height 500}}]]])
 
-(defn currently-displayed-range [flot]
+(defn current-display-range [flot]
   (let [{:keys [min max]} (-> (.getOptions flot)
                               .-xaxes
                               first
@@ -72,17 +71,29 @@
      :displayed-to   (tc/from-long max)}))
 
 (defn update-displayed-date-range [flot]
-  (let [{:keys [displayed-from displayed-to]} (currently-displayed-range flot)]
+  (let [{:keys [displayed-from displayed-to]} (current-display-range flot)]
     (-> (js/jQuery ".showing .from")
         (.html (fmt displayed-from)))
     (-> (js/jQuery ".showing .to")
         (.html (fmt displayed-to)))))
 
+(defn options-preserving-pan-and-zoom [search-uuid options]
+  (if (and (:flot @!local) (= search-uuid (:search-uuid @!local)))
+    (let [{:keys [displayed-from displayed-to]} (current-display-range (:flot @!local))]
+      (-> options
+          (assoc-in [:xaxis :min] displayed-from)
+          (assoc-in [:xaxis :max] displayed-to)))
+    options))
+
 (defn draw-graph [!data {:keys [data event-map]} options]
-  (let [flot (.plot js/jQuery
-                    (js/jQuery ".flot-timeline")
-                    (clj->js data)
-                    (clj->js options))]
+
+  (reset! !local {:search-uuid (:search-uuid @!data)
+                  :flot        (.plot js/jQuery
+                                      (js/jQuery ".flot-timeline")
+                                      (clj->js data)
+                                      (clj->js (options-preserving-pan-and-zoom (:search-uuid @!data) options)))})
+
+  (let [flot (:flot @!local)]
 
     (update-displayed-date-range flot)
 
@@ -92,13 +103,10 @@
     (.bind (js/jQuery ".flot-timeline") "plotclick"
            (fn [_ _ item]
              (when item
-               (let [{:keys [datapoint seriesIndex dataIndex]} (js->clj item :keywordize-keys true)
-                     {:keys [displayed-from displayed-to]} (currently-displayed-range flot)]
+               (let [{:keys [datapoint seriesIndex dataIndex]} (js->clj item :keywordize-keys true)]
                  (:selected-event
                    (swap! !data #(-> %
-                                     (assoc :selected-event (fa/event-at event-map seriesIndex dataIndex))
-                                     (assoc-in [:timespan :selected-from] displayed-from)
-                                     (assoc-in [:timespan :selected-to] displayed-to))))
+                                     (assoc :selected-event (fa/event-at event-map seriesIndex dataIndex)))))
                  (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex})))))
 
     (.bind (js/jQuery ".flot-timeline") "plotpan plotzoom" (with-keep-alive (fn [& _] (update-displayed-date-range flot))))

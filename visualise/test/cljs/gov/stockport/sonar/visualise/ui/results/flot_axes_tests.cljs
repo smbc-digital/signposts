@@ -5,9 +5,7 @@
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
 
 (def single-event {:timespan {:from-date     (t/date-time 2017)
-                              :selected-from (t/date-time 2017)
-                              :to-date       (t/date-time 2018)
-                              :selected-to   (t/date-time 2018)}
+                              :to-date       (t/date-time 2018)}
                    :people   {:a {:data [{:event-type :asbo}]}}})
 
 (def one-person {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}

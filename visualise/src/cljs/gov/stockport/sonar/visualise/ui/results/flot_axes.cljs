@@ -7,12 +7,12 @@
 
 (def fortnight-in-millis (* 1000 60 60 24 14))
 
-(defn x-axis [{{:keys [selected-from selected-to from-date to-date]} :timespan}]
+(defn x-axis [{{:keys [from-date to-date]} :timespan}]
   {:mode        "time"
    :timeFormat  "%Y/%m/%d"
    :minTickSize [1 "day"]
-   :min         selected-from
-   :max         selected-to
+   :min         from-date
+   :max         to-date
    :zoomRange   [fortnight-in-millis nil]
    :panRange    [from-date to-date]})
 
