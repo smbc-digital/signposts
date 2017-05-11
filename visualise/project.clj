@@ -69,7 +69,8 @@
              :compiler
                            {:output-to     "target/cljsbuild/public/js/app.js"
                             :output-dir    "target/uberjar"
-                            :optimizations :simple
+                            :optimizations :advanced
+                            :externs       ["externs/flot.plugins.navigate.ext.js"]
                             :pretty-print  false}}
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
@@ -114,37 +115,37 @@
   :sass {:src "src/sass"
          :dst "resources/public/css"}
 
-  :profiles {:dev       {:repl-options {:init-ns          gov.stockport.sonar.visualise.repl
-                                        :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+  :profiles {:dev     {:repl-options {:init-ns          gov.stockport.sonar.visualise.repl
+                                      :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
-                         :dependencies [[ring/ring-mock "0.3.0"]
-                                        [ring/ring-devel "1.5.0"]
-                                        [prone "1.1.2"]
-                                        [figwheel-sidecar "0.5.8"]
-                                        [org.clojure/tools.nrepl "0.2.12"]
-                                        [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                        [devcards "0.2.2"]
-                                        [pjstadig/humane-test-output "0.8.1"]
-                                        [midje "1.8.3"]
-                                        [cljs-react-test "0.1.4-SNAPSHOT"]
-                                        [cljsjs/react-with-addons "15.2.0-0"]
-                                        [cljsjs/react-dom "15.2.0-0" :exclusions [cljsjs/react]]
-                                        [prismatic/dommy "1.1.0"]
-                                        [stubadub "2.0.0"]]
+                       :dependencies [[ring/ring-mock "0.3.0"]
+                                      [ring/ring-devel "1.5.0"]
+                                      [prone "1.1.2"]
+                                      [figwheel-sidecar "0.5.8"]
+                                      [org.clojure/tools.nrepl "0.2.12"]
+                                      [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
+                                      [devcards "0.2.2"]
+                                      [pjstadig/humane-test-output "0.8.1"]
+                                      [midje "1.8.3"]
+                                      [cljs-react-test "0.1.4-SNAPSHOT"]
+                                      [cljsjs/react-with-addons "15.2.0-0"]
+                                      [cljsjs/react-dom "15.2.0-0" :exclusions [cljsjs/react]]
+                                      [prismatic/dommy "1.1.0"]
+                                      [stubadub "2.0.0"]]
 
-                         :source-paths ["env/dev/clj"]
-                         :plugins      [[lein-figwheel "0.5.8"]
-                                        [lein-sassy "1.0.7"]
-                                        [lein-midje "3.2.1"]]
+                       :source-paths ["env/dev/clj"]
+                       :plugins      [[lein-figwheel "0.5.8"]
+                                      [lein-sassy "1.0.7"]
+                                      [lein-midje "3.2.1"]]
 
-                         :injections   [(require 'pjstadig.humane-test-output)
-                                        (pjstadig.humane-test-output/activate!)]
+                       :injections   [(require 'pjstadig.humane-test-output)
+                                      (pjstadig.humane-test-output/activate!)]
 
-                         :env          {:dev true}}
+                       :env          {:dev true}}
 
-             :uberjar   {:hooks        [minify-assets.plugin/hooks]
-                         :source-paths ["env/prod/clj"]
-                         :prep-tasks   ["compile" ["cljsbuild" "once" "min"]]
-                         :env          {:production true}
-                         :aot          :all
-                         :omit-source  true}})
+             :uberjar {:hooks        [minify-assets.plugin/hooks]
+                       :source-paths ["env/prod/clj"]
+                       :prep-tasks   ["compile" ["cljsbuild" "once" "min"]]
+                       :env          {:production true}
+                       :aot          :all
+                       :omit-source  true}})

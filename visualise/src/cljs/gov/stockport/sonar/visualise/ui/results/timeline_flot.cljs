@@ -64,8 +64,9 @@
     [:div.flot-timeline {:style {:width "100%" :height 500}}]]])
 
 (defn current-display-range [flot]
-  (let [{:keys [min max]} (-> (.getOptions flot)
-                              .-xaxes
+  (let [
+        {:keys [min max]} (-> (.getOptions flot)
+                              (aget "xaxes")
                               first
                               (js->clj :keywordize-keys true))]
     {:displayed-from (tc/from-long min)
@@ -104,11 +105,12 @@
     (.bind (js/jQuery ".flot-timeline") "plotclick"
            (fn [_ _ item]
              (when item
-               (let [{:keys [datapoint seriesIndex dataIndex]} (js->clj item :keywordize-keys true)]
-                 (:selected-event
-                   (swap! !data #(-> %
-                                     (assoc :selected-event (fa/event-at event-map seriesIndex dataIndex)))))
-                 (swap! !data assoc :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex})))))
+               (let [datapoint (js->clj (aget item "datapoint"))
+                     seriesIndex (js->clj (aget item "seriesIndex"))
+                     dataIndex (js->clj (aget item "dataIndex"))]
+                 (swap! !data assoc
+                        :selected-event (fa/event-at event-map seriesIndex dataIndex)
+                        :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex})))))
 
     (.bind (js/jQuery ".flot-timeline") "plotpan plotzoom" (with-keep-alive (fn [& _] (update-displayed-date-range flot))))
 

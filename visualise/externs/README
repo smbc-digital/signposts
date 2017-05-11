@@ -1,0 +1,13 @@
+When a ClojureScript project uses external JS libraries, the external references to those libraries will be munged when compiling in Advanced Optimizations mode. This is the result of the Google Closure compiler aggressively renaming all unexported symbols.
+
+Externs (.ext.js) files provided here are to describe external symbols that may not be touched during optimization.
+
+The files are referenced in the project.clj cljsbuild definition file for the production build.
+
+A bunch of the package libraries in use by this project come from the https://github.com/cljsjs/packages project which provides libraries with external definitions.  Unfortunately this is not exhaustive.  For example the navigate flot pluging that we make use of in timeline_flot.cljs is not provided by externs in the current packages library and hence the quick fix is to provide that file in this directory.
+
+See the following references for additional background to this:
+
+- https://developers.google.com/closure/compiler/docs/compilation_levels
+- https://github.com/cljsjs/packages/wiki/Creating-Externs
+- https://developers.google.com/closure/compiler/docs/api-tutorial3#externs

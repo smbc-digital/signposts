@@ -16,5 +16,4 @@
     [:div.row.body
       [:div.column.container-criteria.col-sm-2]
       [:div.column.col-sm-10
-       [login-form]]
-      ]])
+       [login-form]]]])
