@@ -16,9 +16,15 @@
 ; to allow re-definition of the defmulti on reload
 (ns-unmap *ns* 'format-event)
 
-(defmulti format-event
-          (fn [timeline]
-            (select-keys timeline [:event-source :event-type])))
+(defmulti
+  format-event
+  (fn [timeline]
+    (case (select-keys timeline [:event-source])
+      {:event-source :SCHOOLS} (if (= (:event-type timeline) :AWOL) :schools-awol :schools)
+      {:event-source :SCHOOLS :event-type :EXCLUSION} :schools-exclusion
+      {:event-source :EIS} :eis
+      {:event-source :HOMES} :homes
+      :default)))
 
 ; SCHOOLS
 
@@ -29,13 +35,13 @@
    :school-postcode    (:postcode address)
    :school-headteacher (get-in headteacher [:name :full-name])})
 
-(defmethod format-event {:event-source :SCHOOLS :event-type :AWOL}
+(defmethod format-event :schools-awol
   [timeline]
   (merge (base-details timeline)
          (schools-data timeline)
          (duration timeline)))
 
-(defmethod format-event {:event-source :SCHOOLS :event-type :EXCLUSION}
+(defmethod format-event :schools
   [timeline]
   (merge (base-details timeline)
          (schools-data timeline)))
@@ -47,13 +53,7 @@
          (duration timeline)
          (select-keys timeline [:primary-presenting-issue :unique-pupil-number])))
 
-(defmethod format-event {:event-source :EIS :event-type :CIN} [timeline] (eis-event timeline))
-
-(defmethod format-event {:event-source :EIS :event-type :LAC} [timeline] (eis-event timeline))
-
-(defmethod format-event {:event-source :EIS :event-type :CONTACT} [timeline] (eis-event timeline))
-
-(defmethod format-event {:event-source :EIS :event-type :SEN} [timeline] (eis-event timeline))
+(defmethod format-event :eis [timeline] (eis-event timeline))
 
 ; HOMES
 
@@ -61,11 +61,6 @@
   (merge (base-details timeline)
          (select-keys timeline [:nino :keyworker])))
 
-(defmethod format-event {:event-source :HOMES :event-type :ASB} [timeline] (home-event timeline))
-(defmethod format-event {:event-source :HOMES :event-type :ARREARS-6-WK} [timeline] (home-event timeline))
-(defmethod format-event {:event-source :HOMES :event-type :EVICTION-APPLICATION} [timeline] (home-event timeline))
-(defmethod format-event {:event-source :HOMES :event-type :NOTICE-SEEKING-POSSESSION} [timeline] (home-event timeline))
-
-
+(defmethod format-event :homes [timeline] (home-event timeline))
 
 (defmethod format-event :default [timeline] (base-details timeline))
