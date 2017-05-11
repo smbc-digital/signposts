@@ -33,7 +33,8 @@
             :legend {:show false}}))
 
 (defn fmt [timestamp]
-  (f/unparse (f/formatter "d MMMM YYYY") timestamp))
+  (if timestamp
+    (f/unparse (f/formatter "d MMMM YYYY") timestamp)))
 
 (defn alternative-graph-controls []
   [:div.graph-controls
