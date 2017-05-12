@@ -14,7 +14,7 @@
   (reset!
     !server
     (let [port (Integer/parseInt (or (env :port) "3000"))]
-      (run-jetty app {:port port :join? false}))))
+      (run-jetty app {:host "127.0.0.1" :port port :join? false}))))
 
 (defn -main [& args]
   (bounce-server))
