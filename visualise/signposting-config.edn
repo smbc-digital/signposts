@@ -3,7 +3,6 @@
 {:default                                                   ; event-source
  {:default                                                  ; event-type
   {:fields [{:name   "Contact"
-             :default "A(ini"
              :source :name}
             {:name    "Phone"
              :default "(their phone number)"}
