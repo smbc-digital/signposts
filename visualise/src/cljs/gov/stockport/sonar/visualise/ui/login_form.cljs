@@ -17,6 +17,7 @@
         [:label "Username"
          [:input.form-control.col-sm-12
           {:type      :text
+           :autoFocus "autofocus"
            :value     (:username @!local)
            :on-change #(swap! !local assoc :username (-> % .-target .-value))}]]]
        [:div.form-group

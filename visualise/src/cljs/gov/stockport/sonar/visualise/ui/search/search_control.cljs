@@ -27,6 +27,7 @@
          [:input.input-lg.col-sm-12
           {:type        :text
            :value       (get-query)
+           :autoFocus   "autofocus"
            :placeholder (get-placeholder)
            :on-change   #(set-query (target-value %))
            :on-key-up   #(when (= 13 (-> % .-keyCode)) (perform-search))}]
@@ -52,8 +53,8 @@
 (defn search-control [!app query-handler]
   (let [control-id (gensym "search-control-")
         search-fn (fn [] (search
-                    (state/extract-query-defs (state/get-all-search-criteria !app control-id))
-                    query-handler))]
+                           (state/extract-query-defs (state/get-all-search-criteria !app control-id))
+                           query-handler))]
     (state/init-search-control !app control-id)
     (fn []
       `[:div.search-control.panel-body
