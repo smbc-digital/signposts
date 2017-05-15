@@ -1,0 +1,13 @@
+; this file is used to configure the information displayed in the signposts pane of the application
+; behaviour can be specified per event-source and event-type
+{:default                                                   ; event-source
+ {:default                                                  ; event-type
+  {:fields [{:name   "Contact"
+             :default "A(ini"
+             :source :name}
+            {:name    "Phone"
+             :default "(their phone number)"}
+            {:name    "Ref#"
+             :default "(reference for this event)"}
+            {:name    "Notes"
+             :default "You are seeing default information for this event because a suitable signpost has not been configured for this event source and type"}]}}}

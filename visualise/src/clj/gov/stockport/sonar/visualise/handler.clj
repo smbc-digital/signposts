@@ -1,6 +1,6 @@
 (ns gov.stockport.sonar.visualise.handler
   (:require [bidi.ring :refer [make-handler ->ResourcesMaybe ->Resources]]
-            [ring.util.response :as rur :refer [response redirect content-type]]
+            [ring.util.response :as rur :refer [response file-response redirect content-type]]
             [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
             [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
             [hiccup.page :refer [include-js include-css html5]]
@@ -9,7 +9,8 @@
             [gov.stockport.sonar.esproxy.proxy :as proxy]
             [gov.stockport.sonar.auth.login-handler :as login]
             [buddy.auth :refer [authenticated?]]
-            [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]])
+            [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]]
+            [clojure.edn :as edn])
   (:import (java.util UUID)))
 
 (defonce version (UUID/randomUUID))
@@ -57,6 +58,7 @@
                  ["/logout" {:post :do-logout}]
                  ["/query" {:post :es-query}]
                  ["/keep-alive" {:post :keep-alive}]
+                 ["/signposting-config" {:get :signposting-config}]
                  ["" (->ResourcesMaybe {:prefix "public/"})]
                  [true :404]]])
 
@@ -66,13 +68,14 @@
       (redirect "/login")
       (handler req))))
 
-(def handlers {:login      (loading-page)
-               :do-login   login/handle-login
-               :do-logout  login/handle-logout
-               :404        not-found-404
-               :app        (redirect-if-not-auth (loading-page))
-               :es-query   proxy/handle-query-request
-               :keep-alive proxy/handle-keep-alive})
+(def handlers {:login              (loading-page)
+               :do-login           login/handle-login
+               :do-logout          login/handle-logout
+               :signposting-config (fn [_] (response (edn/read-string (slurp "signposting-config.edn"))))
+               :404                not-found-404
+               :app                (redirect-if-not-auth (loading-page))
+               :es-query           proxy/handle-query-request
+               :keep-alive         proxy/handle-keep-alive})
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 

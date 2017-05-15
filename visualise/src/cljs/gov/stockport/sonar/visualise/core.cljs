@@ -3,6 +3,7 @@
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
+            [gov.stockport.sonar.visualise.state :refer [initialise!]]
             [gov.stockport.sonar.visualise.ui.pages.home-page :refer [home-page]]
             [gov.stockport.sonar.visualise.ui.pages.login-page :refer [login-page]]))
 
@@ -25,6 +26,7 @@
   (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
+  (initialise!)
   (accountant/configure-navigation!
     {:nav-handler
      (fn [path]

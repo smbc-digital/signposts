@@ -1,19 +1,26 @@
 (ns gov.stockport.sonar.visualise.ui.results.signposting-tests
   (:require [cljs.test :refer-macros [deftest testing is are use-fixtures]]
-            [gov.stockport.sonar.visualise.ui.results.signposting :as s]))
+            [gov.stockport.sonar.visualise.ui.results.signposting :as s]
+            [gov.stockport.sonar.visualise.state :refer [!signposting-config]]))
 
 (deftest signposting-tests
 
   (with-redefs
-    [s/signposts {:default {:default {:fields [{:name    "Default 1"
-                                                :default "(some default 1)"
-                                                :source  :source-field}
-                                               {:name    "Default 2"
-                                                :default "(some default 2)"}]}}
-                  :GMP     {:default {:fields [{:name    "Incident"
-                                                :default "(type of incident)"}]}
-                            :ASBO    {:fields [{:name    "Asbo Field"
-                                                :default "(type of asbo)"}]}}}]
+    [!signposting-config (atom {})]
+
+    (testing "when configuration is not available"
+      (is (= (s/signpost-for {}) {:fields []}))))
+
+  (with-redefs
+    [!signposting-config (atom {:default {:default {:fields [{:name    "Default 1"
+                                                              :default "(some default 1)"
+                                                              :source  "source-field"}
+                                                             {:name    "Default 2"
+                                                              :default "(some default 2)"}]}}
+                                :GMP     {:default {:fields [{:name    "Incident"
+                                                              :default "(type of incident)"}]}
+                                          :ASBO    {:fields [{:name    "Asbo Field"
+                                                              :default "(type of asbo)"}]}}})]
 
     (testing "when event source and type have not been configured"
 
