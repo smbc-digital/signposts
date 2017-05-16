@@ -28,6 +28,7 @@ $(FILES_LOC)$(INGEST_JAR):
 $(FILES_LOC)$(VISUALISE_JAR):
 	cd visualise/; lein clean; lein uberjar
 	cp visualise/target/$(VISUALISE_JAR) $(FILES_LOC)$(VISUALISE_JAR)
+	cp visualise/signposting-config.edn $(FILES_LOC)/signposting-config.edn
 	cp visualise/deps/bcpkix-jdk15on-1.56.jar $(FILES_LOC)bcpkix-jdk15on-1.56.jar
 	cp visualise/deps/bcprov-jdk15on-1.56.jar $(FILES_LOC)bcprov-jdk15on-1.56.jar
 
