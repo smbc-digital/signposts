@@ -13,9 +13,6 @@
   {:keyworker-name  (:full-name name)
    :keyworker-phone phone})
 
-; to allow re-definition of the defmulti on reload
-(ns-unmap *ns* 'format-event)
-
 (defmulti
   format-event
   (fn [timeline]
