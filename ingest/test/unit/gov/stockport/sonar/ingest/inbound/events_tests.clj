@@ -57,7 +57,8 @@
                    _ (clock/freeze! some-time)
                    result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
                                                                  :postcode nil}})]
-               (get-in result [:data :ingestion-timestamp]) => "2017-01-01T00:00:00.000Z")))
+               (get-in result [:data :ingestion-timestamp]) => "2017-01-01T00:00:00.000Z"
+               (clock/thaw!))))
 
 
 
