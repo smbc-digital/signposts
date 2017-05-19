@@ -116,32 +116,32 @@
 
       (testing "are derived as series based on people"
 
-        (is (= (:data (fa/data-points one-person))
+        (is (= (:flot-data (fa/data-points one-person))
                [{:points {:show true} :color (:red colour-map) :data [[1 2] [4 1]]}]))
 
-        (is (= (:data (fa/data-points two-people))
+        (is (= (:flot-data (fa/data-points two-people))
                [{:points {:show true} :color (:red colour-map) :data [[1 3] [4 2]]}
                 {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
 
       (testing "may be turned off if showing only highlighted people"
 
-        (is (= (:data (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? true)))
+        (is (= (:flot-data (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? true)))
                [{:points {:show false} :color (:black colour-map) :data [[1 3] [4 2]]}
                 {:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
 
       (testing "will all be shown if showing all people"
 
-        (is (= (:data (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? false)))
+        (is (= (:flot-data (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? false)))
                [{:points {:show true} :color (:black colour-map) :data [[1 3] [4 2]]}
                 {:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
 
       (testing "events are shifted a little when they land on top of each other"
-        (is (= (:data (fa/data-points colliding-data))
+        (is (= (:flot-data (fa/data-points colliding-data))
                [{:points {:show true} :color (:red colour-map) :data [[1 1.9] [1 2] [4 0.95]]}
                 {:points {:show true} :color (:blue colour-map) :data [[1 2.1] [4 1.05]]}])))
 
       (testing "highlighted data points are drawn last"
-        (is (= (:data (fa/data-points multiple-highlights))
+        (is (= (:flot-data (fa/data-points multiple-highlights))
                [{:points {:show true} :color (:black colour-map) :data [[2 1]]}
                 {:points {:show true} :color (:black colour-map) :data [[4 1]]}
                 {:points {:show true} :color (:black colour-map) :data [[5 1]]}
@@ -151,8 +151,8 @@
 
 
       (testing "data points come with a map so that we can lookup the event when it is selected on the graph"
-        (let [{:keys [event-map data]} (fa/data-points multiple-highlights)]
-          (evaluate-for-side-effects data)
+        (let [{:keys [event-map flot-data]} (fa/data-points multiple-highlights)]
+          (evaluate-for-side-effects flot-data)
           (is (= (fa/event-at event-map 0 0) {:id :e2 :timestamp 2 :event-type :asbo}))
           (is (= (fa/position-for event-map {:id :e4}) {:seriesIndex 1 :dataIndex 0}))
           (is (= @event-map
@@ -170,8 +170,8 @@
                   :e6 {:seriesIndex 5 :dataIndex 0}}))))
 
       (testing "data points indexing works for multiple events and people"
-        (let [{:keys [event-map data]} (fa/data-points two-people-one-highlighted)]
-          (evaluate-for-side-effects data)
+        (let [{:keys [event-map flot-data]} (fa/data-points two-people-one-highlighted)]
+          (evaluate-for-side-effects flot-data)
           (is (= (fa/event-at event-map 0 0) {:id 1 :timestamp 1 :event-type :asbo}))
           (is (= (fa/event-at event-map 0 1) {:id 3 :timestamp 4 :event-type :caution}))
           (is (= (fa/event-at event-map 1 0) {:id 2 :timestamp 4 :event-type :zoology}))

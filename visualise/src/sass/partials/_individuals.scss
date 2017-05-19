@@ -58,6 +58,11 @@
     border-color: $base-default;
   }
 
+  &.has-selected-event {
+    border: 10px;
+    border-style: double;
+  }
+
   &.red {
     @include card-color($base-red);
   }

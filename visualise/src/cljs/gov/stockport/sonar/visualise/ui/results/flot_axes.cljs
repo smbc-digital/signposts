@@ -50,7 +50,7 @@
   (let [ydp (y-data-points-avoiding-collisions data)
         !event-map (atom {})]
     {:event-map !event-map
-     :data      (map-indexed
+     :flot-data (map-indexed
                   (fn [seriesIdx [_ {:keys [color highlighted? data]}]]
                     {:points (-> {:show (or (not show-only-highlighted?) highlighted?)}
                                  (merge (when highlighted? {:fill 0.8 :fillColor false})))

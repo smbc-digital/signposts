@@ -39,11 +39,12 @@
 
          [:div.fixed-height
           (map
-            (fn [[{:keys [name dob address] :as pkey} {:keys [color highlighted? collapsed? locked?]}]]
+            (fn [[{:keys [name dob address] :as pkey} {:keys [has-selected-event? color highlighted? collapsed? locked?]}]]
               ^{:key (gensym)}
               [:div.panel.panel-default.card-box
                {:class (str (and color (cljs.core/name color))
-                            (when (not highlighted?) " blur"))}
+                            (when (not highlighted?) " blur")
+                            (when has-selected-event? " has-selected-event"))}
                [:div.panel-heading.card-name]
                [:div.panel-body
 

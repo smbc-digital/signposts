@@ -87,12 +87,28 @@
           (assoc-in [:xaxis :max] displayed-to)))
     options))
 
-(defn draw-graph [!data {:keys [data event-map]} options]
+(defn on-plot-click-fn [!data event-map]
+  (fn [_ _ item]
+    (if item
+      (let [seriesIndex (js->clj (aget item "seriesIndex"))
+            dataIndex (js->clj (aget item "dataIndex"))]
+        (swap! !data people/select-event (fa/event-at event-map seriesIndex dataIndex)))
+      (swap! !data people/deselect-event))))
+
+(defn on-event [selector events handler-fn]
+  (-> (js/jQuery selector)
+      (.off events)
+      (.on events handler-fn)))
+
+(defn on-click [selector on-click-fn]
+  (on-event selector "click" on-click-fn))
+
+(defn draw-graph [!data {:keys [flot-data event-map]} options]
 
   (reset! !local {:search-uuid (:search-uuid @!data)
                   :flot        (.plot js/jQuery
                                       (js/jQuery ".flot-timeline")
-                                      (clj->js data)
+                                      (clj->js flot-data)
                                       (clj->js (options-preserving-pan-and-zoom (:search-uuid @!data) options)))})
 
   (let [flot (:flot @!local)]
@@ -102,33 +118,21 @@
     (if-let [{:keys [seriesIndex dataIndex]} (fa/position-for event-map (:selected-event @!data))]
       (.highlight flot seriesIndex dataIndex))
 
-    (.bind (js/jQuery ".flot-timeline") "plotclick"
-           (fn [_ _ item]
-             (when item
-               (let [datapoint (js->clj (aget item "datapoint"))
-                     seriesIndex (js->clj (aget item "seriesIndex"))
-                     dataIndex (js->clj (aget item "dataIndex"))]
-                 (swap! !data assoc
-                        :selected-event (fa/event-at event-map seriesIndex dataIndex)
-                        :point {:datapoint datapoint :dataIndex dataIndex :seriesIndex seriesIndex})))))
+    (on-event ".flot-timeline" "plotclick" (on-plot-click-fn !data event-map))
 
-    (.bind (js/jQuery ".flot-timeline") "plotpan plotzoom" (with-keep-alive (fn [& _] (update-displayed-date-range flot))))
+    (on-event ".flot-timeline" "plotpan plotzoom" (with-keep-alive (fn [& _] (update-displayed-date-range flot))))
 
-    (.bind (js/jQuery ".graph-controls .zoom-in") "click"
-           (fn [& _]
-             (.zoom flot)))
+    (on-click ".graph-controls .zoom-in" (fn [& _] (.zoom flot)))
 
-    (.bind (js/jQuery ".graph-controls .zoom-out") "click"
-           (fn [& _]
-             (.zoomOut flot)))
+    (on-click ".graph-controls .zoom-out" (fn [& _] (.zoomOut flot)))
 
-    (.bind (js/jQuery ".graph-controls .pan-left") "click"
-           (fn [& _]
-             (.pan flot (clj->js {:left 20}))))
+    (on-click ".graph-controls .pan-left"
+              (fn [& _]
+                (.pan flot (clj->js {:left 20}))))
 
-    (.bind (js/jQuery ".graph-controls .pan-right") "click"
-           (fn [& _]
-             (.pan flot (clj->js {:left -20}))))))
+    (on-click ".graph-controls .pan-right"
+              (fn [& _]
+                (.pan flot (clj->js {:left -20}))))))
 
 (defn draw-with [!data]
   (let []

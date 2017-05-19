@@ -238,7 +238,7 @@
     (testing "with nobody highlighted you can no longer toggle show highlight only"
 
       (is (= (-> {:people                 {{:name "A"} {:highlighted? true
-                                                        :color :red}
+                                                        :color        :red}
                                            {:name "B"} {}
                                            {:name "C"} {}}
                   :show-only-highlighted? true
@@ -264,47 +264,80 @@
       (let [data {:people {{:name "N1"} {:data [{:name "N1" :score 1 :id 1}]}}
                   :total  1}]
         (is (= (people/results-summary data)
-               "Your search returned 1 event from 1 person"))))))
+               "Your search returned 1 event from 1 person")))))
 
-(testing "locking behaviour"
+  (testing "event selection"
 
-  (let [data {:people {{:name "N1"} {:data    [{:name "N1" :score 1 :id 1}
-                                               {:name "N1" :score 4 :id 2}]
-                                     :locked? true}
-                       {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
-                       {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
-                                     :locked? true}}
+    (with-redefs
+      [people/group-keys [:name]]
 
-              :result [{:name "N1" :score 5 :id 5}          ; addition to locked items
-                       {:name "N2" :score 6 :id 6}
-                       {:name "N4" :score 7 :id 7}
-                       {:name "N1" :score 1 :id 1}]}]       ; duplicate of locked item
+      (testing "select event also marks the related person"
+        (let [result (people/select-event {:people {{:name "N1"} {}
+                                                    {:name "N2"} {}
+                                                    {:name "N3"} {}}}
+                                          {:name "N2" :event-id 1})]
+          (is (= (:selected-event result) {:name "N2" :event-id 1}))
+          (is (= (get-in result [:people {:name "N2"} :has-selected-event?]) true))))
 
-    (testing "we can extract the locked events"
+      (testing "select event also unmarks any other person"
+        (let [result (people/select-event {:people         {{:name "N1"} {:has-selected-event? true
+                                                                          :data                [{:name "N1" :event-id 1}]}
+                                                            {:name "N2"} {}
+                                                            {:name "N3"} {}}
+                                           :selected-event {:name "N1" :event-id 1}}
+                                          {:name "N2" :event-id 2})]
+          (is (= (:selected-event result) {:name "N2" :event-id 2}))
+          (is (= (get-in result [:people {:name "N2"} :has-selected-event?]) true))
+          (is (nil? (get-in result [:people {:name "N1"} :has-selected-event?])))))
 
-      (is (= (people/locked-events data)
+      (testing "deselect event removes all selection indicators"
+        (let [result (people/deselect-event {:people         {{:name "N1"} {}
+                                                              {:name "N2"} {:has-selected-event? true}
+                                                              {:name "N3"} {}}
+                                             :selected-event {:name "N2"}})]
+          (is (nil? (:selected-event result)))
+          (is (nil? (get-in result [:people {:name "N2"} :has-selected-event?])))))
+      ))
 
-             [{:name "N1" :score 1 :id 1}
-              {:name "N1" :score 4 :id 2}
-              {:name "N3" :score 2 :id 4}])))
+  (testing "locking behaviour"
 
-    (testing "we can extract the set of locked keys"
+    (let [data {:people {{:name "N1"} {:data    [{:name "N1" :score 1 :id 1}
+                                                 {:name "N1" :score 4 :id 2}]
+                                       :locked? true}
+                         {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
+                         {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
+                                       :locked? true}}
 
-      (is (= (people/locked-pkeys data)
-             #{{:name "N1"}
-               {:name "N3"}})))
+                :result [{:name "N1" :score 5 :id 5}        ; addition to locked items
+                         {:name "N2" :score 6 :id 6}
+                         {:name "N4" :score 7 :id 7}
+                         {:name "N1" :score 1 :id 1}]}]     ; duplicate of locked item
 
-    (testing "when locked people already exist they are retained"
+      (testing "we can extract the locked events"
 
-      (let [result (:people (people/from-data data))]
+        (is (= (people/locked-events data)
 
-        (is (= (select-keys (get result {:name "N1"}) [:data :locked?])
-               {:data [{:name "N1" :score 1 :id 1}
-                       {:name "N1" :score 4 :id 2}
-                       {:name "N1" :score 5 :id 5}]}))
+               [{:name "N1" :score 1 :id 1}
+                {:name "N1" :score 4 :id 2}
+                {:name "N3" :score 2 :id 4}])))
 
-        (is (= (select-keys (get result {:name "N2"}) [:data]) {:data [{:name "N2" :score 6 :id 6}]}))
+      (testing "we can extract the set of locked keys"
 
-        (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
+        (is (= (people/locked-pkeys data)
+               #{{:name "N1"}
+                 {:name "N3"}})))
 
-        (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]}))))))
+      (testing "when locked people already exist they are retained"
+
+        (let [result (:people (people/from-data data))]
+
+          (is (= (select-keys (get result {:name "N1"}) [:data :locked?])
+                 {:data [{:name "N1" :score 1 :id 1}
+                         {:name "N1" :score 4 :id 2}
+                         {:name "N1" :score 5 :id 5}]}))
+
+          (is (= (select-keys (get result {:name "N2"}) [:data]) {:data [{:name "N2" :score 6 :id 6}]}))
+
+          (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
+
+          (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]})))))))

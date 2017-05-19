@@ -19,6 +19,6 @@
                         (assoc :total (-> response :hits :total))
                         (assoc :took-millis (-> response :took))
                         (assoc :result results)
-                        (dissoc :point :selected-event)
+                        (dissoc :selected-event)
                         (people/from-data)
                         (assoc :timespan (timespan/from-data {:result results})))))))

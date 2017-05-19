@@ -5984,6 +5984,10 @@ div.busy {
   .cards > .fixed-height > .panel.panel-default,
   .cards > .panel.panel-default {
     border-color: #dddddd; }
+  .cards > .fixed-height > .panel.has-selected-event,
+  .cards > .panel.has-selected-event {
+    border: 10px;
+    border-style: double; }
   .cards > .fixed-height > .panel.red .panel,
   .cards > .panel.red .panel {
     border-color: #f36624; }
