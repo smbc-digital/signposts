@@ -19,12 +19,45 @@
 (defn locked-icon [locked?]
   (if locked? "fa-lock" "fa-unlock"))
 
+
+(defn card [!data]
+  (let [highlighting-allowed? (:highlighting-allowed? @!data)]
+    (fn [[{:keys [name dob address] :as pkey} {:keys [has-selected-event? color highlighted? collapsed? locked?]}]]
+      ^{:key (gensym)}
+      [:div.panel.panel-default.card-box
+       {:class (str (and color (cljs.core/name color))
+                    (when (not highlighted?) " blur")
+                    (when has-selected-event? " has-selected-event"))}
+       [:div.panel-heading.card-name]
+       [:div.panel-body
+
+        (if (or highlighted? highlighting-allowed?)
+          [:i.fa.fa-2x.pull-right
+           {:class    (displayed-icon highlighted?)
+            :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
+            :on-click #(swap! !data people/toggle-highlight-person pkey)}])
+
+        ;[:i.fa.fa-2x.pull-right
+        ; {:class    (locked-icon locked?)
+        ;  :title    (str (if locked? "Hide" "Show") " this person on the graph")
+        ;  :on-click #(swap! !data update-in [:people pkey :locked?] not)}]
+
+        [:p.info name (age dob)]
+
+        (if (not collapsed?)
+          [:div
+           [:p.info-label "Date of Birth: "]
+           [:p.info dob]
+           [:p.info-label "Address: "]
+           [:p.info address]])]])))
+
 (defn cards [!data]
   (fn []
     (let [people (people/by-rank @!data)
-          highlighting-allowed? (:highlighting-allowed? @!data)
           collapse-all? (:all-collapsed? @!data)]
       (when (not-empty people)
+        (let [selected-person (first (filter (fn [[_ v]] (:has-selected-event? v)) people))
+              other-people (filter (fn [[_ v]] (not (:has-selected-event? v))) people)]
         [:div.cards
          [:p.results-confirmation (people/results-summary @!data)]
          [:p "You can select up to 6 individuals to highlight"]
@@ -37,36 +70,6 @@
              :on-click #(swap! !data people/toggle-collapse-all)}]
            [:p.info (if collapse-all? "Expand all cards" "Collapse all cards")]]]
 
-         [:div.fixed-height
-          (map
-            (fn [[{:keys [name dob address] :as pkey} {:keys [has-selected-event? color highlighted? collapsed? locked?]}]]
-              ^{:key (gensym)}
-              [:div.panel.panel-default.card-box
-               {:class (str (and color (cljs.core/name color))
-                            (when (not highlighted?) " blur")
-                            (when has-selected-event? " has-selected-event"))}
-               [:div.panel-heading.card-name]
-               [:div.panel-body
-
-                (if (or highlighted? highlighting-allowed?)
-                  [:i.fa.fa-2x.pull-right
-                   {:class    (displayed-icon highlighted?)
-                    :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
-                    :on-click #(swap! !data people/toggle-highlight-person pkey)}])
-
-                ;[:i.fa.fa-2x.pull-right
-                ; {:class    (locked-icon locked?)
-                ;  :title    (str (if locked? "Hide" "Show") " this person on the graph")
-                ;  :on-click #(swap! !data update-in [:people pkey :locked?] not)}]
-
-                [:p.info name (age dob)]
-
-                (if (not collapsed?)
-                  [:div
-                   [:p.info-label "Date of Birth: "]
-                   [:p.info dob]
-                   [:p.info-label "Address: "]
-                   [:p.info address]])]])
-
-            people)]]))))
+         (when selected-person ((card !data) selected-person))
+         [:div.fixed-height (map (card !data) other-people)]])))))
 
