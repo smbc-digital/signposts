@@ -15,3 +15,5 @@ pom.xml.asc
 .DS_Store
 win-infra/files/
 *.exe
+new-es/
+searchguard-es/
