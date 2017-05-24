@@ -12,19 +12,23 @@ RUN chown -R sonar:sonar /home/sonar
 USER sonar
 WORKDIR /home/sonar
 
-RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > lein
-RUN chmod 755 lein
-
-COPY ingest ingest
-COPY visualise visualise
-
-WORKDIR /home/sonar/ingest
-RUN ~/lein run -m gov.stockport.sonar.ingest.utils.bootstrap-demo
-
-WORKDIR /home/sonar/visualise
-RUN ~/lein uberjar
+COPY ingest/config config
+COPY ingest/target/ingest-0.1.0-SNAPSHOT-standalone.jar .
+COPY visualise/target/visualise.jar .
+COPY visualise/deps/bcpkix-jdk15on-1.56.jar .
+COPY visualise/deps/bcprov-jdk15on-1.56.jar .
+COPY visualise/signposting-config.edn .
 
 USER root
+
+EXPOSE 3000
+
+CMD /etc/init.d/elasticsearch start && \
+    java -classpath ingest-0.1.0-SNAPSHOT-standalone.jar gov.stockport.sonar.ingest.utils.bootstrap_demo && \
+    export HOST=0.0.0.0 && \
+    java -jar visualise.jar
+
+
 
 
 
