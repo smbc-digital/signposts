@@ -1,0 +1,44 @@
+div.search-bar {
+  background-color: $sp-green;
+}
+
+div.nuggets {
+
+  display: inline-block;
+
+  .nugget {
+    position: relative;
+    display: inline-block;
+    margin: 10px 5px;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    span {
+
+      &.query {
+        background-color: lightgray;
+        color: black;
+        padding: 5px 5px 5px 10px;
+        border-radius: 15px 0px 0px 6px;
+      }
+
+      &.term {
+        background-color: lightskyblue;
+        padding: 5px 20px 5px 5px;
+        border-radius: 0px 6px 15px 0px;
+
+        i {
+          font-size: 0.8em;
+          position: absolute;
+          top: -2px;
+          right: 4px;
+        }
+      }
+
+    }
+  }
+}

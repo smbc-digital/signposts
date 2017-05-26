@@ -5824,6 +5824,9 @@ body {
   .stockport .signposts {
     background: #f3f7fa; }
 
+div.body {
+  margin-top: 15px; }
+
 div.busy {
   z-index: 100;
   position: absolute;
@@ -6096,3 +6099,31 @@ div.busy {
         opacity: 0.6;
         cursor: pointer;
         color: green; }
+
+div.search-bar {
+  background-color: #1c3645; }
+
+div.nuggets {
+  display: inline-block; }
+  div.nuggets .nugget {
+    position: relative;
+    display: inline-block;
+    margin: 10px 5px;
+    color: white;
+    cursor: pointer; }
+    div.nuggets .nugget:hover {
+      cursor: pointer; }
+    div.nuggets .nugget span.query {
+      background-color: lightgray;
+      color: black;
+      padding: 5px 5px 5px 10px;
+      border-radius: 15px 0px 0px 6px; }
+    div.nuggets .nugget span.term {
+      background-color: lightskyblue;
+      padding: 5px 20px 5px 5px;
+      border-radius: 0px 6px 15px 0px; }
+      div.nuggets .nugget span.term i {
+        font-size: 0.8em;
+        position: absolute;
+        top: -2px;
+        right: 4px; }

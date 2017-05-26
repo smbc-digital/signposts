@@ -272,7 +272,7 @@
       [people/group-keys [:name]]
 
       (testing "select event also marks the related person"
-        (let [result (people/select-event {:people {{:name "N1"} {}
+        (let [result (people/toggle-event {:people {{:name "N1"} {}
                                                     {:name "N2"} {}
                                                     {:name "N3"} {}}}
                                           {:name "N2" :event-id 1})]
@@ -280,7 +280,7 @@
           (is (= (get-in result [:people {:name "N2"} :has-selected-event?]) true))))
 
       (testing "select event also unmarks any other person"
-        (let [result (people/select-event {:people         {{:name "N1"} {:has-selected-event? true
+        (let [result (people/toggle-event {:people         {{:name "N1"} {:has-selected-event? true
                                                                           :data                [{:name "N1" :event-id 1}]}
                                                             {:name "N2"} {}
                                                             {:name "N3"} {}}

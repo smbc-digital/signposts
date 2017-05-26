@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.query.handler :as h]
             [gov.stockport.sonar.visualise.ui.search.search-control :as sc]
+            [gov.stockport.sonar.visualise.ui.search.new-search-control :as nsc]
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
             [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]
             [gov.stockport.sonar.visualise.auth.auth-client :as ac]
@@ -10,28 +11,26 @@
 
 (defn results [!data]
   (when (not-empty (:result @!data))
-    [:div
+    [:div.row.body
      [:div.column.container-results.col-sm-3
       [:div.column-title.results-title "RESULTS"]
       [ic/cards !data]]
 
-     [:div.column.container-timeline.col-sm-7
+     [:div.column.container-timeline.col-sm-9
       [tr/results-tabs !data]]]))
 
 (defn home-page []
-  [:div.container-fluid.header
+  [:div
    [busy/overlay]
-   [:div.row.stockport
-    [:div.column.col-sm-2
-     [:img {:src   "/images/stockport_logo.gif" :alt "Stockport MBC"}]]
-    [:div.column.col-sm-10.signposts
-     [:div.navbar-brand [:i.signpost.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]
-      [:div.navbar-brand.title "SIGNPOSTS"]]
-     [:div.form
-      [:button.logout.btn.btn-primary.pull-right {:type :submit :on-click ac/logout} "Logout"]]]]
+   [:div.container-fluid.header
+    [:div.row.stockport
+     [:div.column.col-sm-12.signposts
+      [:div.navbar-brand [:i.signpost.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]
+       [:div.navbar-brand.title "SIGNPOSTS"]]
+      [:div.form
+       [:button.logout.btn.btn-primary.pull-right {:type :submit :on-click ac/logout} "Logout"]]]]
 
-   [:div.row.body
-    [:div.column.container-criteria.col-sm-2
-     [:div.column-title.results-title "SEARCH BY"]
-     [sc/search-control !app (h/default-handler !data)]]
+    [:div.row.search-bar
+     [nsc/new-search-control (h/default-handler !data)]]
+
     [results !data]]])

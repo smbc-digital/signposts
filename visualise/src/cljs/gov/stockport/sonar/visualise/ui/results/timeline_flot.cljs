@@ -19,10 +19,11 @@
                      :labelMargin     10
                      :hoverable       true
                      :clickable       true
-                     :backgroundColor {:colors ["#fff" "#e4f4f4"]}
+                     :backgroundColor {:colors ["#f4f4f4" "#f4f4f4"]}
                      :margin          {:top    10
                                        :bottom 10
-                                       :left   10}}
+                                       :left   10
+                                       :right  40}}
             :pan    {:interactive true
                      :cursor      :move
                      :frameRate   20}
@@ -92,7 +93,7 @@
     (if item
       (let [seriesIndex (js->clj (aget item "seriesIndex"))
             dataIndex (js->clj (aget item "dataIndex"))]
-        (swap! !data people/select-event (fa/event-at event-map seriesIndex dataIndex)))
+        (swap! !data people/toggle-event (fa/event-at event-map seriesIndex dataIndex)))
       (swap! !data people/deselect-event))))
 
 (defn on-event [selector events handler-fn]
