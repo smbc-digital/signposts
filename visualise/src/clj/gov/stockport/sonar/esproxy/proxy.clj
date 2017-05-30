@@ -32,7 +32,7 @@
   (if-let [query-defs (:body request)]
     (let [{:keys [username] :as credentials} (sm/get-credentials session)
           query (qb/build-es-query query-defs)]
-      (info (str "User [" username "] performed query: " query))
+      (when username (info (str "User [" username "] performed query: " query)))
       (response (perform-query credentials query)))
     (response {})))
 
