@@ -27,7 +27,7 @@
      :panRange   false
      :position   :right
      :ticks      (map (fn [[k v]] [v (name k)]) labels)
-     :labelWidth 20
+     :labelWidth 50
      }))
 
 (defn collision-key [{:keys [:timestamp :event-type]}]

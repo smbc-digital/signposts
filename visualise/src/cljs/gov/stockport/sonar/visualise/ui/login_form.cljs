@@ -15,14 +15,14 @@
       [:div.form
        [:div.form-group
         [:label "Username"
-         [:input.form-control.col-sm-12
+         [:input.form-control.col-12
           {:type      :text
            :autoFocus "autofocus"
            :value     (:username @!local)
            :on-change #(swap! !local assoc :username (-> % .-target .-value))}]]]
        [:div.form-group
         [:label "Password"
-         [:input.form-control.col-sm-9
+         [:input.form-control.col-9
           {:type      :password
            :value     (:password @!local)
            :on-change #(swap! !local assoc :password (-> % .-target .-value))

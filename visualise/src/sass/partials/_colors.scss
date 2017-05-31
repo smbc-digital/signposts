@@ -7,11 +7,19 @@ $sp-green:     #1c3645;
 $add-criteria: #366c8b;
 $search:       #71c573;
 
+
 $base-default: #dddddd;
 $base-black:   #000000;
-$base-red:     #f36624;
-$base-yellow:  #ffc502;
-$base-green:   #8dc702;
-$base-aqua:    #01a79d;
-$base-blue:    #2e3292;
-$base-purple:  #91278e;
+
+$base-red:     rgb(243,102,36);
+$base-red-l:     rgba(243,102,36,0.4);
+$base-yellow:  rgb(255,197,2);
+$base-yellow-l:  rgba(255,197,2,0.4);
+$base-green:   rgb(141,199,2);
+$base-green-l:   rgba(141,199,2,0.4);
+$base-aqua:    rgb(1,167,157);
+$base-aqua-l:    rgba(1,167,157,0.4);
+$base-blue:    rgb(46,50,146);
+$base-blue-l:    rgba(46,50,146,0.4);
+$base-purple:  rgb(145,39,142);
+$base-purple-l:  rgba(145,39,142,0.4);

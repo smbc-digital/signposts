@@ -18,18 +18,22 @@
       (query-callback terms))))
 
 (defn nugget [!local query-callback {:keys [query val] :as item}]
-  [:div.nugget {:on-click (remove-search-criteria query-callback !local item)}
-   [:span.query (name query)]
-   [:span.term val [:i.fa.fa-times]]])
+  [:div.input-group.nugget
+   [:span.input-group-addon.name (name query)]
+   [:span.input-group-addon.val val]
+   [:span.input-group-btn
+    [:button.btn.bg-info.mr-2
+     {:on-click (remove-search-criteria query-callback !local item)}
+     [:i.fa.fa-times]]]])
 
 (defn search-criteria-control [query-callback]
   (let [!local (r/atom {:query (:target (first qcs/options))
                         :terms []})]
     (fn []
-      [:div.search-control.panel-body
-       [:p.info {:style {:color "#ffffff"}} "Look for people"]
-       [:div.nuggets
-        [:select.input-sm
+      [:div.container-fluid
+       {:style {:background-color "#1d2932"}}
+       [:div.form-inline.py-2
+        [:select.custom-select.form-control.mr-2
          {:value     (:query @!local)
           :autoFocus "autofocus"
           :on-change #(swap! !local assoc :query (keyword (-> % .-target .-value)))}
@@ -38,12 +42,17 @@
              ^{:key target}
              [:option {:value target} description])
            qcs/options)]
-        [:input.input-sm {:value       (:val @!local)
-                          :placeholder (get-in qcs/query-types [(:query @!local) :placeholder])
-                          :on-change   #(swap! !local assoc :val (-> % .-target .-value))
-                          :on-key-up   #(when (= 13 (-> % .-keyCode)) (add-search-criteria !local query-callback))}]]
-       `[:div.nuggets
-         ~@(map (partial nugget !local query-callback) (:terms @!local))]])))
+        [:div.input-group
+         [:input.form-control {:value       (:val @!local)
+                               :placeholder (get-in qcs/query-types [(:query @!local) :placeholder])
+                               :on-change   #(swap! !local assoc :val (-> % .-target .-value))
+                               :on-key-up   #(when (= 13 (-> % .-keyCode)) (add-search-criteria !local query-callback))}]
+         [:span.input-group-btn
+          [:button.btn.btn-success.mr-2
+           {:on-click #(add-search-criteria !local query-callback)}
+           [:i.fa.fa-search]]]]
+        `[:span {:style {:display :inline-flex}}
+          ~@(map (partial nugget !local query-callback) (:terms @!local))]]])))
 
 (defn query-wrapper [handler]
   (fn [terms]
@@ -54,3 +63,4 @@
 (defn new-search-control [handler]
   (let [query-callback (query-wrapper handler)]
     [search-criteria-control query-callback]))
+

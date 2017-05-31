@@ -26,8 +26,10 @@
            :content "width=device-width, initial-scale=1"}]
    [:meta {:http-equiv "X-UA-Compatible"
            :content    "IE=Edge"}]
-   (include-css (str (if (env :dev) "/css/site.css" "/css/site.min.css") "?v=" version)
-                "/css/font-awesome.min.css")])
+   (include-css
+     "/css/bootstrap.min.css"
+     "/css/font-awesome.min.css"
+     (str (if (env :dev) "/css/site.css" "/css/site.min.css") "?v=" version))])
 
 (defn html [content]
   (fn [_] (-> (response content)
