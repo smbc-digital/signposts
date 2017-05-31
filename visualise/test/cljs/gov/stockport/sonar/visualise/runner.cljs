@@ -1,6 +1,5 @@
 (ns gov.stockport.sonar.visualise.runner
   (:require [doo.runner :refer-macros [doo-tests doo-all-tests]]
-            [gov.stockport.sonar.visualise.aggregation.date-spread-tests]
             [gov.stockport.sonar.visualise.ui.facet-tests]
             [gov.stockport.sonar.visualise.query.handler-tests]
             [gov.stockport.sonar.visualise.query.client-tests]

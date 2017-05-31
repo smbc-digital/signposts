@@ -3,7 +3,8 @@
             [gov.stockport.sonar.visualise.data.people :as people]
             [cljs-time.core :as t]
             [cljs-time.format :as f]
-            [gov.stockport.sonar.visualise.util.fmt-help :refer [address-summary date-of-birth]]))
+            [gov.stockport.sonar.visualise.util.fmt-help :refer [address-summary date-of-birth]]
+            [reagent.core :as reagent]))
 
 (def age
   (fn [dob]
@@ -49,25 +50,38 @@
            [:div [:span "date-of-birth: "] [:span (date-of-birth pkey)]]
            [:div [:span "address: "] [:span (address-summary pkey)]]])]])))
 
-(defn cards [!data]
+(defn cards-render [!data]
   (fn []
     (let [people (people/by-rank @!data)
           collapse-all? (:all-collapsed? @!data)]
       (when (not-empty people)
-        (let [selected-person (first (filter (fn [[_ v]] (:has-selected-event? v)) people))
-              other-people (filter (fn [[_ v]] (not (:has-selected-event? v))) people)]
-          [:div.cards
-           [:p.results-confirmation (people/results-summary @!data)]
-           [:p "You can select up to 6 individuals to highlight"]
+        [:div.cards
+         [:p.results-confirmation (people/results-summary @!data)]
+         [:p "You can select up to 6 individuals to highlight"]
 
-           [:div.panel.panel-default.card-box
-            [:div.panel-body
-             [:i.fa.fa-2x.pull-left
-              {:class    (if collapse-all? "fa-arrow-down" "fa-arrow-up")
-               :title    (str (if collapse-all? "Expand" "Collapse") " all cards")
-               :on-click #(swap! !data people/toggle-collapse-all)}]
-             [:p.info (if collapse-all? "Expand all cards" "Collapse all cards")]]]
+         [:div.panel.panel-default.card-box
+          [:div.panel-body
+           [:i.fa.fa-2x.pull-left
+            {:class    (if collapse-all? "fa-arrow-down" "fa-arrow-up")
+             :title    (str (if collapse-all? "Expand" "Collapse") " all cards")
+             :on-click #(swap! !data people/toggle-collapse-all)}]
+           [:p.info (if collapse-all? "Expand all cards" "Collapse all cards")]]]
 
-           (when selected-person ((card !data) selected-person))
-           [:div.fixed-height (map (card !data) other-people)]])))))
+         [:div.fixed-height (map (card !data) people)]]))))
+
+(defn scroll-to-selected [& _]
+  (if-let [selected (.get (js/jQuery "div.has-selected-event") 0)]
+    (let [top-of-selected-event (.-offsetTop selected)
+          top-of-fixed-height (-> (js/jQuery "div.fixed-height")
+                                  (.get 0)
+                                  (.-offsetTop))]
+      (-> (js/jQuery "div.fixed-height")
+          (.animate (clj->js {:scrollTop (- top-of-selected-event top-of-fixed-height)}))))))
+
+(defn cards [!data]
+  (fn []
+    (reagent/create-class {:reagent-render       (cards-render !data)
+                           :component-did-mount  scroll-to-selected
+                           :component-did-update scroll-to-selected})))
+
 

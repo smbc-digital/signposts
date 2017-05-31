@@ -7,6 +7,7 @@
             [buddy.core.codecs.base64 :as b64]
             [gov.stockport.sonar.auth.session-manager :as sm]
             [gov.stockport.sonar.esproxy.es-query-builder :as qb]
+            [gov.stockport.sonar.esproxy.es-available-data :as ad]
             [taoensso.timbre :refer [info]]))
 
 (def search-url "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch")

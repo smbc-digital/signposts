@@ -27,7 +27,7 @@
                         :terms []})]
     (fn []
       [:div.search-control.panel-body
-       [:p.info {:style {:color "#ffffff"}} "Add Search Term"]
+       [:p.info {:style {:color "#ffffff"}} "Look for people"]
        [:div.nuggets
         [:select.input-sm
          {:value     (:query @!local)

@@ -10,14 +10,18 @@
             [gov.stockport.sonar.visualise.ui.busy :as busy]))
 
 (defn results [!data]
-  (when (not-empty (:result @!data))
     [:div.row.body
      [:div.column.container-results.col-sm-3
       [:div.column-title.results-title "RESULTS"]
       [ic/cards !data]]
-
      [:div.column.container-timeline.col-sm-9
-      [tr/results-tabs !data]]]))
+      [tr/results-tabs !data]]])
+
+(defn summary []
+  [:div.row.body
+   [:div.column.container-results.col-sm-12
+    [:div "Welcome to Signposts"]
+    [:div "Please search for something to get started"]]])
 
 (defn home-page []
   [:div
@@ -33,4 +37,6 @@
     [:div.row.search-bar
      [nsc/new-search-control (h/default-handler !data)]]
 
-    [results !data]]])
+    (if (not-empty (:result @!data))
+      [results !data]
+      [summary])]])
