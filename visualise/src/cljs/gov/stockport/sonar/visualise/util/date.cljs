@@ -3,6 +3,9 @@
             [cljs-time.format :as f]
             [cljs-time.coerce :as c]))
 
+(defn now []
+  (t/now))
+
 (defn parse
   [s formatters]
   (first
@@ -25,3 +28,18 @@
                                               (f/formatter "yyyy-MM-dd")]) (t/now)))]
       (if (> age 1000) (- age 1900) age))
     (catch js/Error e "UNK")))
+
+
+(defn human-since [date]
+  (let [interval (t/interval (t/at-midnight (t/now)) date)
+        days (t/in-days interval)]
+    (cond
+      (> days 7) (str (t/in-weeks interval) " weeks ago")
+      (= days 0) "Today"
+      (= days 1) "Yesterday"
+      (= days 7) "1 week ago"
+      (> days 1) (str days " days ago")
+      :else  "dunno")))
+
+(defn date-format [date]
+  (f/unparse (f/formatter "d MMM yyyy") date))

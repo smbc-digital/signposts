@@ -4,16 +4,20 @@
             [gov.stockport.sonar.visualise.ui.busy :as busy]))
 
 (defn login-page []
-  [:div.container-fluid.header
+  [:div
    [busy/overlay]
-   [:div.row.stockport
-    [:div.column.col-sm-2
-     [:img {:src "/images/stockport_logo.gif" :alt "Stockport MBC"}]]
-    [:div.column.col-sm-10.signposts
-     [:div.navbar-brand [:i.signpost.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]
-      [:div.navbar-brand.title "SIGNPOSTS"]]]]
+   ;[:div.container-fluid
+   ; {:style {:background-color "#1c3645" :color :white}}
+   ; [:div.row.align-items-center.py-1
+   ;  [:div.column.col-1
+   ;   [:div.row.justify-content-center
+   ;    [:i.fa.fa-map-signs.fa-2x]]]
+   ;  [:div.column.col-11
+   ;   [:span.h2 "SIGNPOSTS"]]]]
 
-    [:div.row.body
-      [:div.column.container-criteria.col-sm-2]
-      [:div.column.col-sm-10
-       [login-form]]]])
+   [:div.container-fluid
+    [:div.jumbotron.my-4
+     [:h4 [:i.fa.fa-map-signs.mr-2] "Welcome to Signposts"]
+     [:hr]
+     [login-form]
+     ]]])

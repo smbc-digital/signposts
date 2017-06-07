@@ -122,21 +122,26 @@
       (str num-people (if (> num-people 1) " people" " person"))))
   (defn num-events-summary [data]
     (str (:total data) " event" (if (> (:total data) 1) "s")))
-  (str "Your search returned " (num-events-summary data) " from " (num-people-summary data)))
+  (if (> (:total data) 0)
+    (str "Your search returned " (num-events-summary data) " concerning " (num-people-summary data))
+    "Sorry, that search returned no results"))
 
 (defn- clear-selected-event? [people]
   (reduce merge {}
           (map (fn [[k v]] {k (dissoc v :has-selected-event?)}) people)))
 
-(defn select-event [{:keys [people] :as data} event]
-  (let [pkey-for-event (select-keys event group-keys)]
-    (-> data
-        (assoc :selected-event event)
-        (assoc :people (clear-selected-event? people))
-        (assoc-in [:people pkey-for-event :has-selected-event?] true))))
-
 (defn deselect-event [{:keys [people] :as data}]
   (-> data
       (dissoc :selected-event)
       (assoc :people (clear-selected-event? people))))
+
+(defn toggle-event [{:keys [people selected-event] :as data} event]
+  (if (= selected-event event)
+    (deselect-event data)
+    (let [pkey-for-event (select-keys event group-keys)]
+      (-> data
+          (assoc :selected-event event)
+          (assoc :people (clear-selected-event? people))
+          (assoc-in [:people pkey-for-event :has-selected-event?] true)))))
+
 

@@ -8,6 +8,7 @@
                  [ring-server "0.4.0"]
                  [reagent "0.6.1"]
                  [reagent-utils "0.2.1"]
+                 [re-com "0.9.0"]
                  [ring "1.5.0"]
                  [ring/ring-defaults "0.2.1"]
                  [ring/ring-json "0.4.0"]

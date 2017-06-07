@@ -1,13 +1,16 @@
 .graph {
 
+  div.flot-timeline {
+    width: 100%;
+    height: 400px;
+  }
 
   div.highlight-control {
 
     margin-left: 22px;
-    margin-top: 14px;
+    z-index: 10;
 
     i {
-      margin-top: -4px;
 
       &.disabled {
         filter: opacity(0.2);
@@ -25,11 +28,6 @@
       filter: opacity(.2);
     }
 
-  }
-
-  .showing {
-    font-size: 1.8em;
-    margin-left: -50px;
   }
 
   .flot-timeline-container {

@@ -5,7 +5,7 @@
 (def target-value (fn [elem] (-> elem .-target .-value)))
 
 (defn selected-field [!state control-id {:keys [get-selected-field set-selected-field]}]
-  [:select.input-lg.col-sm-9
+  [:select.input-lg
    {:value     (get-selected-field)
     :on-change #(set-selected-field (target-value %))}
    (map
@@ -18,19 +18,18 @@
   (map
     (fn [{:keys [get-placeholder get-query set-query on-remove] :as sc}]
       [:div.panel.criteria-box
-       [:div.panel-body.col-sm-12
+       [:div.panel-body
 
         [:div.form-group.row
          [selected-field !state control-id sc]
-         [:button.input-lg.btn.btn-default.remove-criteria.pull-right {:type :button :on-click on-remove} [:i.fa.fa-times]]]
-        [:div.form-group.row
-         [:input.input-lg.col-sm-12
+         [:input.input-lg
           {:type        :text
            :value       (get-query)
            :autoFocus   "autofocus"
            :placeholder (get-placeholder)
            :on-change   #(set-query (target-value %))
            :on-key-up   #(when (= 13 (-> % .-keyCode)) (perform-search))}]
+         [:button.input-lg.btn.btn-default.remove-criteria {:type :button :on-click on-remove} [:i.fa.fa-times]]
          ]]])
     (state/get-all-search-criteria !state control-id)))
 
@@ -60,5 +59,7 @@
       `[:div.search-control.panel-body
 
         ~@(search-criteria !app control-id search-fn)
-        ~[add-criteria-button #(state/add-search-criteria !app control-id)]
-        ~[search-button search-fn]])))
+
+        ;~[add-criteria-button #(state/add-search-criteria !app control-id)]
+        ;~[search-button search-fn]
+        ])))

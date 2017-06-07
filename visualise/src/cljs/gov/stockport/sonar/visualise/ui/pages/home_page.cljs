@@ -1,37 +1,44 @@
 (ns gov.stockport.sonar.visualise.ui.pages.home-page
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.query.handler :as h]
-            [gov.stockport.sonar.visualise.ui.search.search-control :as sc]
+            [gov.stockport.sonar.visualise.ui.search.new-search-control :as nsc]
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
             [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]
             [gov.stockport.sonar.visualise.auth.auth-client :as ac]
             [gov.stockport.sonar.visualise.state :refer [!app !data]]
-            [gov.stockport.sonar.visualise.ui.busy :as busy]))
+            [gov.stockport.sonar.visualise.ui.busy :as busy]
+            [gov.stockport.sonar.visualise.data.people :as people]
+            [gov.stockport.sonar.visualise.ui.components.welcome-status :refer [welcome-message]]))
 
 (defn results [!data]
-  (when (not-empty (:result @!data))
-    [:div
-     [:div.column.container-results.col-sm-3
-      [:div.column-title.results-title "RESULTS"]
-      [ic/cards !data]]
-
-     [:div.column.container-timeline.col-sm-7
-      [tr/results-tabs !data]]]))
+  [:div.container-fluid
+   [:div.row.no-gutters
+    [:div.col-3
+     [ic/cards !data]]
+    [:div.col-9
+     [tr/results-tabs !data]]]])
 
 (defn home-page []
-  [:div.container-fluid.header
+  [:div
    [busy/overlay]
-   [:div.row.stockport
-    [:div.column.col-sm-2
-     [:img {:src   "/images/stockport_logo.gif" :alt "Stockport MBC"}]]
-    [:div.column.col-sm-10.signposts
-     [:div.navbar-brand [:i.signpost.fa.fa-map-signs.pull-left.fa-2x.fa-align-center {:aria-hidden "true"}]
-      [:div.navbar-brand.title "SIGNPOSTS"]]
-     [:div.form
-      [:button.logout.btn.btn-primary.pull-right {:type :submit :on-click ac/logout} "Logout"]]]]
+   [:div.container-fluid
+    {:style {:background-color "#1c3645" :color :white}}
+    [:div.row.align-items-center.py-1
+     [:div.column.col-1
+      [:div.row.justify-content-center
+       [:i.fa.fa-map-signs.fa-2x]]]
+     [:div.column.col-10
+      [:span.h2 "SIGNPOSTS"]]
+     [:div.column.col-1
+      [:button.btn.btn-primary {:on-click ac/logout} "Logout"]]]]
 
-   [:div.row.body
-    [:div.column.container-criteria.col-sm-2
-     [:div.column-title.results-title "SEARCH BY"]
-     [sc/search-control !app (h/default-handler !data)]]
-    [results !data]]])
+   [nsc/new-search-control (h/default-handler !data)]
+
+   (when (not (nil? (:total @!data)))
+     [:div.container-fluid
+      {:style {:background-color "#1d2932"}}
+      [:h6.text-white.pb-1 (people/results-summary @!data)]])
+
+   (if (not-empty (:result @!data))
+     [results !data]
+     [welcome-message])])

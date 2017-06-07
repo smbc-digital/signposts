@@ -1,5 +1,43 @@
 @import "mixins";
 @import "colors";
-@import "layout";
+@import "signposting";
 @import "individuals";
 @import "timeline";
+
+body {
+  .btn-primary {
+    background-color: $add-criteria;
+  }
+
+  i.fa {
+    cursor: pointer;
+  }
+
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.nugget {
+
+
+  .name {
+    background-color: $add-criteria;
+    color: white;
+  }
+  .val {
+    background-color: white;
+    display: inline;
+
+    .fa-times {
+
+      &:hover {
+        color: red;
+      }
+    }
+  }
+}
+
+

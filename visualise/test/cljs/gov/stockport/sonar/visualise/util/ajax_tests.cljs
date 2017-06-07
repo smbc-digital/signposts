@@ -18,8 +18,8 @@
          l/wrapped-handler identity]
 
         ;when
-        (l/post "/some-url" {:body    {:some "body"}
-                             :handler some-handler})
+        (l/ajax-post "/some-url" {:body {:some "body"}
+                             :handler   some-handler})
 
         ;then
         (let [[url options] @calls]
@@ -61,8 +61,8 @@
          rc/get-raw (fn [cookie-name] (when (= cookie-name :csrf) "some%2fvalue"))]
 
         ;when
-        (l/post "/some-url" {:body    {:some "body"}
-                             :handler some-handler})
+        (l/ajax-post "/some-url" {:body {:some "body"}
+                             :handler   some-handler})
 
         ;then
         (let [[_ options] @calls]

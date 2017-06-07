@@ -21,12 +21,14 @@
 
 (defn y-axis [data]
   (let [labels (label-map data)]
-    {:min       0
-     :max       (+ 2 (count labels))
-     :zoomRange false
-     :panRange  false
-     :position  :right
-     :ticks     (map (fn [[k v]] [v (name k)]) labels)}))
+    {:min        0
+     :max        (+ 2 (count labels))
+     :zoomRange  false
+     :panRange   false
+     :position   :right
+     :ticks      (map (fn [[k v]] [v (name k)]) labels)
+     :labelWidth 50
+     }))
 
 (defn collision-key [{:keys [:timestamp :event-type]}]
   {:year       (t/year timestamp)

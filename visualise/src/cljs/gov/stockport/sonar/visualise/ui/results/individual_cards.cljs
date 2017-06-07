@@ -2,7 +2,9 @@
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.data.people :as people]
             [cljs-time.core :as t]
-            [cljs-time.format :as f]))
+            [cljs-time.format :as f]
+            [gov.stockport.sonar.visualise.util.fmt-help :refer [address-summary date-of-birth]]
+            [reagent.core :as reagent]))
 
 (def age
   (fn [dob]
@@ -11,65 +13,66 @@
         (str " (" years " yrs)")))))
 
 (defn displayed-icon [displayed?]
-  (if displayed? "fa-check-square" "fa-square-o"))
-
-(defn collapsed-icon [collapsed?]
-  (if collapsed? "fa-arrow-down" "fa-arrow-up"))
-
-(defn locked-icon [locked?]
-  (if locked? "fa-lock" "fa-unlock"))
-
+  (if displayed? "fa-check-square" "fa-square"))
 
 (defn card [!data]
   (let [highlighting-allowed? (:highlighting-allowed? @!data)]
-    (fn [[{:keys [name dob address] :as pkey} {:keys [has-selected-event? color highlighted? collapsed? locked?]}]]
+    (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? collapsed?]}]]
       ^{:key (gensym)}
-      [:div.panel.panel-default.card-box
+      [:div.mb-2.sp-individual
        {:class (str (and color (cljs.core/name color))
                     (when (not highlighted?) " blur")
                     (when has-selected-event? " has-selected-event"))}
-       [:div.panel-heading.card-name]
-       [:div.panel-body
+       [:div.row.no-gutters.align-items-center.upper
+        [:div.column.col-1.pt-2
+         [:center
+          (if (or highlighted? highlighting-allowed?)
+            [:i.fa
+             {:style    {:color :white}
+              :class    (displayed-icon highlighted?)
+              :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
+              :on-click #(swap! !data people/toggle-highlight-person pkey)}]
+            [:i.fa.fa-square {:style {:filter "opacity(0.1)"}}])]]
+        [:div.column.col-11.px-2.pt-2
+         (str name (age dob))]]
 
-        (if (or highlighted? highlighting-allowed?)
-          [:i.fa.fa-2x.pull-right
-           {:class    (displayed-icon highlighted?)
-            :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
-            :on-click #(swap! !data people/toggle-highlight-person pkey)}])
+       [:div.row.no-gutters.lower
+        [:div.column.col-1]
+        [:div.column.col-11.px-2.pb-2
+         [:div
+          [:i.fa.fa-calendar] " " (date-of-birth pkey)]
+         [:div
+          [:i.fa.fa-home] " " (or (address-summary pkey) "no address")]]]])))
 
-        ;[:i.fa.fa-2x.pull-right
-        ; {:class    (locked-icon locked?)
-        ;  :title    (str (if locked? "Hide" "Show") " this person on the graph")
-        ;  :on-click #(swap! !data update-in [:people pkey :locked?] not)}]
-
-        [:p.info name (age dob)]
-
-        (if (not collapsed?)
-          [:div
-           [:p.info-label "Date of Birth: "]
-           [:p.info dob]
-           [:p.info-label "Address: "]
-           [:p.info address]])]])))
-
-(defn cards [!data]
+(defn cards-render [!data]
   (fn []
     (let [people (people/by-rank @!data)
           collapse-all? (:all-collapsed? @!data)]
       (when (not-empty people)
-        (let [selected-person (first (filter (fn [[_ v]] (:has-selected-event? v)) people))
-              other-people (filter (fn [[_ v]] (not (:has-selected-event? v))) people)]
         [:div.cards
-         [:p.results-confirmation (people/results-summary @!data)]
-         [:p "You can select up to 6 individuals to highlight"]
+         [:p "Select up to " [:b "6 individuals"] " to highlight their events on the graph"]
 
-         [:div.panel.panel-default.card-box
-          [:div.panel-body
-           [:i.fa.fa-2x.pull-left
-            {:class    (if collapse-all? "fa-arrow-down" "fa-arrow-up")
-             :title    (str (if collapse-all? "Expand" "Collapse") " all cards")
-             :on-click #(swap! !data people/toggle-collapse-all)}]
-           [:p.info (if collapse-all? "Expand all cards" "Collapse all cards")]]]
+         ;[:p
+         ;  [:i.fa.fa-exchange.fa-rotate-90.pull-left
+         ;   {:title    (str (if collapse-all? "Expand" "Collapse") " all cards")
+         ;    :on-click #(swap! !data people/toggle-collapse-all)}]
+         ;   (if collapse-all? "expand all cards" "collapse all cards")]
 
-         (when selected-person ((card !data) selected-person))
-         [:div.fixed-height (map (card !data) other-people)]])))))
+         [:div.fixed-height (map (card !data) people)]]))))
+
+(defn scroll-to-selected [& _]
+  (if-let [selected (.get (js/jQuery "div.has-selected-event") 0)]
+    (let [top-of-selected-event (.-offsetTop selected)
+          top-of-fixed-height (-> (js/jQuery "div.fixed-height")
+                                  (.get 0)
+                                  (.-offsetTop))]
+      (-> (js/jQuery "div.fixed-height")
+          (.animate (clj->js {:scrollTop (- top-of-selected-event top-of-fixed-height)}))))))
+
+(defn cards [!data]
+  (fn []
+    (reagent/create-class {:reagent-render       (cards-render !data)
+                           :component-did-mount  scroll-to-selected
+                           :component-did-update scroll-to-selected})))
+
 

@@ -7,10 +7,13 @@
   (let [!selected (r/atom :timeline)]
     (fn []
       [:div
-       [:ul.nav.nav-tabs
-        [:li (if (= :timeline @!selected) {:class :active}) [:a.results-title {:on-click #(reset! !selected :timeline)} "TIMELINES"]]
-        [:li (if (= :raw-data @!selected) {:class :active}) [:a.results-title {:on-click #(reset! !selected :raw-data)} "RAW DATA"]]]
+       [:div.nav.nav-tabs
+        [:li.nav-item
+         [:span.nav-link {:on-click #(reset! !selected :timeline)
+                          :class    (if (= :timeline @!selected) :active "")} "TIMELINES"]]
+        [:li.nav-item
+         [:span.nav-link {:on-click #(reset! !selected :raw-data)
+                          :class    (if (= :raw-data @!selected) :active "")} "RAW DATA"]]]
        (if (= :timeline @!selected)
          [timeline-flot !data]
          [rt/raw-table !data])])))
-

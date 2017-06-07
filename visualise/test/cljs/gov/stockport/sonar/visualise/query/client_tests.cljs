@@ -10,7 +10,7 @@
         query-results-handler (fn qrh [])]
 
     (with-redefs
-      [ajax/post (fn [& args] (reset! !last-call args))]
+      [ajax/ajax-post (fn [& args] (reset! !last-call args))]
 
       (testing "search"
         (c/search query query-results-handler)

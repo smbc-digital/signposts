@@ -19,10 +19,11 @@
                      :labelMargin     10
                      :hoverable       true
                      :clickable       true
-                     :backgroundColor {:colors ["#fff" "#e4f4f4"]}
-                     :margin          {:top    10
+                     :backgroundColor {:colors ["#f4f4f4" "#f4f4f4"]}
+                     :margin          {:top    0
                                        :bottom 10
-                                       :left   10}}
+                                       :left   0
+                                       :right  40}}
             :pan    {:interactive true
                      :cursor      :move
                      :frameRate   20}
@@ -45,23 +46,23 @@
 
 (defn graph-placeholder [!data]
   [:div.graph
-   (let [{:keys [show-only-highlighted? show-only-highlighted-disabled?]} @!data]
-     [:div.highlight-control
-      (when show-only-highlighted-disabled? {:class "disabled"})
-      [:i.fa.fa-2x.pull-left
-       {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
-        :on-click (with-keep-alive #(swap! !data people/toggle-show-only-highlighted))}]
-      [:p.info "Show highlighted individuals only"]])
-
-   [:div.showing
-    [:center
-     [:span "from "]
+   [:div.row.mt-2 {:style {:margin-bottom "-20px"}}
+    (let [{:keys [show-only-highlighted? show-only-highlighted-disabled?]} @!data]
+      [:div.column.col-6.highlight-control
+       (when show-only-highlighted-disabled? {:class "disabled"})
+       [:i.fa.fa-2x.pull-left
+        {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
+         :on-click (with-keep-alive #(swap! !data people/toggle-show-only-highlighted))}]
+       "Show highlighted individuals only"])
+    [:div.column.showing.col
+     "viewing "
      [:strong.from ""]
-     [:span " to "]
+     " to "
      [:strong.to ""]]]
+
    [:div.flot-timeline-container
     [alternative-graph-controls]
-    [:div.flot-timeline {:style {:width "100%" :height 500}}]]])
+    [:div.flot-timeline]]])
 
 (defn current-display-range [flot]
   (let [
@@ -92,7 +93,7 @@
     (if item
       (let [seriesIndex (js->clj (aget item "seriesIndex"))
             dataIndex (js->clj (aget item "dataIndex"))]
-        (swap! !data people/select-event (fa/event-at event-map seriesIndex dataIndex)))
+        (swap! !data people/toggle-event (fa/event-at event-map seriesIndex dataIndex)))
       (swap! !data people/deselect-event))))
 
 (defn on-event [selector events handler-fn]
