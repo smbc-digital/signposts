@@ -25,8 +25,7 @@
 
     (is (= (fh/date-of-birth {}) nil))
 
-    (is (= (fh/date-of-birth {:dob "1971-04-03"}) "3 Apr 1971"))))
+    (is (= (fh/date-of-birth {:dob "1971-04-03"}) "3 Apr 1971")))
 
-
-
-
+  (testing "readable-number"
+    (is (= (fh/int-comma 1234) "1,234"))))

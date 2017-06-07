@@ -37,6 +37,15 @@
       (response (perform-query credentials query)))
     (response {})))
 
+(defn handle-status-request [{session :identity}]
+  (response
+    (try+
+      (let [result (http/get search-url
+                             {:headers {"Authorization" (auth-header (sm/get-credentials session))}
+                              :body    (c/generate-string ad/data-freshness-aggregation-query)})]
+        (ad/summarise-available-data (c/parse-string (:body result) true)))
+      (catch Object _ (throw-unauthorized)))))
+
 (defn handle-keep-alive [{session :identity}]
   (sm/ping! session)
   (response {}))

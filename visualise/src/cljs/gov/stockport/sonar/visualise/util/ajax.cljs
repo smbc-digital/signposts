@@ -1,5 +1,5 @@
 (ns gov.stockport.sonar.visualise.util.ajax
-  (:require [ajax.core :refer [POST]]
+  (:require [ajax.core :refer [POST GET]]
             [gov.stockport.sonar.visualise.state :refer [!app]]
             [gov.stockport.sonar.visualise.util.navigation :refer [navigate-to-login-page]]
             [reagent.cookies :refer [get-raw]]
@@ -10,6 +10,9 @@
 
 (defn perform-post [& args]
   (apply POST args))
+
+(defn perform-get [& args]
+  (apply GET args))
 
 (defn with-common-options [request]
   (assoc-in
@@ -52,7 +55,7 @@
       (with-json)
       (with-error-handling)))
 
-(defn post [url request]
+(defn ajax-post [url request]
   (perform-post
     url
     (-> request
@@ -64,3 +67,6 @@
     url
     (-> request
         (with-standard-wrappers))))
+
+(defn ajax-get [url request]
+  (perform-get url request))

@@ -9,8 +9,8 @@
   (navigate-to-login-page))
 
 (defn login [creds]
-  (ajax/post "/login" {:body    creds
-                       :handler handle-successful-login}))
+  (ajax/ajax-post "/login" {:body creds
+                       :handler   handle-successful-login}))
 
 (defn logout []
-  (ajax/post "/logout" {:handler handle-successful-logout}))
+  (ajax/ajax-post "/logout" {:handler handle-successful-logout}))

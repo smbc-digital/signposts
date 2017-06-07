@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.util.fmt-help
   (:require [clojure.string :as str]
-            [cljs-time.format :as f]))
+            [cljs-time.format :as f]
+            [cljs.pprint :refer [cl-format]]))
 
 (def ellipsis \u2026)
 
@@ -14,5 +15,8 @@
 (defn date-of-birth [{:keys [dob]}]
   (when dob
     (f/unparse (f/formatter "d MMM yyyy") (f/parse (f/formatter "YYYY-MM-dd") dob))))
+
+(defn int-comma [n]
+  (cl-format nil "~:d" n))
 
 

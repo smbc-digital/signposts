@@ -122,6 +122,4 @@
                      (s/valid? session) => false
                      (s/ping! session) => nil
                      (test-clock/freeze! one-second-before-expiry-two)
-                     (s/valid? session) => false))
-
-             ))))
+                     (s/valid? session) => false))))))

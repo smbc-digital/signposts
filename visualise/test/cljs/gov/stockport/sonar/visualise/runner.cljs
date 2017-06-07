@@ -11,6 +11,7 @@
             [gov.stockport.sonar.visualise.data.timespan-tests]
             [gov.stockport.sonar.visualise.data.people-tests]
             [gov.stockport.sonar.visualise.util.blur-tests]
+            [gov.stockport.sonar.visualise.util.date-tests]
             [gov.stockport.sonar.visualise.util.stack-tests]
             [gov.stockport.sonar.visualise.util.fmt-help-tests]
             [gov.stockport.sonar.visualise.ui.results.signposting-tests]))
@@ -22,9 +23,9 @@
 
 (enable-console-print!)
 
-(doo-all-tests #"gov.stockport.sonar.visualise.*")
+;(doo-all-tests #"gov.stockport.sonar.visualise.*")
 
 ; use the following if you want to focus on a single test during development
-;(doo-tests 'gov.stockport.sonar.visualise.ui.search.query-control-state-tests)
+(doo-tests 'gov.stockport.sonar.visualise.util.fmt-help-tests)
 
 ; see https://github.com/bensu/doo for more information

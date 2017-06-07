@@ -61,6 +61,7 @@
                             :post :do-login}]
                  ["/logout" {:post :do-logout}]
                  ["/query" {:post :es-query}]
+                 ["/status" {:get :es-status}]
                  ["/keep-alive" {:post :keep-alive}]
                  ["/signposting-config" {:get :signposting-config}]
                  ["" (->ResourcesMaybe {:prefix "public/"})]
@@ -79,6 +80,7 @@
                :404                not-found-404
                :app                (redirect-if-not-auth (loading-page))
                :es-query           proxy/handle-query-request
+               :es-status          proxy/handle-status-request
                :keep-alive         proxy/handle-keep-alive})
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
