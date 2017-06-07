@@ -29,6 +29,7 @@
    (include-css
      "/css/bootstrap.min.css"
      "/css/font-awesome.min.css"
+     "https://fonts.googleapis.com/css?family=Source+Sans+Pro"
      (str (if (env :dev) "/css/site.css" "/css/site.min.css") "?v=" version))])
 
 (defn html [content]

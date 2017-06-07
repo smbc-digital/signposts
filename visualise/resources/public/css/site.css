@@ -151,3 +151,7 @@ body {
   display: inline; }
   .nugget .val .fa-times:hover {
     color: red; }
+
+  .h2 {
+      font-family: 'Source Sans Pro', sans-serif;
+  }
