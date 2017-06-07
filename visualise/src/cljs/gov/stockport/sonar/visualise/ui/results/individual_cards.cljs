@@ -42,7 +42,7 @@
          [:div
           [:i.fa.fa-calendar] " " (date-of-birth pkey)]
          [:div
-          [:i.fa.fa-address-card] " " (address-summary pkey)]]]])))
+          [:i.fa.fa-home] " " (or (address-summary pkey) "no address")]]]])))
 
 (defn cards-render [!data]
   (fn []

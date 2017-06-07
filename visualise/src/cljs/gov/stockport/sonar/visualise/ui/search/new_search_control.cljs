@@ -18,21 +18,21 @@
       (query-callback terms))))
 
 (defn nugget [!local query-callback {:keys [query val] :as item}]
-  [:div.input-group.nugget
+  [:div.input-group.nugget.mr-2
    [:span.input-group-addon.name (name query)]
-   [:span.input-group-addon.val val]
-   [:span.input-group-btn
-    [:button.btn.bg-info.mr-2
-     {:on-click (remove-search-criteria query-callback !local item)}
-     [:i.fa.fa-times]]]])
+   [:span.input-group-addon.val val
+    [:i.fa.fa-times.ml-2
+     {:on-click (remove-search-criteria query-callback !local item)}]]])
+
+(defonce initial-state (r/atom {:query (:target (first qcs/options))
+                                :terms []}))
 
 (defn search-criteria-control [query-callback]
-  (let [!local (r/atom {:query (:target (first qcs/options))
-                        :terms []})]
+  (let [!local initial-state]
     (fn []
-      [:div.container-fluid
+      [:div.container-fluid.py-1
        {:style {:background-color "#1d2932"}}
-       [:div.form-inline.py-2
+       [:div.form-inline
         [:select.custom-select.form-control.mr-2
          {:value     (:query @!local)
           :autoFocus "autofocus"
@@ -51,7 +51,9 @@
           [:button.btn.btn-success.mr-2
            {:on-click #(add-search-criteria !local query-callback)}
            [:i.fa.fa-search]]]]
-        `[:span {:style {:display :inline-flex}}
+        `[:span.py-1
+          {:style {:display   :inline-flex
+                   :flex-wrap :wrap}}
           ~@(map (partial nugget !local query-callback) (:terms @!local))]]])))
 
 (defn query-wrapper [handler]

@@ -46,61 +46,54 @@ div.busy {
   height: 83vh;
   overflow-y: scroll; }
 
-div.sp-individual.red div.upper > .col-1,
-div.sp-individual.red div.lower > .col-1 {
-  border-left: 5px solid #f36624;
-  background-color: rgba(243, 102, 36, 0.4); }
-div.sp-individual.yellow div.upper > .col-1,
-div.sp-individual.yellow div.lower > .col-1 {
-  border-left: 5px solid #ffc502;
-  background-color: rgba(255, 197, 2, 0.4); }
-div.sp-individual.green div.upper > .col-1,
-div.sp-individual.green div.lower > .col-1 {
-  border-left: 5px solid #8dc702;
-  background-color: rgba(141, 199, 2, 0.4); }
-div.sp-individual.aqua div.upper > .col-1,
-div.sp-individual.aqua div.lower > .col-1 {
-  border-left: 5px solid #01a79d;
-  background-color: rgba(1, 167, 157, 0.4); }
-div.sp-individual.purple div.upper > .col-1,
-div.sp-individual.purple div.lower > .col-1 {
-  border-left: 5px solid #91278e;
-  background-color: rgba(145, 39, 142, 0.4); }
-div.sp-individual.blue div.upper > .col-1,
-div.sp-individual.blue div.lower > .col-1 {
-  border-left: 5px solid #2e3292;
-  background-color: rgba(46, 50, 146, 0.4); }
-div.sp-individual.has-selected-event {
-  border-left: 5px solid red;
-  padding-left: 5px; }
-div.sp-individual div.upper {
-  border-radius: 5px 5px 0px 0px;
-  border-top: 1px solid gray;
-  border-right: 1px solid gray;
-  font-size: 1rem;
-  font-weight: bold; }
-  div.sp-individual div.upper .col-1 {
-    border-left: 5px solid gray;
-    border-radius: 5px 0px 0px 0px;
-    background-color: lightgray; }
-div.sp-individual div.lower {
-  border-radius: 0px 0px 5px 5px;
-  border-bottom: 1px solid gray;
-  border-right: 1px solid gray;
-  font-size: 0.8rem; }
-  div.sp-individual div.lower .col-1 {
-    border-left: 5px solid gray;
-    border-radius: 0px 0px 0px 5px;
-    background-color: lightgray; }
-div.sp-individual div.collapsed {
-  border-radius: 5px;
-  border: 1px solid gray;
-  font-size: 1rem;
-  font-weight: bold; }
-  div.sp-individual div.collapsed .col-1 {
-    border: 5px solid gray;
-    border-radius: 5px;
-    background-color: lightgray; }
+div.sp-individual {
+  background-color: #f3f7fa; }
+  div.sp-individual.red div.upper > .col-1,
+  div.sp-individual.red div.lower > .col-1 {
+    border-left: 5px solid #f36624;
+    background-color: rgba(243, 102, 36, 0.4); }
+  div.sp-individual.yellow div.upper > .col-1,
+  div.sp-individual.yellow div.lower > .col-1 {
+    border-left: 5px solid #ffc502;
+    background-color: rgba(255, 197, 2, 0.4); }
+  div.sp-individual.green div.upper > .col-1,
+  div.sp-individual.green div.lower > .col-1 {
+    border-left: 5px solid #8dc702;
+    background-color: rgba(141, 199, 2, 0.4); }
+  div.sp-individual.aqua div.upper > .col-1,
+  div.sp-individual.aqua div.lower > .col-1 {
+    border-left: 5px solid #01a79d;
+    background-color: rgba(1, 167, 157, 0.4); }
+  div.sp-individual.purple div.upper > .col-1,
+  div.sp-individual.purple div.lower > .col-1 {
+    border-left: 5px solid #91278e;
+    background-color: rgba(145, 39, 142, 0.4); }
+  div.sp-individual.blue div.upper > .col-1,
+  div.sp-individual.blue div.lower > .col-1 {
+    border-left: 5px solid #2e3292;
+    background-color: rgba(46, 50, 146, 0.4); }
+  div.sp-individual.has-selected-event {
+    border-left: 5px solid red;
+    padding-left: 5px; }
+  div.sp-individual div.upper {
+    border-radius: 5px 5px 0px 0px;
+    border-top: 1px solid #c6d4e5;
+    border-right: 1px solid #c6d4e5;
+    font-size: 1rem;
+    font-weight: bold; }
+    div.sp-individual div.upper .col-1 {
+      border-left: 5px solid #919a9f;
+      border-radius: 5px 0px 0px 0px;
+      background-color: rgba(145, 154, 159, 0.4); }
+  div.sp-individual div.lower {
+    border-radius: 0px 0px 5px 5px;
+    border-bottom: 1px solid #c6d4e5;
+    border-right: 1px solid #c6d4e5;
+    font-size: 0.8rem; }
+    div.sp-individual div.lower .col-1 {
+      border-left: 5px solid #919a9f;
+      border-radius: 0px 0px 0px 5px;
+      background-color: rgba(145, 154, 159, 0.4); }
 
 .graph div.flot-timeline {
   width: 100%;
@@ -147,9 +140,14 @@ body {
   user-select: none; }
   body .btn-primary {
     background-color: #366c8b; }
+  body i.fa {
+    cursor: pointer; }
 
 .nugget .name {
   background-color: #366c8b;
   color: white; }
 .nugget .val {
-  background-color: white; }
+  background-color: white;
+  display: inline; }
+  .nugget .val .fa-times:hover {
+    color: red; }

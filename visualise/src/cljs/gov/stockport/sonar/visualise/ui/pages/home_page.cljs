@@ -11,19 +11,12 @@
             [gov.stockport.sonar.visualise.ui.components.welcome-status :refer [welcome-message]]))
 
 (defn results [!data]
-  [:div
-   [:div.container-fluid
-    {:style {:background-color "#1d2932"}}
-    [:h6.text-white.pb-1 (people/results-summary @!data)]]
-
-   [:div.container-fluid
-    [:div.row.no-gutters
-     [:div.col-3
-      [ic/cards !data]]
-
-     [:div.col-9
-      [tr/results-tabs !data]]]]])
-
+  [:div.container-fluid
+   [:div.row.no-gutters
+    [:div.col-3
+     [ic/cards !data]]
+    [:div.col-9
+     [tr/results-tabs !data]]]])
 
 (defn home-page []
   [:div
@@ -40,6 +33,11 @@
       [:button.btn.btn-primary {:on-click ac/logout} "Logout"]]]]
 
    [nsc/new-search-control (h/default-handler !data)]
+
+   (when (not (nil? (:total @!data)))
+     [:div.container-fluid
+      {:style {:background-color "#1d2932"}}
+      [:h6.text-white.pb-1 (people/results-summary @!data)]])
 
    (if (not-empty (:result @!data))
      [results !data]

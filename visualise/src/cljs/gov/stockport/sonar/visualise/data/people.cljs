@@ -122,7 +122,9 @@
       (str num-people (if (> num-people 1) " people" " person"))))
   (defn num-events-summary [data]
     (str (:total data) " event" (if (> (:total data) 1) "s")))
-  (str "Your search returned " (num-events-summary data) " concerning " (num-people-summary data)))
+  (if (> (:total data) 0)
+    (str "Your search returned " (num-events-summary data) " concerning " (num-people-summary data))
+    "Sorry, that search returned no results"))
 
 (defn- clear-selected-event? [people]
   (reduce merge {}

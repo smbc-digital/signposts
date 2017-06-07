@@ -13,6 +13,8 @@
 
 div.sp-individual {
 
+  background-color: $individual;
+
   &.red {
     @include individual($base-red, $base-red-l);
   }
@@ -44,41 +46,28 @@ div.sp-individual {
 
   div.upper {
     border-radius: 5px 5px 0px 0px;
-    border-top: 1px solid gray;
-    border-right: 1px solid gray;
+    border-top: 1px solid $card-border;
+    border-right: 1px solid $card-border;
     font-size: 1rem;
     font-weight: bold;
 
     .col-1 {
-      border-left: 5px solid gray;
+      border-left: 5px solid $base-gray;
       border-radius: 5px 0px 0px 0px;
-      background-color: lightgray;
+      background-color: $base-gray-l;
     }
   }
 
   div.lower {
     border-radius: 0px 0px 5px 5px;
-    border-bottom: 1px solid gray;
-    border-right: 1px solid gray;
+    border-bottom: 1px solid $card-border;
+    border-right: 1px solid $card-border;
     font-size: 0.8rem;
 
     .col-1 {
-      border-left: 5px solid gray;
+      border-left: 5px solid $base-gray;
       border-radius: 0px 0px 0px 5px;
-      background-color: lightgray;
-    }
-  }
-
-  div.collapsed {
-    border-radius: 5px;
-    border: 1px solid gray;
-    font-size: 1rem;
-    font-weight: bold;
-
-    .col-1 {
-      border: 5px solid gray;
-      border-radius: 5px;
-      background-color: lightgray;
+      background-color: $base-gray-l;
     }
   }
 

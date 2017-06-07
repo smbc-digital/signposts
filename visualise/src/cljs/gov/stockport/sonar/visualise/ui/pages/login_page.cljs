@@ -6,16 +6,18 @@
 (defn login-page []
   [:div
    [busy/overlay]
-   [:div.container-fluid
-    {:style {:background-color "#1c3645" :color :white}}
-    [:div.row.align-items-center.py-1
-     [:div.column.col-1
-      [:div.row.justify-content-center
-       [:i.fa.fa-map-signs.fa-2x]]]
-     [:div.column.col-11
-      [:span.h2 "SIGNPOSTS"]]]]
+   ;[:div.container-fluid
+   ; {:style {:background-color "#1c3645" :color :white}}
+   ; [:div.row.align-items-center.py-1
+   ;  [:div.column.col-1
+   ;   [:div.row.justify-content-center
+   ;    [:i.fa.fa-map-signs.fa-2x]]]
+   ;  [:div.column.col-11
+   ;   [:span.h2 "SIGNPOSTS"]]]]
 
-    [:div.container
-     [:div.column.container-criteria.col-2]
-     [:div.column.col-10
-      [login-form]]]])
+   [:div.container-fluid
+    [:div.jumbotron.my-4
+     [:h4 [:i.fa.fa-map-signs.mr-2] "Welcome to Signposts"]
+     [:hr]
+     [login-form]
+     ]]])

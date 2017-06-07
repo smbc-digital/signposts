@@ -9,6 +9,10 @@ body {
     background-color: $add-criteria;
   }
 
+  i.fa {
+    cursor: pointer;
+  }
+
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -17,12 +21,22 @@ body {
 }
 
 .nugget {
+
+
   .name {
     background-color: $add-criteria;
     color: white;
   }
   .val {
     background-color: white;
+    display: inline;
+
+    .fa-times {
+
+      &:hover {
+        color: red;
+      }
+    }
   }
 }
 
