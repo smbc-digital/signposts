@@ -20,53 +20,53 @@
          (fact "no files works fine"
                (feeds/process-feeds) => irrelevant
                (provided
-                 (files/list-files "resources/ready") => []))
+                 (feeds/get-csvs "resources") => []))
 
          (fact "file is listed, processed, and moved successfully"
                (feeds/process-feeds) => [..result..]
                (provided
-                 (files/list-files "resources/ready") => [..one..]
+                 (feeds/get-csvs "resources") => [{:file ..one.. :file-name ..one-name..}]
                  (files/fname ..one..) => ..fname..
                  (feeds/process-feed ..one..) => ..result..
-                 (files/move-file ..one.. "resources/processed") => nil))
+                 (files/write-done-file ..one-name..) => nil))
 
          (fact "exception in processing causes file to move to failed"
                (feeds/process-feeds) => []
                (provided
-                 (files/list-files "resources/ready") => [..one..]
+                 (feeds/get-csvs "resources") => [{:file ..one.. :file-name ..one-name..}]
                  (files/fname ..one..) => ..fname..
                  (feeds/process-feed ..one..) =throws=> (Exception. "BARF")
-                 (files/move-file ..one.. "resources/failed") => nil
+                 (files/write-failed-file ..one-name..) => nil
                  (log & anything) => irrelevant))
 
          (fact "processing that returns a failure is moved to failed"
                (feeds/process-feeds) => [{:failed ""}]
                (provided
-                 (files/list-files "resources/ready") => [..one..]
+                 (feeds/get-csvs "resources") => [{:file ..one.. :file-name ..one-name..}]
                  (files/fname ..one..) => ..fname..
                  (feeds/process-feed ..one..) => {:failed ""}
-                 (files/move-file ..one.. "resources/failed") => nil))
+                 (files/write-failed-file ..one-name..) => nil))
 
          (fact "exception in one file does not prevent other files being processed"
                (feeds/process-feeds) => irrelevant
                (provided
-                 (files/list-files "resources/ready") => [..one.. ..two..]
+                 (feeds/get-csvs "resources") => [{:file ..one.. :file-name ..one-name..} {:file ..two.. :file-name ..two-name..}]
                  (files/fname ..one..) => ..fname-one..
                  (feeds/process-feed ..one..) =throws=> (Exception. "BARF")
                  (files/fname ..two..) => ..fname-two..
                  (feeds/process-feed ..two..) => irrelevant
-                 (files/move-file ..one.. "resources/failed") => nil
-                 (files/move-file ..two.. "resources/processed") => nil
+                 (files/write-failed-file ..one-name..) => nil
+                 (files/write-done-file ..two-name..) => nil
                  (log & anything) => irrelevant))
 
          (fact "exceptions are logged"
                (let [some-exception (Exception. "BARF")]
                  (feeds/process-feeds) => irrelevant
                  (provided
-                   (files/list-files "resources/ready") => [..one..]
+                   (feeds/get-csvs "resources") => [{:file ..one.. :file-name ..one-name..}]
                    (files/fname ..one..) => ..fname..
                    (feeds/process-feed ..one..) =throws=> some-exception
-                   (files/move-file ..one.. "resources/failed") => nil
+                   (files/write-failed-file ..one-name..) => nil
                    (log & anything) => irrelevant :times 2))))
 
   (facts "about processing a single feed file"
@@ -95,13 +95,13 @@
 
               (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv"} {:file-name "some-other-file.csv"}]
               (provided
-                (files/list-wrapped-files ..dir-name..) => [{:file-name "some-file.csv"} {:file-name "some-other-file.csv"}]))
+                (files/list-files ..dir-name..) => [{:file-name "some-file.csv"} {:file-name "some-other-file.csv"}]))
 
         (fact "exclude files if a 'marker' file is present e.g. .done"
               (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
                                                 {:file-name "another-new-file.csv" :file ..another-file..}]
               (provided
-                (files/list-wrapped-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
+                (files/list-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
                                                             {:file-name "some-other-file.done"}
                                                             {:file-name "another-new-file.csv" :file ..another-file..}
                                                             {:file-name "some-other-file.csv"}]))
@@ -109,15 +109,11 @@
         (fact "exclude file if it is a .csv file"
               (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
                                                 {:file-name "another-new-file.csv" :file ..another-file..}]
-
-
-        (provided
-          (files/list-wrapped-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
-                                                      {:file-name "some-other-file.done"}
-                                                      {:file-name "some-text-file.txt"}
-                                                      {:file-name "another-new-file.csv" :file ..another-file..}
-                                                      {:file-name "some-other-file.csv"}]))
-
-        ))
+              (provided
+                (files/list-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
+                                                            {:file-name "some-other-file.done"}
+                                                            {:file-name "some-text-file.txt"}
+                                                            {:file-name "another-new-file.csv" :file ..another-file..}
+                                                            {:file-name "some-other-file.csv"}]))))
 
 
