@@ -30,4 +30,3 @@
           (count invocation-results) => 1
           (count second-invocation-results) => 0
           (get-in (esc/query (str "/" index-name "/_stats")) [:_all :total :docs :count]) => 1)))
-
