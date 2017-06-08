@@ -87,6 +87,37 @@
                  (csv/mapper "line1") => dummy-mapper
                  (..enqueue-fn.. {:line-number 2 :line "line2"}) => irrelevant
                  (..enqueue-fn.. {:line-number 3 :line "line3"}) => irrelevant
-                 (..flush-fn..) => nil))))
+                 (..flush-fn..) => nil)))
+
+  (fact "gets list of files to process"
+
+        (fact "returns all files when there are no 'marker' files present"
+
+              (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv"} {:file-name "some-other-file.csv"}]
+              (provided
+                (files/list-wrapped-files ..dir-name..) => [{:file-name "some-file.csv"} {:file-name "some-other-file.csv"}]))
+
+        (fact "exclude files if a 'marker' file is present e.g. .done"
+              (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
+                                                {:file-name "another-new-file.csv" :file ..another-file..}]
+              (provided
+                (files/list-wrapped-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
+                                                            {:file-name "some-other-file.done"}
+                                                            {:file-name "another-new-file.csv" :file ..another-file..}
+                                                            {:file-name "some-other-file.csv"}]))
+
+        (fact "exclude file if it is a .csv file"
+              (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
+                                                {:file-name "another-new-file.csv" :file ..another-file..}]
+
+
+        (provided
+          (files/list-wrapped-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
+                                                      {:file-name "some-other-file.done"}
+                                                      {:file-name "some-text-file.txt"}
+                                                      {:file-name "another-new-file.csv" :file ..another-file..}
+                                                      {:file-name "some-other-file.csv"}]))
+
+        ))
 
 

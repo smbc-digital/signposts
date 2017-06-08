@@ -16,6 +16,14 @@
   (log "looking in [" dir-name "]")
   (sort older (.listFiles (io/file dir-name))))
 
+; SHOULD REPLACE list-files
+(defn list-wrapped-files [dir-name]
+  (map
+    (fn [file]
+      {:file-name (.getName ^File file)
+       :file      file})
+    (sort older (.listFiles (io/file dir-name)))))
+
 (defn move-file [^File from to-dir]
   (.renameTo from (io/file to-dir (.getName from))))
 

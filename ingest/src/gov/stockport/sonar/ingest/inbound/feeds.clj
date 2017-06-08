@@ -4,7 +4,8 @@
             [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.inbound.csv :as csv]
             [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]
-            [gov.stockport.sonar.ingest.inbound.flusher :as flusher]))
+            [gov.stockport.sonar.ingest.inbound.flusher :as flusher]
+            [clojure.string :as str]))
 
 (defn- path-to [directory]
   (str (:inbound-dir @!config) "/" directory))
@@ -40,6 +41,30 @@
     (catch Exception e
       (log (.getMessage e))
       (files/move-file file (path-to "failed")))))
+
+(defn- base-name [{:keys [file-name]}]
+  (subs file-name 0 (str/last-index-of file-name ".")))
+
+(defn- extension [{:keys [file-name]}]
+  (subs file-name (str/last-index-of file-name ".")))
+
+(defn- unique [names]
+(map (fn [[name _]] name) (filter (fn [[_ qty]] (= qty 1)) (frequencies names))))
+
+(defn filter-for [base-file-names]
+  (fn [file]  (some #{(base-name file)} (unique base-file-names))))
+
+(defn filter-csvs []
+  (fn [file] (= (extension file) ".csv")))
+
+(defn get-csvs [dir-name]
+  (let [all-files (files/list-wrapped-files dir-name)
+        base-file-names (map base-name all-files)]
+    (filter
+      (every-pred
+        (filter-csvs)
+        (filter-for base-file-names))
+      all-files)))
 
 (defn process-feeds []
   (filter
