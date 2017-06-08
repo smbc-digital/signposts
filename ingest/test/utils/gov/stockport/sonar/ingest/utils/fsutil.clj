@@ -14,13 +14,18 @@
     (fs/mkdir (fs/file fsroot "failed"))
     (swap! !config assoc :inbound-dir fsroot)))
 
+(defn configure-simple-temp-inbound-file-system []
+  (let [;fsroot (fs/file "/tmp/sonar-integration-test")]
+        fsroot (fs/temp-dir "sonar-fake-data-test")]
+    (swap! !config assoc :inbound-dir fsroot)))
+
 (defn file-name [events]
   (str (str/join "-" ["events" (:event-source (first events)) (clock/now-millis)]) ".csv"))
 
 (defn spit-test-feed
-  ([] (spit-test-feed [(faker/fake-event)]))
-  ([events]
-   (let [test-feed-file (fs/file (:inbound-dir @!config) "ready" (file-name events))]
+  ([] (spit-test-feed [(faker/fake-event)] "ready"))
+  ([events target-dir]
+   (let [test-feed-file (fs/file (:inbound-dir @!config) target-dir (file-name events))]
      (spit test-feed-file (as-csv events))
      (Thread/sleep 10)
      test-feed-file)))
