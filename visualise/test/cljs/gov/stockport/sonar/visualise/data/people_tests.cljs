@@ -259,12 +259,12 @@
                            {:name "N3"} {:data [{:name "N3" :score 2 :id 4}]}}
                   :total  4}]
         (is (= (people/results-summary data)
-               "Your search returned 4 events from 3 people"))))
+               "Your search returned 4 events concerning 3 people"))))
     (testing "single event from 1 person"
       (let [data {:people {{:name "N1"} {:data [{:name "N1" :score 1 :id 1}]}}
                   :total  1}]
         (is (= (people/results-summary data)
-               "Your search returned 1 event from 1 person")))))
+               "Your search returned 1 event concerning 1 person")))))
 
   (testing "event selection"
 
