@@ -1,65 +1,55 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-control
-  (:require [gov.stockport.sonar.visualise.common.ui.search-control-state :as state]
+  (:require [reagent.core :as r]
+            [gov.stockport.sonar.visualise.ui.search.query-control-state :as qcs]
+            [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.query.client :refer [search]]))
 
-(def target-value (fn [elem] (-> elem .-target .-value)))
+(defonce !search-control-state (r/atom {}))
 
-(defn selected-field [!state control-id {:keys [get-selected-field set-selected-field]}]
-  [:select.input-lg
-   {:value     (get-selected-field)
-    :on-change #(set-selected-field (target-value %))}
-   (map
-     (fn [{:keys [target description]}]
-       ^{:key target}
-       [:option {:value target} description])
-     (state/available-fields !state control-id))])
+(defn nugget [{:keys [selected-control search-term] :as item}]
+  [:div.input-group.nugget.mr-2
+   [:span.input-group-addon.name (name selected-control)]
+   [:span.input-group-addon.val search-term
+    [:i.fa.fa-times.ml-2
+     {:on-click #(scs/remove-search-criteria! !search-control-state item)}]]])
 
-(defn search-criteria [!state control-id perform-search]
-  (map
-    (fn [{:keys [get-placeholder get-query set-query on-remove] :as sc}]
-      [:div.panel.criteria-box
-       [:div.panel-body
 
-        [:div.form-group.row
-         [selected-field !state control-id sc]
-         [:input.input-lg
-          {:type        :text
-           :value       (get-query)
-           :autoFocus   "autofocus"
-           :placeholder (get-placeholder)
-           :on-change   #(set-query (target-value %))
-           :on-key-up   #(when (= 13 (-> % .-keyCode)) (perform-search))}]
-         [:button.input-lg.btn.btn-default.remove-criteria {:type :button :on-click on-remove} [:i.fa.fa-times]]
-         ]]])
-    (state/get-all-search-criteria !state control-id)))
+(defn search-criteria-control [query-callback]
+  (scs/init! !search-control-state query-callback)
+  (fn []
+    [:div.container-fluid.py-1
+     {:style {:background-color "#1d2932"}}
+     [:div.form-inline
+      [:select.custom-select.form-control.mr-2
+       {:value     (:query @!search-control-state)
+        :autoFocus "autofocus"
+        :on-change #(scs/set-selected-field! !search-control-state (keyword (-> % .-target .-value)))}
+       (map
+         (fn [{:keys [target description]}]
+           ^{:key target}
+           [:option {:value target} description])
+         qcs/options)]
+      [:div.input-group
+       [:input.form-control {:value       (scs/search-term !search-control-state)
+                             :placeholder (get-in qcs/query-types [(scs/selected-control !search-control-state) :placeholder])
+                             :on-change   #(scs/set-search-term! !search-control-state (-> % .-target .-value))
+                             :on-key-up   #(when (= 13 (-> % .-keyCode)) (scs/add-search-criteria! !search-control-state))}]
+       [:span.input-group-btn
+        [:button.btn.btn-success.mr-2
+         {:on-click #(scs/add-search-criteria! !search-control-state)}
+         [:i.fa.fa-search]]]]
+      `[:span.py-1
+        {:style {:display   :inline-flex
+                 :flex-wrap :wrap}}
+        ~@(map nugget (scs/search-criteria !search-control-state))]]]))
 
-(defn add-criteria-button [on-click]
-  [:div.form-group
-   [:button.btn.btn-block.add-criteria
-    {:on-click on-click}
-    [:div
-     [:i.fa.fa-plus.fa-2x.pull-left]
-     [:p "Add Criteria"]]]])
+(defn query-wrapper [handler]
+  (fn [terms]
+    (if (not-empty terms)
+      (search (qcs/extract-query-defs terms) handler)
+      (handler {}))))
 
-(defn search-button [on-click]
-  [:div.form-group
-   [:button.btn.btn-block.search
-    {:on-click on-click}
-    [:div
-     [:i.fa.fa-search.fa-2x.pull-left]
-     [:p "Search"]]]])
+(defn new-search-control [handler]
+  (let [query-callback (query-wrapper handler)]
+    [search-criteria-control query-callback]))
 
-(defn search-control [!app query-handler]
-  (let [control-id (gensym "search-control-")
-        search-fn (fn [] (search
-                           (state/extract-query-defs (state/get-all-search-criteria !app control-id))
-                           query-handler))]
-    (state/init-search-control !app control-id)
-    (fn []
-      `[:div.search-control.panel-body
-
-        ~@(search-criteria !app control-id search-fn)
-
-        ;~[add-criteria-button #(state/add-search-criteria !app control-id)]
-        ;~[search-button search-fn]
-        ])))

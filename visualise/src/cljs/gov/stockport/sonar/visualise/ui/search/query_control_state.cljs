@@ -44,14 +44,14 @@
   (doall
     (map
       (fn [[query-type {:keys [description]}]]
-           {:target      query-type
-            :description description})
-         query-types)))
+        {:target      query-type
+         :description description})
+      query-types)))
 
 (defn extract-query-defs [terms]
-  (map (fn [{:keys [query val]}]
+  (map (fn [{:keys [selected-control search-term]}]
          (assoc
-           (select-keys (get query-types query) [:field-type :field-name])
-           :query val))
+           (select-keys (get query-types selected-control) [:field-type :field-name])
+           :query search-term))
        terms))
 

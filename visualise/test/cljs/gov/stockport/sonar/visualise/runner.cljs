@@ -14,7 +14,8 @@
             [gov.stockport.sonar.visualise.util.date-tests]
             [gov.stockport.sonar.visualise.util.stack-tests]
             [gov.stockport.sonar.visualise.util.fmt-help-tests]
-            [gov.stockport.sonar.visualise.ui.results.signposting-tests]))
+            [gov.stockport.sonar.visualise.ui.results.signposting-tests]
+            [gov.stockport.sonar.visualise.ui.search.search-control-state-tests]))
 
 ; run the tests from the command line with
 ; lein doo phantom test [auto|once]
@@ -26,6 +27,6 @@
 (doo-all-tests #"gov.stockport.sonar.visualise.*")
 
 ; use the following if you want to focus on a single test during development
-;(doo-tests 'gov.stockport.sonar.visualise.util.fmt-help-tests)
+;(doo-tests 'gov.stockport.sonar.visualise.ui.search.search-control-state-tests)
 
 ; see https://github.com/bensu/doo for more information

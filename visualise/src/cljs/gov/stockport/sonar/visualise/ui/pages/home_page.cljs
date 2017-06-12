@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.pages.home-page
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.query.handler :as h]
-            [gov.stockport.sonar.visualise.ui.search.new-search-control :as nsc]
+            [gov.stockport.sonar.visualise.ui.search.search-control :as nsc]
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
             [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]
             [gov.stockport.sonar.visualise.auth.auth-client :as ac]
