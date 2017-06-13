@@ -2,42 +2,57 @@
   (:require [clojure.string :as str]))
 
 (defn init! [!state on-change-callback]
-  (swap! !state assoc :search-control {:selected-control   :name
-                                       :on-change-callback on-change-callback
-                                       :criteria           []}))
+  (reset! !state {:selected-control   :name
+                  :on-change-callback on-change-callback
+                  :criteria           []}))
 
 (defn set-selected-field! [!state field]
-  (swap! !state assoc-in [:search-control :selected-control] field))
+  (swap! !state assoc :selected-control field))
 
 (defn selected-control [!state]
-  (get-in @!state [:search-control :selected-control]))
+  (:selected-control @!state))
 
 (defn search-term [!state]
-  (get-in @!state [:search-control :search-term]))
+  (:search-term @!state))
 
 (defn set-search-term! [!state search-term]
-  (swap! !state assoc-in [:search-control :search-term] search-term))
+  (swap! !state assoc :search-term search-term))
 
-(defn- callback [{{:keys [on-change-callback criteria]} :search-control}]
+(defn- callback [{:keys [on-change-callback criteria]}]
   (on-change-callback criteria))
+
+(defn- replace-criteria [existing-criteria new-criteria]
+  (map
+    (fn [criteria]
+      (if (= (:selected-control criteria) (:selected-control new-criteria))
+        new-criteria
+        criteria))
+    existing-criteria))
+
+(defn- contains-criteria? [existing-criteria {:keys [selected-control]}]
+  (some
+    (fn [criteria]
+      (= (:selected-control criteria) selected-control))
+    existing-criteria))
 
 (defn add-search-criteria! [!state]
   (when (not (str/blank? (search-term !state)))
     (callback (swap! !state
-                     (fn [{:keys [search-control] :as state}]
+                     (fn [state]
                        (-> state
-                           (update-in
-                             [:search-control :criteria]
-                             (fn [criteria]
-                               (concat criteria
-                                       [(select-keys search-control [:selected-control :search-term])])))
-                           (assoc-in [:search-control :search-term] "")))))))
+                           (update :criteria
+                                   (fn [existing-criteria]
+                                     (let [new-criteria (select-keys state [:selected-control :search-term])]
+                                       (if (contains-criteria? existing-criteria new-criteria)
+                                         (replace-criteria existing-criteria new-criteria)
+                                         (concat existing-criteria [new-criteria])))))
+                           (assoc :search-term "")))))))
 
 (defn remove-search-criteria! [!state criteria-to-remove]
-  (callback (swap! !state update-in [:search-control :criteria]
+  (callback (swap! !state update :criteria
                    (fn [search-criteria]
                      (filter (fn [existing-criteria]
                                (not (= criteria-to-remove existing-criteria))) search-criteria)))))
 
 (defn search-criteria [!state]
-  (get-in @!state [:search-control :criteria]))
+  (:criteria @!state))
