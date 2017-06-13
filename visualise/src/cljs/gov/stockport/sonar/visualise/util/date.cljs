@@ -31,7 +31,7 @@
 
 
 (defn human-since [date]
-  (let [interval (t/interval (t/at-midnight (t/now)) date)
+  (let [interval (t/interval (t/at-midnight date) (t/at-midnight (t/now)))
         days (t/in-days interval)]
     (cond
       (> days 7) (str (t/in-weeks interval) " weeks ago")
