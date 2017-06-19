@@ -8,7 +8,12 @@
   (with-redefs
     [t/now (fn [] (t/date-time 2012 2 15))]
 
+    (testing "parse null timestamp"
+      (is (= (d/parse-timestamp nil) => nil)
+      (is (= (d/parse-timestamp "") => nil))))
+
     (testing "human readable elapsed"
+      (is (= (d/human-since nil) "-"))
       (is (= (d/human-since (t/date-time 2012 2 15 0 0 0)) "Today"))
       (is (= (d/human-since (t/date-time 2012 2 15 23 59 59)) "Today"))
       (is (= (d/human-since (t/date-time 2012 2 14 0 0 0)) "Yesterday"))
