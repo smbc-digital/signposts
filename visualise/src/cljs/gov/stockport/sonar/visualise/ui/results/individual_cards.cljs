@@ -33,7 +33,7 @@
               :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
               :on-click #(swap! !data people/toggle-highlight-person pkey)}]
             [:i.fa.fa-square {:style {:filter "opacity(0.1)"}}])]]
-        [:div.column.col-11.px-2.pt-2
+        [:div.column.col-11.px-2.pt-2.text-truncate
          (str name (age dob))]]
 
        [:div.row.no-gutters.lower
