@@ -7,7 +7,8 @@
             [gov.stockport.sonar.ingest.inbound.csv :as csv]
             [pandect.algo.sha1 :refer [sha1]]
             [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]
-            [gov.stockport.sonar.ingest.inbound.flusher :as flusher])
+            [gov.stockport.sonar.ingest.inbound.flusher :as flusher]
+            [pandect.algo.md5 :as md5])
   (:import (java.io StringReader BufferedReader)))
 
 (def file-content (fn [string] (BufferedReader. (StringReader. string))))
@@ -116,4 +117,26 @@
                                                             {:file-name "another-new-file.csv" :file ..another-file..}
                                                             {:file-name "some-other-file.csv"}]))))
 
+(facts "about the contents of the done file"
 
+       (fact "should write the md5 of the contents of the csv file into the done file"
+             (files/write-done-file "one.csv") => irrelevant
+             (provided
+               (md5/md5-file "one.csv") => ..md5-of-contents..
+               (files/write-content-to-file "one.done" ..md5-of-contents..) => irrelevant))
+
+       (fact "should check if the file is done and has same md5 checksum"
+             (feeds/should-process-feed-file nil "one.csv") => true
+              (provided
+                (md5/md5-file "one.csv") => ..md5-of-contents..
+                (slurp "one.done") => ..md5-of-contents..)
+                )
+)
+
+
+;; If file.done is not there, create it and process the file
+;; If file.done is there and the MD5 in it doesn't match the MD5 of the file contents, then the file
+;;  has changed since the last ingest, so process the whole file again
+;;  (it is ok to process the whole file again, since using the row's SHA as the ID means that we won't have duplicates)
+;; If file.done exists and the MD5 of file contents matches MD5 recorded in file.done, then ignore the file
+;; the file contents haven't changed since the last time it was processed.

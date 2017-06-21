@@ -2,7 +2,8 @@
   (:require [clojure.java.io :as io]
             [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.config :refer [!config]]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [pandect.algo.md5 :as md5])
   (:import (java.io File Writer)))
 
 (defn mtime [^File file]
@@ -30,13 +31,20 @@
 (defn open-reader [^File file]
   (io/reader file))
 
-(defn- write-file [file-name]
+(defn write-content-to-file [file-name file-contents]
   (let [file-name-and-path (str (:inbound-dir @!config) "/" file-name)]
     (with-open [w (clojure.java.io/writer file-name-and-path :append true)]
-      (.write ^Writer w file-name))))
+      (.write ^Writer w file-contents))))
+
+(defn- write-file [file-name]
+  (write-content-to-file file-name file-name))
+
+(defn done-file-name [file-name]
+  (str (base-name file-name) ".done"))
 
 (defn write-done-file [file-name]
-  (write-file (str (base-name file-name) ".done")))
+  (write-content-to-file (done-file-name file-name) (md5/md5-file file-name)))
 
 (defn write-failed-file [file-name]
   (write-file (str (base-name file-name) ".failed")))
+

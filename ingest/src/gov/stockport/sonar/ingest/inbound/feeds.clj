@@ -4,7 +4,8 @@
             [gov.stockport.sonar.ingest.helper.logging :refer [log]]
             [gov.stockport.sonar.ingest.inbound.csv :as csv]
             [gov.stockport.sonar.ingest.inbound.event-buffer :as buffer]
-            [gov.stockport.sonar.ingest.inbound.flusher :as flusher]))
+            [gov.stockport.sonar.ingest.inbound.flusher :as flusher]
+            [pandect.algo.md5 :as md5]))
 
 (defn first-line-of [file]
   (with-open [rdr (files/open-reader file)]
@@ -37,6 +38,11 @@
     (catch Exception e
       (log (.getMessage e))
       (files/write-failed-file file-name))))
+
+(defn should-process-feed-file [file file-name]
+  (=
+    (md5/md5-file file-name)
+    (slurp  (files/done-file-name file-name))))
 
 (defn- unique [names]
 (map (fn [[name _]] name) (filter (fn [[_ qty]] (= qty 1)) (frequencies names))))
