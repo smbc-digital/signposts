@@ -36,5 +36,3 @@
              (files/extension "one.csv") => ".csv"
              (files/extension "one.two.csv") => ".csv"
              (files/extension "one") => ""))
-
-

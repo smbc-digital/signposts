@@ -48,3 +48,5 @@
 (defn write-failed-file [file-name]
   (write-file (str (base-name file-name) ".failed")))
 
+(defn exists? [file-name]
+  (.exists (io/as-file file-name)))

@@ -29,7 +29,8 @@
                  (feeds/get-csvs "resources") => [{:file ..one.. :file-name ..one-name..}]
                  (files/fname ..one..) => ..fname..
                  (feeds/process-feed ..one..) => ..result..
-                 (files/write-done-file ..one-name..) => nil))
+                 (files/write-done-file ..one-name..) => nil
+                 (feeds/should-process-feed-file irrelevant) => true))
 
          (fact "exception in processing causes file to move to failed"
                (feeds/process-feeds) => []
@@ -38,6 +39,7 @@
                  (files/fname ..one..) => ..fname..
                  (feeds/process-feed ..one..) =throws=> (Exception. "BARF")
                  (files/write-failed-file ..one-name..) => nil
+                 (feeds/should-process-feed-file irrelevant) => true
                  (log & anything) => irrelevant))
 
          (fact "processing that returns a failure is moved to failed"
@@ -46,7 +48,8 @@
                  (feeds/get-csvs "resources") => [{:file ..one.. :file-name ..one-name..}]
                  (files/fname ..one..) => ..fname..
                  (feeds/process-feed ..one..) => {:failed ""}
-                 (files/write-failed-file ..one-name..) => nil))
+                 (files/write-failed-file ..one-name..) => nil
+                 (feeds/should-process-feed-file irrelevant) => true))
 
          (fact "exception in one file does not prevent other files being processed"
                (feeds/process-feeds) => irrelevant
@@ -58,6 +61,7 @@
                  (feeds/process-feed ..two..) => irrelevant
                  (files/write-failed-file ..one-name..) => nil
                  (files/write-done-file ..two-name..) => nil
+                 (feeds/should-process-feed-file irrelevant) => true
                  (log & anything) => irrelevant))
 
          (fact "exceptions are logged"
@@ -68,6 +72,7 @@
                    (files/fname ..one..) => ..fname..
                    (feeds/process-feed ..one..) =throws=> some-exception
                    (files/write-failed-file ..one-name..) => nil
+                   (feeds/should-process-feed-file irrelevant) => true
                    (log & anything) => irrelevant :times 2))))
 
   (facts "about processing a single feed file"
@@ -125,15 +130,26 @@
                (md5/md5-file "one.csv") => ..md5-of-contents..
                (files/write-content-to-file "one.done" ..md5-of-contents..) => irrelevant))
 
-       (fact "should check if the file is done and has same md5 checksum"
-             (feeds/should-process-feed-file nil "one.csv") => true
-              (provided
-                (md5/md5-file "one.csv") => ..md5-of-contents..
-                (slurp "one.done") => ..md5-of-contents..)
-                )
-)
+       (fact "should not process the csv file if the done file exists and the md5 matches"
+             (feeds/should-process-feed-file "one.csv") => false
+             (provided
+               (files/exists? "one.done") => true
+               (md5/md5-file "one.csv") => ..md5-of-contents..
+               (slurp "one.done") => ..md5-of-contents..))
 
+       (fact "should process the csv file if the done file does not exist"
+             (feeds/should-process-feed-file "one.csv") => true
+             (provided
+               (files/exists? "one.done") => false))
 
+       (fact "should process the csv file if the md5 doesn't match"
+             (feeds/should-process-feed-file "one.csv") => true
+             (provided
+               (files/exists? "one.done") => true
+               (md5/md5-file "one.csv") => "fadsfadsfasdfsd"
+               (slurp "one.done") => "not matching md5"))
+
+       )
 ;; If file.done is not there, create it and process the file
 ;; If file.done is there and the MD5 in it doesn't match the MD5 of the file contents, then the file
 ;;  has changed since the last ingest, so process the whole file again

@@ -27,22 +27,23 @@
   (process-with-buffer file (buffer/create-buffer
                               {:capacity (:batch-size @!config) :flush-fn flusher/flush-events})))
 
+(defn should-process-feed-file [file-name]
+  (or (not (files/exists? (files/done-file-name file-name)))
+      (not (= (md5/md5-file file-name)
+              (slurp  (files/done-file-name file-name))))))
+
 (defn process-feed-file [{:keys [file file-name]}]
   (try
     (log "Processing [" (files/fname file) "]")
-    (let [result (process-feed file)]
-      (if (:failed result)
-        (files/write-failed-file file-name)
-        (files/write-done-file file-name))
-      result)
+    (if (should-process-feed-file file-name)
+      (let [result (process-feed file)]
+        (if (:failed result)
+          (files/write-failed-file file-name)
+          (files/write-done-file file-name))
+        result))
     (catch Exception e
       (log (.getMessage e))
       (files/write-failed-file file-name))))
-
-(defn should-process-feed-file [file file-name]
-  (=
-    (md5/md5-file file-name)
-    (slurp  (files/done-file-name file-name))))
 
 (defn- unique [names]
 (map (fn [[name _]] name) (filter (fn [[_ qty]] (= qty 1)) (frequencies names))))
