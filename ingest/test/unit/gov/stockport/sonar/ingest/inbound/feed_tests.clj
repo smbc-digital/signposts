@@ -103,52 +103,52 @@
               (provided
                 (files/list-files ..dir-name..) => [{:file-name "some-file.csv"} {:file-name "some-other-file.csv"}]))
 
-        (fact "exclude files if a 'marker' file is present e.g. .done"
-              (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
-                                                {:file-name "another-new-file.csv" :file ..another-file..}]
-              (provided
-                (files/list-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
-                                                            {:file-name "some-other-file.done"}
-                                                            {:file-name "another-new-file.csv" :file ..another-file..}
-                                                            {:file-name "some-other-file.csv"}]))
-
         (fact "exclude file if it is a .csv file"
               (feeds/get-csvs ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
-                                                {:file-name "another-new-file.csv" :file ..another-file..}]
+                                                {:file-name "another-new-file.csv" :file ..another-file..}
+                                                {:file-name "some-other-file.csv" :file ..some-other-file..}]
               (provided
                 (files/list-files ..dir-name..) => [{:file-name "some-file.csv" :file ..some-file..}
                                                             {:file-name "some-other-file.done"}
                                                             {:file-name "some-text-file.txt"}
                                                             {:file-name "another-new-file.csv" :file ..another-file..}
-                                                            {:file-name "some-other-file.csv"}]))))
+                                                            {:file-name "some-other-file.csv" :file ..some-other-file..}]))))
 
-(facts "about the contents of the done file"
+
+(facts "about deciding whether to process the csv file"
 
        (fact "should write the md5 of the contents of the csv file into the done file"
              (files/write-done-file "one.csv") => irrelevant
              (provided
-               (md5/md5-file "one.csv") => ..md5-of-contents..
+               (md5/md5-file "resources/one.csv") => ..md5-of-contents..
                (files/write-content-to-file "one.done" ..md5-of-contents..) => irrelevant))
 
        (fact "should not process the csv file if the done file exists and the md5 matches"
              (feeds/should-process-feed-file "one.csv") => false
              (provided
-               (files/exists? "one.done") => true
-               (md5/md5-file "one.csv") => ..md5-of-contents..
-               (slurp "one.done") => ..md5-of-contents..))
+               (files/exists? "resources/one.failed") => false
+               (files/exists? "resources/one.done") => true
+               (md5/md5-file "resources/one.csv") => ..md5-of-contents..
+               (slurp "resources/one.done") => ..md5-of-contents..))
 
        (fact "should process the csv file if the done file does not exist"
              (feeds/should-process-feed-file "one.csv") => true
              (provided
-               (files/exists? "one.done") => false))
+               (files/exists? "resources/one.done") => false
+               (files/exists? "resources/one.failed") => false))
 
        (fact "should process the csv file if the md5 doesn't match"
              (feeds/should-process-feed-file "one.csv") => true
              (provided
-               (files/exists? "one.done") => true
-               (md5/md5-file "one.csv") => "fadsfadsfasdfsd"
-               (slurp "one.done") => "not matching md5"))
+               (files/exists? "resources/one.done") => true
+               (files/exists? "resources/one.failed") => false
+               (md5/md5-file "resources/one.csv") => "fadsfadsfasdfsd"
+               (slurp "resources/one.done") => "not matching md5"))
 
+       (fact "should not process the csv file if there is a .failed file"
+             (feeds/should-process-feed-file "one.csv") => false
+             (provided
+               (files/exists? "resources/one.failed") => true))
        )
 ;; If file.done is not there, create it and process the file
 ;; If file.done is there and the MD5 in it doesn't match the MD5 of the file contents, then the file

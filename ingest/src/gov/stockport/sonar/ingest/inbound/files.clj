@@ -21,6 +21,9 @@
 (defn extension [file-name]
   (subs file-name (or (str/last-index-of file-name ".") (count file-name))))
 
+(defn get-full-path[file-name]
+  (str (:inbound-dir @!config) "/" file-name))
+
 (defn list-files [dir-name]
   (map
     (fn [file]
@@ -32,8 +35,8 @@
   (io/reader file))
 
 (defn write-content-to-file [file-name file-contents]
-  (let [file-name-and-path (str (:inbound-dir @!config) "/" file-name)]
-    (with-open [w (clojure.java.io/writer file-name-and-path :append true)]
+  (let [file-name-and-path (get-full-path file-name)]
+    (with-open [w (clojure.java.io/writer file-name-and-path :append false)]
       (.write ^Writer w file-contents))))
 
 (defn- write-file [file-name]
@@ -42,8 +45,11 @@
 (defn done-file-name [file-name]
   (str (base-name file-name) ".done"))
 
+(defn failed-file-name [file-name]
+  (str (base-name file-name) ".failed"))
+
 (defn write-done-file [file-name]
-  (write-content-to-file (done-file-name file-name) (md5/md5-file file-name)))
+  (write-content-to-file (done-file-name file-name) (md5/md5-file (str (:inbound-dir @!config) "/" file-name))))
 
 (defn write-failed-file [file-name]
   (write-file (str (base-name file-name) ".failed")))

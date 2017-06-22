@@ -28,22 +28,25 @@
                               {:capacity (:batch-size @!config) :flush-fn flusher/flush-events})))
 
 (defn should-process-feed-file [file-name]
-  (or (not (files/exists? (files/done-file-name file-name)))
-      (not (= (md5/md5-file file-name)
-              (slurp  (files/done-file-name file-name))))))
+  (if (files/exists? (str (:inbound-dir @!config) "/" (files/failed-file-name file-name)))
+    false
+    (or (not (files/exists? (str (:inbound-dir @!config) "/" (files/done-file-name file-name))))
+        (not (= (md5/md5-file (str (:inbound-dir @!config) "/" file-name))
+              (slurp (str (:inbound-dir @!config) "/" (files/done-file-name file-name))))))))
 
 (defn process-feed-file [{:keys [file file-name]}]
-  (try
-    (log "Processing [" (files/fname file) "]")
-    (if (should-process-feed-file file-name)
+  (if (should-process-feed-file file-name)
+    (try
+      (log "Processing [" (files/fname file) "]")
       (let [result (process-feed file)]
+
         (if (:failed result)
           (files/write-failed-file file-name)
           (files/write-done-file file-name))
-        result))
-    (catch Exception e
-      (log (.getMessage e))
-      (files/write-failed-file file-name))))
+        result)
+      (catch Exception e
+        (log (.getMessage e))
+        (files/write-failed-file file-name)))))
 
 (defn- unique [names]
 (map (fn [[name _]] name) (filter (fn [[_ qty]] (= qty 1)) (frequencies names))))
@@ -56,14 +59,15 @@
 
 (defn get-csvs [dir-name]
   (let [all-files (files/list-files dir-name)
-        base-file-names (map files/base-name (map :file-name all-files))]
+        base-file-names
+        (map files/base-name
+             (map :file-name all-files))]
     (filter
-      (every-pred
         (filter-csvs)
-        (filter-for base-file-names))
       all-files)))
 
 (defn process-feeds []
-  (filter
-    (complement nil?)
-    (map process-feed-file (get-csvs (:inbound-dir @!config)))))
+  (let [all-csvs (get-csvs (:inbound-dir @!config))]
+    (filter
+      (complement nil?)
+      (map process-feed-file all-csvs))))
