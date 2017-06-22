@@ -28,18 +28,17 @@
                               {:capacity (:batch-size @!config) :flush-fn flusher/flush-events})))
 
 (defn should-process-feed-file [file-name]
-  (if (files/exists? (str (:inbound-dir @!config) "/" (files/failed-file-name file-name)))
+  (if (files/exists? (files/get-full-path (files/failed-file-name file-name)))
     false
-    (or (not (files/exists? (str (:inbound-dir @!config) "/" (files/done-file-name file-name))))
-        (not (= (md5/md5-file (str (:inbound-dir @!config) "/" file-name))
-              (slurp (str (:inbound-dir @!config) "/" (files/done-file-name file-name))))))))
+    (or (not (files/exists? (files/get-full-path (files/done-file-name file-name))))
+        (not (= (md5/md5-file (files/get-full-path file-name))
+              (slurp (files/get-full-path (files/done-file-name file-name))))))))
 
 (defn process-feed-file [{:keys [file file-name]}]
   (if (should-process-feed-file file-name)
     (try
       (log "Processing [" (files/fname file) "]")
       (let [result (process-feed file)]
-
         (if (:failed result)
           (files/write-failed-file file-name)
           (files/write-done-file file-name))
@@ -47,12 +46,6 @@
       (catch Exception e
         (log (.getMessage e))
         (files/write-failed-file file-name)))))
-
-(defn- unique [names]
-(map (fn [[name _]] name) (filter (fn [[_ qty]] (= qty 1)) (frequencies names))))
-
-(defn filter-for [base-file-names]
-  (fn [{:keys [file-name]}]  (some #{(files/base-name file-name)} (unique base-file-names))))
 
 (defn filter-csvs []
   (fn [{:keys [file-name]}] (= (files/extension file-name) ".csv")))
