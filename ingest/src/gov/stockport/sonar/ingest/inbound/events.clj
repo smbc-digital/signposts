@@ -3,7 +3,9 @@
             [gov.stockport.sonar.spec.event-spec :as es]
             [gov.stockport.sonar.ingest.helper.dates :as dates]
             [gov.stockport.sonar.ingest.helper.postcode :as p]
-            [gov.stockport.sonar.ingest.clock :as clock]))
+            [gov.stockport.sonar.ingest.clock :as clock]
+            [cheshire.core :refer [generate-string]]
+            [pandect.algo.sha1 :refer [sha1]]))
 
 (defn- fix-timestamp [{{ts :timestamp} :data :as event}]
   (if (not (dates/iso-date-string? ts))
@@ -38,3 +40,6 @@
   (-> event
       (with-postcode)
       (with-ingestion-timestamp)))
+
+(defn id [event]
+  (sha1 (generate-string (dissoc event :ingestion-timestamp))))

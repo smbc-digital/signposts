@@ -43,22 +43,45 @@
                (get-in result [:data :postcode]) => "SK1 1AB"))
 
        (fact "leaves existing postcode field in place if provided"
-             (let [result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
+             (let [result (events/enhance {:line-number 1 :data {:address  "123 Stockport Road, SK1 1AB"
                                                                  :postcode "SK2 2AA"}})]
                (get-in result [:data :postcode]) => "SK2 2AA"))
 
        (fact "enhance if provided field is empty but address contains postcode"
-             (let [result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
+             (let [result (events/enhance {:line-number 1 :data {:address  "123 Stockport Road, SK1 1AB"
                                                                  :postcode nil}})]
                (get-in result [:data :postcode]) => "SK1 1AB"))
 
        (fact "adds an ingestion timestamp"
              (let [some-time (t/date-time 2017)
                    _ (clock/freeze! some-time)
-                   result (events/enhance {:line-number 1 :data {:address "123 Stockport Road, SK1 1AB"
+                   result (events/enhance {:line-number 1 :data {:address  "123 Stockport Road, SK1 1AB"
                                                                  :postcode nil}})]
                (get-in result [:data :ingestion-timestamp]) => "2017-01-01T00:00:00.000Z"
                (clock/thaw!))))
+
+(def event {:event-source "SOME-SOURCE"
+            :event-type   "SOME_TYPE"
+            :timestamp    "2017-12-28T13:14:15.123Z"
+            :key1         "val1"
+            :key2         "val2"})
+
+
+(facts "about event ids"
+
+       (fact "they ignore the ingestion timestamp"
+
+             (events/id {:event-source        "SOME-SOURCE"
+                         :event-type          "SOME_TYPE"
+                         :timestamp           "2017-12-28T13:14:15.123Z"
+                         :key1                "val1"
+                         :key2                "val2"
+                         :ingestion-timestamp "SOMETHING"}) => (events/id {:event-source        "SOME-SOURCE"
+                                                                           :event-type          "SOME_TYPE"
+                                                                           :timestamp           "2017-12-28T13:14:15.123Z"
+                                                                           :key1                "val1"
+                                                                           :key2                "val2"
+                                                                           :ingestion-timestamp "SOMETHING-ELSE"})))
 
 
 
