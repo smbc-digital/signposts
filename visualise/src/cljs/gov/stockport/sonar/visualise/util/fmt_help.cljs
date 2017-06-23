@@ -9,7 +9,7 @@
   (when (some not-empty [address postcode])
     (str
       (when (not-empty address)
-        (str (subs (or address "") 0 (or (str/index-of (or address "") ",") 16)) ellipsis " "))
+        (str (subs (or address "") 0 (or (str/index-of (or address "") "," 4) 16)) ellipsis " "))
       postcode)))
 
 (defn date-of-birth [{:keys [dob]}]

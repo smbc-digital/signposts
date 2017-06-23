@@ -16,6 +16,9 @@
                                 :postcode "SK2 4HI"})
            (str "22 Acacia Ave" fh/ellipsis " SK2 4HI")))
 
+    (is (= (fh/address-summary {:address  "22, Acacia Ave, Somewhere, SK2 4HI"
+                                :postcode "SK2 4HI"})
+           (str "22, Acacia Ave" fh/ellipsis " SK2 4HI")))
 
     (is (= (fh/address-summary {:address  "22 Acacia Ave Somewhere SK2 4HI"
                                 :postcode "SK2 4HI"})
