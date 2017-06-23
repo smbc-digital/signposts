@@ -146,13 +146,6 @@
                (slurp "resources/one.done") => "not matching md5"))
 
        (fact "should not process the csv file if there is a .failed file"
-             (feeds/should-process-feed-file "one.csv") => false
+             (true? (feeds/should-process-feed-file "one.csv")) => false
              (provided
-               (files/exists? "resources/one.failed") => true))
-       )
-;; If file.done is not there, create it and process the file
-;; If file.done is there and the MD5 in it doesn't match the MD5 of the file contents, then the file
-;;  has changed since the last ingest, so process the whole file again
-;;  (it is ok to process the whole file again, since using the row's SHA as the ID means that we won't have duplicates)
-;; If file.done exists and the MD5 of file contents matches MD5 recorded in file.done, then ignore the file
-;; the file contents haven't changed since the last time it was processed.
+               (files/exists? "resources/one.failed") => true)))

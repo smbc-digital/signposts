@@ -27,12 +27,17 @@
   (process-with-buffer file (buffer/create-buffer
                               {:capacity (:batch-size @!config) :flush-fn flusher/flush-events})))
 
+(defn- matching-done-file? [csv-file done-file]
+  (= (md5/md5-file csv-file)
+     (slurp done-file)))
+
 (defn should-process-feed-file [file-name]
-  (if (files/exists? (files/get-full-path (files/failed-file-name file-name)))
-    false
-    (or (not (files/exists? (files/get-full-path (files/done-file-name file-name))))
-        (not (= (md5/md5-file (files/get-full-path file-name))
-              (slurp (files/get-full-path (files/done-file-name file-name))))))))
+  (let [no-failed-file? (not (files/exists? (files/get-full-path (files/failed-file-name file-name))))
+        done-file (files/get-full-path (files/done-file-name file-name))
+        csv-file (files/get-full-path file-name)]
+    (if no-failed-file?
+      (or (not (files/exists? done-file))
+          (not (matching-done-file? csv-file done-file))))))
 
 (defn process-feed-file [{:keys [file file-name]}]
   (if (should-process-feed-file file-name)
@@ -47,17 +52,16 @@
         (log (.getMessage e))
         (files/write-failed-file file-name)))))
 
-(defn filter-csvs []
-  (fn [{:keys [file-name]}] (= (files/extension file-name) ".csv")))
+(defn filter-csvs [{:keys [file-name]}]
+  (= (files/extension file-name) ".csv"))
 
 (defn get-csvs [dir-name]
+  (log (str "Processing csv files from [" dir-name "]"))
   (let [all-files (files/list-files dir-name)
         base-file-names
         (map files/base-name
              (map :file-name all-files))]
-    (filter
-        (filter-csvs)
-      all-files)))
+    (filter filter-csvs all-files)))
 
 (defn process-feeds []
   (let [all-csvs (get-csvs (:inbound-dir @!config))]

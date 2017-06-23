@@ -49,7 +49,7 @@
   (str (base-name file-name) ".failed"))
 
 (defn write-done-file [file-name]
-  (write-content-to-file (done-file-name file-name) (md5/md5-file (str (:inbound-dir @!config) "/" file-name))))
+  (write-content-to-file (done-file-name file-name) (md5/md5-file (get-full-path file-name))))
 
 (defn write-failed-file [file-name]
   (write-file (str (base-name file-name) ".failed")))
