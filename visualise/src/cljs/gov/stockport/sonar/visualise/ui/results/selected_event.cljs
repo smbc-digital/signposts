@@ -7,6 +7,13 @@
 
 (def custom-formatter (f/formatter "dd MMM yyyy HH:mm:ss"))
 
+(defn format-label [label]
+  (if (= label "dob")
+       "DOB"
+       (str/capitalize label)
+    )
+  )
+
 (defn unparse-timestamp [event]
   (if-let [ts (:timestamp event)]
     (assoc event :timestamp (f/unparse custom-formatter ts))
@@ -28,7 +35,7 @@
       (concat standard-keys other-keys))))
 
 (defn row [[k v]]
-  [:tr [:th (str/capitalize (name k))] [:td v]])
+  [:tr [:th (format-label (name k))] [:td v]])
 
 (defn rows [event]
   (map row (selected-kvs event)))
