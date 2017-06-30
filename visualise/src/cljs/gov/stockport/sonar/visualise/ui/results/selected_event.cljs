@@ -8,11 +8,13 @@
 (def custom-formatter (f/formatter "dd MMM yyyy HH:mm:ss"))
 
 (defn format-label [label]
-  (if (= label "dob")
-       "DOB"
-       (str/capitalize label)
+  (cond (= label "dob") "DOB"
+        (= label "event-source") "Event Source"
+        (= label "event-type") "Event Type"
+        (= label "ingestion-timestamp") "Ingestion Timestamp"
+      :else (str/capitalize label
     )
-  )
+  ))
 
 (defn unparse-timestamp [event]
   (if-let [ts (:timestamp event)]
