@@ -5,15 +5,23 @@
 
 (def standard-keys [:name :dob :address :postcode :timestamp :score])
 
-(def custom-formatter (f/formatter "dd-MM-yyyy HH:mm:ss"))
+(def custom-formatter (f/formatter "dd MMM yyyy HH:mm:ss"))
 
 (defn unparse-timestamp [event]
   (if-let [ts (:timestamp event)]
     (assoc event :timestamp (f/unparse custom-formatter ts))
     event))
 
+(def dob-unformatter (f/formatter "yyyy-mm-dd"))
+(def dob-formatter (f/formatter "dd MMM yyyy"))
+
+(defn unparse-dob [event]
+  (if-let [ts (:dob event)]
+    (assoc event :dob (f/unparse dob-formatter (f/parse dob-unformatter ts)))
+    event))
+
 (defn selected-kvs [event]
-  (let [event-with-formatted-timestamp (unparse-timestamp event)
+  (let [event-with-formatted-timestamp (-> event unparse-timestamp unparse-dob)
         other-keys (sort (keys (apply dissoc (dissoc event :id) standard-keys)))]
     (map
       (fn [k] [k (get event-with-formatted-timestamp k "")])
