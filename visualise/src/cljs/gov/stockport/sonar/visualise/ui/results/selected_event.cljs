@@ -26,7 +26,7 @@
 
 (defn unparse-dob [event]
   (if-let [ts (:dob event)]
-    (assoc event :dob (f/unparse dob-formatter (f/parse dob-unformatter ts)))
+    (assoc event :dob (->> ts (f/parse dob-unformatter) (f/unparse dob-formatter)))
     event))
 
 (defn selected-kvs [event]
