@@ -34,7 +34,7 @@
 
         (testing "should format timestamp nicely"
           (is (= (se/selected-kvs {:timestamp (t/date-time 2017 12 15 23 12 12)})
-                 [[:timestamp "15-12-2017 23:12:12"]]))))))
+                 [[:timestamp "15 Dec 2017 23:12:12"]]))))))
 
   (testing "production of single row entry"
     (is (= (se/row [:aardvark 1]) [:tr [:th "Aardvark"] [:td 1]]))))
