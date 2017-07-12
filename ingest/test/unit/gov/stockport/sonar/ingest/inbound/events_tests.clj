@@ -34,7 +34,11 @@
 
        (fact "leaves dob when it cannot be parsed"
              (let [result (events/normalise {:line-number 1 :data {:dob "unk"}})]
-               (get-in result [:data :dob]) => "unk")))
+               (get-in result [:data :dob]) => "unk"))
+
+       (fact "normalises the address"
+             (let [result (events/normalise {:line-number 1 :data {:address "123 STOCKPORT ROAD, SOMEWHERE, SK1 3AB, UK"}})]
+               (get-in result [:data :address]) => "123 Stockport Road, Somewhere, SK1 3AB, UK")))
 
 (facts "about enhancing events"
 
