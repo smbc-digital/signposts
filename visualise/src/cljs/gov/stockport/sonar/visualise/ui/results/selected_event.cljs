@@ -1,20 +1,12 @@
 (ns gov.stockport.sonar.visualise.ui.results.selected-event
   (:require [clojure.string :as str]
             [cljs-time.format :as f]
+            [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [gov.stockport.sonar.visualise.ui.results.signposting :as s]))
 
 (def standard-keys [:name :dob :address :postcode :timestamp :score])
 
 (def custom-formatter (f/formatter "dd MMM yyyy HH:mm:ss"))
-
-(defn format-label [label]
-  (cond (= label "dob") "DOB"
-        (= label "event-source") "Event Source"
-        (= label "event-type") "Event Type"
-        (= label "ingestion-timestamp") "Ingestion Timestamp"
-      :else (str/capitalize label
-    )
-  ))
 
 (defn unparse-timestamp [event]
   (if-let [ts (:timestamp event)]
@@ -31,13 +23,13 @@
 
 (defn selected-kvs [event]
   (let [event-with-formatted-timestamp (-> event unparse-timestamp unparse-dob)
-        other-keys (sort (keys (apply dissoc (dissoc event :id) standard-keys)))]
+        other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp) standard-keys)))]
     (map
       (fn [k] [k (get event-with-formatted-timestamp k "")])
       (concat standard-keys other-keys))))
 
 (defn row [[k v]]
-  [:tr [:th (format-label (name k))] [:td v]])
+  [:tr [:th (fh/label (name k))] [:td v]])
 
 (defn rows [event]
   (map row (selected-kvs event)))

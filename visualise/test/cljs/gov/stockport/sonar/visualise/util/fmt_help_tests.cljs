@@ -31,4 +31,11 @@
     (is (= (fh/date-of-birth {:dob "1971-04-03"}) "3 Apr 1971")))
 
   (testing "readable-number"
-    (is (= (fh/int-comma 1234) "1,234"))))
+    (is (= (fh/int-comma 1234) "1,234")))
+
+  (testing "labels"
+    (is (= (fh/label "dob") "DOB"))
+    (is (= (fh/label "abc") "Abc"))
+    (is (= (fh/label "Event-Type") "Event Type"))
+    (is (= (fh/label "EventType") "Event Type"))
+    (is (= (fh/label "EVENT_TYPE") "Event Type"))))
