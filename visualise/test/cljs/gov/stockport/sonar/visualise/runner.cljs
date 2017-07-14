@@ -5,6 +5,7 @@
             [gov.stockport.sonar.visualise.query.client-tests]
             [gov.stockport.sonar.visualise.results.selected-event-tests]
             [gov.stockport.sonar.visualise.ui.results.flot-axes-tests]
+            [gov.stockport.sonar.visualise.ui.results.individual-cards-tests]
             [gov.stockport.sonar.visualise.util.ajax-tests]
             [gov.stockport.sonar.visualise.data.people-tests]
             [gov.stockport.sonar.visualise.data.merge-tests]
@@ -26,7 +27,4 @@
 
 (doo-all-tests #"gov.stockport.sonar.visualise.*")
 
-; use the following if you want to focus on a single test during development
-;(doo-tests 'gov.stockport.sonar.visualise.util.fmt-help-tests)
-
-; see https://github.com/bensu/doo for more information
+;(doo-tests 'gov.stockport.sonar.visualise.ui.results.individual-cards-tests)

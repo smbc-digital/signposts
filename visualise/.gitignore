@@ -16,3 +16,4 @@ pom.xml.asc
 .idea/
 *.iml
 .sass-cache/
+/node_modules
