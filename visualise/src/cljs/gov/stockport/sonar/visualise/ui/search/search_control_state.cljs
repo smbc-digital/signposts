@@ -3,6 +3,7 @@
 
 (defn init! [!state on-change-callback]
   (reset! !state {:selected-control   :name
+                  :query              ""
                   :on-change-callback on-change-callback
                   :criteria           []}))
 
