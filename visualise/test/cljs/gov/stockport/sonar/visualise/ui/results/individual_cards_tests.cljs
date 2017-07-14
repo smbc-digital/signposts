@@ -32,4 +32,20 @@
       (subject-wrapped-scroll)
       (is (= 2 @invocation-count))
       ))
+
+  (testing "Deselect and Select should still Scroll"
+    (reset! ic/!current nil)
+    (let [invocation-count (atom 0)
+          !data (atom {:selected-event "something"})
+          subject-wrapped-scroll (ic/wrap-scroll !data (fn [] (swap! invocation-count inc)))]
+      (subject-wrapped-scroll)
+      (is (= 1 @invocation-count))
+      (swap! !data dissoc :selected-event)
+      (subject-wrapped-scroll)
+      (is (= 1 @invocation-count))
+      (swap! !data assoc :selected-event "something")
+      (subject-wrapped-scroll)
+      (is (= 2 @invocation-count))
+      ))
+
   )
