@@ -5,7 +5,7 @@
             [gov.stockport.sonar.visualise.query.client :refer [keep-alive]]
             [clojure.string :as str]))
 
-(def group-keys [:name :dob :address :postcode])
+(def group-keys [:name :dob])
 
 (defn locked-pkeys [{:keys [people]}]
   (into #{} (filter not-empty (map (fn [[pkey {:keys [locked?]}]] (when locked? pkey)) people))))
@@ -30,7 +30,6 @@
                       (map (fn [[k v]] {k {:data v}})
                            (group-by
                              (fn [m] (select-keys m group-keys))
-                             ;result
                              (merge/merge-events (locked-events data) result))))))
 
 (defn with-max-score [{:keys [people] :as data}]
@@ -46,18 +45,6 @@
                       (map-indexed
                         (fn [idx [k v]] {k (assoc v :rank (+ 1 idx))})
                         (sort-by (fn [[_ p]] [(- 0 (:score p)) (surname p)]) people)))))
-
-(defn toggle-collapse-all [{:keys [all-collapsed?] :as data}]
-  (let [collapsing-all? (not all-collapsed?)]
-    (-> data
-        (assoc :all-collapsed? collapsing-all?)
-        (update :people
-                (fn [people]
-                  (reduce merge {}
-                          (map
-                            (fn [[k v]]
-                              {k (assoc v :collapsed? collapsing-all?)})
-                            people)))))))
 
 (defn toggle-show-only-highlighted [{:keys [show-only-highlighted? show-only-highlighted-disabled?] :as data}]
   (assoc
@@ -106,8 +93,7 @@
       (by-people)
       (with-max-score)
       (with-rank)
-      (assoc :all-collapsed? false
-             :show-only-highlighted? false
+      (assoc :show-only-highlighted? false
              :show-only-highlighted-disabled? true
              :highlighting-allowed? true)
       (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))

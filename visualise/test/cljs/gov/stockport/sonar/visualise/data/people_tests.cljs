@@ -73,7 +73,6 @@
             (is (= (dissoc result :color-stack :result)
                    {:show-only-highlighted?          false
                     :show-only-highlighted-disabled? true
-                    :all-collapsed?                  false
                     :highlighting-allowed?           true
                     :people                          {{:name "N1"} {:data  [{:name "N1" :score 1}
                                                                             {:name "N1" :score 4}]
@@ -96,7 +95,6 @@
             (is (= (dissoc result :color-stack :result)
                    {:show-only-highlighted?          false
                     :show-only-highlighted-disabled? true
-                    :all-collapsed?                  false
                     :highlighting-allowed?           true
                     :people                          {{:name "N1"} {:data         [{:name "N1" :score 1}
                                                                                    {:name "N1" :score 4}]
@@ -115,7 +113,6 @@
             (is (= (dissoc result :color-stack :result)
                    {:show-only-highlighted?          false
                     :show-only-highlighted-disabled? true
-                    :all-collapsed?                  false
                     :highlighting-allowed?           false
                     :people                          {{:name "N1"} {:data         [{:name "N1" :score 1}
                                                                                    {:name "N1" :score 4}]
@@ -169,33 +166,6 @@
       (is (= (-> (people/toggle-show-only-highlighted {:show-only-highlighted? true :show-only-highlighted-disabled? true})
                  :show-only-highlighted?)
              true))))
-
-  (testing "master-switch can be toggled to collapse everyone"
-
-    (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
-                                                             {:name "B"} {:collapsed? true}
-                                                             {:name "C"} {:collapsed? false}}
-                                            :all-collapsed? false})
-               (dissoc :color-stack))
-
-           {:people         {{:name "A"} {:collapsed? true}
-                             {:name "B"} {:collapsed? true}
-                             {:name "C"} {:collapsed? true}}
-            :all-collapsed? true})))
-
-
-  (testing "master-switch can be toggled to expand everyone"
-
-    (is (= (-> (people/toggle-collapse-all {:people         {{:name "A"} {:collapsed? true}
-                                                             {:name "B"} {:collapsed? true}
-                                                             {:name "C"} {:collapsed? false}}
-                                            :all-collapsed? true})
-               (dissoc :color-stack))
-
-           {:people         {{:name "A"} {:collapsed? false}
-                             {:name "B"} {:collapsed? false}
-                             {:name "C"} {:collapsed? false}}
-            :all-collapsed? false})))
 
   (testing "highlights and colors"
 

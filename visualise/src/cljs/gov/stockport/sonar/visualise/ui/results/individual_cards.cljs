@@ -17,7 +17,7 @@
 
 (defn card [!data]
       (let [highlighting-allowed? (:highlighting-allowed? @!data)]
-           (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? collapsed?]}]]
+           (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted?]}]]
                ^{:key (gensym)}
                [:div.mb-2.sp-individual
                 {:class (str (and color (cljs.core/name color))
@@ -40,24 +40,14 @@
                  [:div.column.col-1]
                  [:div.column.col-11.px-2.pb-2
                   [:div
-                   [:i.fa.fa-calendar] " " (date-of-birth pkey)]
-                  [:div
-                   [:i.fa.fa-home] " " (or (address-summary pkey) "no address")]]]])))
+                   [:i.fa.fa-calendar] " " (date-of-birth pkey)]]]])))
 
 (defn cards-render [!data]
       (fn []
-          (let [people (people/by-rank @!data)
-                collapse-all? (:all-collapsed? @!data)]
+          (let [people (people/by-rank @!data)]
                (when (not-empty people)
                      [:div.cards
                       [:p "Select up to " [:b "6 individuals"] " to highlight their events on the graph"]
-
-                      ;[:p
-                      ;  [:i.fa.fa-exchange.fa-rotate-90.pull-left
-                      ;   {:title    (str (if collapse-all? "Expand" "Collapse") " all cards")
-                      ;    :on-click #(swap! !data people/toggle-collapse-all)}]
-                      ;   (if collapse-all? "expand all cards" "collapse all cards")]
-
                       [:div.fixed-height (map (card !data) people)]]))))
 
 (defonce !current (atom nil))
