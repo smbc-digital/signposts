@@ -21,7 +21,7 @@
      {:style {:background-color "#1d2932"}}
      [:div.form-inline
       [:select.custom-select.form-control.mr-2
-       {:value     (:query @!search-control-state)
+       {:value     (scs/selected-control !search-control-state)
         :autoFocus "autofocus"
         :on-change #(scs/set-selected-field! !search-control-state (keyword (-> % .-target .-value)))}
        (map

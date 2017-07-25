@@ -45,7 +45,7 @@
   (fn []
     (let [selected (:selected-event @!data)]
       (when (not-empty selected)
-        [:div.selected-event
+        [:div.selected-event.ml-2
          [:div.panel-group
           [:div.panel.panel-default.event-details.col-sm-5
            [:div.panel-heading (:event-type selected)]
