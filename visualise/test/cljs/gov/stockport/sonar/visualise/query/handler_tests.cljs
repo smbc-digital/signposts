@@ -21,7 +21,7 @@
       (is (= (:score (first (:result @!state))) 1.2))))
 
   (testing "adds information about individuals and people in the dataset"
-    (with-redefs [people/from-data (fn [m] (merge m {:people :some-people :show-only-highlighted? true}))
+    (with-redefs [people/from-data (fn [m] (merge m {:people :some-people}))
                   timespan/from-data (fn [_] :some-timespan)]
                  (let [!state (atom {})
                        handler (h/default-handler !state)
@@ -29,18 +29,15 @@
                                    :hits {:total 1234
                                           :hits  [{:_source {}}]}})]
                    (is (= (:people @!state) :some-people))
-                   (is (= (:show-only-highlighted? @!state) true))
                    (is (= (:timespan @!state) :some-timespan)))))
 
   (testing "replaces current dataset with new people"
-    (with-redefs [people/from-data (fn [& _] {:people :some-different-people :show-only-highlighted? true})
+    (with-redefs [people/from-data (fn [& _] {:people :some-different-people})
                   timespan/from-data (fn [& _] {})]
-                 (let [!state (atom {:people                 :some-people
-                                     :show-only-highlighted? false})
+                 (let [!state (atom {:people                 :some-people})
                        handler (h/default-handler !state)
                        _ (handler {:took 99
                                    :hits {:total 1234
                                           :hits  [{:_source {}}]}})
                        ]
-                   (is (= (:people @!state) :some-different-people))
-                   (is (= (:show-only-highlighted? @!state) true))))))
+                   (is (= (:people @!state) :some-different-people))))))

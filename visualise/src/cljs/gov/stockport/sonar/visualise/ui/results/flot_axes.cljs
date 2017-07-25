@@ -48,13 +48,13 @@
 
 (def by-highlighted? (fn [[_ pdata]] ((juxt :highlighted? :rank) pdata)))
 
-(defn data-points [{:keys [people show-only-highlighted?] :as data}]
+(defn data-points [{:keys [people] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)
         !event-map (atom {})]
     {:event-map !event-map
      :flot-data (map-indexed
                   (fn [seriesIdx [_ {:keys [color highlighted? data]}]]
-                    {:points (-> {:show (or (not show-only-highlighted?) highlighted?)}
+                    {:points (-> {:show highlighted?}
                                  (merge (when highlighted? {:fill 0.8 :fillColor false})))
                      :color  (get colour-map (or color :black))
                      :data   (map-indexed

@@ -71,60 +71,17 @@
 
             (is (contains? result :color-stack))
             (is (= (dissoc result :color-stack :result)
-                   {:show-only-highlighted?          false
-                    :show-only-highlighted-disabled? true
-                    :highlighting-allowed?           true
-                    :people                          {{:name "N1"} {:data  [{:name "N1" :score 1}
-                                                                            {:name "N1" :score 4}]
-                                                                    :score 4
-                                                                    :rank  1}
-                                                      {:name "N2"} {:data  [{:name "N2" :score 3}]
-                                                                    :score 3
-                                                                    :rank  2}
-                                                      {:name "N3"} {:data  [{:name "N3" :score 2}]
-                                                                    :score 2
-                                                                    :rank  3}}}))))
-
-
-        (testing "with some people highlighted already if sufficient colors exist"
-
-          (let [result (people/from-data {:result [{:name "N1" :score 1}
-                                                   {:name "N1" :score 4}]})]
-
-            (is (contains? result :color-stack))
-            (is (= (dissoc result :color-stack :result)
-                   {:show-only-highlighted?          false
-                    :show-only-highlighted-disabled? true
-                    :highlighting-allowed?           true
-                    :people                          {{:name "N1"} {:data         [{:name "N1" :score 1}
-                                                                                   {:name "N1" :score 4}]
-                                                                    :score        4
-                                                                    :rank         1
-                                                                    :highlighted? true
-                                                                    :color        :red}}}))))
-
-        (testing "with all people highlighted already if sufficient colors exist"
-
-          (let [result (people/from-data {:result [{:name "N1" :score 1}
-                                                   {:name "N2" :score 3}
-                                                   {:name "N1" :score 4}]})]
-
-            (is (contains? result :color-stack))
-            (is (= (dissoc result :color-stack :result)
-                   {:show-only-highlighted?          false
-                    :show-only-highlighted-disabled? true
-                    :highlighting-allowed?           false
-                    :people                          {{:name "N1"} {:data         [{:name "N1" :score 1}
-                                                                                   {:name "N1" :score 4}]
-                                                                    :score        4
-                                                                    :rank         1
-                                                                    :highlighted? true
-                                                                    :color        :red}
-                                                      {:name "N2"} {:data         [{:name "N2" :score 3}]
-                                                                    :score        3
-                                                                    :rank         2
-                                                                    :highlighted? true
-                                                                    :color        :blue}}})))))))
+                   {:highlighting-allowed? true
+                    :people                {{:name "N1"} {:data  [{:name "N1" :score 1}
+                                                                  {:name "N1" :score 4}]
+                                                          :score 4
+                                                          :rank  1}
+                                            {:name "N2"} {:data  [{:name "N2" :score 3}]
+                                                          :score 3
+                                                          :rank  2}
+                                            {:name "N3"} {:data  [{:name "N3" :score 2}]
+                                                          :score 2
+                                                          :rank  3}}})))))))
 
   (testing "retrieving people"
 
@@ -145,28 +102,6 @@
                                           {:name "N3"} {:data [{:id 4}]}}})
              [{:id 1} {:id 2} {:id 3} {:id 4}]))))
 
-  (testing "showing and hiding highlighted people"
-
-    (testing "is ok if currently allowed"
-
-      (is (= (-> (people/toggle-show-only-highlighted {:show-only-highlighted? false :show-only-highlighted-disabled? false})
-                 :show-only-highlighted?)
-             true))
-
-      (is (= (-> (people/toggle-show-only-highlighted {:show-only-highlighted? true :show-only-highlighted-disabled? false})
-                 :show-only-highlighted?)
-             false)))
-
-    (testing "is may be prevented"
-
-      (is (= (-> (people/toggle-show-only-highlighted {:show-only-highlighted? false :show-only-highlighted-disabled? true})
-                 :show-only-highlighted?)
-             false))
-
-      (is (= (-> (people/toggle-show-only-highlighted {:show-only-highlighted? true :show-only-highlighted-disabled? true})
-                 :show-only-highlighted?)
-             true))))
-
   (testing "highlights and colors"
 
     (testing "you can only highlight people when colours are available"
@@ -179,47 +114,38 @@
                  (people/toggle-highlight-person {:name "A"})
                  (dissoc :color-stack))
 
-             {:people                          {{:name "A"} {:highlighted? true
-                                                             :color        :green}
-                                                {:name "B"} {:highlighted? true
-                                                             :color        :red}
-                                                {:name "C"} {}}
-              :highlighting-allowed?           false
-              :show-only-highlighted-disabled? false})))
+             {:people                {{:name "A"} {:highlighted? true
+                                                   :color        :green}
+                                      {:name "B"} {:highlighted? true
+                                                   :color        :red}
+                                      {:name "C"} {}}
+              :highlighting-allowed? false})))
 
     (testing "with everyone highlighted you can no longer toggle show highlight only"
 
-      (is (= (-> {:people                 {{:name "A"} {}
-                                           {:name "B"} {}
-                                           {:name "C"} {}}
-                  :show-only-highlighted? true
-                  :highlighting-allowed?  true
-                  :color-stack            (s/new-stack [:red :green :blue :pink])}
+      (is (= (-> {:people                {{:name "A"} {}
+                                          {:name "B"} {}
+                                          {:name "C"} {}}
+                  :highlighting-allowed? true
+                  :color-stack           (s/new-stack [:red :green :blue :pink])}
                  (people/toggle-highlight-person {:name "B"})
                  (people/toggle-highlight-person {:name "A"})
                  (people/toggle-highlight-person {:name "C"})
                  (dissoc :color-stack)
-                 (select-keys [:highlighting-allowed? :show-only-highlighted? :show-only-highlighted-disabled?]))
-
-             {:highlighting-allowed?           true
-              :show-only-highlighted?          false
-              :show-only-highlighted-disabled? true})))
+                 :highlighting-allowed?)
+             true)))
 
     (testing "with nobody highlighted you can no longer toggle show highlight only"
 
-      (is (= (-> {:people                 {{:name "A"} {:highlighted? true
-                                                        :color        :red}
-                                           {:name "B"} {}
-                                           {:name "C"} {}}
-                  :show-only-highlighted? true
-                  :color-stack            (s/new-stack [])}
+      (is (= (-> {:people      {{:name "A"} {:highlighted? true
+                                             :color        :red}
+                                {:name "B"} {}
+                                {:name "C"} {}}
+                  :color-stack (s/new-stack [])}
                  (people/toggle-highlight-person {:name "A"})
                  (dissoc :color-stack)
-                 (select-keys [:highlighting-allowed? :show-only-highlighted? :show-only-highlighted-disabled?]))
-
-             {:highlighting-allowed?           true
-              :show-only-highlighted?          false
-              :show-only-highlighted-disabled? true}))))
+                 :highlighting-allowed?)
+             true))))
 
   (testing "printing a summary of results"
     (testing "multiple events from multiple people"

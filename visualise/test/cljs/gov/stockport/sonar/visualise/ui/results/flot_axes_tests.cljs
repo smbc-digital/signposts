@@ -4,8 +4,8 @@
             [gov.stockport.sonar.visualise.data.colours :refer [colour-map]]
             [gov.stockport.sonar.visualise.ui.results.flot-axes :as fa]))
 
-(def single-event {:timespan {:from-date     (t/date-time 2017)
-                              :to-date       (t/date-time 2018)}
+(def single-event {:timespan {:from-date (t/date-time 2017)
+                              :to-date   (t/date-time 2018)}
                    :people   {:a {:data [{:event-type :asbo}]}}})
 
 (def one-person {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
@@ -117,34 +117,28 @@
       (testing "are derived as series based on people"
 
         (is (= (:flot-data (fa/data-points one-person))
-               [{:points {:show true} :color (:red colour-map) :data [[1 2] [4 1]]}]))
+               [{:points {:show false} :color (:red colour-map) :data [[1 2] [4 1]]}]))
 
         (is (= (:flot-data (fa/data-points two-people))
-               [{:points {:show true} :color (:red colour-map) :data [[1 3] [4 2]]}
-                {:points {:show true} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+               [{:points {:show false} :color (:red colour-map) :data [[1 3] [4 2]]}
+                {:points {:show false} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
 
       (testing "may be turned off if showing only highlighted people"
 
-        (is (= (:flot-data (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? true)))
+        (is (= (:flot-data (fa/data-points two-people-one-highlighted))
                [{:points {:show false} :color (:black colour-map) :data [[1 3] [4 2]]}
-                {:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
-
-      (testing "will all be shown if showing all people"
-
-        (is (= (:flot-data (fa/data-points (assoc two-people-one-highlighted :show-only-highlighted? false)))
-               [{:points {:show true} :color (:black colour-map) :data [[1 3] [4 2]]}
                 {:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
 
       (testing "events are shifted a little when they land on top of each other"
         (is (= (:flot-data (fa/data-points colliding-data))
-               [{:points {:show true} :color (:red colour-map) :data [[1 1.9] [1 2] [4 0.95]]}
-                {:points {:show true} :color (:blue colour-map) :data [[1 2.1] [4 1.05]]}])))
+               [{:points {:show false} :color (:red colour-map) :data [[1 1.9] [1 2] [4 0.95]]}
+                {:points {:show false} :color (:blue colour-map) :data [[1 2.1] [4 1.05]]}])))
 
       (testing "highlighted data points are drawn last"
         (is (= (:flot-data (fa/data-points multiple-highlights))
-               [{:points {:show true} :color (:black colour-map) :data [[2 1]]}
-                {:points {:show true} :color (:black colour-map) :data [[4 1]]}
-                {:points {:show true} :color (:black colour-map) :data [[5 1]]}
+               [{:points {:show false} :color (:black colour-map) :data [[2 1]]}
+                {:points {:show false} :color (:black colour-map) :data [[4 1]]}
+                {:points {:show false} :color (:black colour-map) :data [[5 1]]}
                 {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[1 1]]}
                 {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[3 1]]}
                 {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[6 1]]}])))

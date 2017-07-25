@@ -47,14 +47,7 @@
 (defn graph-placeholder [!data]
   [:div.graph
    [:div.row.mt-2 {:style {:margin-bottom "-20px"}}
-    (let [{:keys [show-only-highlighted? show-only-highlighted-disabled?]} @!data]
-      [:div.column.col-6.highlight-control
-       (when show-only-highlighted-disabled? {:class "disabled"})
-       [:i.fa.fa-2x.pull-left
-        {:class    (if show-only-highlighted? "fa-toggle-on" "fa-toggle-off")
-         :on-click (with-keep-alive #(swap! !data people/toggle-show-only-highlighted))}]
-       "Show highlighted individuals only"])
-    [:div.column.showing.col
+    [:div.column.showing.col.ml-2
      "viewing "
      [:strong.from ""]
      " to "
