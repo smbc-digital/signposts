@@ -13,7 +13,7 @@ Section
 	nsExec::Exec '"$INSTDIR\winsw.exe" stop' $0
 	Sleep 5000
 	DetailPrint $1
-	File "..\files\winsw.exe"
+	File "..\bin\winsw.exe"
 	File "..\files\visualise.jar"
     IfFileExists $INSTDIR\signposting-config.edn SignpostConfigExists SignpostConfigMissing
     SignpostConfigMissing:
