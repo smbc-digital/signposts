@@ -43,7 +43,7 @@ $(FILES_LOC)$(VISUALISE_JAR):
 .PHONY: visualise_ci
 visualise_ci:
 	cmd /c COPY /Y visualise\target\$(VISUALISE_JAR) $(FILES_LOC)
-	cmd /c COPY /Y visualise\signposting-config.edn $(FILES_LOC)\signposting-config.edn
+	cmd /c COPY /Y visualise\signposting-config.edn $(FILES_LOC)
 	cmd /c XCOPY /Y visualise\deps\\*.jar $(FILES_LOC)
 	powershell.exe -ExecutionPolicy Bypass -Command win-infra\build-installers\bundle-java.ps1
 	makensis win-infra\build-installers\visualise-installer.nsi
