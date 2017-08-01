@@ -21,8 +21,11 @@ function Unzip
 $java_version = 'jdk1.8.0_101'
 $uri = "https://s3-eu-west-1.amazonaws.com/smbc-thirdparty-public-bucket/$java_version/java.zip"
 # should be $1
-$files_loc = Resolve-Path 'win-infra\files'
-mkdir -ErrorAction Ignore $files_loc
+
+#new-item 'win-infra\files' -itemtype directory
+
+$files_loc = Resolve-Path -Path 'win-infra\files'
+
 
 rm -Recurse -Force -ErrorAction Ignore  "$files_loc\java"
 Download-From-Web $uri $files_loc 'java.zip'
