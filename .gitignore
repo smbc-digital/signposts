@@ -18,3 +18,4 @@ new-es/
 searchguard-es/
 *.exe
 !winsw.exe
+win-infra/artifacts/
