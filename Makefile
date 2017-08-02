@@ -41,8 +41,7 @@ $(FILES_LOC)$(VISUALISE_JAR):
 	cp visualise/deps/bcprov-jdk15on-1.56.jar $(FILES_LOC)bcprov-jdk15on-1.56.jar
 
 .PHONY: visualise_ci
-visualise_ci:
-	cmd /c if not exist $(FILES_LOC) mkdir $(FILES_LOC)
+visualise_ci: staging_clean
 	cmd /c COPY /Y visualise\target\$(VISUALISE_JAR) $(FILES_LOC)
 	cmd /c COPY /Y visualise\signposting-config.edn $(FILES_LOC)
 	cmd /c XCOPY /Y visualise\deps\\*.jar $(FILES_LOC)
@@ -50,9 +49,19 @@ visualise_ci:
 	cmd /c if not exist win-infra\artifacts mkdir win-infra\artifacts
 	makensis win-infra\build-installers\visualise-installer.nsi
 
+.PHONY: ingest_ci
+ingest_ci: staging_clean
+	cmd /c if not exist win-infra\artifacts mkdir win-infra\artifacts
+	cmd /c COPY /Y ingest\target\$(INGEST_JAR) $(FILES_LOC)
+	makensis win-infra\build-installers\ingest-installer.nsi
+
 
 .PHONY: clean
-clean:
-	rm -f $(FILES_LOC)/*
+clean: clean
+	rm -rf $(FILES_LOC)/*
 	cd win-infra; vagrant destroy -f
 
+.PHONY: staging_clean
+staging_clean:
+	cmd /c if not exist $(FILES_LOC) DEL /Q $(FILES_LOC)
+	cmd /c if not exist $(FILES_LOC) mkdir $(FILES_LOC)
