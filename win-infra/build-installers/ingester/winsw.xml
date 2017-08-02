@@ -3,7 +3,7 @@
   <name>Signposts Ingester</name>
   <description>This service runs the Signposts data ingester.</description>
   <workingdirectory>%BASE%\</workingdirectory>
-  <executable>%JAVA_HOME%\bin\java.exe</executable>
+  <executable>c:\Signposts\Ingester\java\bin\java.exe</executable>
   <arguments>-jar ingest-0.1.0-SNAPSHOT-standalone.jar</arguments>
   <log mode="roll-by-size">
 	<sizeThreshold>10240</sizeThreshold>
