@@ -1,5 +1,5 @@
 Name "Signposts Visualise"
-OutFile "..\SignpostsVisualiseSetup.exe"
+OutFile "..\artifacts\SignpostsVisualiseSetup.exe"
 BrandingText "Stockport MBC 2017"
 XPStyle on
 

@@ -47,6 +47,7 @@ visualise_ci:
 	cmd /c COPY /Y visualise\signposting-config.edn $(FILES_LOC)
 	cmd /c XCOPY /Y visualise\deps\\*.jar $(FILES_LOC)
 	powershell.exe -ExecutionPolicy Bypass -Command win-infra\build-installers\bundle-java.ps1
+	cmd /c if not exist win-infra\artifacts mkdir win-infra\artifacts
 	makensis win-infra\build-installers\visualise-installer.nsi
 
 
