@@ -57,7 +57,7 @@ ingest_ci: staging_clean
 
 
 .PHONY: clean
-clean: clean
+clean: 
 	rm -f $(FILES_LOC)/*
 	cd win-infra; vagrant destroy -f
 
