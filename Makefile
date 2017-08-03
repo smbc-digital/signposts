@@ -6,6 +6,15 @@ VISUALISE_JAR=visualise.jar
 INGEST_JAR=ingest-0.1.0-SNAPSHOT-standalone.jar
 FILES_LOC=win-infra/files/
 
+ifeq ($(OS), Windows_NT)
+	FILES_LOC=win-infra\files
+endif
+
+
+.PHONY: test
+test:
+	echo $(FILES_LOC)
+
 .PHONY: windows
 windows: files
 	cd win-infra; vagrant up --provision
@@ -19,7 +28,6 @@ rdp:
 files: \
 	$(FILES_LOC)$(VISUALISE_JAR) \
 	$(FILES_LOC)$(INGEST_JAR) \
-	$(FILES_LOC)winsw.exe \
 
 $(FILES_LOC)$(INGEST_JAR):
 	cd ingest/; lein clean; lein uberjar
@@ -32,12 +40,28 @@ $(FILES_LOC)$(VISUALISE_JAR):
 	cp visualise/deps/bcpkix-jdk15on-1.56.jar $(FILES_LOC)bcpkix-jdk15on-1.56.jar
 	cp visualise/deps/bcprov-jdk15on-1.56.jar $(FILES_LOC)bcprov-jdk15on-1.56.jar
 
-$(FILES_LOC)winsw.exe:
-	curl http://repo.jenkins-ci.org/releases/com/sun/winsw/winsw/2.0.3/winsw-2.0.3-bin.exe \
-		-o $(FILES_LOC)winsw.exe
+.PHONY: visualise_ci
+visualise_ci: staging_clean
+	cmd /c COPY /Y visualise\target\$(VISUALISE_JAR) $(FILES_LOC)
+	cmd /c COPY /Y visualise\signposting-config.edn $(FILES_LOC)
+	cmd /c XCOPY /Y visualise\deps\\*.jar $(FILES_LOC)
+	powershell.exe -ExecutionPolicy Bypass -Command win-infra\build-installers\bundle-java.ps1
+	cmd /c if not exist win-infra\artifacts mkdir win-infra\artifacts
+	makensis win-infra\build-installers\visualise-installer.nsi
+
+.PHONY: ingest_ci
+ingest_ci: staging_clean
+	cmd /c if not exist win-infra\artifacts mkdir win-infra\artifacts
+	cmd /c COPY /Y ingest\target\$(INGEST_JAR) $(FILES_LOC)
+	makensis win-infra\build-installers\ingest-installer.nsi
+
 
 .PHONY: clean
-clean:
+clean: clean
 	rm -f $(FILES_LOC)/*
 	cd win-infra; vagrant destroy -f
 
+.PHONY: staging_clean
+staging_clean:
+	cmd /c if not exist $(FILES_LOC) DEL /Q $(FILES_LOC)
+	cmd /c if not exist $(FILES_LOC) mkdir $(FILES_LOC)

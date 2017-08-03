@@ -1,5 +1,5 @@
 Name "Signposts Visualise"
-OutFile "..\SignpostsVisualiseSetup.exe"
+OutFile "..\artifacts\SignpostsVisualiseSetup.exe"
 BrandingText "Stockport MBC 2017"
 XPStyle on
 
@@ -13,7 +13,7 @@ Section
 	nsExec::Exec '"$INSTDIR\winsw.exe" stop' $0
 	Sleep 5000
 	DetailPrint $1
-	File "..\files\winsw.exe"
+	File "..\bin\winsw.exe"
 	File "..\files\visualise.jar"
     IfFileExists $INSTDIR\signposting-config.edn SignpostConfigExists SignpostConfigMissing
     SignpostConfigMissing:
@@ -23,7 +23,7 @@ Section
 	  File "..\files\bcprov-jdk15on-1.56.jar"
 	  File "winsw.exe.config"
 	  File "winsw.xml"
-	  File /r "..\..\Program Files\Java\"
+	  File /r "..\files\java"
 	  DetailPrint "Starting Windows Serice for Signposts Visualise"
 	  nsExec::Exec '"$INSTDIR\winsw.exe" install' $0
 	  nsExec::Exec '"$INSTDIR\winsw.exe" start' $0
