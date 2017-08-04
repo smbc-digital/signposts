@@ -37,6 +37,13 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :score (apply max (map :score (:data v))))}) people))))
 
+(def area #(first (str/split (or (:postcode %) "") #" ")))
+
+(defn with-areas [{:keys [people] :as data}]
+  (assoc data :people
+              (reduce merge {}
+                      (map (fn [[k v]] {k (assoc v :areas (into #{} (remove str/blank? (map area (:data v)))))}) people))))
+
 (def surname #(last (str/split (:name %) #" ")))
 
 (defn with-rank [{:keys [people] :as data}]
@@ -66,6 +73,7 @@
       (by-people)
       (with-max-score)
       (with-rank)
+      (with-areas)
       (assoc :highlighting-allowed? true)
       (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))))
 

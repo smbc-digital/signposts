@@ -40,6 +40,22 @@
                        {:name "3"} {:data  [{:score 4}]
                                     :score 4}}})))
 
+    (testing "adds areas to people data"
+      (is (= (people/with-areas {:people {
+                                          {:name "1"} {:data [{:postcode "SK1 1AA"} {:postcode "SK2 1AA"}
+                                                              {:postcode nil} {:postcode ""} {:postcode "SK1 2AA"}]}
+                                          {:name "2"} {:data []}
+                                          {:name "3"} {:data [{:postcode "SK3 3AA"}]}}})
+
+             {:people {
+                       {:name "1"} {:data  [{:postcode "SK1 1AA"} {:postcode "SK2 1AA"}
+                                            {:postcode nil} {:postcode ""} {:postcode "SK1 2AA"}]
+                                    :areas #{"SK1" "SK2"}}
+                       {:name "2"} {:data  []
+                                    :areas #{}}
+                       {:name "3"} {:data  [{:postcode "SK3 3AA"}]
+                                    :areas #{"SK3"}}}})))
+
     (testing "ranks people by score and sort order of surname"
 
       (is (= (people/with-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
@@ -75,13 +91,16 @@
                     :people                {{:name "N1"} {:data  [{:name "N1" :score 1}
                                                                   {:name "N1" :score 4}]
                                                           :score 4
-                                                          :rank  1}
+                                                          :rank  1
+                                                          :areas #{}}
                                             {:name "N2"} {:data  [{:name "N2" :score 3}]
                                                           :score 3
-                                                          :rank  2}
+                                                          :rank  2
+                                                          :areas #{}}
                                             {:name "N3"} {:data  [{:name "N3" :score 2}]
                                                           :score 2
-                                                          :rank  3}}})))))))
+                                                          :rank  3
+                                                          :areas #{}}}})))))))
 
   (testing "retrieving people"
 
