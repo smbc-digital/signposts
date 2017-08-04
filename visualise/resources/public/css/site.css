@@ -133,11 +133,11 @@ div.sp-individual {
         color: green; }
 
 body {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none; }
+  -moz-user-select: text;
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  -o-user-select: text;
+  user-select: text; }
   body .btn-primary {
     background-color: #366c8b; }
   body i.fa {
@@ -151,7 +151,3 @@ body {
   display: inline; }
   .nugget .val .fa-times:hover {
     color: red; }
-
-  .h2 {
-      font-family: 'Source Sans Pro', sans-serif;
-  }
