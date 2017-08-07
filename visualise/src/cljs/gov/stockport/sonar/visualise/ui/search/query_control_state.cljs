@@ -15,26 +15,31 @@
                                   :field-type  :postcode
                                   :description "Postcode"
                                   :placeholder "what postcode?"}
-                  :age-less-than {:sort        4
+                  :dob           {:sort        4
+                                  :field-name  :dob
+                                  :field-type  :match-text
+                                  :description "Date of birth"
+                                  :placeholder "e.g.1981-12-25"}
+                  :age-less-than {:sort        5
                                   :field-name  :dob
                                   :field-type  :age-less-than
                                   :description "Aged up to"
                                   :placeholder "maximum age in years"}
-                  :age-more-than {:sort        5
+                  :age-more-than {:sort        6
                                   :field-name  :dob
                                   :field-type  :age-more-than
                                   :description "Aged over"
                                   :placeholder "minimum age in years"}
-                  :all-fields    {:sort        6
+                  :all-fields    {:sort        7
                                   :field-type  :query-all
                                   :description "All fields"
                                   :placeholder "enter general search"}
-                  :event-source  {:sort        7
+                  :event-source  {:sort        8
                                   :field-name  :event-source
                                   :field-type  :match-text
                                   :description "Event Source"
                                   :placeholder "search for event source"}
-                  :event-type    {:sort        8
+                  :event-type    {:sort        9
                                   :field-name  :event-type
                                   :field-type  :match-text
                                   :description "Event Type"

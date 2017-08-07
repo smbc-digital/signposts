@@ -1,4 +1,9 @@
-(ns gov.stockport.sonar.esproxy.es-query)
+(ns gov.stockport.sonar.esproxy.es-query
+  (:require [clj-time.format :as tf])
+  )
+
+(def uk-date-format  "dd/mm/yyyy")
+(def iso-date-format "yyyy-mm-dd")
 
 (defn query []
   {})
@@ -33,6 +38,12 @@
 (defn with-match [qip term value]
   (must qip {:match {term {:query    value
                            :operator :and}}}))
+
+(defn with-date-of-birth [qip term value]
+  (must qip {:term {term {:value
+                          (tf/unparse iso-date-format
+                                      (tf/parse uk-date-format value))}}}))
+
 
 (defn with-age-less-than [qip term value]
   (must qip {:range {term {:gte (str "now-" value "y")}}}))

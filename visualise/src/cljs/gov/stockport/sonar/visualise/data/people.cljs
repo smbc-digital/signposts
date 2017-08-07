@@ -107,5 +107,3 @@
           (assoc :selected-event event)
           (assoc :people (clear-selected-event? people))
           (assoc-in [:people pkey-for-event :has-selected-event?] true)))))
-
-
