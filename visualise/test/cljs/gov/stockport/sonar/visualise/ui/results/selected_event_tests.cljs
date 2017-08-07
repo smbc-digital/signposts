@@ -28,13 +28,21 @@
                   [:llama "LL"]
                   [:zebra "ZZ"]])))))
 
+    (testing "some fields are renamed"
+      (with-redefs
+        [se/standard-keys [:timestamp :dob]]
+
+        (is (= (se/selected-kvs {:timestamp (t/date-time 2017 12 7 23 12 12) :dob "1971-12-07"})
+               [[:on "Thu 7 Dec 2017"] [:dob "7 Dec 1971"]]))))
+
     (testing "timestamp is parsed"
       (with-redefs
         [se/standard-keys [:timestamp]]
 
         (testing "should format timestamp nicely"
           (is (= (se/selected-kvs {:timestamp (t/date-time 2017 12 15 23 12 12)})
-                 [[:timestamp "Fri 15 Dec 2017"]]))))))
+                 [[:on "Fri 15 Dec 2017"]]))))))
+
 
   (testing "production of single row entry"
     (is (= (se/row [:aardvark 1]) [:tr [:th "Aardvark"] [:td.col-12 1]]))))

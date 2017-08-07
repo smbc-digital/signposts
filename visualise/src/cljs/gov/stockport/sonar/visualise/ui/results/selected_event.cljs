@@ -4,17 +4,19 @@
             [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [gov.stockport.sonar.visualise.ui.results.signposting :as s]))
 
-(def standard-keys [:name :dob :address :postcode :timestamp])
+(def standard-keys [:timestamp :name :dob :address :postcode])
 
-(def custom-formatter (f/formatter "EEE dd MMM yyyy"))
+(def substitute-keys {:timestamp :on})
+
+(def custom-formatter (f/formatter "EEE d MMM yyyy"))
 
 (defn unparse-timestamp [event]
   (if-let [ts (:timestamp event)]
     (assoc event :timestamp (f/unparse custom-formatter ts))
     event))
 
-(def dob-unformatter (f/formatter "yyyy-mm-dd"))
-(def dob-formatter (f/formatter "dd MMM yyyy"))
+(def dob-unformatter (f/formatter "yyyy-MM-dd"))
+(def dob-formatter (f/formatter "d MMM yyyy"))
 
 (defn unparse-dob [event]
   (if-let [ts (:dob event)]
@@ -25,7 +27,7 @@
   (let [event-with-formatted-timestamp (-> event unparse-timestamp unparse-dob)
         other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp :score :event-type :event-source) standard-keys)))]
     (map
-      (fn [k] [k (get event-with-formatted-timestamp k "")])
+      (fn [k] [(get substitute-keys k k) (get event-with-formatted-timestamp k "")])
       (concat standard-keys other-keys))))
 
 (defn row [[k v]]
