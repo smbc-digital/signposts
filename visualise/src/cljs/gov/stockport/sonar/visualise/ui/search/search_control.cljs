@@ -28,7 +28,7 @@
          (fn [{:keys [target description]}]
            ^{:key target}
            [:option {:value target} description])
-         qcs/options)]
+         (sort-by :display-order qcs/options))]
       [:div.input-group
        [:input.form-control {:value       (scs/search-term !search-control-state)
                              :placeholder (get-in qcs/query-types [(scs/selected-control !search-control-state) :placeholder])

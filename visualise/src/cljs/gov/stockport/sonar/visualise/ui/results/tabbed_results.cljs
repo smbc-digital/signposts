@@ -1,7 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.results.tabbed-results
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.ui.results.raw-table :as rt]
-            [gov.stockport.sonar.visualise.ui.results.contacts :as con]
+            ;[gov.stockport.sonar.visualise.ui.results.contacts :as con]
             [gov.stockport.sonar.visualise.ui.results.timeline-flot :refer [timeline-flot]]))
 
 (defn results-tabs [!data]
@@ -21,7 +21,7 @@
        (cond
          (= :timeline @!selected)
          [timeline-flot !data]
-         (= :contacts @!selected)
-         [con/contact-history !data]
+         ;(= :contacts @!selected)
+         ;[con/contact-history !data]
          :else
          [rt/raw-table !data])])))
