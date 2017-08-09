@@ -38,14 +38,14 @@
           (es/with-size 15)
           (es/wildcard :some-field "j* smith")) =>
       {:query{
-              :bool[{
+              :bool{
                     :should
                                           [
                                            {:wildcard {:some-field "j*"}}
                                            {:match {:some-field "smith"}}
                                            ]
                     :minimum_should_match 2
-                    }]}:size 15}
+                    }}:size 15}
       )
 
 
