@@ -13,7 +13,7 @@
   )
 
   (defn wild-card? [token]
-       (not (nil? (re-matches #"[\w\'\-]+\*" token )))
+       (not (nil? (re-matches #"^[\w\'\-]+\*.*$" token )))
   )
 
   (defn parse-token
