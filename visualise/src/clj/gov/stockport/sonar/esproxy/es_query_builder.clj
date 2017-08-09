@@ -20,6 +20,10 @@
   [qip {:keys [query]}]
   (es/with-address qip query))
 
+(defmethod parse-query-def :wildcard
+  [qip {:keys [query field-name]}]
+  (es/wildcard qip field-name query))
+
 (defmethod parse-query-def :date-of-birth
            [qip {:keys [query field-name]}]
            (es/with-date-of-birth qip field-name query)
@@ -33,4 +37,4 @@
     parse-query-def
     (-> (es/query)
         (es/with-size 250))
-    query-defs))
+         query-defs))

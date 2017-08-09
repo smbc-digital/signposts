@@ -32,6 +32,23 @@
                                                                                                                      :operator :and}}}]
                                                                           :minimum_should_match 1}}]}}})
 
+
+(fact "can do wild card matching"
+      (-> (es/query)
+          (es/with-size 15)
+          (es/wildcard :some-field "j* smith")) =>
+      {:query{
+              :bool[{
+                    :should
+                                          [
+                                           {:wildcard {:some-field "j*"}}
+                                           {:match {:some-field "smith"}}
+                                           ]
+                    :minimum_should_match 2
+                    }]}:size 15}
+      )
+
+
 (fact "can combine queries"
       (-> (es/query)
           (es/with-size 15)

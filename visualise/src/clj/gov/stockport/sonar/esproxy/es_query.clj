@@ -1,6 +1,6 @@
 (ns gov.stockport.sonar.esproxy.es-query
-  (:require [clj-time.format :as tf])
-  )
+  (:require [clj-time.format :as tf]
+             [gov.stockport.sonar.esproxy.es-query-parser :as esp]))
 
 (def uk-date-format  "dd/mm/yyyy")
 (def iso-date-format "yyyy-mm-dd")
@@ -17,14 +17,24 @@
 (defn- ensure-clauses-at [qip path]
   (update-in qip path #(or % [])))
 
+(defn- ensure-clauses-at-wildcard [qip path]
+  (update-in qip path #(or % {})))
+
+
 (defn add-to [qip path clause]
   (update-in (ensure-clauses-at qip path) path #(conj % clause)))
+
+(defn add-to-wildcard  [qip path clause]
+  (update-in (ensure-clauses-at-wildcard qip path) path #(conj % clause)))
 
 (defn must [qip clause]
   (add-to qip [:query :bool :must] clause))
 
 (defn should [qip clause]
   (add-to qip [:query :bool :should] clause))
+
+(defn should-wildcard[qip clause]
+  (add-to-wildcard qip [:query :bool] clause))
 
 (defn with-query-string [qip qs]
   (must qip {:query_string {:query qs :default_field "_all"}}))
@@ -58,3 +68,8 @@
                                            {:match {:postcode {:query    value
                                                                :operator :and}}}]
                     :minimum_should_match 1}})))
+
+(defn wildcard [qip term value]
+      (should-wildcard qip (esp/parse-query term value)
+
+  ))

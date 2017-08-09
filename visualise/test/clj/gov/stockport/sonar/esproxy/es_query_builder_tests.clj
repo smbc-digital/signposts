@@ -52,4 +52,14 @@
                                                             :query      12
                                                             :field-type "age-more-than"}])]
                (:query query) => (:query (-> {}
-                                             (es-query/with-age-more-than :dob 12))))))
+                                              (es-query/with-age-more-than :dob 12)))))
+
+
+        (fact "should handle wild card search"
+              (let [query (es-query-builder/build-es-query [{:field-name :name
+                                                             :query  "j* smith"
+                                                             :field-type "wildcard"
+                                                             }])]
+
+                (:query query) => (:query (-> {}
+                                             (es-query/wildcard :name "j* smith"))))))
