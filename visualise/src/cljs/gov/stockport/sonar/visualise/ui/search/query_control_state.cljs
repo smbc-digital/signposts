@@ -17,9 +17,9 @@
                                   :placeholder "what postcode?"}
                   :dob           {:display-order        4
                                   :field-name  :dob
-                                  :field-type  :match-text
+                                  :field-type  :date-of-birth
                                   :description "Date of birth"
-                                  :placeholder "e.g.1981-12-25"}
+                                  :placeholder "e.g.25/01/2016"}
                   :age-less-than {:display-order        5
                                   :field-name  :dob
                                   :field-type  :age-less-than

@@ -2,11 +2,15 @@
   (:require [clj-time.format :as tf]
              [gov.stockport.sonar.esproxy.es-query-parser :as esp]))
 
-(def uk-date-format  "dd/mm/yyyy")
-(def iso-date-format "yyyy-mm-dd")
+(def uk-date-format  (tf/formatter "dd/mm/yyyy"))
+(def iso-date-format (tf/formatter "yyyy-mm-dd"))
 
 (defn query []
   {})
+
+(defn format-date [date]
+  (tf/unparse iso-date-format (tf/parse uk-date-format date))
+  )
 
 (defn with-no-results [qip]
   (assoc qip :size 0))
@@ -50,9 +54,7 @@
                            :operator :and}}}))
 
 (defn with-date-of-birth [qip term value]
-  (must qip {:term {term {:value
-                          (tf/unparse iso-date-format
-                                      (tf/parse uk-date-format value))}}}))
+  (should qip {:match { term (format-date value)}}))
 
 
 (defn with-age-less-than [qip term value]

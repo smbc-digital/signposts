@@ -32,11 +32,20 @@
                                                                                                                      :operator :and}}}]
                                                                           :minimum_should_match 1}}]}}})
 
+(fact "can reformat date"
+      (es/format-date "25/12/2016") => "2016-12-25"
+      )
+
+
+(fact "can do date of birth"
+      (es/with-date-of-birth  {} :dob "01/12/1979") =>
+      {:query {:bool {:should [{:match {:dob  "1979-12-01"}}]}}})
+
 
 (fact "can do wild card matching"
       (-> (es/query)
           (es/with-size 15)
-          (es/wildcard :some-field "j* smith")) =>
+          (es/wildcard :some-field "j% smith")) =>
       {:query{
               :bool{
                     :should
@@ -60,3 +69,4 @@
                                             [{:query_string {:query         "argh"
                                                              :default_field "_all"}}
                                              {:range {:dob {:gte "now-20y"}}}]}}})
+
