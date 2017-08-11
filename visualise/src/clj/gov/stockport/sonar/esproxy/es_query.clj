@@ -54,7 +54,7 @@
                            :operator :and}}}))
 
 (defn with-date-of-birth [qip term value]
-  (should qip {:match { term (format-date value)}}))
+  (must qip {:match { term (format-date value)}}))
 
 
 (defn with-age-less-than [qip term value]

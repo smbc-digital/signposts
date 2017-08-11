@@ -39,7 +39,7 @@
 
 (fact "can do date of birth"
       (es/with-date-of-birth  {} :dob "01/12/1979") =>
-      {:query {:bool {:should [{:match {:dob  "1979-12-01"}}]}}})
+      {:query {:bool {:must [{:match {:dob  "1979-12-01"}}]}}})
 
 
 (fact "can do wild card matching"
@@ -70,3 +70,19 @@
                                                              :default_field "_all"}}
                                              {:range {:dob {:gte "now-20y"}}}]}}})
 
+
+(fact "dob and fuzzy name search combination"
+      (-> (es/query)
+          (es/with-size 15)
+          (es/wildcard :name "j% smith")
+          (es/with-date-of-birth :dob "01/02/1990"))
+
+      => {:query
+
+          {:bool
+           {:minimum_should_match 2,
+            :must [{:match {:dob "1990-02-01"}}],
+            :should [{:wildcard {:name "j*"}} {:match {:name "smith"}}]
+          }}
+          :size 15
+          })
