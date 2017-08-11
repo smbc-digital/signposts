@@ -8,7 +8,7 @@
 (comment
   "The (rough and ready) code here can be used to read the winsw.out.log produced by the visualise application and produce usage stats in terms of numbers of searches by users excluding the project team")
 
-(defn single-view-team-members-excluded-from-reporting
+(def single-view-team-members-excluded-from-reporting
   #{""
     "claresudbery"
     "claudialewis"
