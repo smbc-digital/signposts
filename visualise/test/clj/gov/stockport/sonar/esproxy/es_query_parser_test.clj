@@ -11,6 +11,9 @@
 (fact "should recongnize wildcards"
       (es-query-parser/wild-card? "token") => false
       (es-query-parser/wild-card? "token%") => true
+      (es-query-parser/wild-card? "tok%en") => true
+      (es-query-parser/wild-card? "tok*en") => true
+      (es-query-parser/wild-card? "token*") => true
   )
 
 (fact "should parse token"

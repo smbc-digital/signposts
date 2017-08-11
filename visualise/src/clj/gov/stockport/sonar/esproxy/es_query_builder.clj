@@ -28,6 +28,7 @@
            [qip {:keys [query field-name]}]
            (es/with-date-of-birth qip field-name query)
            )
+
 (defmethod parse-query-def :default
   [qip {:keys [query field-name]}]
   (es/with-match qip field-name query))
