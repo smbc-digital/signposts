@@ -27,7 +27,7 @@
             :pan    {:interactive true
                      :cursor      :move
                      :frameRate   20}
-            :zoom   {:interactive true
+            :zoom   {:interactive false
                      :cursor      :move}
             :lines  {:show false}
             :points {:radius 8}
@@ -122,11 +122,11 @@
 
     (on-click ".graph-controls .pan-left"
               (fn [& _]
-                (.pan flot (clj->js {:left 20}))))
+                (.pan flot (clj->js {:left -20}))))
 
     (on-click ".graph-controls .pan-right"
               (fn [& _]
-                (.pan flot (clj->js {:left -20}))))))
+                (.pan flot (clj->js {:left 20}))))))
 
 (defn draw-with [!data]
   (let []
