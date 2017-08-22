@@ -6,7 +6,7 @@
 
 (def standard-keys [:timestamp :name :dob :address :postcode])
 
-(def substitute-keys {:timestamp :on})
+(def substitute-keys {:timestamp :event-logged})
 
 (def custom-formatter (f/formatter "EEE d MMM yyyy"))
 
@@ -31,7 +31,10 @@
       (concat standard-keys other-keys))))
 
 (defn row [[k v]]
-  [:tr [:th (fh/label (name k))] [:td.col-12 v]])
+  (when (not(str/blank? v))
+  [:tr [:th (fh/label (name k))] [:td.col-10 v]]
+  )
+  )
 
 (defn rows [event]
   (map row (selected-kvs event)))
