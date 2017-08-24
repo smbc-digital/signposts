@@ -52,21 +52,29 @@
       (is (= (scs/search-criteria !state) [{:selected-control :address :search-term "SK2"}
                                            {:selected-control :name :search-term "smith"}]))
 
-      (scs/remove-search-criteria! !state {:selected-control :address :search-term "SK2"})
+      (scs/remove-search-criteria! !state :address)
 
       (is (= (scs/search-criteria !state) [{:selected-control :name :search-term "smith"}])))
 
+    (testing "you can add and remove search criteria without going via the search control fields"
+      (scs/init! !state (fn [& _]))
+
+      (scs/add-search-criteria! !state :address "SK2")
+      (is (= (scs/search-criteria !state) [{:selected-control :address :search-term "SK2"}]))
+
+      (scs/add-search-criteria! !state :name "smith")
+      (is (= (scs/search-criteria !state) [{:selected-control :address :search-term "SK2"}
+                                           {:selected-control :name :search-term "smith"}]))
+
+      (scs/remove-search-criteria! !state :address)
+      (is (= (scs/search-criteria !state) [{:selected-control :name :search-term "smith"}])))
+
+
     (testing "adding a new value for a given field, replaces the existing search term"
       (scs/init! !state (fn [& _]))
-      (scs/set-selected-field! !state :name)
-      (scs/set-search-term! !state "smith")
-      (scs/add-search-criteria! !state)
-      (scs/set-selected-field! !state :address)
-      (scs/set-search-term! !state "SK2")
-      (scs/add-search-criteria! !state)
-
-      (scs/set-search-term! !state "SK2 latest")
-      (scs/add-search-criteria! !state)
+      (scs/add-search-criteria! !state :name "smith")
+      (scs/add-search-criteria! !state :address "SK2")
+      (scs/add-search-criteria! !state :address "SK2 latest")
 
       (is (= (scs/search-criteria !state) [{:selected-control :name :search-term "smith"}
                                            {:selected-control :address :search-term "SK2 latest"}])))
@@ -76,15 +84,11 @@
 
         (scs/init! !state (fn [arg] (reset! !arguments-to-most-recent-callback arg)))
 
-        (scs/set-selected-field! !state :address)
-        (scs/set-search-term! !state "SK2")
-        (scs/add-search-criteria! !state)
-        (scs/set-selected-field! !state :name)
-        (scs/set-search-term! !state "smith")
-        (scs/add-search-criteria! !state)
+        (scs/add-search-criteria! !state :address "SK2")
+        (scs/add-search-criteria! !state :name "smith")
 
         (is (= @!arguments-to-most-recent-callback (scs/search-criteria !state)))
 
-        (scs/remove-search-criteria! !state {:selected-control :address :search-term "SK2"})
+        (scs/remove-search-criteria! !state :address)
 
         (is (= @!arguments-to-most-recent-callback (scs/search-criteria !state)))))))

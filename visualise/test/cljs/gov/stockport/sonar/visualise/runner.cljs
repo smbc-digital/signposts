@@ -27,4 +27,4 @@
 
 (doo-all-tests #"gov.stockport.sonar.visualise.*")
 
-;(doo-tests 'gov.stockport.sonar.visualise.ui.results.individual-cards-tests)
+;(doo-tests 'gov.stockport.sonar.visualise.ui.search.search-control-state-tests)

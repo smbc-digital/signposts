@@ -36,24 +36,29 @@
       (= (:selected-control criteria) selected-control))
     existing-criteria))
 
-(defn add-search-criteria! [!state]
-  (when (not (str/blank? (search-term !state)))
-    (callback (swap! !state
-                     (fn [state]
-                       (-> state
-                           (update :criteria
-                                   (fn [existing-criteria]
-                                     (let [new-criteria (select-keys state [:selected-control :search-term])]
-                                       (if (contains-criteria? existing-criteria new-criteria)
-                                         (replace-criteria existing-criteria new-criteria)
-                                         (concat existing-criteria [new-criteria])))))
-                           (assoc :search-term "")))))))
+(defn add-search-criteria!
+  ([!state]
+   (when (not (str/blank? (search-term !state)))
+     (apply add-search-criteria! !state (vals (select-keys @!state [:selected-control :search-term])))))
+  ([!state query-type search-term]
+   (when (not (str/blank? search-term))
+     (let [new-criteria {:selected-control query-type :search-term search-term}]
+       (callback (swap! !state
+                        (fn [state]
+                          (-> state
+                              (update :criteria
+                                      (fn [existing-criteria]
+                                        (if (contains-criteria? existing-criteria new-criteria)
+                                          (replace-criteria existing-criteria new-criteria)
+                                          (concat existing-criteria [new-criteria]))))
+                              (assoc :search-term "")))))))))
 
-(defn remove-search-criteria! [!state criteria-to-remove]
+(defn remove-search-criteria! [!state query-type]
   (callback (swap! !state update :criteria
                    (fn [search-criteria]
-                     (filter (fn [existing-criteria]
-                               (not (= criteria-to-remove existing-criteria))) search-criteria)))))
+                     (filter (fn [{:keys [selected-control]}]
+                               (not (= query-type selected-control))) search-criteria)))))
+
 
 (defn search-criteria [!state]
   (:criteria @!state))

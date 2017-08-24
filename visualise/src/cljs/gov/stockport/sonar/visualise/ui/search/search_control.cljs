@@ -6,12 +6,12 @@
 
 (defonce !search-control-state (r/atom {}))
 
-(defn nugget [{:keys [selected-control search-term] :as item}]
+(defn nugget [{:keys [selected-control search-term]}]
   [:div.input-group.nugget.mr-2
    [:span.input-group-addon.name (name selected-control)]
    [:span.input-group-addon.val search-term
     [:i.fa.fa-times.ml-2
-     {:on-click #(scs/remove-search-criteria! !search-control-state item)}]]])
+     {:on-click #(scs/remove-search-criteria! !search-control-state selected-control)}]]])
 
 
 (defn search-criteria-control [query-callback]
