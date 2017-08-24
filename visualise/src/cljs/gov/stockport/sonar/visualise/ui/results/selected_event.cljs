@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.results.selected-event
   (:require [clojure.string :as str]
             [cljs-time.format :as f]
+            [gov.stockport.sonar.visualise.ui.search.search-control-state :refer [add-search-criteria!]]
             [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 (def standard-keys [:timestamp :name :dob :address :postcode])
@@ -29,9 +30,13 @@
       (fn [k] [(get substitute-keys k k) (get event-with-formatted-timestamp k "")])
       (concat standard-keys other-keys))))
 
+; ************
+; EXPERIMENTAL - ALLOW DRILL-TYPE SEARCH E.G. CLICK ON POSTCODE TO ADD TO SEARCH CRITERIA
 (defn row [[k v]]
-  (when (not(str/blank? v))
-  [:tr [:th (fh/label (name k))] [:td.col-10 v]]))
+  (when (not (str/blank? v))
+    (if (= :postcode k)
+      [:tr [:th (fh/label (name k))] [:td.col-10 [:a {:on-click #(add-search-criteria! :postcode v)} v]]]
+      [:tr [:th (fh/label (name k))] [:td.col-10 v]])))
 
 (defn rows [event]
   (map row (selected-kvs event)))
