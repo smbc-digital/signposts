@@ -1,8 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.results.selected-event
   (:require [clojure.string :as str]
             [cljs-time.format :as f]
-            [gov.stockport.sonar.visualise.util.fmt-help :as fh]
-            [gov.stockport.sonar.visualise.ui.results.signposting :as s]))
+            [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 (def standard-keys [:timestamp :name :dob :address :postcode])
 
@@ -32,19 +31,10 @@
 
 (defn row [[k v]]
   (when (not(str/blank? v))
-  [:tr [:th (fh/label (name k))] [:td.col-10 v]]
-  )
-  )
+  [:tr [:th (fh/label (name k))] [:td.col-10 v]]))
 
 (defn rows [event]
   (map row (selected-kvs event)))
-
-(defn signpost-fields [event]
-  (let [signpost (s/signpost-for event)]
-    (map
-      (fn [{:keys [name value]}]
-        [:tr [:th name] [:td value]])
-      (:fields signpost))))
 
 (defn selected-event [!data]
   (fn []
@@ -57,12 +47,4 @@
            [:div.panel-body.mb-2
             [:table.table-striped.table-condensed.results.selected-results
              `[:tbody
-               ~@(rows selected)]
-             ]]]
-          ;[:div.panel.panel-default.contact-panel.col-sm-7
-          ; [:div.panel-heading.contact-heading "SIGNPOST"]
-          ; [:div.panel-body
-          ;  [:table.table-condensed.results.selected-results
-          ;  `[:tbody
-          ;    ~@(signpost-fields selected)]]]]
-          ]]))))
+               ~@(rows selected)]]]]]]))))

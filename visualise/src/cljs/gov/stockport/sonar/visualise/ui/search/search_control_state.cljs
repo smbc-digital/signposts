@@ -25,15 +25,15 @@
 (defn- replace-criteria [existing-criteria new-criteria]
   (map
     (fn [criteria]
-      (if (= (:selected-control criteria) (:selected-control new-criteria))
+      (if (= (:query-type criteria) (:query-type new-criteria))
         new-criteria
         criteria))
     existing-criteria))
 
-(defn- contains-criteria? [existing-criteria {:keys [selected-control]}]
+(defn- contains-criteria? [existing-criteria {:keys [query-type]}]
   (some
     (fn [criteria]
-      (= (:selected-control criteria) selected-control))
+      (= (:query-type criteria) query-type))
     existing-criteria))
 
 (defn add-search-criteria!
@@ -42,7 +42,7 @@
      (apply add-search-criteria! !state (vals (select-keys @!state [:selected-control :search-term])))))
   ([!state query-type search-term]
    (when (not (str/blank? search-term))
-     (let [new-criteria {:selected-control query-type :search-term search-term}]
+     (let [new-criteria {:query-type query-type :search-term search-term}]
        (callback (swap! !state
                         (fn [state]
                           (-> state
@@ -53,11 +53,11 @@
                                           (concat existing-criteria [new-criteria]))))
                               (assoc :search-term "")))))))))
 
-(defn remove-search-criteria! [!state query-type]
+(defn remove-search-criteria! [!state query-type-to-remove]
   (callback (swap! !state update :criteria
                    (fn [search-criteria]
-                     (filter (fn [{:keys [selected-control]}]
-                               (not (= query-type selected-control))) search-criteria)))))
+                     (filter (fn [{:keys [query-type]}]
+                               (not (= query-type-to-remove query-type))) search-criteria)))))
 
 
 (defn search-criteria [!state]

@@ -4,6 +4,7 @@
             [gov.stockport.sonar.visualise.util.fmt-help :as f]))
 
 (defn row [idx {:keys [event-source event-type qty from to last-updated]}]
+  ^{:key (gensym)}
   [:tr
    [:th (when (= idx 0) event-source)]
    [:td event-type]

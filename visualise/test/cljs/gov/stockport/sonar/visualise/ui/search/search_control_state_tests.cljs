@@ -1,7 +1,6 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-control-state-tests
   (:require [cljs.test :refer-macros [deftest testing is are use-fixtures]]
-            [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
-            [clojure.string :as str]))
+            [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]))
 
 (def !state (atom {}))
 
@@ -43,31 +42,31 @@
       (scs/set-search-term! !state "SK2")
       (scs/add-search-criteria! !state)
 
-      (is (= (scs/search-criteria !state) [{:selected-control :address :search-term "SK2"}]))
+      (is (= (scs/search-criteria !state) [{:query-type :address :search-term "SK2"}]))
 
       (scs/set-selected-field! !state :name)
       (scs/set-search-term! !state "smith")
       (scs/add-search-criteria! !state)
 
-      (is (= (scs/search-criteria !state) [{:selected-control :address :search-term "SK2"}
-                                           {:selected-control :name :search-term "smith"}]))
+      (is (= (scs/search-criteria !state) [{:query-type :address :search-term "SK2"}
+                                           {:query-type :name :search-term "smith"}]))
 
       (scs/remove-search-criteria! !state :address)
 
-      (is (= (scs/search-criteria !state) [{:selected-control :name :search-term "smith"}])))
+      (is (= (scs/search-criteria !state) [{:query-type :name :search-term "smith"}])))
 
     (testing "you can add and remove search criteria without going via the search control fields"
       (scs/init! !state (fn [& _]))
 
       (scs/add-search-criteria! !state :address "SK2")
-      (is (= (scs/search-criteria !state) [{:selected-control :address :search-term "SK2"}]))
+      (is (= (scs/search-criteria !state) [{:query-type :address :search-term "SK2"}]))
 
       (scs/add-search-criteria! !state :name "smith")
-      (is (= (scs/search-criteria !state) [{:selected-control :address :search-term "SK2"}
-                                           {:selected-control :name :search-term "smith"}]))
+      (is (= (scs/search-criteria !state) [{:query-type :address :search-term "SK2"}
+                                           {:query-type :name :search-term "smith"}]))
 
       (scs/remove-search-criteria! !state :address)
-      (is (= (scs/search-criteria !state) [{:selected-control :name :search-term "smith"}])))
+      (is (= (scs/search-criteria !state) [{:query-type :name :search-term "smith"}])))
 
 
     (testing "adding a new value for a given field, replaces the existing search term"
@@ -76,8 +75,8 @@
       (scs/add-search-criteria! !state :address "SK2")
       (scs/add-search-criteria! !state :address "SK2 latest")
 
-      (is (= (scs/search-criteria !state) [{:selected-control :name :search-term "smith"}
-                                           {:selected-control :address :search-term "SK2 latest"}])))
+      (is (= (scs/search-criteria !state) [{:query-type :name :search-term "smith"}
+                                           {:query-type :address :search-term "SK2 latest"}])))
 
     (testing "callback is passed list of terms when there is a change"
       (let [!arguments-to-most-recent-callback (atom nil)]

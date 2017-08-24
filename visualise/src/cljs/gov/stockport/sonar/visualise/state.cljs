@@ -5,6 +5,7 @@
 (defonce !app (r/atom {}))
 (defonce !data (r/atom {}))
 (defonce !status (r/atom {}))
+(defonce !search-control-state (r/atom {}))
 
 (defonce !signposting-config (atom {}))
 
@@ -17,6 +18,7 @@
   (reset! !app {})
   (reset! !data {})
   (reset! !status {})
+  (reset! !search-control-state {})
   (load-signposting-configuration))
 
 (defn refresh-status! []

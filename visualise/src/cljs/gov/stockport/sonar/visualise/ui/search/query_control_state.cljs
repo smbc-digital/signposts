@@ -54,9 +54,9 @@
     query-types))
 
 (defn extract-query-defs [terms]
-  (map (fn [{:keys [selected-control search-term]}]
+  (map (fn [{:keys [query-type search-term]}]
          (assoc
-           (select-keys (get query-types selected-control) [:field-type :field-name])
+           (select-keys (get query-types query-type) [:field-type :field-name])
            :query search-term))
        terms))
 

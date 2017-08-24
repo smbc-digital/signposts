@@ -2,16 +2,15 @@
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.ui.search.query-control-state :as qcs]
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
+            [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
             [gov.stockport.sonar.visualise.query.client :refer [search]]))
 
-(defonce !search-control-state (r/atom {}))
-
-(defn nugget [{:keys [selected-control search-term]}]
+(defn nugget [{:keys [query-type search-term]}]
   [:div.input-group.nugget.mr-2
-   [:span.input-group-addon.name (name selected-control)]
+   [:span.input-group-addon.name (name query-type)]
    [:span.input-group-addon.val search-term
     [:i.fa.fa-times.ml-2
-     {:on-click #(scs/remove-search-criteria! !search-control-state selected-control)}]]])
+     {:on-click #(scs/remove-search-criteria! !search-control-state query-type)}]]])
 
 
 (defn search-criteria-control [query-callback]
