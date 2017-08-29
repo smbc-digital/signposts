@@ -13,6 +13,9 @@
 (defn- all-event-data [[_ {:keys [data]}]]
   data)
 
+(defn- highlighted-event-data [[_ {:keys [highlighted? data]}]]
+  (when highlighted? data))
+
 (defn- locked-event-data [[_ {:keys [locked? data]}]]
   (when locked? data))
 
@@ -21,6 +24,8 @@
     (reduce concat [] (map extractor people))))
 
 (def all-events (extractor-for all-event-data))
+
+(def highlighted-events (extractor-for highlighted-event-data))
 
 (def locked-events (extractor-for locked-event-data))
 

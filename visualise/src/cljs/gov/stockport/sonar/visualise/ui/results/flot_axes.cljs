@@ -27,8 +27,7 @@
      :panRange   false
      :position   :right
      :ticks      (map (fn [[k v]] [v (name k)]) labels)
-     :labelWidth 50
-     }))
+     :labelWidth 50}))
 
 (defn collision-key [{:keys [:timestamp :event-type]}]
   {:year       (t/year timestamp)
@@ -37,16 +36,16 @@
    :event-type event-type})
 
 (defn- y-data-points-avoiding-collisions [data]
-  (let [events (people/all-events data)
+  (let [events (people/highlighted-events data)
         lm (label-map data)
-        blurrer (b/blurrer 0.1 0.4)]
+        blurrer (b/blurrer 0.2 0.6)]
     (reduce merge {}
             (map
               (fn [[{:keys [event-type] :as k} events]]
                 {k (p/new-stack (blurrer (get lm event-type) (count events)))})
               (group-by collision-key events)))))
 
-(def by-highlighted? (fn [[_ pdata]] ((juxt :highlighted? :rank) pdata)))
+(def highlighted? (fn [[_ pdata]] (:highlighted? pdata)))
 
 (defn data-points [{:keys [people] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)
@@ -68,7 +67,7 @@
                                        pop (:pop stack)]
                                    [timestamp (pop)]))
                                data)})
-                  (sort-by by-highlighted? people))}))
+                  (filter highlighted? people))}))
 
 (defn event-at [!event-map series-idx data-idx]
   (get-in @!event-map [series-idx data-idx]))

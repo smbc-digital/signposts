@@ -11,18 +11,18 @@
 (def one-person {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
                                                       {:timestamp 4 :event-type :caution}]
                                        :color        :red
-                                       :highlighted? false}}})
+                                       :highlighted? true}}})
 
 (def two-people {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
                                                       {:timestamp 4 :event-type :caution}]
                                        :rank         1
                                        :color        :red
-                                       :highlighted? false}
+                                       :highlighted? true}
                           {:name "B"} {:data         [{:timestamp 4 :event-type :zoology}
                                                       {:timestamp 1 :event-type :caution}]
                                        :rank         2
                                        :color        :blue
-                                       :highlighted? false}}})
+                                       :highlighted? true}}})
 
 (def two-people-one-highlighted {:people {{:name "A"} {:data         [{:id 1 :timestamp 1 :event-type :asbo}
                                                                       {:id 3 :timestamp 4 :event-type :caution}]
@@ -34,6 +34,17 @@
                                                        :rank         2
                                                        :highlighted? true
                                                        :color        :red}}})
+
+(def two-people-both-highlighted {:people {{:name "A"} {:data         [{:id 1 :timestamp 1 :event-type :asbo}
+                                                                       {:id 3 :timestamp 4 :event-type :caution}]
+                                                        :rank         1
+                                                        :highlighted? true
+                                                        :color        :black}
+                                           {:name "B"} {:data         [{:id 2 :timestamp 4 :event-type :zoology}
+                                                                       {:id 4 :timestamp 1 :event-type :caution}]
+                                                        :rank         2
+                                                        :highlighted? true
+                                                        :color        :red}}})
 
 (def multiple-highlights {:people {{:name "A"} {:data [{:id :e1 :timestamp 1 :event-type :asbo}] :highlighted? true}
                                    {:name "B"} {:data [{:id :e2 :timestamp 2 :event-type :asbo}] :highlighted? false}
@@ -48,11 +59,17 @@
                                                           {:timestamp 4 :event-type :caution}]
                                            :rank         1
                                            :color        :red
-                                           :highlighted? false}
+                                           :highlighted? true}
                               {:name "B"} {:data         [{:timestamp 1 :event-type :asbo}
                                                           {:timestamp 4 :event-type :caution}]
                                            :rank         2
                                            :color        :blue
+                                           :highlighted? true}
+                              {:name "C"} {:data         [{:timestamp 1 :event-type :asbo}
+                                                          {:timestamp 1 :event-type :asbo}
+                                                          {:timestamp 4 :event-type :caution}]
+                                           :rank         1
+                                           :color        :black
                                            :highlighted? false}}})
 
 
@@ -117,54 +134,37 @@
       (testing "are derived as series based on people"
 
         (is (= (:flot-data (fa/data-points one-person))
-               [{:points {:show false} :color (:red colour-map) :data [[1 2] [4 1]]}]))
+               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[1 2] [4 1]]}]))
 
         (is (= (:flot-data (fa/data-points two-people))
-               [{:points {:show false} :color (:red colour-map) :data [[1 3] [4 2]]}
-                {:points {:show false} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[1 3] [4 2]]}
+                {:points {:show true :fillColor false :fill 0.8} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
 
-      (testing "may be turned off if showing only highlighted people"
+      (testing "are only produced for highlighted people"
 
         (is (= (:flot-data (fa/data-points two-people-one-highlighted))
-               [{:points {:show false} :color (:black colour-map) :data [[1 3] [4 2]]}
-                {:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
+               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
 
-      (testing "events are shifted a little when they land on top of each other"
+      (testing "events are shifted a little when they are displayed on top of each other"
         (is (= (:flot-data (fa/data-points colliding-data))
-               [{:points {:show false} :color (:red colour-map) :data [[1 1.9] [1 2] [4 0.95]]}
-                {:points {:show false} :color (:blue colour-map) :data [[1 2.1] [4 1.05]]}])))
-
-      (testing "highlighted data points are drawn last"
-        (is (= (:flot-data (fa/data-points multiple-highlights))
-               [{:points {:show false} :color (:black colour-map) :data [[2 1]]}
-                {:points {:show false} :color (:black colour-map) :data [[4 1]]}
-                {:points {:show false} :color (:black colour-map) :data [[5 1]]}
-                {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[1 1]]}
-                {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[3 1]]}
-                {:points {:show true :fillColor false :fill 0.8} :color (:black colour-map) :data [[6 1]]}])))
-
+               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[1 1.8] [1 2] [4 0.9]]}
+                {:points {:show true :fillColor false :fill 0.8} :color (:blue colour-map) :data [[1 2.2] [4 1.1]]}])))
 
       (testing "data points come with a map so that we can lookup the event when it is selected on the graph"
         (let [{:keys [event-map flot-data]} (fa/data-points multiple-highlights)]
           (evaluate-for-side-effects flot-data)
-          (is (= (fa/event-at event-map 0 0) {:id :e2 :timestamp 2 :event-type :asbo}))
-          (is (= (fa/position-for event-map {:id :e4}) {:seriesIndex 1 :dataIndex 0}))
+          (is (= (fa/event-at event-map 0 0) {:id :e1 :timestamp 1 :event-type :asbo}))
+          (is (nil? (fa/position-for event-map {:id :e4})))
           (is (= @event-map
-                 {0   {0 {:id :e2 :timestamp 2 :event-type :asbo}}
-                  1   {0 {:id :e4 :timestamp 4 :event-type :asbo}}
-                  2   {0 {:id :e5 :timestamp 5 :event-type :asbo}}
-                  3   {0 {:id :e1 :timestamp 1 :event-type :asbo}}
-                  4   {0 {:id :e3 :timestamp 3 :event-type :asbo}}
-                  5   {0 {:id :e6 :timestamp 6 :event-type :asbo}}
-                  :e2 {:seriesIndex 0 :dataIndex 0}
-                  :e4 {:seriesIndex 1 :dataIndex 0}
-                  :e5 {:seriesIndex 2 :dataIndex 0}
-                  :e1 {:seriesIndex 3 :dataIndex 0}
-                  :e3 {:seriesIndex 4 :dataIndex 0}
-                  :e6 {:seriesIndex 5 :dataIndex 0}}))))
+                 {0   {0 {:id :e1 :timestamp 1 :event-type :asbo}}
+                  1   {0 {:id :e3 :timestamp 3 :event-type :asbo}}
+                  2   {0 {:id :e6 :timestamp 6 :event-type :asbo}}
+                  :e1 {:seriesIndex 0 :dataIndex 0}
+                  :e3 {:seriesIndex 1 :dataIndex 0}
+                  :e6 {:seriesIndex 2 :dataIndex 0}}))))
 
       (testing "data points indexing works for multiple events and people"
-        (let [{:keys [event-map flot-data]} (fa/data-points two-people-one-highlighted)]
+        (let [{:keys [event-map flot-data]} (fa/data-points two-people-both-highlighted)]
           (evaluate-for-side-effects flot-data)
           (is (= (fa/event-at event-map 0 0) {:id 1 :timestamp 1 :event-type :asbo}))
           (is (= (fa/event-at event-map 0 1) {:id 3 :timestamp 4 :event-type :caution}))

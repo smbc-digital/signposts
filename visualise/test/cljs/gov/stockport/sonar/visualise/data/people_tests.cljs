@@ -119,7 +119,17 @@
                                                                {:id 2}]}
                                           {:name "N2"} {:data [{:id 3}]}
                                           {:name "N3"} {:data [{:id 4}]}}})
-             [{:id 1} {:id 2} {:id 3} {:id 4}]))))
+             [{:id 1} {:id 2} {:id 3} {:id 4}])))
+
+    (testing "all highlighted events can be retrieved"
+      (is (= (people/highlighted-events {:people {{:name "N1"} {:highlighted? true
+                                                        :data         [{:id 1}
+                                                                       {:id 2}]}
+                                          {:name "N2"} {:highlighted? false
+                                                        :data         [{:id 3}]}
+                                          {:name "N3"} {:highlighted? true
+                                                        :data         [{:id 4}]}}})
+             [{:id 1} {:id 2} {:id 4}]))))
 
   (testing "highlights and colors"
 
@@ -138,33 +148,7 @@
                                       {:name "B"} {:highlighted? true
                                                    :color        :red}
                                       {:name "C"} {}}
-              :highlighting-allowed? false})))
-
-    (testing "with everyone highlighted you can no longer toggle show highlight only"
-
-      (is (= (-> {:people                {{:name "A"} {}
-                                          {:name "B"} {}
-                                          {:name "C"} {}}
-                  :highlighting-allowed? true
-                  :color-stack           (s/new-stack [:red :green :blue :pink])}
-                 (people/toggle-highlight-person {:name "B"})
-                 (people/toggle-highlight-person {:name "A"})
-                 (people/toggle-highlight-person {:name "C"})
-                 (dissoc :color-stack)
-                 :highlighting-allowed?)
-             true)))
-
-    (testing "with nobody highlighted you can no longer toggle show highlight only"
-
-      (is (= (-> {:people      {{:name "A"} {:highlighted? true
-                                             :color        :red}
-                                {:name "B"} {}
-                                {:name "C"} {}}
-                  :color-stack (s/new-stack [])}
-                 (people/toggle-highlight-person {:name "A"})
-                 (dissoc :color-stack)
-                 :highlighting-allowed?)
-             true))))
+              :highlighting-allowed? false}))))
 
   (testing "printing a summary of results"
     (testing "multiple events from multiple people"
@@ -211,8 +195,7 @@
                                                               {:name "N3"} {}}
                                              :selected-event {:name "N2"}})]
           (is (nil? (:selected-event result)))
-          (is (nil? (get-in result [:people {:name "N2"} :has-selected-event?])))))
-      ))
+          (is (nil? (get-in result [:people {:name "N2"} :has-selected-event?])))))))
 
   (testing "locking behaviour"
 
