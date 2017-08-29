@@ -134,21 +134,25 @@
       (testing "are derived as series based on people"
 
         (is (= (:flot-data (fa/data-points one-person))
-               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[1 2] [4 1]]}]))
+               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[1 2] [4 1]]}
+                {:points {:show false}}]))
 
         (is (= (:flot-data (fa/data-points two-people))
                [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[1 3] [4 2]]}
-                {:points {:show true :fillColor false :fill 0.8} :color (:blue colour-map) :data [[4 1] [1 2]]}])))
+                {:points {:show true :fillColor false :fill 0.8} :color (:blue colour-map) :data [[4 1] [1 2]]}
+                {:points {:show false}}])))
 
       (testing "are only produced for highlighted people"
 
         (is (= (:flot-data (fa/data-points two-people-one-highlighted))
-               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}])))
+               [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[4 1] [1 2]]}
+                {:points {:show false}}])))
 
       (testing "events are shifted a little when they are displayed on top of each other"
         (is (= (:flot-data (fa/data-points colliding-data))
                [{:points {:show true :fillColor false :fill 0.8} :color (:red colour-map) :data [[1 1.8] [1 2] [4 0.9]]}
-                {:points {:show true :fillColor false :fill 0.8} :color (:blue colour-map) :data [[1 2.2] [4 1.1]]}])))
+                {:points {:show true :fillColor false :fill 0.8} :color (:blue colour-map) :data [[1 2.2] [4 1.1]]}
+                {:points {:show false}}])))
 
       (testing "data points come with a map so that we can lookup the event when it is selected on the graph"
         (let [{:keys [event-map flot-data]} (fa/data-points multiple-highlights)]

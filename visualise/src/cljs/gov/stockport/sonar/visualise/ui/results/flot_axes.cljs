@@ -47,27 +47,31 @@
 
 (def highlighted? (fn [[_ pdata]] (:highlighted? pdata)))
 
+(defn- with-dummy-series-to-ensure-axes-displayed [data]
+  (concat data [{:points {:show false}}]))
+
 (defn data-points [{:keys [people] :as data}]
   (let [ydp (y-data-points-avoiding-collisions data)
         !event-map (atom {})]
     {:event-map !event-map
-     :flot-data (map-indexed
-                  (fn [seriesIdx [_ {:keys [color highlighted? data]}]]
-                    {:points (-> {:show highlighted?}
-                                 (merge (when highlighted? {:fill 0.8 :fillColor false})))
-                     :color  (get colour-map (or color :black))
-                     :data   (map-indexed
-                               (fn [dataIdx {:keys [timestamp] :as event}]
-                                 (swap! !event-map
-                                        #(-> %
-                                             (assoc-in [seriesIdx dataIdx] event)
-                                             (assoc (:id event) {:seriesIndex seriesIdx :dataIndex dataIdx})))
-                                 (let [ekey (collision-key event)
-                                       stack (get ydp ekey)
-                                       pop (:pop stack)]
-                                   [timestamp (pop)]))
-                               data)})
-                  (filter highlighted? people))}))
+     :flot-data (with-dummy-series-to-ensure-axes-displayed
+                  (map-indexed
+                    (fn [seriesIdx [_ {:keys [color highlighted? data]}]]
+                      {:points (-> {:show highlighted?}
+                                   (merge (when highlighted? {:fill 0.8 :fillColor false})))
+                       :color  (get colour-map (or color :black))
+                       :data   (map-indexed
+                                 (fn [dataIdx {:keys [timestamp] :as event}]
+                                   (swap! !event-map
+                                          #(-> %
+                                               (assoc-in [seriesIdx dataIdx] event)
+                                               (assoc (:id event) {:seriesIndex seriesIdx :dataIndex dataIdx})))
+                                   (let [ekey (collision-key event)
+                                         stack (get ydp ekey)
+                                         pop (:pop stack)]
+                                     [timestamp (pop)]))
+                                 data)})
+                    (filter highlighted? people)))}))
 
 (defn event-at [!event-map series-idx data-idx]
   (get-in @!event-map [series-idx data-idx]))
