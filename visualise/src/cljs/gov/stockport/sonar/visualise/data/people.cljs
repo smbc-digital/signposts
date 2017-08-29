@@ -80,6 +80,8 @@
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))
 
+
+
 (defn results-summary [data]
   (defn num-people-summary [data]
     (let [num-people (count (:people data))]
@@ -93,6 +95,11 @@
 (defn- clear-selected-event? [people]
   (reduce merge {}
           (map (fn [[k v]] {k (dissoc v :has-selected-event?)}) people)))
+
+(defn clear-selected-people [data]
+  (from-data data))
+
+
 
 (defn deselect-event [{:keys [people] :as data}]
   (-> data

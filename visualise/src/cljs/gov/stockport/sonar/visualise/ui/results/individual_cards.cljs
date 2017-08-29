@@ -52,6 +52,12 @@
       (when (not-empty people)
         [:div.cards
          [:p "Select up to " [:b "6 individuals"] " to highlight their events on the graph"]
+         [:p
+
+           [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/clear-selected-people )}
+           [:span {:style {:font-family [:arial :sans-serif]}} " Reset Selection"
+          ]]]
+
          [:div.fixed-height (map (card !data) people)]]))))
 
 (defonce !current (atom nil))
@@ -85,3 +91,4 @@
     (reagent/create-class {:reagent-render       (cards-render !data)
                            :component-did-mount  (wrap-scroll !data scroll-to-selected)
                            :component-did-update (wrap-scroll !data scroll-to-selected)})))
+
