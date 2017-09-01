@@ -71,20 +71,27 @@
                         (fn [idx [k v]] {k (assoc v :rank (+ 1 idx))})
                         (sort-by locked-then-score-then-surname people)))))
 
-(defn toggle-highlight-person [{:keys [people color-mgr] :as data} pkey]
-  (let [{:keys [assign release available?]} color-mgr
-        person (get people pkey)
-        turning-on? (not (:highlighted? person))]
-    (-> (if turning-on?
-          (update-in data [:people pkey] #(-> %
-                                              (assoc :highlighted? true)
-                                              (assoc :color (assign pkey))))
-          (do
-            (release pkey)
-            (update-in data [:people pkey] #(-> %
-                                                (assoc :highlighted? false)
-                                                (dissoc :color)))))
+(defn highlight-person [{:keys [color-mgr] :as data} pkey]
+  (let [{:keys [assign available?]} color-mgr]
+    (-> data
+        (update-in [:people pkey] #(-> %
+                                       (assoc :highlighted? true)
+                                       (assoc :color (assign pkey))))
         (assoc :highlighting-allowed? (available?)))))
+
+(defn un-highlight-person [{:keys [color-mgr] :as data} pkey]
+  (let [{:keys [release available?]} color-mgr]
+    (release pkey)
+    (-> data
+        (update-in [:people pkey] #(-> %
+                                       (assoc :highlighted? false)
+                                       (dissoc :color)))
+        (assoc :highlighting-allowed? (available?)))))
+
+(defn toggle-highlight-person [{:keys [people] :as data} pkey]
+  (let [person (get people pkey)
+        toggle-fn (if (:highlighted? person) un-highlight-person highlight-person)]
+    (toggle-fn data pkey)))
 
 (defn- assoc-once [m k v]
   (if (contains? m k) m (assoc m k v)))
@@ -92,7 +99,7 @@
 (defn clean-up-any-previously-locked-colours [{:keys [color-mgr] :as data}]
   (let [{:keys [release available?]} color-mgr]
     (doseq [[pkey {:keys [highlighted? locked?]}] (:people data)]
-        (if (and highlighted? (not locked?)) (release pkey)))
+      (if (and highlighted? (not locked?)) (release pkey)))
     (assoc data :highlighting-allowed? (available?))))
 
 (defn with-colours [data]
@@ -109,7 +116,8 @@
       (with-areas)
       (with-rank)))
 
-(def reset-selection from-data)
+(defn reset-selection [data]
+  (reduce (fn [d pkey] (un-highlight-person d pkey)) data (keys (:people data))))
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))
