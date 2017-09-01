@@ -56,21 +56,26 @@
                        {:name "3"} {:data  [{:postcode "SK3 3AA"}]
                                     :areas #{"SK3"}}}})))
 
-    (testing "ranks people by score and sort order of surname"
+    (testing "ranks people by whether locked, then score and sort order of surname"
 
       (is (= (people/with-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
                                          {:name "Z AA"} {:name "Z AA" :score 1}
+                                         {:name "Z AD"} {:name "Z AD" :score 1 :locked? true}
                                          {:name "A AC"} {:name "A AC" :score 2}}})
 
-             {:people {{:name "Z AA"} {:name  "Z AA"
-                                       :score 1
-                                       :rank  2}
-                       {:name "A AB"} {:name  "A AB"
-                                       :score 1
-                                       :rank  3}
+             {:people {{:name "Z AD"} {:name    "Z AD"
+                                       :score   1
+                                       :rank    1
+                                       :locked? true}
                        {:name "A AC"} {:name  "A AC"
                                        :score 2
-                                       :rank  1}}})))
+                                       :rank  2}
+                       {:name "Z AA"} {:name  "Z AA"
+                                       :score 1
+                                       :rank  3}
+                       {:name "A AB"} {:name  "A AB"
+                                       :score 1
+                                       :rank  4}}})))
 
     (testing "comes together with everyone displayed to start with"
 
@@ -199,43 +204,125 @@
 
   (testing "locking behaviour"
 
-    (let [data {:people {{:name "N1"} {:data    [{:name "N1" :score 1 :id 1}
-                                                 {:name "N1" :score 4 :id 2}]
-                                       :locked? true}
-                         {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
-                         {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
-                                       :locked? true}}
+    (with-redefs
+      [people/group-keys [:name]]
 
-                :result [{:name "N1" :score 5 :id 5}        ; addition to locked items
-                         {:name "N2" :score 6 :id 6}
-                         {:name "N4" :score 7 :id 7}
-                         {:name "N1" :score 1 :id 1}]}]     ; duplicate of locked item
+      (let [data {:people {{:name "N1"} {:data         [{:name "N1" :score 1 :id 1}
+                                                        {:name "N1" :score 4 :id 2}]
+                                         :locked?      true
+                                         :highlighted? true}
+                           {:name "N2"} {:data [{:name "N2" :score 3 :id 3}]}
+                           {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
+                                         :locked? true}}
 
-      (testing "we can extract the locked events"
+                  :result [{:name "N1" :score 5 :id 5}      ; existing addition to locked items
+                           {:name "N2" :score 6 :id 6}
+                           {:name "N4" :score 7 :id 7}
+                           {:name "N1" :score 1 :id 1}]}]   ; existing duplicate of locked item
 
-        (is (= (people/locked-events data)
+        (testing "we can lock a person"
+          (is (= (-> {:people {{:name "N1"} {}}}
+                     (people/lock {:name "N1"}))
+                 {:people {{:name "N1"} {:locked? true}}})))
 
-               [{:name "N1" :score 1 :id 1}
-                {:name "N1" :score 4 :id 2}
-                {:name "N3" :score 2 :id 4}])))
+        (testing "we can unlock a person"
+          (is (= (-> {:people {{:name "N1"} {}}}
+                     (people/unlock {:name "N1"}))
+                 {:people {{:name "N1"} {:locked? false}}})))
 
-      (testing "we can extract the set of locked keys"
+        (testing "we can extract the locked people"
+          (is (= (people/locked-people data)
+                 {{:name "N1"} {:data         [{:name "N1" :score 1 :id 1}
+                                               {:name "N1" :score 4 :id 2}]
+                                :highlighted? true
+                                :locked?      true}
+                  {:name "N3"} {:data    [{:name "N3" :score 2 :id 4}]
+                                :locked? true}})))
 
-        (is (= (people/locked-pkeys data)
-               #{{:name "N1"}
-                 {:name "N3"}})))
+        (testing "we can extract the locked events"
+          (is (= (people/locked-events data)
+                 [{:name "N1" :score 1 :id 1}
+                  {:name "N1" :score 4 :id 2}
+                  {:name "N3" :score 2 :id 4}])))
 
-      (testing "when locked people already exist they are retained"
+        (testing "when locked people already exist they are retained"
 
-        (let [result (:people (people/from-data data))]
+          (let [resulting-people (:people (people/from-data data))]
 
-          (is (= (select-keys (get result {:name "N1"}) [:data :locked?])
-                 {:data [{:name "N1" :score 1 :id 1}
-                         {:name "N1" :score 4 :id 2}
-                         {:name "N1" :score 5 :id 5}]}))
+            (is (= (get resulting-people {:name "N1"})
+                   {:data         [{:name "N1" :score 1 :id 1}
+                                   {:name "N1" :score 4 :id 2}
+                                   {:name "N1" :score 5 :id 5}]
+                    :score        5
+                    :areas        #{}
+                    :rank         1
+                    :locked?      true
+                    :highlighted? true}))
 
-          (is (= (select-keys (get result {:name "N2"}) [:data]) {:data [{:name "N2" :score 6 :id 6}]}))
+            (is (= (select-keys (get resulting-people {:name "N2"}) [:data]) {:data [{:name "N2" :score 6 :id 6}]}))
 
-          (is (= (select-keys (get result {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
+            (is (= (select-keys (get resulting-people {:name "N3"}) [:data]) {:data [{:name "N3" :score 2 :id 4}]}))
 
-          (is (= (select-keys (get result {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]})))))))
+            (is (= (select-keys (get resulting-people {:name "N4"}) [:data]) {:data [{:name "N4" :score 7 :id 7}]}))))
+
+        (testing "colouring and locking"
+
+          (with-redefs
+            [c/colour-priority [:red :blue]]
+
+            (testing "availability of colours is managed correctly"
+
+              (let [!data (atom {:result [{:name :A :id 1}
+                                          {:name :B :id 2}
+                                          {:name :C :id 3}]})]
+
+                ; retrieve initial result set
+                (swap! !data people/from-data)
+
+                (is (= 3 (count (:people @!data))))
+                (is (true? ((:available? (:color-mgr @!data)))))
+
+                ; highlight C then highlight A
+                (swap! !data #(-> %
+                                  (people/toggle-highlight-person {:name :C})
+                                  (people/toggle-highlight-person {:name :A})))
+
+                (is (= :blue (:color (get (:people @!data) {:name :A}))))
+                (is (= :red (:color (get (:people @!data) {:name :C}))))
+                (is (false? (:highlighting-allowed? @!data)))
+
+                ; lock C & B
+                (swap! !data #(-> %
+                                  (people/lock {:name :C})
+                                  (people/lock {:name :B})))
+
+                ; modify the results from a new search
+                (swap! !data assoc :result [{:name :D :id 4}
+                                            {:name :C :id 5}])
+
+                ; and handle the search coming back which also contains locked people
+                (swap! !data people/from-data)
+
+                ; people have changed; D arrives and A departs
+                (is (= 3 (count (:people @!data))))
+                (is (true? (contains? (:people @!data) {:name :D})))
+                (is (false? (contains? (:people @!data) {:name :A})))
+
+                ; C's events has been merged
+                (is (= [{:name :C :id 3} {:name :C :id 5}] (:data (get (:people @!data) {:name :C}))))
+
+                ; C remains highlighted & locked
+                (is (= :red (:color (get (:people @!data) {:name :C}))))
+                (is (true? (:locked? (get (:people @!data) {:name :C}))))
+
+                ; colours remain available so highlighting is allowed
+                (is (true? ((:available? (:color-mgr @!data)))))
+                (is (true? (:highlighting-allowed? @!data)))
+
+                ; highlight D
+                (swap! !data #(-> %
+                                  (people/toggle-highlight-person {:name :D})))
+
+                ; now D takes the blue and no more highlighting is available
+                (is (= :blue (:color (get (:people @!data) {:name :D}))))
+                (is (false? (:highlighting-allowed? @!data)))))))))))

@@ -18,14 +18,14 @@
 
 (defn card [!data]
   (let [highlighting-allowed? (:highlighting-allowed? @!data)]
-    (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? areas]}]]
+    (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? locked? areas]}]]
       ^{:key (gensym)}
       [:div.mb-2.sp-individual
        {:class (str (and color (cljs.core/name color))
                     (when (not highlighted?) " blur")
                     (when has-selected-event? " has-selected-event"))}
        [:div.row.no-gutters.align-items-center.upper
-        [:div.column.col-1.pt-2
+        [:div.column.col-1.left.pt-2
          [:center
           (if (or highlighted? highlighting-allowed?)
             [:i.fa
@@ -33,12 +33,20 @@
               :class    (displayed-icon highlighted?)
               :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
               :on-click #(swap! !data people/toggle-highlight-person pkey)}]
-            [:i.fa.fa-square {:style {:filter "opacity(0.1)"}}])]]
-        [:div.column.col-11.px-2.pt-2.text-truncate
-         (str name (age dob))]]
+            [:i.fa.fa-square {:style {:filter "opacity(0.1)"}}])]
+         ]
+
+        [:div.column.col-10.px-2.pt-2.text-truncate
+         (str name (age dob))]
+
+        [:div.column.col-1.px-2.pt-2
+         [:i.fa.fa-thumb-tack
+          {:style    {:color (if locked? :red :green)}
+           :class    (if locked? "" "fa-rotate-90")
+           :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
 
        [:div.row.no-gutters.lower
-        [:div.column.col-1]
+        [:div.column.col-1.left]
         [:div.column.col-11.px-2.pb-2
          [:div
           [:i.fa.fa-calendar] " " (date-of-birth pkey)]
@@ -53,11 +61,8 @@
         [:div.cards
          [:p "Select up to " [:b "6 individuals"] " to highlight their events on the graph"]
          [:p
-
-           [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/clear-selected-people )}
-           [:span {:style {:font-family [:arial :sans-serif]}} " Reset Selection"
-          ]]]
-
+          [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/reset-selection)}
+           [:span {:style {:font-family [:arial :sans-serif]}} " Reset Selection"]]]
          [:div.fixed-height (map (card !data) people)]]))))
 
 (defonce !current (atom nil))
@@ -68,7 +73,6 @@
 (defn- event-newly-selected? [!data]
   (and (:selected-event @!data)
        (not= @!current (:selected-event @!data))))
-
 
 (defn wrap-scroll [!data scroll-fn]
   (fn [& _]

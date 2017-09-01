@@ -7,9 +7,6 @@
 
 (def group-keys [:name :dob])
 
-(defn locked-pkeys [{:keys [people]}]
-  (into #{} (filter not-empty (map (fn [[pkey {:keys [locked?]}]] (when locked? pkey)) people))))
-
 (defn- all-event-data [[_ {:keys [data]}]]
   data)
 
@@ -29,13 +26,26 @@
 
 (def locked-events (extractor-for locked-event-data))
 
+(defn lock [data pkey]
+  (assoc-in data [:people pkey :locked?] true))
+
+(defn unlock [data pkey]
+  (assoc-in data [:people pkey :locked?] false))
+
+(defn toggle-lock-person [data pkey]
+  (update-in data [:people pkey :locked?] not))
+
+(defn locked-people [{:keys [people]}]
+  (reduce merge {} (filter (fn [[_ pdata]] (:locked? pdata)) people)))
+
 (defn by-people [{:keys [result] :as data}]
-  (assoc data :people
-              (reduce merge {}
-                      (map (fn [[k v]] {k {:data v}})
-                           (group-by
-                             (fn [m] (select-keys m group-keys))
-                             (merge/merge-events (locked-events data) result))))))
+  (let [existing-people (locked-people data)
+        new-people (reduce merge {}
+                           (map (fn [[k v]] {k {:data v}})
+                                (group-by
+                                  (fn [m] (select-keys m group-keys))
+                                  (merge/merge-events (locked-events data) result))))]
+    (assoc data :people (merge/merge-people-flags existing-people new-people))))
 
 (defn with-max-score [{:keys [people] :as data}]
   (assoc data :people
@@ -51,12 +61,15 @@
 
 (def surname #(last (str/split (:name %) #" ")))
 
+(def locked-then-score-then-surname
+  (fn [[_ p]] [(if (:locked? p) 0 1) (- 0 (:score p)) (surname p)]))
+
 (defn with-rank [{:keys [people] :as data}]
   (assoc data :people
               (reduce merge {}
                       (map-indexed
                         (fn [idx [k v]] {k (assoc v :rank (+ 1 idx))})
-                        (sort-by (fn [[_ p]] [(- 0 (:score p)) (surname p)]) people)))))
+                        (sort-by locked-then-score-then-surname people)))))
 
 (defn toggle-highlight-person [{:keys [people color-mgr] :as data} pkey]
   (let [{:keys [assign release available?]} color-mgr
@@ -73,15 +86,30 @@
                                                 (dissoc :color)))))
         (assoc :highlighting-allowed? (available?)))))
 
+(defn- assoc-once [m k v]
+  (if (contains? m k) m (assoc m k v)))
+
+(defn clean-up-any-previously-locked-colours [{:keys [color-mgr] :as data}]
+  (let [{:keys [release available?]} color-mgr]
+    (doseq [[pkey {:keys [highlighted? locked?]}] (:people data)]
+        (if (and highlighted? (not locked?)) (release pkey)))
+    (assoc data :highlighting-allowed? (available?))))
+
+(defn with-colours [data]
+  (-> data
+      (assoc-once :highlighting-allowed? true)
+      (assoc-once :color-mgr (s/new-colour-manager c/colour-priority))
+      (clean-up-any-previously-locked-colours)))
 
 (defn from-data [data]
   (-> data
+      (with-colours)
       (by-people)
       (with-max-score)
-      (with-rank)
       (with-areas)
-      (assoc :highlighting-allowed? true)
-      (assoc :color-mgr (s/new-colour-manager c/colour-priority))))
+      (with-rank)))
+
+(def reset-selection from-data)
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))
@@ -99,11 +127,6 @@
 (defn- clear-selected-event? [people]
   (reduce merge {}
           (map (fn [[k v]] {k (dissoc v :has-selected-event?)}) people)))
-
-(defn clear-selected-people [data]
-  (from-data data))
-
-
 
 (defn deselect-event [{:keys [people] :as data}]
   (-> data

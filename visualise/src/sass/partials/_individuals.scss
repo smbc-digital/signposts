@@ -1,6 +1,6 @@
 @mixin individual($color, $color-bg) {
-  div.upper > .col-1,
-  div.lower > .col-1 {
+  div.upper > .left,
+  div.lower > .left {
     border-left: 5px solid $color;
     background-color: $color-bg;
   }
@@ -51,7 +51,7 @@ div.sp-individual {
     font-size: 1rem;
     font-weight: bold;
 
-    .col-1 {
+    .left {
       border-left: 5px solid $base-gray;
       border-radius: 5px 0px 0px 0px;
       background-color: $base-gray-l;
@@ -64,7 +64,7 @@ div.sp-individual {
     border-right: 1px solid $card-border;
     font-size: 0.8rem;
 
-    .col-1 {
+    .left {
       border-left: 5px solid $base-gray;
       border-radius: 0px 0px 0px 5px;
       background-color: $base-gray-l;
