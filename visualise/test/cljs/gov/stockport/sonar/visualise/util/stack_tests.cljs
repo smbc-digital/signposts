@@ -52,3 +52,40 @@
       (is (= (pop) :empty))
       (is (= (is-empty?) true)))))
 
+(deftest colour-managers
+
+  (testing "doesn't do much if there are no available colours"
+    (let [{:keys [assign]} (s/new-colour-manager [])]
+      (is (nil? (assign :some-pkey)))
+      (is (nil? (assign :some-other-pkey)))))
+
+  (testing "assigns to first available colour if there is one"
+    (let [{:keys [assign]} (s/new-colour-manager [:a :b])]
+      (is (= :a (assign :some-pkey)))
+      (is (= :b (assign :some-other-pkey)))
+      (is (nil? (assign :yet-another-pkey)))))
+
+  (testing "provides lookup from the person to the colour"
+    (let [{:keys [assign lookup]} (s/new-colour-manager [:a :b])]
+      (assign :some-other-pkey)
+      (assign :some-pkey)
+      (is (= :b (lookup :some-pkey)))
+      (is (= :a (lookup :some-other-pkey)))
+      (is (nil? (lookup :some-unknown-pkey)))))
+
+  (testing "allows for release of people"
+    (let [{:keys [assign release]} (s/new-colour-manager [:a])]
+      (is (= :a (assign :some-pkey)))
+      (is (nil? (assign :some-other-pkey)))
+      (release :some-pkey)
+      (is (= :a (assign :some-other-pkey)))))
+
+  (testing "indicates availability of colours"
+    (let [{:keys [assign release available?]} (s/new-colour-manager [:a :b])]
+      (is (available?))
+      (assign :some-pkey)
+      (is (available?))
+      (assign :another-pkey)
+      (is (not (available?)))
+      (release :some-pkey)
+      (is (available?)))))

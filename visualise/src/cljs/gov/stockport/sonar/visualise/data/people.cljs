@@ -58,20 +58,21 @@
                         (fn [idx [k v]] {k (assoc v :rank (+ 1 idx))})
                         (sort-by (fn [[_ p]] [(- 0 (:score p)) (surname p)]) people)))))
 
-(defn toggle-highlight-person [{:keys [people color-stack] :as data} pkey]
-  (let [{:keys [pop push is-empty?]} color-stack
+(defn toggle-highlight-person [{:keys [people color-mgr] :as data} pkey]
+  (let [{:keys [assign release available?]} color-mgr
         person (get people pkey)
         turning-on? (not (:highlighted? person))]
     (-> (if turning-on?
           (update-in data [:people pkey] #(-> %
                                               (assoc :highlighted? true)
-                                              (assoc :color (pop))))
+                                              (assoc :color (assign pkey))))
           (do
-            (push (:color person))
+            (release pkey)
             (update-in data [:people pkey] #(-> %
                                                 (assoc :highlighted? false)
-                                                (assoc :color :black)))))
-        (assoc :highlighting-allowed? (not (is-empty?))))))
+                                                (dissoc :color)))))
+        (assoc :highlighting-allowed? (available?)))))
+
 
 (defn from-data [data]
   (-> data
@@ -80,12 +81,10 @@
       (with-rank)
       (with-areas)
       (assoc :highlighting-allowed? true)
-      (assoc :color-stack (s/new-stack c/colour-priority :value-when-empty :black))))
+      (assoc :color-mgr (s/new-colour-manager c/colour-priority))))
 
 (defn by-rank [{:keys [people]}]
   (sort-by (fn [[_ {:keys [rank]}]] rank) people))
-
-
 
 (defn results-summary [data]
   (defn num-people-summary [data]

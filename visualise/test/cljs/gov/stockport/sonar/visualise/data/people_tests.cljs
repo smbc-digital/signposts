@@ -85,8 +85,8 @@
                                                    {:name "N2" :score 3}
                                                    {:name "N1" :score 4}]})]
 
-            (is (contains? result :color-stack))
-            (is (= (dissoc result :color-stack :result)
+            (is (contains? result :color-mgr))
+            (is (= (dissoc result :color-mgr :result)
                    {:highlighting-allowed? true
                     :people                {{:name "N1"} {:data  [{:name "N1" :score 1}
                                                                   {:name "N1" :score 4}]
@@ -123,25 +123,25 @@
 
     (testing "all highlighted events can be retrieved"
       (is (= (people/highlighted-events {:people {{:name "N1"} {:highlighted? true
-                                                        :data         [{:id 1}
-                                                                       {:id 2}]}
-                                          {:name "N2"} {:highlighted? false
-                                                        :data         [{:id 3}]}
-                                          {:name "N3"} {:highlighted? true
-                                                        :data         [{:id 4}]}}})
+                                                                :data         [{:id 1}
+                                                                               {:id 2}]}
+                                                  {:name "N2"} {:highlighted? false
+                                                                :data         [{:id 3}]}
+                                                  {:name "N3"} {:highlighted? true
+                                                                :data         [{:id 4}]}}})
              [{:id 1} {:id 2} {:id 4}]))))
 
   (testing "highlights and colors"
 
     (testing "you can only highlight people when colours are available"
 
-      (is (= (-> {:people      {{:name "A"} {}
-                                {:name "B"} {}
-                                {:name "C"} {}}
-                  :color-stack (s/new-stack [:red :green])}
+      (is (= (-> {:people    {{:name "A"} {}
+                              {:name "B"} {}
+                              {:name "C"} {}}
+                  :color-mgr (s/new-colour-manager [:red :green])}
                  (people/toggle-highlight-person {:name "B"})
                  (people/toggle-highlight-person {:name "A"})
-                 (dissoc :color-stack))
+                 (dissoc :color-mgr))
 
              {:people                {{:name "A"} {:highlighted? true
                                                    :color        :green}
