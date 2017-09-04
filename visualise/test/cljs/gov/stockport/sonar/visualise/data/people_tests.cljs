@@ -91,7 +91,7 @@
                                                    {:name "N1" :score 4}]})]
 
             (is (contains? result :color-mgr))
-            (is (= (dissoc result :color-mgr :result)
+            (is (= (dissoc result :color-mgr :result :timespan)
                    {:highlighting-allowed? true
                     :people                {{:name "N1"} {:data  [{:name "N1" :score 1}
                                                                   {:name "N1" :score 4}]
@@ -325,4 +325,6 @@
 
                 ; now D takes the blue and no more highlighting is available
                 (is (= :blue (:color (get (:people @!data) {:name :D}))))
-                (is (false? (:highlighting-allowed? @!data)))))))))))
+                (is (false? (:highlighting-allowed? @!data))))))))))
+
+  )

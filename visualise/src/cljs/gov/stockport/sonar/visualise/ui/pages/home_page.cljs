@@ -39,6 +39,6 @@
       {:style {:background-color "#1d2932"}}
       [:h6.text-white.pb-1 (people/results-summary @!data)]])
 
-   (if (not-empty (:result @!data))
+   (if (not-empty (:people @!data))
      [results !data]
      [welcome-message])])

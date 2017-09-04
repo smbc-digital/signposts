@@ -32,11 +32,12 @@
       (is (= (merge/merge-people-flags {} {}) {})))
 
     (testing "merge people flags"
-      (is (= (merge/merge-people-flags {{:name "N1"} {:data   "irrelevant"
-                                                :highlighted? true
-                                                :other-flag?  true}}
+      (is (= (merge/merge-people-flags {{:name "N1"} {:data                "irrelevant"
+                                                      :highlighted?        true
+                                                      :has-selected-event? true
+                                                      :other-flag?         true}}
                                        {{:name "N1"} {:data "DATA-N1"}
-                                  {:name "N2"} {:data "DATA-N2"}})
+                                        {:name "N2"} {:data "DATA-N2"}})
              {{:name "N1"} {:data         "DATA-N1"
                             :highlighted? true
                             :other-flag?  true}

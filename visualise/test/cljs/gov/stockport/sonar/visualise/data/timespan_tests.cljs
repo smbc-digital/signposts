@@ -6,17 +6,23 @@
 (deftest timespan-tests
 
   (testing "ignores situations where there is no data"
-    (timespan/from-data {}) => nil)
+    (is (nil? (timespan/from-events []))))
+
+  (testing "ignore events with no timestamp"
+    (let [{:keys [from-date to-date]}
+          (timespan/from-events [{:timestamp (t/date-time 2016)} {:something :else}])]
+      (is (t/= from-date (t/date-time 2015 12)))
+      (is (t/= to-date) (t/date-time 2017 2))))
 
   (testing "extracts timespan for single event including buffer"
     (let [{:keys [from-date to-date]}
-          (timespan/from-data {:result [{:timestamp (t/date-time 2017)}]})]
-      (is (t/= from-date (t/date-time 2016 12)))
-      (is (t/= to-date (t/date-time 2017 2)))))
+          (timespan/from-events [{:timestamp (t/date-time 2016)}])]
+      (is (t/= from-date (t/date-time 2015 12)))
+      (is (t/= to-date) (t/date-time 2017 2))))
 
-  (testing "extracts timespan from multiple events including buffer"
+  (testing "extracts timestamp from multiple events"
     (let [{:keys [from-date to-date]}
-          (timespan/from-data {:result [{:timestamp (t/date-time 2016)} {:timestamp (t/date-time 2017)}]})]
-
+          (timespan/from-events [{:timestamp (t/date-time 2016)}
+                                 {:timestamp (t/date-time 2017)}])]
       (is (t/= from-date (t/date-time 2015 12)))
       (is (t/= to-date) (t/date-time 2017 2)))))

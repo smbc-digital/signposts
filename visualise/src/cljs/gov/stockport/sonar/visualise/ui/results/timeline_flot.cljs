@@ -142,7 +142,7 @@
 
 (defn timeline-flot [!data]
   (fn []
-    (let [results (:result @!data)]
+    (let [results (:people @!data)]
       (when (not-empty results)
         [:div
          [graph-placeholder !data]

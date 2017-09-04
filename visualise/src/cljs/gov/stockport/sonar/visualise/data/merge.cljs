@@ -8,4 +8,4 @@
 (defn merge-people-flags [locked-people new-people]
   (reduce merge {}
           (map (fn [[pkey pvalue]]
-                 {pkey (merge pvalue (dissoc (get locked-people pkey) :data))}) new-people)))
+                 {pkey (merge pvalue (dissoc (get locked-people pkey) :data :has-selected-event?))}) new-people)))

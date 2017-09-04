@@ -3,7 +3,8 @@
             [gov.stockport.sonar.visualise.util.stack :as s]
             [gov.stockport.sonar.visualise.data.merge :as merge]
             [gov.stockport.sonar.visualise.query.client :refer [keep-alive]]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [gov.stockport.sonar.visualise.data.timespan :as timespan]))
 
 (def group-keys [:name :dob])
 
@@ -108,13 +109,18 @@
       (assoc-once :color-mgr (s/new-colour-manager c/colour-priority))
       (clean-up-any-previously-locked-colours)))
 
+(defn with-timespan [data]
+  (assoc data :timespan (timespan/from-events (all-events data))))
+
 (defn from-data [data]
   (-> data
+      (dissoc :selected-event)
       (with-colours)
       (by-people)
       (with-max-score)
       (with-areas)
-      (with-rank)))
+      (with-rank)
+      (with-timespan)))
 
 (defn reset-selection [data]
   (reduce (fn [d pkey] (un-highlight-person d pkey)) data (keys (:people data))))
