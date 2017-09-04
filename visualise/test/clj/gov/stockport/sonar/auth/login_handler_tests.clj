@@ -17,7 +17,8 @@
 
        (fact "it creates a session and returns a token"
              (lh/handle-login {:body ..creds..}) =>
-             {:status 200 :body "" :headers {} :cookies {"token" ..token..}}
+             {:status 200 :body "" :headers {} :cookies {"token" {:value  ..token..
+                                                                  :secure false}}}
 
              (provided
                (p/is-valid-elastic-search-user? ..creds..) => true

@@ -3,6 +3,7 @@
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
             [ring.util.response :as r]
             [gov.stockport.sonar.auth.keys :refer [privkey]]
+            [taoensso.timbre :refer [info]]
             [gov.stockport.sonar.auth.session-manager :as sm])
   (:import (org.bouncycastle.jcajce.provider.util BadBlockException)))
 

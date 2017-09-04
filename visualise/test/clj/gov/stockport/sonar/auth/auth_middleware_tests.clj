@@ -11,4 +11,3 @@
         (handler {:cookies {"token" {:value "some-token-value"}}})
         ;then
         (:headers @wrapped-request) => {"Authorization" "Token some-token-value"}))
-

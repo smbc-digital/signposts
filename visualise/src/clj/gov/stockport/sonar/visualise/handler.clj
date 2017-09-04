@@ -10,6 +10,7 @@
             [gov.stockport.sonar.auth.login-handler :as login]
             [buddy.auth :refer [authenticated?]]
             [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]]
+            [gov.stockport.sonar.auth.cookies :as c]
             [clojure.edn :as edn])
   (:import (java.util UUID)))
 
@@ -35,7 +36,7 @@
 (defn html [content]
   (fn [_] (-> (response content)
               (content-type "text/html")
-              (assoc-in [:cookies "csrf"] *anti-forgery-token*))))
+              (c/add-cookie "csrf" *anti-forgery-token*))))
 
 (defn loading-page []
   (html

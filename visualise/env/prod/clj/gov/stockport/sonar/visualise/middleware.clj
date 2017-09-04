@@ -1,5 +1,9 @@
 (ns gov.stockport.sonar.visualise.middleware
-  (:require [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
+  (:require [ring.middleware.defaults :refer [secure-site-defaults wrap-defaults]]))
+
+(def secure-cookies true)
 
 (defn wrap-middleware [handler]
-  (wrap-defaults handler site-defaults))
+  (wrap-defaults handler
+                 (-> secure-site-defaults
+                     (assoc-in [:security :ssl-redirect] false))))
