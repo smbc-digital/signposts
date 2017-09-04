@@ -2,7 +2,8 @@
   (:require [reagent.core :as r]
             [cljs-time.format :as f]
             [gov.stockport.sonar.visualise.util.date :as d]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [gov.stockport.sonar.visualise.data.people :as people]))
 
 (defn ts [ts]
   (f/unparse (:date f/formatters) ts))
@@ -23,9 +24,9 @@
   (let [!sort-fn (r/atom {:sort-func :score
                           :ascending false})]
     (fn []
-      (let [results (:result @!data)]
+      (let [results (:people @!data)]
         (if (not-empty results)
-            [:table.table-striped.table-condensed.results
+          [:table.table-striped.table-condensed.results
              [:thead
               [:tr
                [sortable-header !sort-fn "score" :score]
@@ -50,4 +51,4 @@
                      [:td (d/age dob)]
                      [:td dob]
                      [:td address]]))
-                (sortit !sort-fn results))]])))))
+                (sortit !sort-fn (people/all-events @!data)))]])))))

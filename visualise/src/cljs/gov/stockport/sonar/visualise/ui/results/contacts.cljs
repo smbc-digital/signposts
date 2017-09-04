@@ -4,7 +4,8 @@
             [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [gov.stockport.sonar.visualise.ui.results.signposting :as s]
             [gov.stockport.sonar.visualise.util.date :as d]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [gov.stockport.sonar.visualise.data.people :as people]))
 
 (def dob-unformatter (f/formatter "yyyy-mm-dd"))
 (def dob-formatter (f/formatter "dd MMM yyyy"))
@@ -49,7 +50,7 @@
   (let [!sort-fn (r/atom {:sort-func :name
                           :ascending true})]
     (fn []
-      (let [results (:result @!data)]
+      (let [results (:people @!data)]
         (if (not-empty results)
           [:div
           [:h3 (:name (first results) ) " (DOB: " (:dob (unparse-dob (first results) )) ")"]
@@ -61,4 +62,4 @@
                    (rows event)
                   ]
                    )
-              (sortit !sort-fn results))]])))))
+              (sortit !sort-fn (people/all-events @!data)))]])))))
