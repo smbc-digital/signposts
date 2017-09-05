@@ -87,8 +87,16 @@
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 
+(defn wrap-nocache [handler]
+  (fn [request]
+    (-> (handler request)
+        (assoc-in [:headers "Cache-Control"] "no-cache, no-store, must-revalidate")
+        (assoc-in [:headers "Pragma"] "no-cache")
+        (assoc-in [:headers "Expires"] "0"))))
+
 (defn wrap-common-middleware [handler]
   (-> handler
+      (wrap-nocache)
       (wrap-json-body {:keywords? true})
       (wrap-json-response)
       (wrap-buddy-auth)))
