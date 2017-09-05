@@ -15,13 +15,15 @@
              (provided
                (p/is-valid-elastic-search-user? ..creds..) => false))
 
-       (fact "it creates a session and returns a token"
-             (lh/handle-login {:body ..creds..}) =>
-             {:status 200 :body "" :headers {} :cookies {"token" {:value  ..token..
-                                                                  :secure false}}}
+       (fact "it creates a session and returns a secure http only token"
+             (with-redefs [gov.stockport.sonar.visualise.middleware/secure-cookies true]
+               (lh/handle-login {:body ..creds..}) =>
+               {:status 200 :body "" :headers {} :cookies {"token" {:value     ..token..
+                                                                    :secure    true
+                                                                    :http-only true}}}
 
-             (provided
-               (p/is-valid-elastic-search-user? ..creds..) => true
-               (sm/create-session ..creds..) => ..session..
-               (jwt/encrypt {:user ..session..} @keys/pubkey
-                            {:alg :rsa-oaep :enc :a128cbc-hs256}) => ..token..)))
+               (provided
+                 (p/is-valid-elastic-search-user? ..creds..) => true
+                 (sm/create-session ..creds..) => ..session..
+                 (jwt/encrypt {:user ..session..} @keys/pubkey
+                              {:alg :rsa-oaep :enc :a128cbc-hs256}) => ..token..))))

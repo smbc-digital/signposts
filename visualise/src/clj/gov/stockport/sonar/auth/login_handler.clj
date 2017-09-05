@@ -12,7 +12,7 @@
   (let [session (sm/create-session creds)
         token (jwt/encrypt {:user session} @pubkey
                            {:alg :rsa-oaep :enc :a128cbc-hs256})]
-    (c/add-cookie (response "") "token" token)))
+    (c/add-http-cookie (response "") "token" token)))
 
 (defn handle-logout [{session :identity}]
   (sm/logout session)
