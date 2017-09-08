@@ -48,7 +48,7 @@
   (if (re-matches #".*\"_all\".*" q) :All))
 
 (defn with-wildcard? [q]
-  (if (re-matches #".*\".*[\*\%].*?\".*" q) :WithWildcard))
+  (if (re-matches #".*wildcard.*" q) :WithWildcard))
 
 (defn query-classifier [query]
   (str/join "-"
