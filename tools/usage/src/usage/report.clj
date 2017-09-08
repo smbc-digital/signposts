@@ -47,6 +47,9 @@
 (defn by-all? [q]
   (if (re-matches #".*\"_all\".*" q) :All))
 
+(defn with-wildcard? [q]
+  (if (re-matches #".*\".*[\*\%].*?\".*" q) :WithWildcard))
+
 (defn query-classifier [query]
   (str/join "-"
             (sort
@@ -54,7 +57,7 @@
                    (remove nil?
                            (map (fn [chk?] (chk? query))
                                 [by-name? by-address? by-postcode? by-age-under? by-age-over? by-all? by-dob?
-                                 by-event-source? by-event-type?]))))))
+                                 by-event-source? by-event-type? with-wildcard?]))))))
 
 (defn refine-stats [stats]
   (->> stats
@@ -126,7 +129,7 @@
 (defn table [data]
   (let [heading-names (into [] (map name (keys (first data))))]
     `[:table {:header ~heading-names :no-split-cells? true}
-      ~@(into [] (map (fn [e] (into [] (map (fn [i] [:cell (str i)]) (vals e)))) (rest data)))]))
+      ~@(into [] (map (fn [e] (into [] (map (fn [i] [:cell (str i)]) (vals e)))) data))]))
 
 (defn last-four-weeks [stats]
   (remove (fn [{:keys [real-date]}] (< 28 (t/in-days (t/interval real-date (t/now))))) stats))
