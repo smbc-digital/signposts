@@ -60,7 +60,26 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :areas (into #{} (remove str/blank? (map area (:data v)))))}) people))))
 
-(def surname #(last (str/split (:name %) #" ")))
+(def surname #(last (str/split (:name %) #"\s+")))
+
+(def forename #(first (str/split (:name %) #"\s+")))
+
+(defn with-relevance-rank
+  ([{:keys [people] :as data}]
+   (assoc data :people
+               (reduce merge {}
+                       (map-indexed
+                         (fn [idx [k v]] {k (assoc v :relevance-rank (+ 1 idx))})
+                         (sort-by (fn [[person-key p]] [(- 0 (:score p)) (surname person-key) (forename person-key)]) people))))))
+
+(defn with-name-rank
+  ([{:keys [people] :as data}]
+   (assoc data :people
+               (reduce merge {}
+                       (map-indexed
+                         (fn [idx [k v]] {k (assoc v :name-rank (+ 1 idx))})
+                         (sort-by (fn [[person-key _]] [(surname person-key) (forename person-key)]) people))))))
+
 
 (def locked-then-score-then-surname
   (fn [[_ p]] [(if (:locked? p) 0 1) (- 0 (:score p)) (surname p)]))
@@ -112,6 +131,12 @@
 (defn with-timespan [data]
   (assoc data :timespan (timespan/from-events (all-events data))))
 
+
+(defn toggle-sort-by[data]
+  (if(= :by-relevance (get data :rank-by))
+    (assoc data :rank-by :by-name)
+    (assoc data :rank-by :by-relevance)))
+
 (defn from-data [data]
   (-> data
       (dissoc :selected-event)
@@ -119,8 +144,24 @@
       (by-people)
       (with-max-score)
       (with-areas)
-      (with-rank)
-      (with-timespan)))
+      (with-timespan)
+      (with-name-rank)
+      (with-relevance-rank)
+      (toggle-sort-by)
+      )
+  )
+
+
+(defn sort-as [{:keys [rank-by people] as :data}]
+  (js/console.log rank-by)
+  (if (= rank-by :by-name)
+    (sort-by (fn [[_ {:keys [name-rank]}]] name-rank) people)
+    (sort-by (fn [[_ {:keys [relevance-rank]}]] relevance-rank) people)
+    )
+  )
+
+(defn sort-by-relevance[data]
+  (= :by-relevance (get data :rank-by)))
 
 (defn reset-selection [data]
   (reduce (fn [d pkey] (un-highlight-person d pkey)) data (keys (:people data))))
@@ -141,6 +182,7 @@
 (defn- clear-selected-event? [people]
   (reduce merge {}
           (map (fn [[k v]] {k (dissoc v :has-selected-event?)}) people)))
+
 
 (defn deselect-event [{:keys [people] :as data}]
   (-> data

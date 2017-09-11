@@ -58,66 +58,182 @@
 
     (testing "ranks people by whether locked, then score and sort order of surname"
 
-      (is (= (people/with-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
-                                         {:name "Z AA"} {:name "Z AA" :score 1}
-                                         {:name "Z AD"} {:name "Z AD" :score 1 :locked? true}
-                                         {:name "A AC"} {:name "A AC" :score 2}}})
+      (is (= (people/surname {:name "A AB" :score 1} )
+             "AB"
+             ))
+      (is (= (people/forename {:name "A AB" :score 1} )
+             "A"
+             ))
 
-             {:people {{:name "Z AD"} {:name    "Z AD"
-                                       :score   1
-                                       :rank    1
-                                       :locked? true}
-                       {:name "A AC"} {:name  "A AC"
-                                       :score 2
-                                       :rank  2}
-                       {:name "Z AA"} {:name  "Z AA"
+      (is (= (people/with-relevance-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
+                                                   {:name "Z AA"} {:name "Z AA" :score 1}
+                                                   {:name "A AC"} {:name "A AC" :score 2}}})
+
+             {:people {{:name "Z AA"} {:name  "Z AA"
                                        :score 1
-                                       :rank  3}
+                                       :relevance-rank  2}
                        {:name "A AB"} {:name  "A AB"
                                        :score 1
-                                       :rank  4}}})))
+                                       :relevance-rank  3}
+                       {:name "A AC"} {:name  "A AC"
+                                       :score 2
+                                       :relevance-rank  1}}})))
 
-    (testing "comes together with everyone displayed to start with"
+    (testing "ranks people by surname, first-name and score"
 
-      (with-redefs
-        [people/group-keys [:name]
-         c/colour-priority [:red :blue]]
+      (is (= (people/with-name-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
+                                              {:name "Z AA"} {:name "Z AA" :score 3}
+                                              {:name "A AC"} {:name "A AC" :score 2}
+                                              {:name "A AA"}  {:name  "A AA" :score 4}}
+                                     })
 
-        (testing "with people not highlighted already if too many"
+             {:people {
+                       {:name "A AA"} {:name  "A AA"
+                                       :score 4
+                                       :name-rank  1}
+                       {:name "Z AA"} {:name  "Z AA"
+                                       :score 3
+                                       :name-rank  2}
+                       {:name "A AB"} {:name  "A AB"
+                                       :score 1
+                                       :name-rank  3}
+                       {:name "A AC"} {:name  "A AC"
+                                       :score 2
+                                       :name-rank  4}}})))
 
-          (let [result (people/from-data {:result [{:name "N1" :score 1}
-                                                   {:name "N3" :score 2}
-                                                   {:name "N2" :score 3}
-                                                   {:name "N1" :score 4}]})]
 
-            (is (contains? result :color-mgr))
-            (is (= (dissoc result :color-mgr :result :timespan)
-                   {:highlighting-allowed? true
-                    :people                {{:name "N1"} {:data  [{:name "N1" :score 1}
-                                                                  {:name "N1" :score 4}]
-                                                          :score 4
-                                                          :rank  1
-                                                          :areas #{}}
-                                            {:name "N2"} {:data  [{:name "N2" :score 3}]
-                                                          :score 3
-                                                          :rank  2
-                                                          :areas #{}}
-                                            {:name "N3"} {:data  [{:name "N3" :score 2}]
-                                                          :score 2
-                                                          :rank  3
-                                                          :areas #{}}}})))))))
+    (testing "ranks people by surname, first-name and score"
+
+      (is (= (-> {:people {{:name "Henderson Smith"} {:name "Henderson Smith" :score 2}
+                           {:name "Billie Smith"} {:name "Billie Smith" :score 1}
+                           {:name "Grant Smith"} {:name "Grant Smith" :score 3}
+                           {:name "Ryan Smith"}  {:name  "Ryan Smith" :score 4}}}
+                 (people/with-name-rank)
+                 (people/with-relevance-rank))
+
+             {:people {{:name "Billie Smith"} {:name  "Billie Smith"
+                                               :score 1
+                                               :name-rank  1
+                                               :relevance-rank 4}
+                       {:name "Grant Smith"} {:name  "Grant Smith"
+                                              :score 3,
+                                              :name-rank  2
+                                              :relevance-rank 2}
+                       {:name "Henderson Smith"} {:name  "Henderson Smith"
+                                                  :score 2
+                                                  :name-rank  3
+                                                  :relevance-rank 3}
+                       {:name "Ryan Smith"} {:name  "Ryan Smith"
+                                             :score 4
+                                             :name-rank  4
+                                             :relevance-rank 1}}}
+             ))
+
+      (is (= (people/with-name-rank {:people {
+                                              {:name "Henderson Smith"} { :score 2}
+                                              {:name "Billie Smith"} { :score 1}
+                                              {:name "Grant Smith"} { :score 3}
+                                              {:name "Ryan Smith"}  {:score 4}}
+                                     })
+
+             {:people {
+                       {:name "Billie Smith"} {
+                                               :score 1
+                                               :name-rank  1}
+                       {:name "Grant Smith"} {
+                                              :score 3
+                                              :name-rank  2}
+                       {:name "Henderson Smith"} {
+                                                  :score 2
+                                                  :name-rank  3}
+                       {:name "Ryan Smith"} {
+                                             :score 4
+                                             :name-rank  4}}})))
+
+
+    (testing "ranks people by surname, first-name and score"
+
+      (is (= (people/with-relevance-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
+                                                   {:name "Z AA"} {:name "Z AA" :score 3}
+                                                   {:name "A AC"} {:name "A AC" :score 2}
+                                                   {:name "A AA"}  {:name  "A AA" :score 4}}
+                                          })
+
+             {:people {
+
+                       {:name "A AA"} {:name  "A AA"
+                                       :score 4
+                                       :relevance-rank  1}
+                       {:name "Z AA"} {:name  "Z AA"
+                                       :score 3
+                                       :relevance-rank  2}
+                       {:name "A AC"} {:name  "A AC"
+                                       :score 2
+                                       :relevance-rank  3}
+                       {:name "A AB"} {:name  "A AB"
+                                       :score 1
+                                       :relevance-rank  4}
+                       }})))
+
+    (is (= (people/with-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
+                                       {:name "Z AA"} {:name "Z AA" :score 1}
+                                       {:name "Z AD"} {:name "Z AD" :score 1 :locked? true}
+                                       {:name "A AC"} {:name "A AC" :score 2}}})
+
+           {:people {{:name "Z AD"} {:name    "Z AD"
+                                     :score   1
+                                     :rank    1
+                                     :locked? true}
+                     {:name "A AC"} {:name  "A AC"
+                                     :score 2
+                                     :rank  2}
+                     {:name "Z AA"} {:name  "Z AA"
+                                     :score 1
+                                     :rank  3}
+                     {:name "A AB"} {:name  "A AB"
+                                     :score 1
+                                     :rank  4}}})))
+
+
+  (testing "comes together with everyone displayed to start with"
+
+    (with-redefs
+      [people/group-keys [:name]
+       c/colour-priority [:red :blue]]
+
+      (testing "with people not highlighted already if too many"
+
+        (let [result (people/from-data {:result [{:name "N1" :score 1}
+                                                 {:name "N3" :score 2}
+                                                 {:name "N2" :score 3}
+                                                 {:name "N1" :score 4}]})]
+
+          (is (contains? result :color-mgr))
+          (is (= (dissoc result :color-mgr :result :timespan)
+                 {:highlighting-allowed? true
+                  :people                {{:name "N1"} {:data  [{:name "N1" :score 1}
+                                                                {:name "N1" :score 4}]
+                                                        :score 4
+                                                        :relevance-rank  1
+                                                        :name-rank 1
+                                                        :areas #{}}
+                                          {:name "N2"} {:data  [{:name "N2" :score 3}]
+                                                        :score 3
+                                                        :relevance-rank  2
+                                                        :name-rank 2
+                                                        :areas #{}}
+                                          {:name "N3"} {:data  [{:name "N3" :score 2}]
+                                                        :score 2
+                                                        :relevance-rank  3
+                                                        :name-rank 3
+                                                        :areas #{}}}
+                  :rank-by :by-relevance
+                  }))))))
 
   (testing "retrieving people"
 
-    (testing "by rank is possible"
 
-      (is (= (people/by-rank {:people {{:name "A"} {:rank 4}
-                                       {:name "B"} {:rank 1}
-                                       {:name "C"} {:rank 6}}})
 
-             [[{:name "B"} {:rank 1}]
-              [{:name "A"} {:rank 4}]
-              [{:name "C"} {:rank 6}]])))
 
     (testing "all the data can be retrieved"
       (is (= (people/all-events {:people {{:name "N1"} {:data [{:id 1}
@@ -255,7 +371,8 @@
                                    {:name "N1" :score 5 :id 5}]
                     :score        5
                     :areas        #{}
-                    :rank         1
+                    :name-rank    1
+                    :relevance-rank 3
                     :locked?      true
                     :highlighted? true}))
 
@@ -325,6 +442,4 @@
 
                 ; now D takes the blue and no more highlighting is available
                 (is (= :blue (:color (get (:people @!data) {:name :D}))))
-                (is (false? (:highlighting-allowed? @!data))))))))))
-
-  )
+                (is (false? (:highlighting-allowed? @!data)))))))))))

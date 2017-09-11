@@ -13,8 +13,11 @@
       (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
         (str " (" years " yrs)")))))
 
+
+
 (defn displayed-icon [displayed?]
   (if displayed? "fa-check-square" "fa-square"))
+
 
 (defn card [!data]
   (let [highlighting-allowed? (:highlighting-allowed? @!data)]
@@ -56,14 +59,20 @@
 
 (defn cards-render [!data]
   (fn []
-    (let [people (people/by-rank @!data)]
-      (when (not-empty people)
-        [:div.cards
-         [:p "Select up to " [:b "6 individuals"] " to highlight their events on the graph"]
-         [:p
-          [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/reset-selection)}
-           [:span {:style {:font-family [:arial :sans-serif]}} " Reset Selection"]]]
-         [:div.fixed-height (map (card !data) people)]]))))
+    (when (not-empty (:people @!data))
+      [:div.cards
+       [:p "Select up to " [:b "6 individuals"] " to highlight their events on the graph"]
+       [:p
+        [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/reset-selection)}
+         [:span {:style {:font-family [:arial :sans-serif]}} " Reset Selection"
+          ]]
+
+        [:i.fa.fa-arrows-v.ml-2
+         {:id "sort-cards" :on-click #(swap! !data people/toggle-sort-by)}
+         [:span {:style {:font-family [:arial :sans-serif]}}
+          (if (people/sort-by-relevance @!data) " Sort By A to Z" " Sort by Relevance")
+          ]]]
+       [:div.fixed-height (map (card !data) (people/sort-as @!data))]])))
 
 (defonce !current (atom nil))
 
@@ -90,9 +99,11 @@
       (-> (js/jQuery "div.fixed-height")
           (.animate (clj->js {:scrollTop (- top-of-selected-event top-of-fixed-height)}))))))
 
+
 (defn cards [!data]
   (fn []
     (reagent/create-class {:reagent-render       (cards-render !data)
                            :component-did-mount  (wrap-scroll !data scroll-to-selected)
-                           :component-did-update (wrap-scroll !data scroll-to-selected)})))
+                           :component-did-update (wrap-scroll !data scroll-to-selected)
+                           })))
 
