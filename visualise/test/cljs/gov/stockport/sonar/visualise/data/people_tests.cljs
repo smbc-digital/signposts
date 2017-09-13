@@ -65,6 +65,10 @@
              "A"
              ))
 
+      (is (= true (people/sort-by-relevance {:rank-by :by-relevance}) ))
+
+      (is (= false (people/sort-by-relevance {:rank-by :by-name}) ))
+
       (is (= (people/with-relevance-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
                                                    {:name "Z AA"} {:name "Z AA" :score 1}
                                                    {:name "A AC"} {:name "A AC" :score 2}}})
