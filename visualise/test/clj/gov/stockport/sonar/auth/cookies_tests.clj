@@ -17,9 +17,8 @@
                                                                                      :secure false}}}))
 
        (fact "it sets http only if requested"
-             (c/add-http-cookie {:some :response} "name" "value") => {:some    :response
-                                                                      :cookies {"name" {:value     "value"
-                                                                                        :secure    false
-                                                                                        :http-only true}}}))
-
-
+             (with-redefs [middleware/secure-cookies false]
+               (c/add-http-cookie {:some :response} "name" "value") => {:some    :response
+                                                                        :cookies {"name" {:value     "value"
+                                                                                          :secure    false
+                                                                                          :http-only true}}})))
