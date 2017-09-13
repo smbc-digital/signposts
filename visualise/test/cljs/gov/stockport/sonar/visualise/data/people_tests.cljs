@@ -65,7 +65,19 @@
              "A"
              ))
 
-      (is (= true (people/sort-by-relevance {:rank-by :by-relevance}) ))
+      (is (= (people/forename {:name "Mr A AB" :score 1} )
+             "A"
+             ))
+
+      (is (= (people/forename {:name "MRS A AB" :score 1} )
+             "A"
+             ))
+      (is (= (people/forename {:name "dr A AB" :score 1} )
+            "A"
+            ))
+
+
+    (is (= true (people/sort-by-relevance {:rank-by :by-relevance}) ))
 
       (is (= false (people/sort-by-relevance {:rank-by :by-name}) ))
 
@@ -88,11 +100,11 @@
       (is (= (people/with-name-rank {:people {{:name "A AB"} {:name "A AB" :score 1}
                                               {:name "Z AA"} {:name "Z AA" :score 3}
                                               {:name "A AC"} {:name "A AC" :score 2}
-                                              {:name "A AA"}  {:name  "A AA" :score 4}}
+                                              {:name "Mr A AA"}  {:name  "Mr A AA" :score 4}}
                                      })
 
              {:people {
-                       {:name "A AA"} {:name  "A AA"
+                       {:name "Mr A AA"} {:name  "Mr A AA"
                                        :score 4
                                        :name-rank  1}
                        {:name "Z AA"} {:name  "Z AA"

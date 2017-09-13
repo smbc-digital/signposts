@@ -62,7 +62,13 @@
 
 (def surname #(last (str/split (:name %) #"\s+")))
 
-(def forename #(first (str/split (:name %) #"\s+")))
+;(def forename #(first (str/split (:name %) #"\s+")))
+
+(defn forename [person-key]
+  (let [name-components (str/split (:name person-key) #"\s+")]
+  (if(= nil (re-find #"(?i)Mr|Mrs|Miss|Ms|Dr"(first name-components)))
+    (first name-components)
+    (second name-components))))
 
 (defn with-relevance-rank
   ([{:keys [people] :as data}]
