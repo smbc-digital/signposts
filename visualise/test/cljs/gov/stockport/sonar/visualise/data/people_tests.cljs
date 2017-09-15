@@ -59,21 +59,21 @@
     (testing "ranks people by whether locked, then score and sort order of surname"
 
       (is (= (people/surname {:name "A AB" :score 1} )
-             "AB"
+             "ab"
              ))
       (is (= (people/forename {:name "A AB" :score 1} )
-             "A"
+             "a"
              ))
 
       (is (= (people/forename {:name "Mr A AB" :score 1} )
-             "A"
+             "a"
              ))
 
       (is (= (people/forename {:name "MRS A AB" :score 1} )
-             "A"
+             "a"
              ))
       (is (= (people/forename {:name "dr A AB" :score 1} )
-            "A"
+            "a"
             ))
 
 

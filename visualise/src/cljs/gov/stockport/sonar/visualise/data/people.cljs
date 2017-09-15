@@ -60,15 +60,15 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :areas (into #{} (remove str/blank? (map area (:data v)))))}) people))))
 
-(def surname #(last (str/split (:name %) #"\s+")))
+(def surname #(str/lower_case(last (str/split (:name %) #"\s+"))))
 
 ;(def forename #(first (str/split (:name %) #"\s+")))
 
 (defn forename [person-key]
   (let [name-components (str/split (:name person-key) #"\s+")]
-  (if(= nil (re-find #"(?i)Mr|Mrs|Miss|Ms|Dr"(first name-components)))
-    (first name-components)
-    (second name-components))))
+  (if(= nil (re-find #"(?i)mr|mrs|miss|ms|dr"(first name-components)))
+    (str/lower_case(first name-components))
+    (str/lower_case(second name-components)))))
 
 (defn with-relevance-rank
   ([{:keys [people] :as data}]
