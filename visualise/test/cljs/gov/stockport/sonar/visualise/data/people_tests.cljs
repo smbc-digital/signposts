@@ -211,6 +211,16 @@
                                      :rank  4}}})))
 
 
+  (testing "toggle-sort-by"
+    (is (=  {:rank-by :by-name} (people/toggle-sort-by{:rank-by :by-relevance})))
+
+    (is (=  {:rank-by :by-relevance} (people/toggle-sort-by{:rank-by :by-name})))
+
+    (is (=  {:rank-by :by-relevance} (people/toggle-sort-by {})))
+
+    (is (=  {:rank-by :by-relevance} (people/toggle-sort-by{:rank-by :foo})))
+    )
+
   (testing "comes together with everyone displayed to start with"
 
     (with-redefs

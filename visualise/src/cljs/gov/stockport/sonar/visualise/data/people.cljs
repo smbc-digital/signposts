@@ -62,7 +62,6 @@
 
 (def surname #(str/lower_case(last (str/split (:name %) #"\s+"))))
 
-;(def forename #(first (str/split (:name %) #"\s+")))
 
 (defn forename [person-key]
   (let [name-components (str/split (:name person-key) #"\s+")]
@@ -139,12 +138,14 @@
 
 
 (defn toggle-sort-by[data]
+  (println (get data :rank-by))
   (if(= :by-relevance (get data :rank-by))
     (assoc data :rank-by :by-name)
     (assoc data :rank-by :by-relevance)))
 
 (defn from-data [data]
   (-> data
+      (dissoc :rank-by)
       (dissoc :selected-event)
       (with-colours)
       (by-people)
