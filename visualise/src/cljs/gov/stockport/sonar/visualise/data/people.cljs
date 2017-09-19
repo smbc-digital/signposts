@@ -69,13 +69,18 @@
     (str/lower_case(first name-components))
     (str/lower_case(second name-components)))))
 
+
+(defn is-locked?[p]
+  (if (:locked? p) 0 1)
+  )
+
 (defn with-relevance-rank
   ([{:keys [people] :as data}]
    (assoc data :people
                (reduce merge {}
                        (map-indexed
                          (fn [idx [k v]] {k (assoc v :relevance-rank (+ 1 idx))})
-                         (sort-by (fn [[person-key p]] [(- 0 (:score p)) (surname person-key) (forename person-key)]) people))))))
+                         (sort-by (fn [[person-key p]] [ (is-locked? p) (- 0 (:score p)) (- 0 (:score p)) (surname person-key) (forename person-key)]) people))))))
 
 (defn with-name-rank
   ([{:keys [people] :as data}]
@@ -83,7 +88,7 @@
                (reduce merge {}
                        (map-indexed
                          (fn [idx [k v]] {k (assoc v :name-rank (+ 1 idx))})
-                         (sort-by (fn [[person-key _]] [(surname person-key) (forename person-key)]) people))))))
+                         (sort-by (fn [[person-key p]] [(is-locked? p) (surname person-key) (forename person-key)]) people))))))
 
 
 (def locked-then-score-then-surname
@@ -138,14 +143,13 @@
 
 
 (defn toggle-sort-by[data]
-  (println (get data :rank-by))
   (if(= :by-relevance (get data :rank-by))
     (assoc data :rank-by :by-name)
     (assoc data :rank-by :by-relevance)))
 
 (defn from-data [data]
   (-> data
-      (dissoc :rank-by)
+      (assoc :rank-by :by-relevance)
       (dissoc :selected-event)
       (with-colours)
       (by-people)
@@ -154,10 +158,7 @@
       (with-timespan)
       (with-name-rank)
       (with-relevance-rank)
-      (toggle-sort-by)
-      )
-  )
-
+      ))
 
 (defn sort-as [{:keys [rank-by people] as :data}]
   (js/console.log rank-by)
