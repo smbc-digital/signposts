@@ -10,7 +10,7 @@
 (def dob-unformatter (f/formatter "yyyy-mm-dd"))
 (def dob-formatter (f/formatter "dd MMM yyyy"))
 
-(def standard-keys [:event-source :event-type :address :postcode :timestamp])
+(def standard-keys [:address :postcode :timestamp])
 
 (def custom-formatter (f/formatter "dd MMM yyyy HH:mm:ss"))
 
@@ -35,7 +35,7 @@
 
 (defn selected-kvs [event]
   (let [event-with-formatted-timestamp (-> event unparse-timestamp unparse-dob)
-        other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp :score :name :dob) standard-keys)))]
+        other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp :score :name :event-type :event-source ) standard-keys)))]
     (map
       (fn [k] [k (get event-with-formatted-timestamp k "")])
       (concat standard-keys other-keys))))
@@ -44,22 +44,31 @@
   [:tr [:th (fh/label (name k))] [:td v]])
 
 (defn rows [event]
-  (map row (selected-kvs event)))
+  [:div {:style {:border-top "solid 1px #ccc" :margin "15px 5px 10px 5px" :padding "10px 5px 10px 5px"}}
+  [:h4  (:event-source event) " " [:span {:style {:font-weight "normal"}} (:event-type event)]]
+  [:table
+   [:tbody
+     (map row (selected-kvs event))
+  ]]])
+
+(defn list-events[events]
+     [:div.container-fluid
+      (map rows (:data events))
+      ]
+     )
+
+(defn list-people [people]
+  (map (fn [[person-key  events]]
+         (if (not(not (:highlighted? events)))
+         [:div {:class (:color events)}
+         [:h3 {:style {:text-align "center"}} (:name person-key) ]
+             [:p {:style {:text-align "center"}}[:strong(count (:data events))] " contact data listed matches your search criteria"]
+            (list-events events)]))
+          people))
 
 (defn contact-history [!data]
-  (let [!sort-fn (r/atom {:sort-func :name
-                          :ascending true})]
-    (fn []
-      (let [results (:people @!data)]
-        (if (not-empty results)
-          [:div
-          [:h3 (:name (first results) ) " (DOB: " (:dob (unparse-dob (first results) )) ")"]
-            [:table
-            (map
-              (fn [event]
-                  [:thead [:tr [:th (get :event-source event)][:td]] ]
-                  [:tbody
-                   (rows event)
-                  ]
-                   )
-              (sortit !sort-fn (people/all-events @!data)))]])))))
+  (let [results (:people @!data)]
+    [:div(list-people results)]
+
+    )
+  )

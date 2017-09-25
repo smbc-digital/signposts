@@ -16,7 +16,7 @@
     [:div.col-3
      [ic/cards !data]]
     [:div.col-9
-     [tr/results-tabs !data]]]])
+     [tr/results-tab !data]]]])
 
 (defn home-page []
   [:div

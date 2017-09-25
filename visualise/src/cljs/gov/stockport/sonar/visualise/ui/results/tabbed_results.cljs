@@ -1,27 +1,21 @@
 (ns gov.stockport.sonar.visualise.ui.results.tabbed-results
   (:require [reagent.core :as r]
+            [cljs-time.format :as f]
+            [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [gov.stockport.sonar.visualise.ui.results.raw-table :as rt]
             [gov.stockport.sonar.visualise.ui.results.contacts :as con]
             [gov.stockport.sonar.visualise.ui.results.timeline-flot :refer [timeline-flot]]))
 
-(defn results-tabs [!data]
+
+
+
+
+(defn results-tab [!data]
   (let [!selected (r/atom :timeline)]
     (fn []
       [:div
-       [:div.nav.nav-tabs
-        [:li.nav-item
-         [:span.nav-link {:on-click #(reset! !selected :timeline)
-                          :class    (if (= :timeline @!selected) :active "")} "TIMELINES"]]
-        [:li.nav-item
-         [:span.nav-link {:on-click #(reset! !selected :contacts)
-                          :class    (if (= :contacts @!selected) :active "")} "CONTACTS"]]
-        [:li.nav-item
-         [:span.nav-link {:on-click #(reset! !selected :raw-data)
-                          :class    (if (= :raw-data @!selected) :active "")} "RAW DATA"]]]
-       (cond
-         (= :timeline @!selected)
-         [timeline-flot !data]
-         (= :contacts @!selected)
-         [con/contact-history !data]
-         :else
-         [rt/raw-table !data])])))
+       [timeline-flot !data]
+       [con/contact-history !data]
+         ])))
+
+
