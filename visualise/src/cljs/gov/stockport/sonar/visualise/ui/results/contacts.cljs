@@ -76,7 +76,7 @@
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
-         (if (not(not (:highlighted? events)))
+         (if (:highlighted? events)
          [:div {:class (:color events)}
          [:h3 {:style {:text-align "center"}} (:name person-key) ]
              [:p {:style {:text-align "center"}}[:strong(count (:data events))] " contact data listed matches your search criteria"]
