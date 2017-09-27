@@ -14,6 +14,7 @@
 
 (def custom-formatter (f/formatter "dd MMM yyyy HH:mm:ss"))
 
+
 (defn ts [ts]
   (f/unparse (:date f/formatters) ts))
 
@@ -51,11 +52,27 @@
      (map row (selected-kvs event))
   ]]])
 
+(defn toggle-events[events]
+  (if (:display-all events)
+    (dissoc events :display-all)
+    (assoc events :display-all true)
+    )
+  )
+
 (defn list-events[events]
+    (let [events-list (:data events)]
      [:div.container-fluid
-      (map rows (:data events))
-      ]
-     )
+      (if (:display-all events)
+        (map rows events-list)
+        (map rows (take 4 events-list))
+        )
+      (if (> (count events-list) 4)
+      [:p {:style {:text-align "center" :font-size "2em"}}
+       [:i.fa.fa-arrow-circle-down
+        {:on-click #((toggle-events events)) }
+        ]]
+      )]
+     ))
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
@@ -64,11 +81,10 @@
          [:h3 {:style {:text-align "center"}} (:name person-key) ]
              [:p {:style {:text-align "center"}}[:strong(count (:data events))] " contact data listed matches your search criteria"]
             (list-events events)]))
-          people))
+       (sort-by surname people)))
 
 (defn contact-history [!data]
   (let [results (:people @!data)]
     [:div(list-people results)]
-
     )
   )
