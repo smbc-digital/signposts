@@ -14,7 +14,6 @@
 
 (def custom-formatter (f/formatter "dd MMM yyyy HH:mm:ss"))
 
-
 (defn ts [ts]
   (f/unparse (:date f/formatters) ts))
 
@@ -60,21 +59,27 @@
   )
 
 (defn list-events[events]
-    (let [events-list  (:data events)]
-      (let [display-all! (r/atom false)]
-     (fn[]
+      (r/with-let [expanded? (r/atom false)]
+                  (let [events-list  (:data events)]
      [:div.container-fluid
-      (if (= display-all! true)
+      (if (true? @expanded?)
         (map event-details events-list)
         (map event-details (take 4 events-list))
         )
       (if (> (count events-list) 4)
+        (if (false? expanded?)
       [:p {:style {:text-align "center" :font-size "2em"}}
        [:i.fa.fa-arrow-circle-down
-        {:on-click (fn[e] (swap! display-all! true))}
+        {:on-click #(swap! expanded? not)}
         ]]
-      )]
-     ))))
+
+     [:p {:style {:text-align "center" :font-size "2em"}}
+      [:i.fa.fa-arrow-circle-up
+       {:on-click #(swap! expanded? not)}
+       ]]
+     ))
+      ]
+     )))
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
