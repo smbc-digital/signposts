@@ -52,44 +52,55 @@ div.sp-individual {
   div.sp-individual.red div.lower > .left {
     border-left: 5px solid #f36624;
     background-color: rgba(243, 102, 36, 0.4); }
+
   div.sp-individual.yellow div.upper > .left,
   div.sp-individual.yellow div.lower > .left {
     border-left: 5px solid #ffc502;
     background-color: rgba(255, 197, 2, 0.4); }
+
+
   div.sp-individual.green div.upper > .left,
   div.sp-individual.green div.lower > .left {
     border-left: 5px solid #8dc702;
     background-color: rgba(141, 199, 2, 0.4); }
+
   div.sp-individual.aqua div.upper > .left,
   div.sp-individual.aqua div.lower > .left {
     border-left: 5px solid #01a79d;
     background-color: rgba(1, 167, 157, 0.4); }
+
   div.sp-individual.purple div.upper > .left,
   div.sp-individual.purple div.lower > .left {
     border-left: 5px solid #91278e;
     background-color: rgba(145, 39, 142, 0.4); }
+
   div.sp-individual.blue div.upper > .left,
   div.sp-individual.blue div.lower > .left {
     border-left: 5px solid #2e3292;
     background-color: rgba(46, 50, 146, 0.4); }
+
   div.sp-individual.has-selected-event {
     border-left: 5px solid red;
     padding-left: 5px; }
+
   div.sp-individual div.upper {
     border-radius: 5px 5px 0px 0px;
     border-top: 1px solid #c6d4e5;
     border-right: 1px solid #c6d4e5;
     font-size: 1rem;
     font-weight: bold; }
+
     div.sp-individual div.upper .left {
       border-left: 5px solid #919a9f;
       border-radius: 5px 0px 0px 0px;
       background-color: rgba(145, 154, 159, 0.4); }
+
   div.sp-individual div.lower {
     border-radius: 0px 0px 5px 5px;
     border-bottom: 1px solid #c6d4e5;
     border-right: 1px solid #c6d4e5;
     font-size: 0.8rem; }
+
     div.sp-individual div.lower .left {
       border-left: 5px solid #919a9f;
       border-radius: 0px 0px 0px 5px;
