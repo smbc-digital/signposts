@@ -51,12 +51,6 @@
      (map table-row (selected-kvs event))
   ]]])
 
-(defn toggle-events[events]
-  (if (:display-all events)
-    (dissoc events :display-all)
-    (assoc events :display-all true)
-    )
-  )
 
 (defn list-events[events]
       (r/with-let [expanded? (r/atom false)]
@@ -67,19 +61,14 @@
         (map event-details (take 4 events-list))
         )
       (if (> (count events-list) 4)
-        (if (false? expanded?)
-      [:p {:style {:text-align "center" :font-size "2em"}}
+       [:p {:style {:text-align "center" :font-size "2em"}}
+        (if (true? @expanded?)
+       [:i.fa.fa-arrow-circle-up
+        {:on-click #(swap! expanded? not)}
+        ]
        [:i.fa.fa-arrow-circle-down
         {:on-click #(swap! expanded? not)}
-        ]]
-
-     [:p {:style {:text-align "center" :font-size "2em"}}
-      [:i.fa.fa-arrow-circle-up
-       {:on-click #(swap! expanded? not)}
-       ]]
-     ))
-      ]
-     )))
+        ])])])))
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
