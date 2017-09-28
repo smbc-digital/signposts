@@ -85,15 +85,7 @@
      (show-event-values-in-column (middle-third selected-events))
      (show-event-titles-in-column (last-third selected-events))
      (show-event-values-in-column (last-third selected-events))
-  ]][:div.container-fluid
-         [:div.row.no-gutters
-          [:div.col-6
-           (map event-title selected-events)
-           ]
-          [:div.col-6
-           (map event-value selected-events)
-           ]
-          ]]
+  ]]
    ]))
 
 
