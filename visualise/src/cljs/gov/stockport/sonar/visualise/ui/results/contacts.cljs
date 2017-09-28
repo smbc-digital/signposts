@@ -40,16 +40,61 @@
       (fn [k] [k (get event-with-formatted-timestamp k "")])
       (concat standard-keys other-keys))))
 
-(defn table-row [[k v]]
-  [:tr [:th (fh/label (name k))] [:td v]])
+(defn event-title [[k v]]
+  [:div (fh/label (name k)) ])
+
+(defn event-value [[k v]]
+  (if (str/blank? v) [:div "-"] [:div v] ))
+
+(defn show-event-titles-in-column [events]
+  [:div.col-2 (map event-title events) ])
+
+(defn show-event-values-in-column [events]
+  [:div.col-2 (map event-value events) ])
+
+(defn third-of [events]
+  (int (/ (count events) 3)))
+
+(defn two-thirds-of [events]
+  (- (count events) (third-of events)))
+
+(defn count-middle-third [events]
+  (int (/ (two-thirds-of events) 2)))
+
+(defn count-last-third [events]
+  (int (- (two-thirds-of events) (count-middle-third events))))
+
+(defn first-third [events]
+  (take (third-of events) events))
+
+(defn middle-third [events]
+  (take (count-middle-third events) (reverse (take (two-thirds-of events) (reverse events)))))
+
+(defn last-third [events]
+  (reverse (take (count-last-third events) (reverse events))))
 
 (defn event-details [event]
+  (let [selected-events  (selected-kvs event)]
   [:div {:style {:border-top "solid 1px #ccc" :margin "15px 5px 10px 5px" :padding "10px 5px 10px 5px"}}
   [:h4  (:event-source event) " " [:span {:style {:font-weight "normal"}} (:event-type event)]]
-  [:table
-   [:tbody
-     (map table-row (selected-kvs event))
-  ]]])
+   [:div.container-fluid
+    [:div.row.no-gutters
+     (show-event-titles-in-column (first-third selected-events))
+     (show-event-values-in-column (first-third selected-events))
+     (show-event-titles-in-column (middle-third selected-events))
+     (show-event-values-in-column (middle-third selected-events))
+     (show-event-titles-in-column (last-third selected-events))
+     (show-event-values-in-column (last-third selected-events))
+  ]][:div.container-fluid
+         [:div.row.no-gutters
+          [:div.col-6
+           (map event-title selected-events)
+           ]
+          [:div.col-6
+           (map event-value selected-events)
+           ]
+          ]]
+   ]))
 
 
 (defn list-events[events]
