@@ -35,7 +35,7 @@
 
 (defn selected-kvs [event]
   (let [event-with-formatted-timestamp (-> event unparse-timestamp unparse-dob)
-        other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp :score :name :event-type :event-source ) standard-keys)))]
+        other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp :score :name :event-type :event-source  :dob) standard-keys)))]
     (map
       (fn [k] [k (get event-with-formatted-timestamp k "")])
       (concat standard-keys other-keys))))
@@ -98,22 +98,25 @@
         (map event-details (take 4 events-list))
         )
       (if (> (count events-list) 4)
-       [:p {:style {:text-align "center" :font-size "2em"}}
+       [:div {:style {:text-align "center"}}
         (if (true? @expanded?)
-       [:i.fa.fa-arrow-circle-up
-        {:on-click #(swap! expanded? not)}
-        ]
-       [:i.fa.fa-arrow-circle-down
-        {:on-click #(swap! expanded? not)}
-        ])])])))
+        [:p {:style {:font-size "1.2em"}} "Display less data" [:br]
+       [:i.fa.fa-arrow-circle-up {:style {:font-size "2em"}
+        :on-click #(swap! expanded? not)}
+        ]]
+        [:p {:style {:font-size "1.2em"}} "Display more data" [:br]
+       [:i.fa.fa-arrow-circle-down {:style {:font-size "2em"}
+        :on-click #(swap! expanded? not)}
+        ]])])])))
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
          (if (:highlighted? events)
-         [:div {:class (:color events)}
+         [:div {:class.left (:color events)}
+          [:div
          [:h3 {:style {:text-align "center"}} (:name person-key) ]
              [:p {:style {:text-align "center"}}[:strong(count (:data events))] " contact data listed matches your search criteria"]
-            [list-events events]]))
+            [list-events events]]]))
            people))
 
 (defn contact-history [!data]
