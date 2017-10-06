@@ -44,7 +44,7 @@
 
 
 (defn event-details [event]
-  [:div {:style {:border-bottom "solid 1px #ccc" :margin "15px 0px 10px 0px" :padding "10px 5px 10px 5px"}}
+  [:div.event-details-contact
    ((tmpl-map/get-template event) event)
   ])
 
@@ -53,43 +53,43 @@
       (r/with-let [expanded? (r/atom false)]
                   (let [events-list  (:data events)]
      [:div.container-fluid
+      [:div.events-list
       (if (true? @expanded?)
         (map event-details events-list)
         (map event-details (take 4 events-list))
-        )
+        )]
       (if (> (count events-list) 4)
-       [:div {:style {:text-align "center"}}
+       [:div.toggle-data
         (if (true? @expanded?)
-        [:p {:style {:font-size "0.9em" :color "#468CC8" :font-weight 600}} "SHOW LESS DATA" [:br]
-       [:i.fa.fa-arrow-circle-up {:style {:font-size "2em" :color "#468CC8"}
-        :on-click #(swap! expanded? not)}
+        [:p  "SHOW LESS DATA" [:br]
+       [:i.fa.fa-arrow-circle-up
+        {:on-click #(swap! expanded? not)}
         ]]
-        [:p {:style {:font-size "0.9em" :color "#468CC8" :font-weight 600}} "SHOW MORE DATA" [:br]
-       [:i.fa.fa-arrow-circle-down {:style {:font-size "2em" :color "#468CC8"}
-        :on-click #(swap! expanded? not)}
+        [:p  "SHOW MORE DATA" [:br]
+       [:i.fa.fa-arrow-circle-down {:on-click #(swap! expanded? not)}
         ]])])])))
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
          (if (:highlighted? events)
-         [:div {:class (str "person")
-             :style
-             {:box-shadow "10px 10px 10px #ccc"
-              :margin "10px 0px 20px 0px"
-              :border-top "1px solid #ccc"
+         [:div.person
+          {
+           :class (cljs.core/name (:color events))
+           :style
+             {
               :border-left (str "5px solid " ((:color events) co/colour-map "#ccc"))
-              :border-radius "5px"
-              :padding "20px 0px 5px 0px"
               }}
-          [:div
-         [:h3 {:style {:text-align "center" :color "#486573"}} (title-case(:name person-key))]
-             [:p {:style {:text-align "center" :color "#486573"}}[:strong(count (:data events))] " contact data listed matches your search criteria"]
-            [list-events events]]]))
-           people))
+          [:div.events-header
+         [:h3  (title-case(:name person-key))]
+             [:p [:strong(count (:data events))] " contact data listed matches your search criteria"]]
+            [list-events events]]))
+       (filter (fn  [[person-key  events]] (:highlighted? events)) people)))
 
 (defn contact-history [!data]
-  (let [results (:people @!data)]
-    (if (>  (count results) 0)
+  (let [people (:people @!data)]
+    (let [people-list (list-people people)]
+    (if  (> (count people-list)  0)
     [:div.contact-history.container-fluid
-     [:h4 "All contact data"]
-     (list-people results)])))
+     [:h4 "All Contact Data"]
+        people-list
+     ]))))

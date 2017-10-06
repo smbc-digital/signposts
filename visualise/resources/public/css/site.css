@@ -162,3 +162,46 @@ body {
   display: inline; }
   .nugget .val .fa-times:hover {
     color: red; }
+
+
+
+div.person {
+   box-shadow: 10px 10px 10px #ccc;
+   margin:  10px 0px 20px 0px;
+   border-top: 1px solid #ccc;
+   border-radius: 5px;
+   padding: 20px 0px 5px 0px;
+}
+
+div.events-header  h3,p {
+   text-align: center;
+   color: #486573;
+}
+
+div.toggle-data{
+    text-align:center;
+    color:#468cc8;
+}
+
+div.toggle-data  p{
+   font-size:0.9em;
+   font-weight: 600;
+   color:#468cc8;
+}
+
+div.toggle-data  i.fa{
+   font-size:2em;
+   color:#468cc8;
+}
+
+div.event-details-contact{
+    border-bottom: solid 1px #ccc;
+    margin: 15px 0px 10px 0px;
+    padding: 10px 0px 10px 0px;
+    }
+
+
+div.events-list :last-of-type{
+    border-bottom: none;
+}
+
