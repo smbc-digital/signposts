@@ -5,7 +5,10 @@
             [gov.stockport.sonar.visualise.ui.results.signposting :as s]
             [gov.stockport.sonar.visualise.util.date :as d]
             [clojure.string :as str]
-            [gov.stockport.sonar.visualise.data.people :as people]))
+            [gov.stockport.sonar.visualise.data.people :as people]
+            [gov.stockport.sonar.visualise.ui.templates.template-map :as tmpl-map]
+            [gov.stockport.sonar.visualise.data.colours :as co]
+            ))
 
 (def dob-unformatter (f/formatter "yyyy-mm-dd"))
 (def dob-formatter (f/formatter "dd MMM yyyy"))
@@ -29,64 +32,21 @@
 
 (def surname #(last (str/split (:name %) #" ")))
 
+(defn title-case[word]
+  (-> word
+      (str/lower-case)
+      (str/replace  #"\b." #(.toUpperCase %1))
+      ))
+
 (defn sortit [!sort list]
   (let [sorted (sort-by (:sort-func @!sort) list)]
     (if (:ascending @!sort) sorted (reverse sorted))))
 
-(defn selected-kvs [event]
-  (let [event-with-formatted-timestamp (-> event unparse-timestamp unparse-dob)
-        other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp :score :name :event-type :event-source  :dob) standard-keys)))]
-    (map
-      (fn [k] [k (get event-with-formatted-timestamp k "")])
-      (concat standard-keys other-keys))))
-
-(defn event-title [[k v]]
-  [:div (fh/label (name k)) ])
-
-(defn event-value [[k v]]
-  (if (str/blank? v) [:div "-"] [:div v] ))
-
-(defn show-event-titles-in-column [events]
-  [:div.col-2 (map event-title events) ])
-
-(defn show-event-values-in-column [events]
-  [:div.col-2 (map event-value events) ])
-
-(defn third-of [events]
-  (int (/ (count events) 3)))
-
-(defn two-thirds-of [events]
-  (- (count events) (third-of events)))
-
-(defn count-middle-third [events]
-  (int (/ (two-thirds-of events) 2)))
-
-(defn count-last-third [events]
-  (int (- (two-thirds-of events) (count-middle-third events))))
-
-(defn first-third [events]
-  (take (third-of events) events))
-
-(defn middle-third [events]
-  (take (count-middle-third events) (reverse (take (two-thirds-of events) (reverse events)))))
-
-(defn last-third [events]
-  (reverse (take (count-last-third events) (reverse events))))
 
 (defn event-details [event]
-  (let [selected-events  (selected-kvs event)]
-  [:div {:style {:border-top "solid 1px #ccc" :margin "15px 5px 10px 5px" :padding "10px 5px 10px 5px"}}
-  [:h4  (:event-source event) " " [:span {:style {:font-weight "normal"}} (:event-type event)]]
-   [:div.container-fluid
-    [:div.row.no-gutters
-     (show-event-titles-in-column (first-third selected-events))
-     (show-event-values-in-column (first-third selected-events))
-     (show-event-titles-in-column (middle-third selected-events))
-     (show-event-values-in-column (middle-third selected-events))
-     (show-event-titles-in-column (last-third selected-events))
-     (show-event-values-in-column (last-third selected-events))
-  ]]
-   ]))
+  [:div {:style {:border-bottom "solid 1px #ccc" :margin "15px 0px 10px 0px" :padding "10px 5px 10px 5px"}}
+   ((tmpl-map/get-template event) event)
+  ])
 
 
 (defn list-events[events]
@@ -100,27 +60,36 @@
       (if (> (count events-list) 4)
        [:div {:style {:text-align "center"}}
         (if (true? @expanded?)
-        [:p {:style {:font-size "1.2em"}} "Display less data" [:br]
-       [:i.fa.fa-arrow-circle-up {:style {:font-size "2em"}
+        [:p {:style {:font-size "0.9em" :color "#468CC8" :font-weight 600}} "SHOW LESS DATA" [:br]
+       [:i.fa.fa-arrow-circle-up {:style {:font-size "2em" :color "#468CC8"}
         :on-click #(swap! expanded? not)}
         ]]
-        [:p {:style {:font-size "1.2em"}} "Display more data" [:br]
-       [:i.fa.fa-arrow-circle-down {:style {:font-size "2em"}
+        [:p {:style {:font-size "0.9em" :color "#468CC8" :font-weight 600}} "SHOW MORE DATA" [:br]
+       [:i.fa.fa-arrow-circle-down {:style {:font-size "2em" :color "#468CC8"}
         :on-click #(swap! expanded? not)}
         ]])])])))
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
          (if (:highlighted? events)
-         [:div {:class.left (:color events)}
+         [:div {:class (str "left person")
+             :style
+             {:box-shadow "10px 10px 10px #ccc"
+              :margin "10px 0px 20px 10px"
+              :border-top "1px solid #ccc"
+              :border-left (str "5px solid " ((:color events) co/colour-map "#ccc"))
+              :border-radius "5px"
+              :padding "20px 0px 5px 0px"
+              }}
           [:div
-         [:h3 {:style {:text-align "center"}} (:name person-key) ]
-             [:p {:style {:text-align "center"}}[:strong(count (:data events))] " contact data listed matches your search criteria"]
+         [:h3 {:style {:text-align "center" :color "#486573"}} (title-case(:name person-key))]
+             [:p {:style {:text-align "center" :color "#486573"}}[:strong(count (:data events))] " contact data listed matches your search criteria"]
             [list-events events]]]))
            people))
 
 (defn contact-history [!data]
   (let [results (:people @!data)]
-    [:div(list-people results)]
-    )
-  )
+    (if (>  (count results) 0)
+    [:div.contact-history.container-fluid
+     [:h4 "All contact data"]
+     (list-people results)])))

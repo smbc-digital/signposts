@@ -30,3 +30,20 @@
     (->Title-Case s)))
 
 (def label (memoize -label))
+
+(def custom-formatter (f/formatter "EEE d MMM yyyy"))
+
+(def birthday-formatter (f/formatter "d MMM yyyy"))
+
+(defn unparse-timestamp [event]
+  (if-let [ts (:timestamp event)]
+    (assoc event :timestamp (f/unparse custom-formatter ts))
+    event))
+
+(defn contact-date [date-time]
+  (f/unparse custom-formatter date-time)
+  )
+
+(defn birth-date [date-time]
+  (f/unparse birthday-formatter date-time)
+  )

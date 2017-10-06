@@ -60,14 +60,14 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :areas (into #{} (remove str/blank? (map area (:data v)))))}) people))))
 
-(def surname #(str/lower_case(last (str/split (:name %) #"\s+"))))
+(def surname #(str/lower-case(last (str/split (:name %) #"\s+"))))
 
 
 (defn forename [person-key]
   (let [name-components (str/split (:name person-key) #"\s+")]
   (if(= nil (re-find #"(?i)mr|mrs|miss|ms|dr"(first name-components)))
-    (str/lower_case(first name-components))
-    (str/lower_case(second name-components)))))
+    (str/lower-case(first name-components))
+    (str/lower-case(second name-components)))))
 
 
 (defn is-locked?[p]
