@@ -72,10 +72,10 @@
 (defn list-people [people]
   (map (fn [[person-key  events]]
          (if (:highlighted? events)
-         [:div {:class (str "left person")
+         [:div {:class (str "person")
              :style
              {:box-shadow "10px 10px 10px #ccc"
-              :margin "10px 0px 20px 10px"
+              :margin "10px 0px 20px 0px"
               :border-top "1px solid #ccc"
               :border-left (str "5px solid " ((:color events) co/colour-map "#ccc"))
               :border-radius "5px"
