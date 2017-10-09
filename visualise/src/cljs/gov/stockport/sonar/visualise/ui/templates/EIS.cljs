@@ -38,6 +38,7 @@
      ]
     [:div.col.col-9-sm
      (:address event)
+     (:postcode event)
      ]]
    ]
   )
@@ -53,7 +54,7 @@
      [:div.col.col-4-sm
       [:strong "Presenting Issue"]]
      [:div.col.col-8-sm
-      (:primary-presenting-issue event)]]
+      (first(:primary-presenting-issue event))]]
     [:div.row
      [:div.col.col-4-sm
       [:strong "Outcome"]]

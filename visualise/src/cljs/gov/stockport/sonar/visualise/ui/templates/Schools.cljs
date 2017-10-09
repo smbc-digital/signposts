@@ -54,14 +54,14 @@
    [:div.col.col-4-sm
     [:div.row
      [:div.col.col-4-sm
-      [:strong "Presenting Issue"]]
+      [:strong "Academic Year"]]
      [:div.col.col-8-sm
-      (:primary-presenting-issue event)]]
+      (:academic-year event)]]
     [:div.row
      [:div.col.col-4-sm
-      [:strong "Outcome"]]
+      [:strong "Average Attendance"]]
      [:div.col.col-8-sm
-      "Proceed to Social Care Referral"]]
+      (:average-attendance event)]]
     ]
    ]]
   )
@@ -75,14 +75,22 @@
     [:div.col.col-4-sm
      [:div.row
       [:div.col.col-4-sm
-       [:strong "Presenting Issue"]]
+       [:strong "Category"]]
       [:div.col.col-8-sm
-       (:primary-presenting-issue event)]]
+       (:category event)]]
      [:div.row
       [:div.col.col-4-sm
-       [:strong "Outcome"]]
+       [:strong "Reason"]]
       [:div.col.col-8-sm
-       "Proceed to Social Care Referral"]]
+       (:reason event)]]
+     [:div.row
+      [:div.col.col-4-sm
+       [:strong "Address"]]
+      [:div.col.col-8-sm
+       (:address event) [:br]
+       (:postcode event) [:br]
+       (:daytime-telephone event)
+       ]]
      ]
     ]]
   )
@@ -96,14 +104,11 @@
     [:div.col.col-4-sm
      [:div.row
       [:div.col.col-4-sm
-       [:strong "Presenting Issue"]]
+       [:strong "Address"]]
       [:div.col.col-8-sm
-       (:primary-presenting-issue event)]]
-     [:div.row
-      [:div.col.col-4-sm
-       [:strong "Outcome"]]
-      [:div.col.col-8-sm
-       "Proceed to Social Care Referral"]]
+       (:address event) [:br]
+       (:postcode event) [:br]
+       ]]
      ]
     ]]
   )

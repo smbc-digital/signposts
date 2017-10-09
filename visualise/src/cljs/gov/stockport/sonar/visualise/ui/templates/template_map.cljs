@@ -63,7 +63,7 @@
    :homes-asb ho/asb
    :homes-eviction-application ho/eviction-application
    :homes-notice-seeking-possession ho/notice-seeking-posession
-   :revben-ctax-bill rb/ctax-bill
+   :revben-counciltaxbill rb/ctax-bill
    :revbens-cts-only rb/ct-support
    :revbens-hb-cts rb/hb-cts
    :schools-attendance sch/attendance

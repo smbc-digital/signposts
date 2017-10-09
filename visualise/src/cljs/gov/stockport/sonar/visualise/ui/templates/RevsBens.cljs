@@ -82,7 +82,7 @@
 
 (defn ctax-bill[event]
   [:div
-   [:h4   "RevsBens " [:span {:style {:font-weight "normal"}} "Council Tax"]]
+   [:h4   "RevsBens " [:span {:style {:font-weight "normal"}} "Council Tax Bill"]]
    [:div.row {:class "ctax-bill"}
    [:div.col..col-4-sm
     [:div.row

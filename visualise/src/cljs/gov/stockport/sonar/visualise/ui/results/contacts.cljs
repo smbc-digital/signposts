@@ -8,6 +8,7 @@
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.ui.templates.template-map :as tmpl-map]
             [gov.stockport.sonar.visualise.data.colours :as co]
+            [gov.stockport.sonar.visualise.util.date :as d]
             ))
 
 (def dob-unformatter (f/formatter "yyyy-mm-dd"))
@@ -48,17 +49,19 @@
    ((tmpl-map/get-template event) event)
   ])
 
+(defn sort-event-by-timestamp[events-list]
+  (sort-by #(- 0 (d/as-millis (:timestamp %))) events-list))
 
 (defn list-events[events]
-      (r/with-let [expanded? (r/atom false)]
-                  (let [events-list  (:data events)]
+  (r/with-let [expanded? (r/atom false)]
+   (let [events-list (sort-event-by-timestamp(:data events))]
      [:div.container-fluid
       [:div.events-list
       (if (true? @expanded?)
         (map event-details events-list)
-        (map event-details (take 4 events-list))
-        )]
-      (if (> (count events-list) 4)
+        (map event-details (take 2 events-list)))
+        ]
+      (if (> (count events-list) 2)
        [:div.toggle-data
         (if (true? @expanded?)
         [:p  "SHOW LESS DATA" [:br]
@@ -72,17 +75,13 @@
 (defn list-people [people]
   (map (fn [[person-key  events]]
          (if (:highlighted? events)
+         [:div.person-container
+          {:class (cljs.core/name (:color events))}
          [:div.person
-          {
-           :class (cljs.core/name (:color events))
-           :style
-             {
-              :border-left (str "5px solid " ((:color events) co/colour-map "#ccc"))
-              }}
           [:div.events-header
          [:h3  (title-case(:name person-key))]
              [:p [:strong(count (:data events))] " contact data listed matches your search criteria"]]
-            [list-events events]]))
+            [list-events events]]]))
        (filter (fn  [[person-key  events]] (:highlighted? events)) people)))
 
 (defn contact-history [!data]
