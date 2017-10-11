@@ -163,50 +163,6 @@ body {
   .nugget .val .fa-times:hover {
     color: red; }
 
-
-
-div.person {
-   padding: 20px 0px 5px 0px;
-   background-color:white;
-}
-
-div.events-header > h3 {
-   text-align: center;
-   color: #486573;
-}
-
-div.events-header > p {
-   text-align: center;
-   color: #486573;
-}
-
-div.toggle-data{
-    text-align:center;
-    color:#468cc8;
-}
-
-div.toggle-data  p{
-   font-size:0.9em;
-   font-weight: 600;
-   color:#468cc8;
-}
-
-div.toggle-data  i.fa{
-   font-size:2em;
-   color:#468cc8;
-}
-
-div.event-details-contact{
-    border-bottom: solid 1px #ccc;
-    margin: 15px 0px 10px 0px;
-    padding: 10px 0px 10px 0px;
-    }
-
-
-div.events-list :last-of-type{
-    border-bottom: none;
-}
-
 div.person-container{
     box-shadow: 10px 10px 10px #ccc;
     margin:  10px 0px 20px 0px;
@@ -250,4 +206,45 @@ div.person-container.purple{
     border-left: 5px solid #91278e;
     background-color: rgba(145, 39, 142, 0.4);
 }
+
+div.person {
+   padding: 20px 0px 5px 0px;
+   background-color:white;
+}
+
+div.events-header > h3 {
+   text-align: center;
+   color: #486573;
+}
+
+div.events-header > p {
+   text-align: center;
+   color: #486573;
+}
+
+div.toggle-data{
+    text-align:center;
+    color:#468cc8;
+}
+
+div.toggle-data  p{
+   font-size:0.9em;
+   font-weight: 600;
+   color:#468cc8;
+}
+
+div.toggle-data  i.fa{
+   font-size:2em;
+   color:#468cc8;
+}
+
+div.event-details-contact{
+    border-bottom: solid 1px #ccc;
+    margin: 15px 0px 10px 0px;
+    padding: 10px 0px 10px 0px;
+    }
+div.events-list :last-of-type{
+    border-bottom: none;
+}
+
 

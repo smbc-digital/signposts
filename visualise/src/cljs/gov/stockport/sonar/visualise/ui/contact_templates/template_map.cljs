@@ -63,11 +63,11 @@
    :homes-asb ho/asb
    :homes-eviction-application ho/eviction-application
    :homes-notice-seeking-possession ho/notice-seeking-posession
-   :revben-counciltaxbill rb/ctax-bill
-   :revbens-cts-only rb/ct-support
-   :revbens-hb-cts rb/hb-cts
-   :schools-attendance sch/attendance
-   :schools-exclusion sch/exclusions
+   :revsbens-counciltaxbill rb/ctax-bill
+   :revsbens-cts-only rb/ct-support
+   :revsbens-hb-cts rb/hb-cts
+   :schools-school-attendance sch/attendance
+   :schools-exclusions sch/exclusions
    :schools-registrations sch/registrations
    :yos-non-statutory-intervention yos/non-statutory-intervention
    :yos-statutory-intervention yos/statutory-intervention

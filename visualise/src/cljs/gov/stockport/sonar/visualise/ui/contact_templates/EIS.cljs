@@ -1,5 +1,11 @@
 (ns gov.stockport.sonar.visualise.ui.templates.EIS
-  (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
+  (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
+            [clojure.string :as s]))
+
+(defn- primary-presenting-issue[event]
+  (let [issue(:primary-presenting-issue event)]
+      (s/replace issue #"[{}]" "")
+    ))
 
 (defn- left-column[event]
   [:div.col..col-4-sm
@@ -54,7 +60,7 @@
      [:div.col.col-4-sm
       [:strong "Presenting Issue"]]
      [:div.col.col-8-sm
-      (first(:primary-presenting-issue event))]]
+      (primary-presenting-issue event)]]
     [:div.row
      [:div.col.col-4-sm
       [:strong "Outcome"]]
@@ -75,7 +81,7 @@
      [:div.col.col-4-sm
       [:strong "Presenting Issue"]]
      [:div.col.col-8-sm
-      (:primary-presenting-issue event)]]
+      (primary-presenting-issue event)]]
     [:div.row
      [:div.col.col-4-sm
       [:strong "Closure reason"]]

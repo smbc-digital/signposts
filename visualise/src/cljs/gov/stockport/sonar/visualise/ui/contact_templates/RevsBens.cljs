@@ -95,7 +95,7 @@
      [:div.col.col-1-sm
       [:strong.label "Open date"]]
      [:div.col-3-sm
-      (:timestamp (fh/custom-formatter event))
+      (:event-logged event)
       ]]
     ]
     (middle-column event)
