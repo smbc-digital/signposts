@@ -5,9 +5,9 @@
   [:div.col..col-4-sm
    [:div.row
     [:div.col.col-1-sm
-     [:strong.label "EIS Number"]]
+     [:strong.label "Pupil ID"]]
     [:div.col-3-sm
-     (:eis-number event)
+     (:pupil-id event)(:stud-id event)
      ]]
    [:div.row
     [:div.col.col-1-sm
@@ -48,7 +48,7 @@
 (defn attendance[event]
   [:div
   [:h4   "Schools " [:span {:style {:font-weight "normal"}} "Attendance"]]
-  [:div.row {:class "cin"}
+  [:div.row {:class "schools-attendance"}
    (left-column event)
    (middle-column event)
    [:div.col.col-4-sm
@@ -68,8 +68,8 @@
 
 (defn exclusions[event]
   [:div
-   [:h4   "Schools " [:span {:style {:font-weight "normal"}} "Exclusions"]]
-   [:div.row {:class "cin"}
+   [:h4   "School " [:span {:style {:font-weight "normal"}} "Exclusions"]]
+   [:div.row {:class "school-exclusions"}
     (left-column event)
     (middle-column event)
     [:div.col.col-4-sm
@@ -98,7 +98,7 @@
 (defn registrations[event]
   [:div
    [:h4   "Schools " [:span {:style {:font-weight "normal"}} "Registrations"]]
-   [:div.row {:class "cin"}
+   [:div.row {:class "school-registrations"}
     (left-column(event))
     (middle-column(event))
     [:div.col.col-4-sm

@@ -44,7 +44,8 @@
      [:strong "Address"]
      ]
     [:div.col.col-9-sm
-     (:address event)
+     (:address event) [:br]
+     (:postcode event)
      ]]
    ]
   )
@@ -93,9 +94,9 @@
       ]]
     [:div.row
      [:div.col.col-1-sm
-      [:strong.label "Open date"]]
+      [:strong.label "Event Logged"]]
      [:div.col-3-sm
-      (:event-logged event)
+      (:timestamp event)
       ]]
     ]
     (middle-column event)

@@ -1,11 +1,8 @@
 (ns gov.stockport.sonar.visualise.ui.templates.GMP
   (:require
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]
-  [gov.stockport.sonar.visualise.ui.results.signposting :as s]
-  [gov.stockport.sonar.visualise.util.date :as d]
   [clojure.string :as str]
-  [gov.stockport.sonar.visualise.data.people :as people]
-  [cljs-time.format :as f]))
+  ))
 
 
 
@@ -136,5 +133,4 @@
      [:div.col.col-8-sm
       (:crime-outcome-short-description event)]]
     ]
-   ]]
-  )
+   ]])

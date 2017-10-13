@@ -31,7 +31,7 @@
     [:div.col.col-1-sm
      [:strong.label "Close Date"]]
     [:div.col-3-sm
-     (:end-date event)
+     (fh/contact-date(:end-date event))
      ]]
    ]
   )
@@ -43,7 +43,7 @@
      [:strong "Address"]
      ]
     [:div.col.col-9-sm
-     (:address event)
+     (:address event)"," [:br]
      (:postcode event)
      ]]
    ]
@@ -51,7 +51,7 @@
 
 (defn contact [event]
   [:div
-   [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Contact (adult)"]]
+   [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Contact"]]
   [:div.row {:class "cin"}
    (left-column event)
    (middle-column event)

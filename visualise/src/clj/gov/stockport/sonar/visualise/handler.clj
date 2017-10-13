@@ -27,6 +27,7 @@
            :content "width=device-width, initial-scale=1"}]
    [:meta {:http-equiv "X-UA-Compatible"
            :content    "IE=Edge"}]
+   [:title "Signposts"]
    (include-css
      "/css/bootstrap.min.css"
      "/css/font-awesome.min.css"

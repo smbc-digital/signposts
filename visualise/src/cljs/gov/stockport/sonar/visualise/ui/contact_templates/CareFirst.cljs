@@ -32,7 +32,8 @@
      [:strong "Address"]
      ]
     [:div.col.col-9-sm
-     (:address event)
+     (:address event) [:br]
+     (:post-code event)
      ]]
    [:div.row
     [:div.col.col-3-sm
@@ -54,7 +55,7 @@
 
 (defn contact[event]
   [:div
-  [:h4   "CareFist " [:span {:style {:font-weight "normal"}} "Contact (adult)"]]
+  [:h4   "Care First " [:span {:style {:font-weight "normal"}} "Contact (adult)"]]
   [:div.row {:class "carefirst contact"}
    (left-column event)
    (middle-column event)
@@ -84,7 +85,7 @@
 
 (defn service-agreement[event]
   [:div
-  [:h4   "CareFist " [:span {:style {:font-weight "normal"}} "Service Agreement"]]
+  [:h4   "Care First " [:span {:style {:font-weight "normal"}} "Service Agreement"]]
   [:div.row {:class "carefirst contact"}
    (left-column event)
    (middle-column event)

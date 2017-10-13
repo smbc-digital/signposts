@@ -35,13 +35,15 @@
 
 (def birthday-formatter (f/formatter "d MMM yyyy"))
 
+(def uk-date-format "d/MM/yyyy")
+
 (defn unparse-timestamp [event]
   (if-let [ts (:timestamp event)]
     (assoc event :timestamp (f/unparse custom-formatter ts))
     event))
 
 (defn contact-date [date-time]
-  (f/unparse custom-formatter date-time)
+  (f/unparse custom-formatter (f/parse uk-date-format date-time  ))
   )
 
 (defn birth-date [date-time]

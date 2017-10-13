@@ -16,12 +16,12 @@
   ))
 
 (defn- make-template-key [event]
-  (s/lower-case(str (:event-source event) "-" (:event-type event)))
-  )
+  (s/lower-case(str (:event-source event) "-"
+   (s/replace (:event-type event) #"\s+" "-"))))
 
 (defn default-template [event]
   [:div
-  [:h4   (:event-source event) [:span {:style {:font-weight "normal"}}" "  (:event-type event)]]
+  [:h4   (:event-source event) [:span {:style {:font-weight "normal"}}" "  (:event-type event) ]]
   [:div.row {:class (make-template-key event) }
    [:div.col..col-4-sm
     [:div.row
@@ -50,7 +50,7 @@
 
 (def templates
   {
-   :carefirst-contact  cf/contact
+   :carefirst-form  cf/contact
    :carefirst-service-agreement cf/service-agreement
    :eis-cin    eis/cin
    :eis-contact eis/contact
@@ -76,5 +76,5 @@
 
 
 (defn get-template[event]
-  (let [template-key (keyword (s/lower-case(str (:event-source event) "-" (:event-type event))))]
+  (let [template-key (keyword (make-template-key event))]
     (template-key templates default-template)))
