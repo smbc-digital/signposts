@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.ui.contact-templates.RevsBens
+(ns gov.stockport.sonar.visualise.ui.event-templates.RevsBens
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh ])
   )
 
@@ -96,7 +96,7 @@
      [:div.col.col-1-sm
       [:strong.label "Event Logged"]]
      [:div.col-3-sm
-      (:timestamp (fh/unparse-timestamp event))
+      (:timestamp event)
       ]]
     ]
     (middle-column event)

@@ -23,7 +23,10 @@ div.busy {
   float: left;
   border-radius: 5px;
   height: 100%;
-  background-color: #1c3645; }
+  background-color: #1c3645;
+  box-shadow: 10px 10px 10px #ccc;
+ }
+
   .event-details .panel-heading {
     background-color: #1c3645;
     color: white;

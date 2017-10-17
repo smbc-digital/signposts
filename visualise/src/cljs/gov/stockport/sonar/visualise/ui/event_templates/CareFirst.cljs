@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.ui.contact-templates.CareFirst
+(ns gov.stockport.sonar.visualise.ui.event-templates.CareFirst
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 

@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.ui.contact-templates.Yos
+(ns gov.stockport.sonar.visualise.ui.event-templates.Yos
   (:require
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 

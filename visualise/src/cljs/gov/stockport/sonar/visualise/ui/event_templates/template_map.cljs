@@ -1,15 +1,15 @@
-(ns gov.stockport.sonar.visualise.ui.contact-templates.template-map
+(ns gov.stockport.sonar.visualise.ui.templates.template-map
   (:require
     ;;Template Name spaces
-    [gov.stockport.sonar.visualise.ui.contact-templates.CareFirst :as cf]
-    [gov.stockport.sonar.visualise.ui.contact-templates.Charity :as ch]
-    [gov.stockport.sonar.visualise.ui.contact-templates.EIS :as eis]
-    [gov.stockport.sonar.visualise.ui.contact-templates.EIS :as eis]
-    [gov.stockport.sonar.visualise.ui.contact-templates.GMP :as gmp]
-    [gov.stockport.sonar.visualise.ui.contact-templates.Homes :as ho]
-    [gov.stockport.sonar.visualise.ui.contact-templates.RevsBens :as rb]
-    [gov.stockport.sonar.visualise.ui.contact-templates.Schools :as sch]
-    [gov.stockport.sonar.visualise.ui.contact-templates.Yos :as yos]
+    [gov.stockport.sonar.visualise.ui.templates.CareFirst :as cf]
+    [gov.stockport.sonar.visualise.ui.templates.Charity :as ch]
+    [gov.stockport.sonar.visualise.ui.templates.EIS :as eis]
+    [gov.stockport.sonar.visualise.ui.templates.EIS :as eis]
+    [gov.stockport.sonar.visualise.ui.templates.GMP :as gmp]
+    [gov.stockport.sonar.visualise.ui.templates.Homes :as ho]
+    [gov.stockport.sonar.visualise.ui.templates.RevsBens :as rb]
+    [gov.stockport.sonar.visualise.ui.templates.Schools :as sch]
+    [gov.stockport.sonar.visualise.ui.templates.Yos :as yos]
     ;;Other Namespaces
     [clojure.string :as s]
     [gov.stockport.sonar.visualise.util.fmt-help :as fh]

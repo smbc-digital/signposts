@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.ui.contact-templates.Homes
+(ns gov.stockport.sonar.visualise.ui.event-templates.Homes
   (:require
     [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 

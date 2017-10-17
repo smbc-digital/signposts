@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.ui.contact-templates.Schools
+(ns gov.stockport.sonar.visualise.ui.event-templates.Schools
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 (defn- left-column [event]
