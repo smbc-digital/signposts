@@ -3,48 +3,48 @@
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 (defn- left-column[event]
-  [:div.col..col-4-sm
+  [:div.col.col-md-4
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-md-4
      [:strong.label "Childview Id"]]
-    [:div.col-3-sm
+    [:div.col.col-md-8
      (:child-view-id event)
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-md-4
      [:strong.label "Ethnicity"]]
-    [:div.col-3-sm
+    [:div.col.col-md-8
      (:ethnicity event)
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-md-4
      [:strong.label "Gender"]]
-    [:div.col-3-sm
+    [:div.col.col-md-8
      (:gender event)
      ]]
 
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-md-4
      [:strong.label "Open Date"]]
-    [:div.col-3-sm
+    [:div.col.col-md-8
      (:timestamp (fh/unparse-timestamp event))
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-md-4
      [:strong.label "Close Date"]]
-    [:div.col-3-sm
-     (:close-date event)
+    [:div.col.col-md-8
+     (:end-date event)
      ]]
    ]
   )
 
 (defn- middle-column [event]
-  [:div.col.col-4-sm
+  [:div.col.col-md-4
    [:div.row
-    [:div.col.col-3-sm
+    [:div.col.col-md-3
      [:strong "Address"]
      ]
-    [:div.col.col-9-sm
+    [:div.col.col-md-8
      (:address-type event) [:br]
      (:address event) [:br]
      (:postcode event)]
@@ -58,11 +58,11 @@
   [:div.row {:class "Yos"}
    (left-column event)
    (middle-column event)
-   [:div.col.col-4-sm
+   [:div.col.col-md-4
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Supervisor"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:supervisor-name event)[:br]
       [:strong "id:"](:supervisor-id event)[:br]
       [:a {:href (str "mailto:"(:superviser-email event))} (:superviser-email event)][:br]
@@ -76,11 +76,11 @@
   [:div.row {:class "Yos"}
    (left-column event)
    (middle-column event)
-  [:div.col.col-4-sm
+  [:div.col.col-md-4
    [:div.row
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:strong "Supervisor"]]
-    [:div.col.col-8-sm
+    [:div.col.col-md-8
      (:supervisor-name event)[:br]
      [:strong "id:"](:supervisor-id event)[:br]
      [:a {:href (str "mailto:"(:superviser-email event))} (:superviser-email event)][:br]

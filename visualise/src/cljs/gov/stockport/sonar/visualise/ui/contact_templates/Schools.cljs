@@ -3,36 +3,36 @@
             [clojure.string :as s]))
 
 (defn- left-column [event]
-  [:div.col.col-4-sm
+  [:div.col.col-md-4
    [:div.row
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:strong.label "Pupil ID"]]
-    [:div.col.col-8-sm
+    [:div.col.col-md-8
      (:pupil-id event)(:stud-id event)
      ]]
    [:div.row
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:strong.label "Unique Pupil ID"]]
-    [:div.col-8-sm
+    [:div.col.col-md-8
      (:unique-pupil-id event)
      ]]
    [:div.row
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:strong.label "Open Date"]]
-    [:div.col-8-sm
+    [:div.col.col-md-8
      (:timestamp (fh/unparse-timestamp event))
      ]]
    (if (not (s/blank? (:end-date event)))
    [:div.row
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:strong.label "Close Date"]]
-    [:div.col-8-sm
+    [:div.col.col-md-8
      (:end-date event)
      ]])
    ])
 
 (defn- middle-column [event]
-  [:div.col.col-4-sm
+  [:div.col.col-md-4
    [:div.row
     [:div.col.col-3-sm
      [:strong "School"]
@@ -53,16 +53,16 @@
   [:div.row {:class "schools-attendance"}
    (left-column event)
    (middle-column event)
-   [:div.col.col-4-sm
+   [:div.col.col-md-4
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Academic Year"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:academic-year event)]]
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Average Attendance"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:average-attendance event)]]
     ]
    ]]
@@ -74,21 +74,21 @@
    [:div.row {:class "school-exclusions"}
     (left-column event)
     (middle-column event)
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:div.row
-      [:div.col.col-4-sm
+      [:div.col.col-md-4
        [:strong "Category"]]
-      [:div.col.col-8-sm
+      [:div.col.col-md-8
        (:category event)]]
      [:div.row
-      [:div.col.col-4-sm
+      [:div.col.col-md-4
        [:strong "Reason"]]
-      [:div.col.col-8-sm
+      [:div.col.col-md-8
        (:reason event)]]
      [:div.row
-      [:div.col.col-4-sm
+      [:div.col.col-md-4
        [:strong "Address"]]
-      [:div.col.col-8-sm
+      [:div.col.col-md-8
        (:address event) [:br]
        (:postcode event) [:br]
        (:daytime-telephone event)
@@ -103,11 +103,11 @@
    [:div.row {:class "school-registrations"}
     (left-column event)
     (middle-column event)
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:div.row
-      [:div.col.col-4-sm
+      [:div.col.col-md-4
        [:strong "Address"]]
-      [:div.col.col-8-sm
+      [:div.col.col-md-8
        (:address event) [:br]
        (:postcode event)
        (:daytime-telephone event)

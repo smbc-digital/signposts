@@ -4,33 +4,33 @@
 
 
 (defn- left-column[event]
-  [:div.col..col-4-sm
+  [:div.col.col-md-4
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-md-4
      [:strong.label "CareFirst ID"]]
-    [:div.col-3-sm
+    [:div.col.col-md-8
      (:carefirst-id event)
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-md-4
      [:strong.label "Open Date"]]
-    [:div.col-3-sm
+    [:div.col.col-md-8
      (:timestamp (fh/unparse-timestamp event))
      ]]
    (if (not(s/blank?(:end-date event)))
      [:div.row
-      [:div.col.col-1-sm
+      [:div.col.col-md-4
        [:strong.label "Close Date"]]
-      [:div.col-3-sm
+      [:div.col.col-md-8
        (:end-date event)
        ]])
    ])
 
 
 (defn- middle-column [event]
-  [:div.col.col-4-sm
+  [:div.col.col-md-4
    [:div.row
-    [:div.col.col-3-sm
+    [:div.col.col-md-8
      [:strong "Address"]
      ]
     [:div.col.col-9-sm
@@ -38,7 +38,7 @@
      (:post-code event)
      ]]
    [:div.row
-    [:div.col.col-3-sm
+    [:div.col.col-md-8
      [:strong "Address start date"]
      ]
     [:div.col.col-9-sm
@@ -46,7 +46,7 @@
      ]]
    (if (not (s/blank? (:address-end event)))
    [:div.row
-    [:div.col.col-3-sm
+    [:div.col.col-md-8
      [:strong "Address end date"]
      ]
     [:div.col.col-9-sm
@@ -62,22 +62,22 @@
   [:div.row {:class "carefirst contact"}
    (left-column event)
    (middle-column event)
-   [:div.col.col-4-sm
+   [:div.col.col-md-4
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Contact Type"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       "Existing client contact"
       ]]
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Team name"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       "Adult Contact Centre"]]
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Worker"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:worker-name event) [:br]
       (:worker-tel event)
       ]
@@ -92,29 +92,29 @@
   [:div.row {:class "service-agreement"}
    (left-column event)
    (middle-column event)
-   [:div.col.col-4-sm
+   [:div.col.col-md-4
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Service Provider"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:service-provider event)
       ]]
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Type"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:service-type event)]]
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "Element"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:service-element event) [:br]
       ]
      ]
     [:div.row
-     [:div.col.col-4-sm
+     [:div.col.col-md-4
       [:strong "End Reasom"]]
-     [:div.col.col-8-sm
+     [:div.col.col-md-8
       (:service-end-reason event) [:br]
       ]
      ]
