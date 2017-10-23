@@ -2,7 +2,8 @@
   (:require [clojure.string :as str]
             [cljs-time.format :as f]
             [cljs.pprint :refer [cl-format]]
-            [camel-snake-kebab.core :refer [convert-case]]))
+            [camel-snake-kebab.core :refer [convert-case]]
+            [clojure.string :as s]))
 
 (def ellipsis \u2026)
 
@@ -46,6 +47,20 @@
   (f/unparse custom-formatter (f/parse uk-date-format date-time  ))
   )
 
-(defn birth-date [date-time]
-  (f/unparse birthday-formatter date-time)
-  )
+
+(def dob-unformatter (f/formatter "yyyy-MM-dd"))
+(def dob-formatter (f/formatter "d MMM yyyy"))
+
+(defn to-dob [date]
+  (if (s/blank? date)
+    ""
+  (f/unparse dob-formatter(f/parse dob-unformatter date))))
+
+
+(defn close-date[date-time]
+  (f/unparse custom-formatter date-time))
+
+(defn unparse-dob [event]
+  (if-let [ts (:dob event)]
+    (assoc event :dob (->> ts (f/parse dob-unformatter) (f/unparse dob-formatter)))
+    event))

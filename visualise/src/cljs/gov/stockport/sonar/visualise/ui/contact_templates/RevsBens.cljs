@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.contact-templates.RevsBens
-  (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh ])
-  )
+  (:require
+    [gov.stockport.sonar.visualise.util.fmt-help :as fh ]
+    [clojure.string :as s]))
 
   (defn- left-column [event]
     [:div.col..col-4-sm

@@ -1,40 +1,41 @@
-(ns gov.stockport.sonar.visualise.ui.templates.EIS
+(ns gov.stockport.sonar.visualise.ui.contact-templates.EIS
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [clojure.string :as s]))
 
 (defn- primary-presenting-issue[event]
   (let [issue(:primary-presenting-issue event)]
-      (s/replace issue #"[{}]" "")
-    ))
+      (-> issue
+       (s/replace  #"[{}]" "")
+       (s/replace #"\"" "")
+       (s/replace #",NULL$", "")
+    )))
 
 (defn- left-column[event]
   [:div.col..col-4-sm
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-4-sm
      [:strong.label "EIS Number"]]
-    [:div.col-3-sm
+    [:div.col.col-4-sm
      (:eis-number event)
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-6-sm
      [:strong.label "Unique Pupil ID"]]
-    [:div.col-3-sm
+    [:div.col.col-6-sm
      (:unique-pupil-number event)
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-4-sm
      [:strong.label "Open Date"]]
-    [:div.col-3-sm
+    [:div.col.col-8-sm
      (:timestamp (fh/unparse-timestamp event))
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-4-sm
      [:strong.label "Close Date"]]
-    [:div.col-3-sm
+    [:div.col.col-8-sm
      (:end-date event)
-     ]]
-   ]
-  )
+     ]]])
 
 (defn- middle-column[event]
   [:div.col.col-4-sm
@@ -128,7 +129,7 @@
      [:div.col.col-4-sm
       [:strong "Ongoing"]]
      [:div.col.col-8-sm
-      (:ongoing event)]]
+      (:on-going event)]]
     ]
    ]]
   )

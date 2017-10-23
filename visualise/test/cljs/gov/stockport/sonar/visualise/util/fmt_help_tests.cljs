@@ -30,6 +30,12 @@
 
     (is (= (fh/date-of-birth {:dob "1971-04-03"}) "3 Apr 1971")))
 
+  (testing "to-date-ofbirth"
+
+    (is (= (fh/to-dob "") ""))
+
+    (is (= (fh/to-dob "1971-04-03") "3 Apr 1971")))
+
   (testing "readable-number"
     (is (= (fh/int-comma 1234) "1,234")))
 

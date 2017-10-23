@@ -3,43 +3,44 @@
     [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
   (defn- middle-column[event]
-           [:div.col.col-4-sm
+           [:div.col.col-md-4
             [:div.row
-             [:div.col.col-3-sm
+             [:div.col.col-sm-3
               [:strong "Address"]
               ]
-             [:div.col.col-9-sm
+             [:div.col.col-sm-9
               (:address event)
               ]]])
 
   (defn- right-column[event]
-    [:div.col.col-4-sm
+    [:div.col.col-md-4
      [:div.row
-      [:div.col.col-3-sm
+      [:div.col.col-md-3
        [:strong "Key worker"]
        ]
-      [:div.col.col-9-sm
+      [:div.col.col-md-9
        (:keyworker event)
        ]]
      (when(some? (:otherinfo event ))
      [:div.row
-      [:div.col.col-3-sm
+      [:div.col.col-md-3
        [:strong "Other Information"]
        ]
-      [:div.col.col-9-sm
+      [:div.col.col-md-9
        (:otherinfo event)
        ]])])
 
   (defn arrears-6-wk[event]
-     [:div
-      [:h4   "Homes " [:span {:style {:font-weight "normal"}} "6 Week Arrears"]]
+     [:div.event-details.
+      [:div.panel-heading
+      [:h4   "Homes " [:span {:style {:font-weight "normal"}} "6 Week Arrears"]]]
       [:div.row {:class "cin"}
-      [:div.col.col-4-sm
+      [:div.col.col-md-4
        [:div.row
-        [:div.col.col-3-sm
+        [:div.col.col-md-3
          [:strong "Open Date"]
          ]
-        [:div.col.col-9-sm
+        [:div.col.col-md-9
          (:timestamp (fh/unparse-timestamp event))
          ]]
        ]
@@ -49,36 +50,51 @@
 
 
   (defn asb[event]
-        [:div
-         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Anti Social Behaviour"]]
-         [:div.row {:class "cin"}
-          [:div.col.col-4-sm
+        [:div.event-details
+         [:div.panel-heading
+         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Anti Social Behaviour"]]]
+         [:div.row {:class "asb"}
+          [:div.col.col-md-4
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
              [:strong "Individual Id"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:individual-id event)
              ]]
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
+             [:strong "Name"]
+             ]
+            [:div.col.col-md-9
+             (:name event)
+             ]]
+           [:div.row
+            [:div.col.col-md-3
+             [:strong "DOB"]
+             ]
+            [:div.col.col-md-9
+             (fh/to-dob(:dob event))
+             ]]
+           [:div.row
+            [:div.col.col-md-3
              [:strong "National Insurance"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:nino event)
              ]]
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
              [:strong "Open Date"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:timestamp (fh/unparse-timestamp event))
              ]]
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
              [:strong "Close Date"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:date-completed event)
              ]]
            ]
@@ -89,22 +105,37 @@
 
 
   (defn eviction-application[event]
-        [:div
-         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Eviction Application"]]
+        [:div.event-details
+         [:div.panel-heading
+         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Eviction Application"]]]
          [:div.row {:class "cin"}
-          [:div.col.col-4-sm
+          [:div.col.col-md-4
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
+             [:strong "Name"]
+             ]
+            [:div.col.col-md-9
+             (:name event)
+             ]]
+           [:div.row
+            [:div.col.col-md-3
+             [:strong "DOB"]
+             ]
+            [:div.col.col-md-9
+             (fh/to-dob(:dob event))
+             ]]
+           [:div.row
+            [:div.col.col-md-3
              [:strong "National Insurance"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:nino event)
              ]]
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
              [:strong "Open Date"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:timestamp (fh/unparse-timestamp event))
              ]]
            ]
@@ -114,22 +145,37 @@
 
 
   (defn notice-seeking-posession[event]
-        [:div
-         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Notice Seeking Possesion"]]
-         [:div.row {:class "cin"}
-          [:div.col.col-4-sm
+        [:div.event-details
+         [:div.panel-heading
+         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Notice Seeking Possesion"]]]
+         [:div.row {:class "notice-seeking-possession"}
+          [:div.col.col-md-4
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
+             [:strong "Name"]
+             ]
+            [:div.col.col-md-9
+             (:name event)
+             ]]
+           [:div.row
+            [:div.col.col-md-3
+             [:strong "DOB"]
+             ]
+            [:div.col.col-md-9
+             (fh/to-dob(:dob event))
+             ]]
+           [:div.row
+            [:div.col.col-md-3
              [:strong "National Insurance"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:nino event)
              ]]
            [:div.row
-            [:div.col.col-3-sm
+            [:div.col.col-md-3
              [:strong "Open Date"]
              ]
-            [:div.col.col-9-sm
+            [:div.col.col-md-9
              (:timestamp (fh/unparse-timestamp event))
              ]]
            ]

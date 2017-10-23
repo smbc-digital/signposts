@@ -1,55 +1,13 @@
 (ns gov.stockport.sonar.visualise.ui.results.selected-event
-  (:require [clojure.string :as str]
-            [cljs-time.format :as f]
-            [gov.stockport.sonar.visualise.ui.search.search-control-state :refer [add-search-criteria!]]
-            [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
-
-(def standard-keys [:timestamp :name :dob :address :postcode])
-
-(def substitute-keys {:timestamp :event-logged})
-
-(def custom-formatter (f/formatter "EEE d MMM yyyy"))
-
-(defn unparse-timestamp [event]
-  (if-let [ts (:timestamp event)]
-    (assoc event :timestamp (f/unparse custom-formatter ts))
-    event))
-
-(def dob-unformatter (f/formatter "yyyy-MM-dd"))
-(def dob-formatter (f/formatter "d MMM yyyy"))
-
-(defn unparse-dob [event]
-  (if-let [ts (:dob event)]
-    (assoc event :dob (->> ts (f/parse dob-unformatter) (f/unparse dob-formatter)))
-    event))
-
-(defn selected-kvs [event]
-  (let [event-with-formatted-timestamp (-> event unparse-timestamp unparse-dob)
-        other-keys (sort (keys (apply dissoc (dissoc event :id :ingestion-timestamp :score :event-type :event-source) standard-keys)))]
-    (map
-      (fn [k] [(get substitute-keys k k) (get event-with-formatted-timestamp k "")])
-      (concat standard-keys other-keys))))
-
-; ************
-; EXPERIMENTAL - ALLOW DRILL-TYPE SEARCH E.G. CLICK ON POSTCODE TO ADD TO SEARCH CRITERIA
-(defn row [[k v]]
-  (when (not (str/blank? v))
-    (if (= :postcode k)
-      [:tr [:th (fh/label (name k))] [:td.col-10 [:a {:on-click #(add-search-criteria! :postcode v)} v]]]
-      [:tr [:th (fh/label (name k))] [:td.col-10 v]])))
-
-(defn rows [event]
-  (map row (selected-kvs event)))
+  (:require
+    [gov.stockport.sonar.visualise.ui.event-templates.template-map :as tm]
+            ))
 
 (defn selected-event [!data]
   (fn []
     (let [selected (:selected-event @!data)]
       (when (not-empty selected)
-        [:div.selected-event.ml-2
-         [:div.panel-group
-          [:div.panel.panel-default.event-details.col-sm-11
-           [:div.panel-heading.my-2 (:event-type selected)]
-           [:div.panel-body.mb-2
-            [:table.table-striped.table-condensed.results.selected-results
-             `[:tbody
-               ~@(rows selected)]]]]]]))))
+        [:div.selected-event
+         ((tm/get-template selected) selected)
+         ]
+        ))))

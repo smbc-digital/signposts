@@ -1,15 +1,14 @@
-(ns gov.stockport.sonar.visualise.ui.templates.template-map
+(ns gov.stockport.sonar.visualise.ui.event-templates.template-map
   (:require
     ;;Template Name spaces
-    [gov.stockport.sonar.visualise.ui.templates.CareFirst :as cf]
-    [gov.stockport.sonar.visualise.ui.templates.Charity :as ch]
-    [gov.stockport.sonar.visualise.ui.templates.EIS :as eis]
-    [gov.stockport.sonar.visualise.ui.templates.EIS :as eis]
-    [gov.stockport.sonar.visualise.ui.templates.GMP :as gmp]
-    [gov.stockport.sonar.visualise.ui.templates.Homes :as ho]
-    [gov.stockport.sonar.visualise.ui.templates.RevsBens :as rb]
-    [gov.stockport.sonar.visualise.ui.templates.Schools :as sch]
-    [gov.stockport.sonar.visualise.ui.templates.Yos :as yos]
+    [gov.stockport.sonar.visualise.ui.event-templates.CareFirst :as cf]
+    [gov.stockport.sonar.visualise.ui.event-templates.Charity :as ch]
+    [gov.stockport.sonar.visualise.ui.event-templates.EIS :as eis]
+    [gov.stockport.sonar.visualise.ui.event-templates.GMP :as gmp]
+    [gov.stockport.sonar.visualise.ui.event-templates.Homes :as ho]
+    [gov.stockport.sonar.visualise.ui.event-templates.RevsBens :as rb]
+    [gov.stockport.sonar.visualise.ui.event-templates.Schools :as sch]
+    [gov.stockport.sonar.visualise.ui.event-templates.Yos :as yos]
     ;;Other Namespaces
     [clojure.string :as s]
     [gov.stockport.sonar.visualise.util.fmt-help :as fh]
@@ -20,8 +19,9 @@
    (s/replace (:event-type event) #"\s+" "-"))))
 
 (defn default-template [event]
-  [:div
-  [:h4   (:event-source event) [:span {:style {:font-weight "normal"}}" "  (:event-type event) ]]
+  [:div.event-details
+   [:div.panel-heading
+  [:h4   (:event-source event) [:span {:style {:font-weight "normal"}}" "  (:event-type event) ]]]
   [:div.row {:class (make-template-key event) }
    [:div.col..col-4-sm
     [:div.row

@@ -6,7 +6,7 @@
             [gov.stockport.sonar.visualise.util.date :as d]
             [clojure.string :as str]
             [gov.stockport.sonar.visualise.data.people :as people]
-            [gov.stockport.sonar.visualise.ui.templates.template-map :as tmpl-map]
+            [gov.stockport.sonar.visualise.ui.contact-templates.template-map :as tmpl-map]
             [gov.stockport.sonar.visualise.data.colours :as co]
             [gov.stockport.sonar.visualise.util.date :as d]
             ))

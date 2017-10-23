@@ -1,32 +1,34 @@
 (ns gov.stockport.sonar.visualise.ui.contact-templates.Schools
-  (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
+  (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
+            [clojure.string :as s]))
 
 (defn- left-column [event]
-  [:div.col..col-4-sm
+  [:div.col.col-4-sm
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-4-sm
      [:strong.label "Pupil ID"]]
-    [:div.col-3-sm
+    [:div.col.col-8-sm
      (:pupil-id event)(:stud-id event)
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-4-sm
      [:strong.label "Unique Pupil ID"]]
-    [:div.col-3-sm
+    [:div.col-8-sm
      (:unique-pupil-id event)
      ]]
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-4-sm
      [:strong.label "Open Date"]]
-    [:div.col-3-sm
+    [:div.col-8-sm
      (:timestamp (fh/unparse-timestamp event))
      ]]
+   (if (not (s/blank? (:end-date event)))
    [:div.row
-    [:div.col.col-1-sm
+    [:div.col.col-4-sm
      [:strong.label "Close Date"]]
-    [:div.col-3-sm
+    [:div.col-8-sm
      (:end-date event)
-     ]]
+     ]])
    ])
 
 (defn- middle-column [event]
@@ -97,18 +99,17 @@
 
 (defn registrations[event]
   [:div
-   [:h4   "Schools " [:span {:style {:font-weight "normal"}} "Registrations"]]
+   [:h4 "Schools " [:span {:style {:font-weight "normal"}} "Registrations"]]
    [:div.row {:class "school-registrations"}
-    (left-column(event))
-    (middle-column(event))
+    (left-column event)
+    (middle-column event)
     [:div.col.col-4-sm
      [:div.row
       [:div.col.col-4-sm
        [:strong "Address"]]
       [:div.col.col-8-sm
        (:address event) [:br]
-       (:postcode event) [:br]
+       (:postcode event)
+       (:daytime-telephone event)
        ]]
-     ]
-    ]]
-  )
+     ]]])

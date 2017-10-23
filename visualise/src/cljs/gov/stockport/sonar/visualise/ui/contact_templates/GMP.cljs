@@ -1,4 +1,4 @@
-(ns gov.stockport.sonar.visualise.ui.templates.GMP
+(ns gov.stockport.sonar.visualise.ui.contact-templates.GMP
   (:require
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]
   [clojure.string :as str]

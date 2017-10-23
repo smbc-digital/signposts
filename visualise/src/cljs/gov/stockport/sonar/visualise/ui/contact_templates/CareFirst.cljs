@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.visualise.ui.contact-templates.CareFirst
-  (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
+  (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
+            [clojure.string :as s]))
 
 
 (defn- left-column[event]
@@ -16,12 +17,13 @@
     [:div.col-3-sm
      (:timestamp (fh/unparse-timestamp event))
      ]]
-   [:div.row
-    [:div.col.col-1-sm
-     [:strong.label "Close Date"]]
-    [:div.col-3-sm
-     (:end-date event)
-     ]]
+   (if (not(s/blank?(:end-date event)))
+     [:div.row
+      [:div.col.col-1-sm
+       [:strong.label "Close Date"]]
+      [:div.col-3-sm
+       (:end-date event)
+       ]])
    ])
 
 
@@ -42,13 +44,14 @@
     [:div.col.col-9-sm
      (:address-start event)
      ]]
+   (if (not (s/blank? (:address-end event)))
    [:div.row
     [:div.col.col-3-sm
      [:strong "Address end date"]
      ]
     [:div.col.col-9-sm
      (:address-end event)
-     ]]
+     ]])
    ]
 
   )
@@ -86,7 +89,7 @@
 (defn service-agreement[event]
   [:div
   [:h4   "Care First " [:span {:style {:font-weight "normal"}} "Service Agreement"]]
-  [:div.row {:class "carefirst contact"}
+  [:div.row {:class "service-agreement"}
    (left-column event)
    (middle-column event)
    [:div.col.col-4-sm
