@@ -308,11 +308,21 @@ div.login-form .input-group-addon {
     border-right:none;
    }
 
-   div.login-form .input:text {
-       background-color: white;
-       color:#1C3645;
-       border-left:none;
-      }
+
+
+
+ div.login-form input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #aaa;
+  font-size:0.9em;
+}
+ div.login-form input::-moz-placeholder { /* Firefox 19+ */
+  color: #aaa;
+  font-size:0.9em;
+}
+ div.login-form input:-ms-input-placeholder { /* IE 10+ */
+  color: #aaa;
+  font-size:0.9em;
+}
 
 
 div.login-form .btn-primary {
