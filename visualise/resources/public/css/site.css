@@ -4,9 +4,12 @@ div.busy {
   width: 100%;
   height: 100%;
   margin: 0;
-  opacity: 0.8;
-  background-color: gray; }
+  opacity: 0.75;
+  background-color: #1C3645;
+  }
+
   div.busy .spinner {
+    color:#eee;
     margin-top: 250px;
     display: flex;
     justify-content: center;
@@ -263,4 +266,54 @@ div.events-list :last-of-type{
     border-bottom: none;
 }
 
+div.login {
+ background-color: #1C3645;
+ width:100%;
+ height:100%;
+ position: fixed;
+}
 
+div.login-form{
+ background-color: white;
+ z-index:90;
+ width:600px;
+ height:400px;
+ margin:auto;
+ position:absolute;
+ top:0;
+ bottom:0;
+ left:0;
+ right:0;
+ border-radius:2px;
+ box-shadow: 5px 10px 15px;
+ padding: 30px 20px 40px 20px;
+}
+
+div.login-form-container{
+   margin-top:50px;
+   margin-left:auto;
+   margin-right:auto;
+   width:75%
+}
+
+div.login-form > h4 {
+    text-align:center;
+    color:#1C3645;
+    line-height:1.75em;
+}
+
+div.login-form .input-group-addon {
+    background-color: white;
+    color:#1C3645;
+    border-right:none;
+   }
+
+   div.login-form .input:text {
+       background-color: white;
+       color:#1C3645;
+       border-left:none;
+      }
+
+
+div.login-form .btn-primary {
+    background-color: #0275d8 }

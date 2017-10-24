@@ -4,7 +4,7 @@
             [gov.stockport.sonar.visualise.ui.busy :as busy]))
 
 (defn login-page []
-  [:div
+  [:div.login
    [busy/overlay]
    ;[:div.container-fluid
    ; {:style {:background-color "#1c3645" :color :white}}
@@ -14,10 +14,7 @@
    ;    [:i.fa.fa-map-signs.fa-2x]]]
    ;  [:div.column.col-11
    ;   [:span.h2 "SIGNPOSTS"]]]]
-
-   [:div.container-fluid
-    [:div.jumbotron.my-4
-     [:h4 [:i.fa.fa-map-signs.mr-2] "Welcome to Signposts"]
-     [:hr]
+      [:div.login-form
+     [:h4 [:i.fa.fa-map-signs.mr-2] [:br] "SIGNPOSTS"]
      [login-form]
-     ]]])
+     ]])
