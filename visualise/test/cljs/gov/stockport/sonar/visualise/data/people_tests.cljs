@@ -398,7 +398,7 @@
                     :score        5
                     :areas        #{}
                     :name-rank    1
-                    :relevance-rank 3
+                    :relevance-rank 1
                     :locked?      true
                     :highlighted? true}))
 
