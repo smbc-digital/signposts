@@ -7,7 +7,8 @@
 (defn- perform-login [!local]
   (let [creds @!local]
     (reset! !local initial-state)
-    (login creds)))
+    (login creds)
+      ))
 
 (defn login-form []
   (let [!local (r/atom initial-state)]
@@ -38,7 +39,8 @@
            :on-key-up #(when (= 13 (-> % .-keyCode)) (perform-login !local))}]]]
        [:div.form-group
        [:button.btn.btn-primary.col-12
-        {:on-click (fn [] (perform-login !local))} "LOG IN"]]
+        {:on-click (fn [] ((perform-login !local)))} "LOG IN"]]
+       [:p#login-error {:style {:color "red" :text-align"center" :font-size "0.8em"}} "You Name or Password is incorrect or you are not on the system"]
        [:p {:style {:text-align"center" :font-size "0.8em"}} [:a {:href "mailto:ITHelpDesk@solutionssk.co.uk "} "Forgot your password? Contact the help desk" ]]
 
        ])))

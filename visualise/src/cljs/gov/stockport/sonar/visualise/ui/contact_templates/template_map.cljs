@@ -52,6 +52,7 @@
   {
    :carefirst-form  cf/contact
    :carefirst-service-agreement cf/service-agreement
+   :charity-log-the-prevention-alliance ch/prevention-alliance
    :eis-cin    eis/cin
    :eis-contact eis/contact
    :eis-lac eis/lac
