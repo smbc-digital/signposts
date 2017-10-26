@@ -28,7 +28,7 @@
 
 
 
-  (defn middle-column [event]
+  (defn- middle-column [event]
     [:div.col.col-md-4
      [:div.row
       [:div.col.col-md-3

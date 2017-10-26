@@ -64,8 +64,7 @@
     [:div.col.col-md-9
      (:address-end event)
      ]])
-   ]
-  )
+   ])
 
 (defn contact[event]
   [:div.event-details

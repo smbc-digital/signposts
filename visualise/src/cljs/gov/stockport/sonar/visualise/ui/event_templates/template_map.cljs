@@ -72,9 +72,7 @@
    :schools-exclusions sch/exclusions
    :schools-registrations sch/registrations
    :yos-non-statutory-intervention yos/non-statutory-intervention
-   :yos-statutory-intervention yos/statutory-intervention
-   }
-  )
+   :yos-statutory-intervention yos/statutory-intervention})
 
 
 (defn get-template[event]
