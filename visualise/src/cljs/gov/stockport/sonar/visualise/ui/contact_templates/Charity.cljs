@@ -2,10 +2,7 @@
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [clojure.string :as s]
   ))
-
-
-
-    (defn- left-column[event]
+ (defn- left-column[event]
       [:div.col.col-md-4
        [:div.row
         [:div.col.col-md-4
@@ -38,8 +35,7 @@
        (:address event)
        [:br]
        (:postcode event)
-       ]]
-     ])
+       ]]])
 
 
 
