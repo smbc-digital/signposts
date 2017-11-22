@@ -2,7 +2,9 @@
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.ui.search.query-control-state :as qcs]
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
-            [gov.stockport.sonar.visualise.query.client :refer [search]]))
+            [gov.stockport.sonar.visualise.query.client :refer [search]]
+            [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
+            ))
 
 (defn nugget [{:keys [query-type search-term]}]
   [:div.input-group.nugget.mr-2
@@ -14,6 +16,7 @@
 
 (defn search-criteria-control [query-callback]
   (scs/init! query-callback)
+  (scs/load-search-criteria)
   (fn []
     [:div.container-fluid.py-1
      {:style {:background-color "#1d2932"}}

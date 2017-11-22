@@ -3,7 +3,7 @@
             [gov.stockport.sonar.visualise.util.navigation :refer [navigate-to-home-page navigate-to-login-page]]))
 
 (defn handle-successful-login [_]
-  (navigate-to-home-page))
+   (navigate-to-home-page))
 
 (defn handle-successful-logout [_]
   (navigate-to-login-page))

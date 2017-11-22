@@ -1,8 +1,9 @@
 (ns gov.stockport.sonar.visualise.util.ajax
   (:require [ajax.core :refer [POST GET]]
-            [gov.stockport.sonar.visualise.state :refer [!app]]
+            [gov.stockport.sonar.visualise.state :refer [!app !login-error]]
             [gov.stockport.sonar.visualise.util.navigation :refer [navigate-to-login-page]]
             [reagent.cookies :refer [get-raw]]
+            [hodgepodge.core :refer [local-storage clear!]]
             [cemerick.url :refer [url-decode]]))
 
 (defn ->json [x]
@@ -29,8 +30,10 @@
 
 (defn default-error-handler [{:keys [status] :as response}]
   (if (>= status 400)
-    (navigate-to-login-page)
-    response))
+    (do
+      (assoc! local-storage :login-error status )
+    (navigate-to-login-page)))
+    response)
 
 (defn with-error-handling [request]
   (assoc request :error-handler default-error-handler))

@@ -14,9 +14,10 @@
 (defn default-handler [!data]
   (fn [response]
     (let [results (source-events response)]
+      ()
       (swap! !data #(-> %
                         (assoc :search-uuid (random-uuid))
                         (assoc :total (-> response :hits :total))
                         (assoc :took-millis (-> response :took))
                         (assoc :result results)
-                        (people/from-data))))))
+                        (people/from-data))))));/

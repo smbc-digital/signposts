@@ -32,7 +32,10 @@
                  [org.slf4j/jcl-over-slf4j "1.7.14"]
                  [com.fzakaria/slf4j-timbre "0.3.5"]
                  [com.taoensso/timbre "4.10.0"]
-                 [camel-snake-kebab "0.4.0"]]
+                 [camel-snake-kebab "0.4.0"]
+                 [alandipert/storage-atom "1.2.4"]
+                 [hodgepodge "0.1.3"]
+                 ]
 
   :plugins [[lein-ring "0.11.0"]
             [lein-environ "1.0.2"]

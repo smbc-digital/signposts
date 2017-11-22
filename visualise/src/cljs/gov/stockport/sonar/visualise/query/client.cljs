@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.visualise.query.client
-  (:require [gov.stockport.sonar.visualise.util.ajax :refer [ajax-get ajax-post post-and-forget]]))
+  (:require
+    [gov.stockport.sonar.visualise.util.ajax :refer [ajax-get ajax-post post-and-forget]]))
 
 (def null-handler (fn [& _]))
 

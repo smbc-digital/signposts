@@ -161,7 +161,6 @@
       ))
 
 (defn sort-as [{:keys [rank-by people] as :data}]
-  (js/console.log rank-by)
   (if (= rank-by :by-name)
     (sort-by (fn [[_ {:keys [name-rank]}]] name-rank) people)
     (sort-by (fn [[_ {:keys [relevance-rank]}]] relevance-rank) people)

@@ -1,5 +1,6 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-control-state
   (:require [clojure.string :as str]
+            [hodgepodge.core :refer [local-storage clear!]]
             [gov.stockport.sonar.visualise.state :refer [!search-control-state]]))
 
 (defn init! [on-change-callback]
@@ -61,5 +62,15 @@
                                (not (= query-type-to-remove query-type))) search-criteria)))))
 
 
+;(defn search-criteria []
+ ; (:criteria @!search-control-state))
+
+(defn load-search-criteria[]
+  (swap! !search-control-state assoc :query (:criteria local-storage))
+  (swap! !search-control-state assoc :criteria (:criteria local-storage)))
+
+
 (defn search-criteria []
-  (:criteria @!search-control-state))
+      (assoc! local-storage :criteria (:criteria @!search-control-state))
+      (persistent! local-storage)
+      (:criteria @!search-control-state))

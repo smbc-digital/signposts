@@ -27,6 +27,12 @@
            :content "width=device-width, initial-scale=1"}]
    [:meta {:http-equiv "X-UA-Compatible"
            :content    "IE=Edge"}]
+   [:link {:rel "shortcut icon"
+           :href "/favicon.ico"
+           :type "image/x-icon"}]
+   [:link {:rel "icon"
+           :href "/favicon.ico"
+           :type "image/x-icon"}]
    [:title "Signposts"]
    (include-css
      "/css/bootstrap.min.css"

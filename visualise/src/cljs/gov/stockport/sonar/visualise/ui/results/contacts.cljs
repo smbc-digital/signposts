@@ -45,6 +45,7 @@
 
 
 (defn event-details [event]
+  ^{:key (gensym)}
   [:div.event-details-contact
    ((tmpl-map/get-template event) event)
   ])
@@ -55,6 +56,7 @@
 (defn list-events[events]
   (r/with-let [expanded? (r/atom false)]
    (let [events-list (sort-event-by-timestamp(:data events))]
+     ^{:key (gensym)}
      [:div.container-fluid
       [:div.events-list
       (if (true? @expanded?)
@@ -75,6 +77,7 @@
 (defn list-people [people]
   (map (fn [[person-key  events]]
          (if (:highlighted? events)
+           ^{:key (gensym)}
          [:div.person-container
           {:class (cljs.core/name (:color events))}
          [:div.person
