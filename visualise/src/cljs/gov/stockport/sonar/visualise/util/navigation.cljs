@@ -12,12 +12,15 @@
   (if (not= js/window.location.pathname "/login")
     (do
       (if (= 401 (:login-error local-storage ))
-      (assoc! local-storage :login-message "You have been timed out")))
-      (.assign js/window.location "/login"))
+      (assoc! local-storage :login-message "You have been timed out"))
+      )
     (do
       (if (= 401 (:login-error local-storage ))
         (assoc! local-storage :login-message "You've entered an incorrect username or password")))
-      )
+
+    )
+  (.assign js/window.location "/login")
+  )
 
 
 

@@ -22,7 +22,12 @@
     [:div.col.col-md-8
      (:gender event)
      ]]
-
+   [:div.row
+    [:div.col.col-md-4
+     [:strong.label "DOB"]]
+    [:div.col.col-md-8
+     (fh/to-dob(:dob event))
+     ]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Open Date"]]

@@ -62,15 +62,5 @@
                                (not (= query-type-to-remove query-type))) search-criteria)))))
 
 
-;(defn search-criteria []
- ; (:criteria @!search-control-state))
-
-(defn load-search-criteria[]
-  (swap! !search-control-state assoc :query (:criteria local-storage))
-  (swap! !search-control-state assoc :criteria (:criteria local-storage)))
-
-
 (defn search-criteria []
-      (assoc! local-storage :criteria (:criteria @!search-control-state))
-      (persistent! local-storage)
-      (:criteria @!search-control-state))
+  (:criteria @!search-control-state))

@@ -12,6 +12,12 @@
          ]]
        [:div.row
         [:div.col.col-md-4
+         [:strong.label "DOB"]]
+        [:div.col.col-md-8
+         (fh/to-dob(:dob event))
+         ]]
+       [:div.row
+        [:div.col.col-md-4
          [:strong.label "Referral Date"]]
         [:div.col.col-md-8
          (:timestamp (fh/unparse-timestamp event))

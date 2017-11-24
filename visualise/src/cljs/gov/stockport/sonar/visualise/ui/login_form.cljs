@@ -16,13 +16,14 @@
       ))
 
 (defn login-form []
-  (let [!local (r/atom initial-state)]
+  (let [!local (r/atom initial-state) login-message (:login-message local-storage) login-error (:login-error local-storage)  ]
     (fn []
       [:div.login-form-container
        [:div.form-group
-        (if (> (:login-error local-storage) 0 )
+        (if (> login-error 0 )
           [:p#login-error {:style {:color "rgba(191,125,3,1)" :font-weight "bold" :text-align "left" :font-size "0.9em"}}
-           [:i.fa.fa-exclamation-triangle {:style{:font-size "1.5em" :margin-left "10px" :margin-right "20px"}}]"You've entered an incorrect username or password"])
+           [:i.fa.fa-exclamation-triangle {:style{:font-size "1.5em" :margin-left "10px" :margin-right "20px"}}]
+           login-message])
          [:div.input-group.addon
          [:div.input-group-addon
            [:i.fa.fa-user]

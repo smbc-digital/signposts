@@ -29,10 +29,9 @@
   (assoc request :body (->json body)))
 
 (defn default-error-handler [{:keys [status] :as response}]
+  (assoc! local-storage :login-error status)
   (if (>= status 400)
-    (do
-      (assoc! local-storage :login-error status )
-    (navigate-to-login-page)))
+    (navigate-to-login-page))
     response)
 
 (defn with-error-handling [request]
