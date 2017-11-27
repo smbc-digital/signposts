@@ -10,27 +10,10 @@
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
-            [gov.stockport.sonar.visualise.ui.components.welcome-status :refer [welcome-message]]))
+            [gov.stockport.sonar.visualise.ui.components.welcome-status :refer [welcome-message]]
+            [gov.stockport.sonar.visualise.query.client :refer [status null-handler]]))
 
 
-;comment(def !seconds-left (r/atom 3600))
-;
-;(def timer-id (r/atom 0))
-;
-;(defn logout-timer[]
-;         (js/setTimeout ac/logout (* @!seconds-left 1000)))
-;
-;(defn- reset-timer[id]
-;  (js/clearTimeout id)
-;  (reset! timer-id (logout-timer))
-;  )
-;
-;
-;(defn- set-event-handlers[]
-;  (set! (.-onkeypress js/document) (reset-timer @timer-id))
-;  (set! (.-onmousedown js/document) (reset-timer @timer-id))
-;  (set! (.-onmousewheel js/document) (reset-timer @timer-id))
-;  )
 
 (defn results [!data]
   [:div.container-fluid
@@ -40,10 +23,13 @@
     [:div.col-9
      [tr/results-tab !data]]]])
 
+
+
+
 (defn home-page []
   [:div
    [busy/overlay]
-   [:div.container-fluid
+    [:div.container-fluid
     {:style {:background-color "#1c3645" :color :white}}
     [:div.row.align-items-center.py-1
      [:div.column.col-1

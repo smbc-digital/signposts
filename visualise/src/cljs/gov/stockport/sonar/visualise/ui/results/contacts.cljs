@@ -53,6 +53,8 @@
 (defn sort-event-by-timestamp[events-list]
   (sort-by #(- 0 (d/as-millis (:timestamp %))) events-list))
 
+()
+
 (defn list-events[events]
   (r/with-let [expanded? (r/atom false)]
    (let [events-list (sort-event-by-timestamp(:data events))]
