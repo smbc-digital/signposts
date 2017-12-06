@@ -5,7 +5,7 @@
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
             [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]
             [gov.stockport.sonar.visualise.auth.auth-client :as ac]
-            [gov.stockport.sonar.visualise.state :refer [!app !data]]
+            [gov.stockport.sonar.visualise.state :refer [!app !data !status refresh-status!]]
             [gov.stockport.sonar.visualise.ui.busy :as busy]
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
@@ -28,6 +28,7 @@
 
 (defn home-page []
   [:div
+   [:span {:style {:display "none"}} (js/setInterval refresh-status! 120000)]
    [busy/overlay]
     [:div.container-fluid
     {:style {:background-color "#1c3645" :color :white}}
@@ -44,7 +45,7 @@
 
    (when (not (nil? (:total @!data)))
      [:div.container-fluid
-      {:style {:background-color "#1d2932"}}
+      {:style {:background-color "#1d2932" :padding-top "20px" :padding-bottom "2px"}}
       [:h6.text-white.pb-1 (people/results-summary @!data)]])
 
    (if (not-empty (:people @!data))

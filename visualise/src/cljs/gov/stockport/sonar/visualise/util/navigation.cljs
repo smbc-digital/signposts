@@ -12,7 +12,7 @@
   (if (not= js/window.location.pathname "/login")
     (do
       (if (= 401 (:login-error local-storage ))
-      (assoc! local-storage :login-message "Your session has timed out"))
+      (assoc! local-storage :login-message "Your session has timed out. Please login to continue."))
       )
     (do
       (if (= 401 (:login-error local-storage ))
@@ -26,4 +26,5 @@
 
 (defn navigate-to-home-page []
     (dissoc! local-storage :login-error)
+    (dissoc! local-storage :login-message)
     (accountant/navigate! "/"))

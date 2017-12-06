@@ -324,6 +324,108 @@ div.login-form .input-group-addon {
   font-size:0.9em;
 }
 
-
 div.login-form .btn-primary {
     background-color: #0275d8 }
+
+div.recent-searches {
+      z-index: 1;
+      background-color: #eceeef;
+      padding-top: 50px;
+      padding-bottom: 30px;
+      color: #111;
+}
+
+div.recent-searches h4 {
+    color: #292b2c;
+}
+
+div.search-event {
+   background-color: white;
+   padding: 10px 10px 10px 10px;
+   float: left;
+   margin-bottom:  25px;
+   box-shadow: 5px 5px 10px #ccc;
+}
+
+div.search-event-item{
+    border: solid 1px #ccc;
+    border-radius: 3px;
+    box-shadow: inset 1px 1px 1px;
+    margin-left: 10px;
+}
+
+div.search-event-item > label{
+   display: inline-block;
+   margin-left: 0;
+   font-size: 11px;
+   text-transform: uppercase;
+   color: #aaa;
+   line-height:1.1;
+}
+
+div.search-event-item  input {
+   display: inline-block;
+   font-size: 15px;
+   border: none;
+   line-height:1.0;
+   width: 90%;
+   overflow: hidden;
+}
+
+div.recent-updates{
+    border-radius: 5px;
+    background-color: #fff;
+    margin-top: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: #111''
+}
+
+div.recent-updates h4 {
+   color: #292b2c;
+}
+
+div.recent-update{
+  background-color: #FFF;
+  border: solid 1px #999;
+  margin: 20px 10px 20px 10px;
+  padding: 0px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #ccc;
+ }
+
+
+ div.event-source-header{
+    background-color: #292b2c;
+    width: 100%;
+    padding: 20px 0 20px 0;
+}
+
+ div.event-source-header h5{
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 10px 5px 10px 5px;
+}
+
+div.event-source-body{
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+div.event-source-body h6{
+  color: #292b2c;
+  font-size: 20px;
+  margin-bottom: 2px;
+  font-weight: 400;
+  text-align: center;
+}
+
+div.event-source-body p{
+  margin: 3px 0 3px 0;
+  font-size: 20px;
+  color: #000;
+  font-weight: 400;
+  text-align: center;
+}
