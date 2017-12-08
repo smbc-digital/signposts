@@ -1,11 +1,8 @@
 (ns gov.stockport.sonar.visualise.ui.components.recent-searches
   (:require
-    [gov.stockport.sonar.visualise.state :refer [!status refresh-status! !search-history !search-control-state]]
-    [gov.stockport.sonar.visualise.util.date :as d]
-    [gov.stockport.sonar.visualise.util.fmt-help :as f]
+    [gov.stockport.sonar.visualise.state :refer [!search-history]]
     [reagent.core :as r]
-    [gov.stockport.sonar.visualise.ui.search.search-history :as sh]
-  ))
+    [gov.stockport.sonar.visualise.ui.search.search-history :refer [stored-search-criteria]]))
 
 (defn nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
@@ -21,7 +18,7 @@
       }]]]
   )
 
-(defn search-event[event]
+(defn search-event[idx event]
   ^{:key (gensym)}
   [:div.col.col-md-12.search-event
    [:div.row
@@ -29,14 +26,15 @@
      [:div.row (map nugget event)]]
     [:div.col.col-md-4
      {:style {:float "right" :text-align "right"}}
-     [:button.btn.btn-info {:on-click sh/stored-search-criteria } "Search"] ]]])
+     [:button.btn.search {:style {:color "white" :background-color "#2A98EF"}:on-click #(stored-search-criteria idx)} "Search"] ]]])
 
 (defn search-history []
+  ^{:key (gensym)}
   (r/with-let [expanded? (r/atom false)]
               [:div.col-md-12
                (if (true? @expanded?)
-                 (map search-event  @!search-history)
-                 (map search-event (take 4 @!search-history)))
+                 (map-indexed search-event  @!search-history)
+                 (map-indexed search-event (take 4 @!search-history)))
                (if (> (count @!search-history) 4)
                  [:div.toggle-data
                   (if (true? @expanded?)

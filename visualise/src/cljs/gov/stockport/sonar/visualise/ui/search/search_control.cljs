@@ -6,6 +6,12 @@
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
             ))
 
+
+(defn- change-search-criteria[]
+  (scs/add-search-criteria!)
+  (add-search-history!)
+  )
+
 (defn nugget [{:keys [query-type search-term]}]
   [:div.input-group.nugget.mr-2
    [:span.input-group-addon.name (name query-type)]
@@ -33,10 +39,10 @@
        [:input.form-control {:value       (scs/search-term)
                              :placeholder (get-in qcs/query-types [(scs/selected-control) :placeholder])
                              :on-change   #(scs/set-search-term! (-> % .-target .-value))
-                             :on-key-up   #(when (= 13 (-> % .-keyCode)) (do(scs/add-search-criteria!)(add-search-history!)))}]
+                             :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]
        [:span.input-group-btn
         [:button.btn.btn-success.mr-2
-         {:on-click (fn []((scs/add-search-criteria!)(add-search-history!)))}
+         {:on-click change-search-criteria}
          [:i.fa.fa-search]]]]
       `[:span.py-1
         {:style {:display   :inline-flex

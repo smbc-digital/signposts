@@ -64,10 +64,6 @@
                                (not (= query-type-to-remove query-type))) search-criteria)))))
 
 
-(defn stored-search-criteria[]
-  (assoc! :criteria !search-control-state (:first 1 @!search-history))
-  )
-
 (defn search-criteria []
   (:criteria @!search-control-state))
 

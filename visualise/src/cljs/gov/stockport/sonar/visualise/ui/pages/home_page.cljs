@@ -23,12 +23,9 @@
     [:div.col-9
      [tr/results-tab !data]]]])
 
-
-
-
 (defn home-page []
   [:div
-   [:span {:style {:display "none"}} (js/setInterval refresh-status! 120000)]
+   [:span {:style {:display "none"}} (js/setInterval refresh-status! 100000)]
    [busy/overlay]
     [:div.container-fluid
     {:style {:background-color "#1c3645" :color :white}}

@@ -336,7 +336,7 @@ div.recent-searches {
 }
 
 div.recent-searches h4 {
-    color: #292b2c;
+    color: #152934;
 }
 
 div.search-event {
@@ -344,14 +344,22 @@ div.search-event {
    padding: 10px 10px 10px 10px;
    float: left;
    margin-bottom:  25px;
-   box-shadow: 5px 5px 10px #ccc;
+   margin-left:0px;
+   box-shadow: 10px 10px 10px #dbdcdd;
 }
+
 
 div.search-event-item{
     border: solid 1px #ccc;
     border-radius: 3px;
-    box-shadow: inset 1px 1px 1px;
     margin-left: 10px;
+    padding:5px 1px 0px 8px;
+
+}
+
+
+div.search-event div:first-child {
+  padding-left:10px;
 }
 
 div.search-event-item > label{
@@ -365,11 +373,12 @@ div.search-event-item > label{
 
 div.search-event-item  input {
    display: inline-block;
-   font-size: 15px;
+   font-size: 16px;
    border: none;
-   line-height:1.0;
+   line-height:1.1;
    width: 90%;
    overflow: hidden;
+   font-weight:400;
 }
 
 div.recent-updates{
@@ -378,11 +387,11 @@ div.recent-updates{
     margin-top: 50px;
     padding-top: 50px;
     padding-bottom: 50px;
-    color: #111''
+    color: #111;
 }
 
 div.recent-updates h4 {
-   color: #292b2c;
+   color: #152934;
 }
 
 div.recent-update{
@@ -396,7 +405,7 @@ div.recent-update{
 
 
  div.event-source-header{
-    background-color: #292b2c;
+    background-color: #152934;
     width: 100%;
     padding: 20px 0 20px 0;
 }
@@ -415,7 +424,7 @@ div.event-source-body{
 }
 
 div.event-source-body h6{
-  color: #292b2c;
+  color: #152934;
   font-size: 20px;
   margin-bottom: 2px;
   font-weight: 400;

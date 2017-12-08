@@ -11,6 +11,7 @@
              :keywords?       true}))
 
 (defn search [query query-results-handler]
+  (js/alert (pr-str query))
   (ajax-post "/query"
              {:body            query
               :handler         query-results-handler
