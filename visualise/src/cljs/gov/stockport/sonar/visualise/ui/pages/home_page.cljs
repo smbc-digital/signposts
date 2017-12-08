@@ -25,7 +25,7 @@
 
 (defn home-page []
   [:div
-   [:span {:style {:display "none"}} (js/setInterval refresh-status! 100000)]
+   [:span {:style {:display "none"}} (js/setInterval refresh-status! 60000)]
    [busy/overlay]
     [:div.container-fluid
     {:style {:background-color "#1c3645" :color :white}}
