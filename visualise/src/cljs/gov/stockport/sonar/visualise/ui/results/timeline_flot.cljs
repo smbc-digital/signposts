@@ -19,7 +19,7 @@
                      :labelMargin     10
                      :hoverable       true
                      :clickable       true
-                     :backgroundColor {:colors ["#f4f4f4" "#f4f4f4"]}
+                     :backgroundColor {:colors ["#ffffff" "#ffffff"]}
                      :margin          {:top    0
                                        :bottom 10
                                        :left   0
@@ -48,10 +48,11 @@
   [:div.graph
    [:div.row.mt-2 {:style {:margin-bottom "-20px"}}
     [:div.column.showing.col.ml-2
-     "viewing "
-     [:strong.from ""]
+     [:div {:style {:font-weight "600" :font-size "1.2em"}}
+     "Viewing "
+     [:span.from ""]
      " to "
-     [:strong.to ""]]]
+     [:span.to ""]]]]
 
    [:div.flot-timeline-container
     [alternative-graph-controls]

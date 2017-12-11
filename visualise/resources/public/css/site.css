@@ -308,9 +308,6 @@ div.login-form .input-group-addon {
     border-right:none;
    }
 
-
-
-
  div.login-form input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #aaa;
   font-size:0.9em;

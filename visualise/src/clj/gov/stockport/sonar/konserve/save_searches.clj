@@ -10,15 +10,16 @@
 (def stored-query {})
 
 (defn store-query[query username]
-    (assoc stored-query :query query)
-    (assoc stored-query :username name)
-    (assoc stored-query :time time/now)
-    (go (k/assoc-in :stored-query store stored-query)))
+    (-> store-query
+        (assoc  :query query)
+        (assoc  :username name)
+        (assoc  :time time/now))
+    (go (k/assoc-in :stored-query store )))
 
 
 (defn get-previous-query[user-name]
   (let [results (go (k/get-in store :username))]
-    (take 5 (sort-by #(:time %) results))))
+    (take 10 (sort-by #(:time %) results))))
 
 
 
