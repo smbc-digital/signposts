@@ -9,11 +9,12 @@
 
 (defn welcome-message []
   (refresh-status!)
-  ^{:key (gensym)}
+  (fn[]
+    ^{:key (gensym)}
   [:div {:id "welcome-message"}
      [:div.col-md-12.recent-searches
       [:div.container
-      [:h4  "RECENT SEARCHES" "  "
+      [:h4 {:style {:margin-left "11px"}} "RECENT SEARCHES" "  "
        [:span  {:style {:font-size "15px" :text-decoration "underline" :margin-left "30px"}}
                 [:a {:on-click #(clear-all-searches!)}  " Clear all searches"]]]
        [:div
@@ -22,8 +23,8 @@
          ]]]]
      [:div.col-md-12.recent-updates
       [:div.container
-      [:h4 "RECENT UPDATES"]
+      [:h4 {:style {:margin-left "11px"}}"RECENT UPDATES"]
        `[:div
          [:div.row.col-12
           (~@(map-indexed recent-update (take 4 (reverse(sort-by :last-updated  @!status)))))]
-        ]]]])
+        ]]]]))

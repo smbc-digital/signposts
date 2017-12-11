@@ -40,10 +40,10 @@
   (load-signposting-configuration)
   )
 
+
+
 (defn refresh-status! []
   (GET "/status" {:response-format :json
                   :keywords?       true
-                  :handler         (fn [response]
-                                     (reset! !status response))
-                  :error-handler error-handler
-                  }))
+                  :handler        (fn [response](reset! !status response))
+                  :error-handler error-handler }))

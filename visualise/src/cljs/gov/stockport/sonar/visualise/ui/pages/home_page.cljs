@@ -23,6 +23,7 @@
     [:div.col-9
      [tr/results-tab !data]]]])
 
+;
 (defn home-page []
   [:div
    [:span {:style {:display "none"}} (js/setInterval refresh-status! 60000)]

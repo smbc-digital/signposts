@@ -325,7 +325,9 @@ div.login-form .input-group-addon {
 }
 
 div.login-form .btn-primary {
-    background-color: #0275d8 }
+    background-color: #0275d8;
+
+     }
 
 div.recent-searches {
       z-index: 1;
@@ -353,8 +355,8 @@ div.search-event-item{
     border: solid 1px #ccc;
     border-radius: 3px;
     margin-left: 10px;
-    padding:5px 1px 0px 8px;
-
+    padding:2px 1px 0px 8px;
+    height:40px;
 }
 
 
@@ -375,7 +377,7 @@ div.search-event-item  input {
    display: inline-block;
    font-size: 16px;
    border: none;
-   line-height:1.1;
+   line-height:1;
    width: 90%;
    overflow: hidden;
    font-weight:400;
