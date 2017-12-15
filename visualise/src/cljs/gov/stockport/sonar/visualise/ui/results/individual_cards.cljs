@@ -28,7 +28,7 @@
                     (when (not highlighted?) " blur")
                     (when has-selected-event? " has-selected-event"))}
        [:div.row.no-gutters.align-items-center.upper
-        [:div.column.col-1.left.pt-2
+        [:div.column.col-3.left.px-2.pt-2
          [:center
           (if (or highlighted? highlighting-allowed?)
             [:i.fa
@@ -36,42 +36,46 @@
               :class    (displayed-icon highlighted?)
               :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
               :on-click #(swap! !data people/toggle-highlight-person pkey)}]
-            [:i.fa.fa-square {:style {:filter "opacity(0.1)"}}])]
-         ]
-
-        [:div.column.col-10.px-2.pt-2.text-truncate
-         (str name (age dob))]
-
-        [:div.column.col-1.px-2.pt-2
-         [:i.fa.fa-thumb-tack
-          {:style    {:color (if locked? :red :green)}
-           :class    (if locked? "" "fa-rotate-90")
+            [:i.fa.fa-square {:style {:filter "opacity(0.1)"}}])]]
+        [:div.column.col-7.px-2.pt-2.text-truncate {:style {:font=size "1.1em"}}
+         (str name)]
+        [:div.column.col-2.px-2.pt-2
+         [:i.fa
+          {:style  {
+                    :color (if locked? "#00cc00" "#1C3645")
+                    :font-size "1.1em"
+                    :padding-right "10px"}
+           :class    "fa-lock"
            :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
 
        [:div.row.no-gutters.lower
-        [:div.column.col-1.left]
-        [:div.column.col-11.px-2.pb-2
+        [:div.column.col-3.left]
+        [:div.column.col-9.px-2.pb-2
          [:div
-          [:i.fa.fa-calendar] " " (date-of-birth pkey)]
+           [:strong "Date of birth"] [:br ]
+           (date-of-birth pkey)]
          (let [areas (str/join ", " (sort areas))]
            [:div
-            [:i.fa.fa-home] " " (if (empty? areas) "no locations" areas)])]]])))
+            [:strong "Address on record"] [:br ]
+            (if (empty? areas) "no locations" areas)])]]])))
 
 (defn cards-render [!data]
   (fn []
     (when (not-empty (:people @!data))
       [:div.cards
-       [:p "Select up to " [:b "6 individuals"] " to highlight their events on the graph"]
-       [:p
+       [:p "You can select up to " [:b "6 individuals"] " to highlight their events on the graph"]
+        [:div.select=cards {:style {:width "100%" :padding "5px 2px 2px 3px"}}
+        [:span.reset-cards
         [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/reset-selection)}
-         [:span {:style {:font-family [:arial :sans-serif]}} " Reset Selection"
-          ]]
+         [:span {:style {:font-family [:arial :sans-serif] :font-weight "530"}} " Reset selection"
+          ]]]
 
+       [:span.reset-cards
         [:i.fa.fa-arrows-v.ml-2
          {:id "sort-cards" :on-click #(swap! !data people/toggle-sort-by)}
-         [:span {:style {:font-family [:arial :sans-serif]}}
-          (if (people/sort-by-relevance @!data) " Sort By A to Z" " Sort by Relevance")
-          ]]]
+         [:span {:style {:font-family [:arial :sans-serif] :font-weight "530"}}
+          (if (people/sort-by-relevance @!data) " Sort by A - Z" " Sort by relevance")
+          ]]]]
        [:div.fixed-height (map (card !data) (people/sort-as @!data))]])))
 
 (defonce !current (atom nil))

@@ -24,7 +24,7 @@
   (scs/init! query-callback)
   (fn []
     [:div.container-fluid.py-1
-     {:style {:background-color "#fff" :box-shadow "0px 10px 15px #999" :border-bottom "1px solid black" :z-index "100"}}
+     {:style {:background-color "#fff" :box-shadow "0px 10px 15px #999" :border-bottom "1px solid black" :z-index "1000" :position "fixed" :width "100%" :height "50px" :top "50px"}}
      [:div.form-inline
       [:select.custom-select.form-control.mr-2
        {:value     (scs/selected-control)

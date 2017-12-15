@@ -16,11 +16,11 @@
 
 
 (defn results [!data]
-  [:div.container-fluid
+  [:div.container-fluid {:style{:position "relative" :margin-top "150px" :background-color "#F0F4F7"}}
    [:div.row.no-gutters
-    [:div.col-3
+    [:div.col-2
      [ic/cards !data]]
-    [:div.col-9
+    [:div.col-10 {:style {:background-color "white"}}
      [tr/results-tab !data]]]])
 
 ;
@@ -29,7 +29,7 @@
    [:span {:style {:display "none"}} (js/setInterval refresh-status! 60000)]
    [busy/overlay]
     [:div.container-fluid
-    {:style {:background-color "#1c3645" :color :white}}
+    {:style {:background-color "#1c3645" :color :white :position "fixed" :top "0" :height "50px" :z-index "1000" :width "100%"}}
     [:div.row.align-items-center.py-1
      [:div.column.col-1
       [:div.row.justify-content-center
@@ -43,7 +43,8 @@
 
    (when (not (nil? (:total @!data)))
      [:div.container-fluid
-      {:style {:background-color "#1d2932" :padding-top "20px" :padding-bottom "2px"}}
+      {:style {:background-color "#1c3645" :padding-top "10px" :padding-bottom "2px" :position "fixed"
+              :width "100%" :top "100px" :z-index "1000" :height "40px" :box-shadow "0px 10px 10px #dde" }}
       [:h6.text-white.pb-1 (people/results-summary @!data)]])
 
    (if (not-empty (:people @!data))

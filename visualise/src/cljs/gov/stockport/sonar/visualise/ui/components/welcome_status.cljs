@@ -11,7 +11,7 @@
   (refresh-status!)
   (fn[]
     ^{:key (gensym)}
-  [:div {:id "welcome-message"}
+  [:div {:id "welcome-message" :style {:position "relative" :margin-top "100px"}}
      [:div.col-md-12.recent-searches
       [:div.container
       [:h4 {:style {:margin-left "11px"}} "RECENT SEARCHES" "  "

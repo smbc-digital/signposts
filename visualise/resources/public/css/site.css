@@ -66,7 +66,10 @@ div.busy {
   overflow-y: scroll; }
 
 div.sp-individual {
-  background-color: #f3f7fa; }
+  background-color: white;
+  }
+
+
   div.sp-individual.red div.upper > .left,
   div.sp-individual.red div.lower > .left {
     border-left: 5px solid #f36624;
@@ -437,3 +440,15 @@ div.event-source-body p{
   font-weight: 400;
   text-align: center;
 }
+
+span.reset-cards{
+ display: inline-block;
+  margin: 5px;
+  padding: 5px 2px 5px 2px;
+  border: solid 1px #ccc;
+  box-shadow: 2px 2px 2px #ccc;
+  width: 140px;
+  border-radius: 3px;
+  background-color: white;
+  font-size: 0.9em;
+  color: #1E3545 }

@@ -31,7 +31,8 @@
                      :cursor      :move}
             :lines  {:show false}
             :points {:radius 8}
-            :legend {:show false}}))
+            :legend {:show false}
+            }))
 
 (defn fmt [timestamp]
   (if timestamp
