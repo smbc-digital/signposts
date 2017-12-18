@@ -58,7 +58,7 @@
                   (map-indexed
                     (fn [seriesIdx [_ {:keys [color highlighted? data]}]]
                       {:points (-> {:show highlighted?}
-                                   (merge (when highlighted? {:fill 0.8 :fillColor false})))
+                                   (merge (when highlighted? {:fill 0.4 :fillColor false})))
                        :color  (get colour-map (or color :black))
                        :data   (map-indexed
                                  (fn [dataIdx {:keys [timestamp] :as event}]

@@ -5,7 +5,8 @@
             [cljs-time.format :as f]
             [gov.stockport.sonar.visualise.util.fmt-help :refer [address-summary date-of-birth]]
             [reagent.core :as reagent]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            ))
 
 (def age
   (fn [dob]
@@ -24,33 +25,28 @@
     (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? locked? areas]}]]
       ^{:key (gensym)}
       [:div.mb-2.sp-individual
-       {:class (str (and color (cljs.core/name color))
+       {
+        :title   (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
+        :class (str (and color (cljs.core/name color))
                     (when (not highlighted?) " blur")
                     (when has-selected-event? " has-selected-event"))}
        [:div.row.no-gutters.align-items-center.upper
-        [:div.column.col-3.left.px-2.pt-2
-         [:center
-          (if (or highlighted? highlighting-allowed?)
-            [:i.fa
-             {:style    {:color :white}
-              :class    (displayed-icon highlighted?)
-              :title    (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
-              :on-click #(swap! !data people/toggle-highlight-person pkey)}]
-            [:i.fa.fa-square {:style {:filter "opacity(0.1)"}}])]]
-        [:div.column.col-7.px-2.pt-2.text-truncate {:style {:font=size "1.1em"}}
+        [:div.column.col-2.left.px-2.pt-2 {:on-click #(swap! !data people/toggle-highlight-person pkey) }   [:i.fa " "]]
+        [:div.column.col-8.px-2.pt-2.text-truncate {:style {:font=size "1.1em"}:on-click #(swap! !data people/toggle-highlight-person pkey)}
          (str name)]
         [:div.column.col-2.px-2.pt-2
          [:i.fa
           {:style  {
                     :color (if locked? "#00cc00" "#1C3645")
                     :font-size "1.1em"
-                    :padding-right "10px"}
+                    :padding-left "15px"
+                    :padding-right "5px"}
            :class    "fa-lock"
            :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
 
        [:div.row.no-gutters.lower
-        [:div.column.col-3.left]
-        [:div.column.col-9.px-2.pb-2
+        [:div.column.col-2.left {:on-click #(swap! !data people/toggle-highlight-person pkey)}]
+        [:div.column.col-10.px-2.pb-2{:on-click #(swap! !data people/toggle-highlight-person pkey)}
          [:div
            [:strong "Date of birth"] [:br ]
            (date-of-birth pkey)]

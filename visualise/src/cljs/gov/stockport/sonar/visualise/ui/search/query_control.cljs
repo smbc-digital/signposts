@@ -20,7 +20,6 @@
 (defn query-control[]
     [:div.query-control
       [search-options]
-
      ]
 
   )
