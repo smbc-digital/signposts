@@ -39,8 +39,8 @@
           {:style  {
                     :color (if locked? "#00cc00" "#1C3645")
                     :font-size "1.1em"
-                    :padding-left "15px"
-                    :padding-right "5px"}
+                    :padding-left "10px"
+                    :padding-right "12px"}
            :class    "fa-lock"
            :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
 
