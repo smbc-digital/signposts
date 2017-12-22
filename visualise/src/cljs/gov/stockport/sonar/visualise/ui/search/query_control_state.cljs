@@ -7,7 +7,7 @@
                                   :field-type  :wildcard
                                   :description "Name"
                                   :placeholder "what name?"
-                                  :control sc/name
+                                  :control sc/full-name
                                   }
                   :address       {:display-order        2
                                   :field-name  :address

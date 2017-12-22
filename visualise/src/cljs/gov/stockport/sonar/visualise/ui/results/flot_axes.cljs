@@ -3,6 +3,7 @@
             [gov.stockport.sonar.visualise.data.colours :refer [colour-map]]
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.util.blur :as b]
+            [clojure.string :as s]
             [gov.stockport.sonar.visualise.util.stack :as p]))
 
 (def fortnight-in-millis (* 1000 60 60 24 14))
@@ -13,11 +14,14 @@
    :minTickSize [1 "day"]
    :min         from-date
    :max         to-date
+   :color      "#1C3645"
+   :tickColor "#ccc"
+   :font-weight "bold"
    :zoomRange   [fortnight-in-millis nil]
    :panRange    [from-date to-date]})
 
 (defn label-map [data]
-  (zipmap (reverse (sort (into #{} (map :event-type (people/all-events data))))) (rest (range))))
+  (zipmap (reverse (sort (into #{} (map :event-type  (people/all-events data))))) (rest (range))))
 
 (defn y-axis [data]
   (let [labels (label-map data)]
@@ -25,9 +29,11 @@
      :max        (+ 2 (count labels))
      :zoomRange  false
      :panRange   false
+     :color      "#1C3645"
+     :tickColor "#ccc"
      :position   :right
-     :ticks      (map (fn [[k v]] [v (name k)]) labels)
-     :labelWidth 50}))
+     :ticks      (map (fn [[k v]] [v (s/lower-case(name k))]) labels)
+     :labelWidth 180}))
 
 (defn collision-key [{:keys [:timestamp :event-type]}]
   {:year       (t/year timestamp)

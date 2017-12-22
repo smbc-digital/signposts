@@ -87,7 +87,7 @@
          [:h3  (title-case(:name person-key))]
              [:p [:strong(count (:data events))] " contact data listed matches your search criteria"]]
             [list-events events]]]))
-       (filter (fn  [[person-key  events]] (:highlighted? events)) people)))
+       (sort-by (fn [[person-key]](:name person-key)) (filter (fn  [[person-key  events]] (:highlighted? events)) people))))
 
 (defn contact-history [!data]
   (let [people (:people @!data)]

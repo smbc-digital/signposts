@@ -35,7 +35,7 @@
                  [camel-snake-kebab "0.4.0"]
                  [alandipert/storage-atom "1.2.4"]
                  [hodgepodge "0.1.3"]
-                 [prismatic/dommy "1.1.0"]
+                 [reagent-forms "0.5.32"]
                  ]
 
   :plugins [[lein-ring "0.11.0"]

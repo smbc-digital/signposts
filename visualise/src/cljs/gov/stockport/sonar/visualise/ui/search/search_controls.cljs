@@ -1,18 +1,20 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-controls
-  (:require [reagent.core :as r]))
+  (:require [reagent.core :as r]
+            [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]))
 
-(defn name[]
+(defn full-name[]
   [:label "Name"
-   [:input
-    {:type "text"
-     :pattern "^[a-zA-Z]{1,2}"}
+    [:input.form-control
+     {:value (scs/search-term)
+     :type    "text"
+     :pattern "^[a-zA-Z]{1,2}"
      :name "name"
-     :placeholder "what postcode?"]])
+     :placeholder "what postcode?"}]])
 
 (defn address[]
   [:label "Address"
-   [:input
-    {:type type
+   [:input.form-control
+    {:type :text
      :pattern "^[a-zA-Z]{1,2}"
      :name "address"
      :id "address"
@@ -20,7 +22,7 @@
 
 (defn postcode[]
   [:label "Postcode"
-   [:input
+   [:input.form-control
     {:type "text"
      :pattern "^[a-zA-Z]{1,2}[0-9]{1,2}"
      :name "postcode"
@@ -29,14 +31,14 @@
 
 (defn dob[]
   [:label "Date of birth"
-   [:input
+   [:input.form-control
     {:type "date"
      :name "dob"
      :id "dob"}]])
 
 (defn age-less-than[]
   [:label "Aged up to"
-   [:input
+   [:input.form-control
     {:type "number"
      :min "1" :max "150"
      :placeholder "maximum age in years"
@@ -45,7 +47,7 @@
 
 (defn age-more-than[]
   [:label "Aged Over"
-   [:input
+   [:input.form-control
     {:type "number"
      :min "0"
      :max "100"
@@ -55,7 +57,7 @@
 
 (defn all-fields[]
   [:label "All fields"
-   [:input
+   [:input.form-control
     {:type "text"
      :name "all-fields"
      :placeholder "general search"
@@ -63,7 +65,7 @@
 
 (defn event-source[]
   [:label "Event Source"
-   [:input
+   [:input.form-control
     {:type "text"
      :name "event-type"
      :id "event-type"
@@ -71,7 +73,7 @@
 
 (defn event-type[]
   [:label "Event Type"
-   [:input
+   [:input.form-control
     {:type "text"
      :name "event-type"
      :id "event-type"

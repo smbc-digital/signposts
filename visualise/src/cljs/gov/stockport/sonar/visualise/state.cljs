@@ -10,6 +10,7 @@
 (defonce !login-error (r/atom 0))
 (defonce !signposting-config (atom {}))
 (defonce !search-history (r/atom ()))
+(defonce !search-options (r/atom []))
 
 (defn- load-signposting-configuration []
   (GET "/signposting-config" {:response-format :json
@@ -37,6 +38,7 @@
   (reset! !status {})
   (reset! !login-error 0)
   (reset! !search-control-state {})
+
   (load-signposting-configuration)
   )
 

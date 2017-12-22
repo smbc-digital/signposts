@@ -11,6 +11,7 @@
             [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.ui.components.welcome-status :refer [welcome-message]]
+            [gov.stockport.sonar.visualise.ui.search.query-control :as qc]
             [gov.stockport.sonar.visualise.query.client :refer [status null-handler]]))
 
 
@@ -25,6 +26,7 @@
 
 ;
 (defn home-page []
+
   [:div
    [:span {:style {:display "none"}} (js/setInterval refresh-status! 60000)]
    [busy/overlay]
@@ -38,7 +40,6 @@
       [:span.h2 "SIGNPOSTS"]]
      [:div.column.col-1
       [:button.btn.btn-primary {:on-click ac/logout} "Logout"]]]]
-
    [nsc/new-search-control (h/default-handler !data)]
 
    (when (not (nil? (:total @!data)))

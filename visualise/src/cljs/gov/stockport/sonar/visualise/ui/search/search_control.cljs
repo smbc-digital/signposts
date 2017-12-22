@@ -13,11 +13,29 @@
   )
 
 (defn nugget [{:keys [query-type search-term]}]
-  [:div.input-group.nugget.mr-2
-   [:span.input-group-addon.name (name query-type)]
-   [:span.input-group-addon.val search-term
+  ^{:key (gensym)}
+  [:div.col.col-md-6.search-event-item
+   [:label  {:style {:width "100%"}} (name query-type)
+    [:input
+     {:type "text"
+      :value search-term
+      :name (name query-type)
+      :id (name query-type)
+      :size "18"
+      :read-only "true"
+      :width "90px"
+      }]
     [:i.fa.fa-times.ml-2
-     {:on-click #(scs/remove-search-criteria! query-type)}]]])
+     {:style {
+              :float "right"
+              :display "inline-block"
+              }
+      :on-click #(scs/remove-search-criteria! query-type)}]
+    ]
+
+    ]
+
+  )
 
 
 (defn search-criteria-control [query-callback]
@@ -26,6 +44,10 @@
     [:div.container-fluid.py-1
      {:style {:background-color "#fff" :box-shadow "0px 10px 15px #999" :border-bottom "1px solid black" :z-index "1000" :position "fixed" :width "100%" :height "50px" :top "50px"}}
      [:div.form-inline
+      `[:span.py-1
+        {:style {:display   :inline-flex
+                 :flex-wrap :wrap}}
+        ~@(map nugget (scs/search-criteria))]
       [:select.custom-select.form-control.mr-2
        {:value     (scs/selected-control)
         :autoFocus "autofocus"
@@ -44,10 +66,7 @@
         [:button.btn.btn-success.mr-2
          {:on-click change-search-criteria}
          [:i.fa.fa-search]]]]
-      `[:span.py-1
-        {:style {:display   :inline-flex
-                 :flex-wrap :wrap}}
-        ~@(map nugget (scs/search-criteria))]]]))
+    ]]))
 
 (defn query-wrapper [handler]
   (fn [terms]
