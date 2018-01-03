@@ -45,7 +45,7 @@
    (when (not (nil? (:total @!data)))
      [:div.container-fluid
       {:style {:background-color "#1c3645" :padding-top "10px" :padding-bottom "2px" :position "fixed"
-              :width "100%" :top "100px" :z-index "1000" :height "40px" :box-shadow "0px 10px 10px #dde" }}
+              :width "100%" :top "105px" :z-index "1000" :height "40px" :box-shadow "0px 10px 10px #dde" }}
       [:h6.text-white.pb-1 (people/results-summary @!data)]])
 
    (if (not-empty (:people @!data))

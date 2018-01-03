@@ -12,7 +12,8 @@
                                  :criteria           []}))
 
 (defn set-selected-field! [field]
-  (swap! !search-control-state assoc :selected-control field))
+  (if (not= field "")
+  (swap! !search-control-state assoc :selected-control field)))
 
 (defn selected-control []
   (:selected-control @!search-control-state))
