@@ -58,12 +58,12 @@
         :value     (scs/selected-control)
         :autoFocus "autofocus"
         :on-change #(scs/set-selected-field! (keyword (-> % .-target .-value)))}
-       [:option {:value "":style {:color "#ccc"} :selected 1} "Select a category" ]
        (map
          (fn [{:keys [target description]}]
            ^{:key target}
            [:option {:value target} description])
          (sort-by :display-order qcs/options))]
+
       [:div.input-group
        [:input.form-control {
                              :margin-left "10px"
