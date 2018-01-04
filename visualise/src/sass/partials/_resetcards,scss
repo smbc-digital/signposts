@@ -1,0 +1,11 @@
+span.reset-cards{
+ display: inline-block;
+  margin: 5px;
+  padding: 5px 2px 5px 2px;
+  border: solid 1px #ccc;
+  box-shadow: 2px 2px 2px #ccc;
+  width: 140px;
+  border-radius: 3px;
+  background-color: white;
+  font-size: 0.9em;
+  color: #1E3545 }

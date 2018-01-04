@@ -26,9 +26,9 @@
 
 ;
 (defn home-page []
-
+  (js/setInterval refresh-status! 60000)
+  (fn []
   [:div
-   [:span {:style {:display "none"}} (js/setInterval refresh-status! 60000)]
    [busy/overlay]
     [:div.container-fluid
     {:style {:background-color "#1c3645" :color :white :position "fixed" :top "0" :height "50px" :z-index "1000" :width "100%"}}
@@ -50,4 +50,4 @@
 
    (if (not-empty (:people @!data))
      [results !data]
-     [welcome-message])])
+     [welcome-message])]))

@@ -1,8 +1,13 @@
 @import "mixins";
 @import "colors";
+@import "contacts";
+@import "login";
+@import "recentsearches";
 @import "signposting";
 @import "individuals";
 @import "timeline";
+@import url(//fonts.googleapis.com/css?family=Open+Sans);
+
 
 body {
   .btn-primary {
@@ -18,6 +23,8 @@ body {
   -ms-user-select: text;
   -o-user-select: text;
   user-select: text;
+
+  font-family:Open Sans, sans-serif;
 }
 
 .nugget {

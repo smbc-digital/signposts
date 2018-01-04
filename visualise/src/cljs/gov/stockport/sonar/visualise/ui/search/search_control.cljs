@@ -5,7 +5,7 @@
             [gov.stockport.sonar.visualise.query.client :refer [search]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
             [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
-            ))
+            [clojure.string :as str]))
 
 
 (defn- change-search-criteria[]
@@ -26,10 +26,11 @@
       :read-only "true"
       :width "90px"
       }]
-    [:i.fa.fa-times.ml-2
+    [:i.fa.fa-times.ml-2.delete-item
      {:style {
               :float "right"
               :display "inline-block"
+              :font-size "1.2em"
               }
       :on-click #(scs/remove-search-criteria! query-type)}]
     ]
@@ -61,7 +62,7 @@
        (map
          (fn [{:keys [target description]}]
            ^{:key target}
-           [:option {:value target} description])
+           [:option {:value target} (str/upper-case description)])
          (sort-by :display-order qcs/options))]
 
       [:div.input-group

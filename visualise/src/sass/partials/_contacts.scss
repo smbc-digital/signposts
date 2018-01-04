@@ -1,0 +1,49 @@
+div.person-container{
+    box-shadow: 10px 10px 10px #ccc;
+    margin:  10px 0px 20px 0px;
+    border-top: 1px solid #ccc;
+    border-radius: 5px;
+    padding-left:5px;
+
+    &.red{
+       border-top: 1px solid $base-red;
+       border-left: 5px solid $base-red;
+       background-color: $base-red-l;
+    }
+
+    &.yellow{
+        border-top: 1px solid $base-yellow;
+         border-left: 5px solid $base-yellow;
+         background-color: $base-yellow-l;
+         }
+
+    &.green{
+       border-top: 1px solid $base-green;
+       border-left: 5px solid $base-green ;
+       background-color: $base-green-l;
+    }
+
+    &.blue{
+        border-top: 1px solid $base-blue;
+        border-left: 5px solid $base-blue;
+        background-color: $base-blue-l;
+    }
+
+    &.aqua{
+      border-top: 1px solid $base-aqua;
+      border-left: 5px solid $base-aqua;
+      background-color: $base-aqua-l;
+    }
+
+    &.purple{
+        border-top: 1px solid $base-purple;
+        border-left: 5px solid $base-purple;
+        background-color: $base-purple-l;
+    }
+}
+
+
+div.person {
+   padding: 20px 0px 5px 0px;
+   background-color:white;
+}

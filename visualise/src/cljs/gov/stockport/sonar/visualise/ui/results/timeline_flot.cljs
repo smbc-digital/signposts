@@ -49,11 +49,11 @@
   [:div.graph
    [:div.row.mt-2 {:style {:margin-bottom "-20px"}}
     [:div.column.showing.col.ml-2
-     [:div {:style {:font-weight "600" :font-size "1.2em"}}
+     [:div {:style {:font-weight 400 :font-size "1.2em" :margin-bottom "15px"}}
      "Viewing "
-     [:span.from ""]
+     [:span.from {:style {:font-weight "bold"}} ""]
      " to "
-     [:span.to ""]]]]
+     [:span.to {:style {:font-weight "bold"}} ""]]]]
 
    [:div.flot-timeline-container
     [alternative-graph-controls]

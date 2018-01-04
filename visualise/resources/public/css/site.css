@@ -1,3 +1,5 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans);
+
 div.busy {
   z-index: 100;
   position: absolute;
@@ -166,6 +168,7 @@ div.sp-individual {
         color: green; }
 
 body {
+  font-family:Open Sans, sans-serif;
   -moz-user-select: text;
   -webkit-user-select: text;
   -ms-user-select: text;
@@ -265,6 +268,7 @@ div.event-details-contact{
     margin: 15px 0px 10px 0px;
     padding: 10px 0px 10px 0px;
     }
+
 div.events-list :last-of-type{
     border-bottom: none;
 }
@@ -452,3 +456,32 @@ span.reset-cards{
   background-color: white;
   font-size: 0.9em;
   color: #1E3545 }
+
+
+i.delete-item:hover{
+  color: red;
+}
+
+input.form-control::-moz-placeholder {
+ color : #aaa;
+ opacity: 1;
+ padding-left:0;
+ font-size: 1em;
+ margin-left:0;
+}
+
+input.form-control::-webkit-input-placeholder {
+ color : #ccc;
+ opacity: 1;
+ padding-left:0;
+ font-size: 1em;
+ margin-left:0;
+}
+
+input.form-control::-ms-input-placeholder {
+ color : #ccc;
+ opacity: 1;
+ padding-left:0;
+ font-size: 1em;
+ margin-left:0;
+}
