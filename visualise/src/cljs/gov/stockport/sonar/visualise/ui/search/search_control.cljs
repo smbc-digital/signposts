@@ -22,9 +22,8 @@
       :value search-term
       :name (name query-type)
       :id (name query-type)
-      :size "18"
+      :size "15"
       :read-only "true"
-      :width "90px"
       }]
     [:i.fa.fa-times.ml-2.delete-item
      {:style {
@@ -53,7 +52,7 @@
 
       (if (> (count (scs/search-criteria)) 0)
        [:i.fa.fa-plus-circle {:aria-hidden "true" :style {:color "#2A98EF" :font-size "1.5em":margin-left "10px"}}])
-           [:select.custom-select.form-control.mr-2
+       [:select.custom-select.form-control.mr-2
        {
         :style {:margin-left "10px"}
         :value     (scs/selected-control)
@@ -66,12 +65,19 @@
          (sort-by :display-order qcs/options))]
 
       [:div.input-group
-       [:input.form-control {
-                             :margin-left "10px"
-                             :value       (scs/search-term)
-                             :placeholder (get-in qcs/query-types [(scs/selected-control) :placeholder])
-                             :on-change   #(scs/set-search-term! (-> % .-target .-value))
-                             :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]
+       [:div.search-event-item
+        [:label  {:style {:width "100%"}}  (get-in qcs/query-types [(scs/selected-control) :placeholder])
+         [:input
+          {:type "text"
+           :value  (scs/search-term)
+           :name "search-term"
+           :id "search-term"
+           :size "15"
+           :on-change   #(scs/set-search-term! (-> % .-target .-value))
+           :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}
+         ]
+
+        ]]
        [:span.input-group-btn
         [:button.btn.btn-primary
          {:on-click change-search-criteria :style {:background-color "#2A98EF" :margin-left "10px"}}

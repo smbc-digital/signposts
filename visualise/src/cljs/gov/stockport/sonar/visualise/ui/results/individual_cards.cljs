@@ -59,17 +59,17 @@
   (fn []
     (when (not-empty (:people @!data))
       [:div.cards
-       [:p "You can select up to " [:b "6 individuals"] " to highlight their events on the graph"]
-        [:div.select=cards {:style {:width "100%" :padding "5px 2px 2px 3px"}}
+       [:p {:style {:padding "8px 2px 2px 3px"}} "You can select up to " [:b "6 individuals"] " to highlight their events on the graph"]
+        [:div.select=cards {:style {:width "100%" :padding "2px 2px 2px 3px"}}
         [:span.reset-cards
         [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/reset-selection)}
-         [:span {:style {:font-family [:arial :sans-serif] :font-weight "530"}} " Reset selection"
+         [:span {:style {:font-family ["open sans" :arial :sans-serif] :font-weight "530" :color "#1C3645"}} " Reset selection"
           ]]]
 
        [:span.reset-cards
         [:i.fa.fa-arrows-v.ml-2
          {:id "sort-cards" :on-click #(swap! !data people/toggle-sort-by)}
-         [:span {:style {:font-family [:arial :sans-serif] :font-weight "530"}}
+         [:span {:style {:font-family ["open sans" :arial :sans-serif] :font-weight "530" :color "#1C3645"}}
           (if (people/sort-by-relevance @!data) " Sort by A - Z" " Sort by relevance")
           ]]]]
        [:div.fixed-height (map (card !data) (people/sort-as @!data))]])))

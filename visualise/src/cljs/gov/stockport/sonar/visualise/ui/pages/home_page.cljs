@@ -30,7 +30,7 @@
   (fn []
   [:div
    [busy/overlay]
-    [:div.container-fluid
+    [:div.container-fluid.title
     {:style {:background-color "#1c3645" :color :white :position "fixed" :top "0" :height "50px" :z-index "1000" :width "100%"}}
     [:div.row.align-items-center.py-1
      [:div.column.col-1
@@ -43,7 +43,7 @@
    [nsc/new-search-control (h/default-handler !data)]
 
    (when (not (nil? (:total @!data)))
-     [:div.container-fluid
+     [:div.container-fluid.results-summary
       {:style {:background-color "#1c3645" :padding-top "10px" :padding-bottom "2px" :position "fixed"
               :width "100%" :top "105px" :z-index "1000" :height "40px" :box-shadow "0px 10px 10px #dde" }}
       [:h6.text-white.pb-1 (people/results-summary @!data)]])
