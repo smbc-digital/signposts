@@ -1,11 +1,17 @@
 @import "mixins";
 @import "colors";
 @import "contacts";
+@import "header";
 @import "login";
 @import "recentsearches";
+@import "recentupdates";
+@import "resetcards";
 @import "signposting";
 @import "individuals";
 @import "timeline";
+@import "updates";
+
+//import open sans font
 @import url(//fonts.googleapis.com/css?family=Open+Sans);
 
 
@@ -25,26 +31,6 @@ body {
   user-select: text;
 
   font-family:Open Sans, sans-serif;
-}
-
-.nugget {
-
-
-  .name {
-    background-color: $add-criteria;
-    color: white;
-  }
-  .val {
-    background-color: white;
-    display: inline;
-
-    .fa-times {
-
-      &:hover {
-        color: red;
-      }
-    }
-  }
 }
 
 

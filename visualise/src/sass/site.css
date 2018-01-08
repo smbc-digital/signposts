@@ -34,6 +34,26 @@ div.person {
   padding: 20px 0px 5px 0px;
   background-color: white; }
 
+.title {
+  background-color: #1c3645;
+  color: white;
+  position: fixed;
+  top: 0;
+  height: 50px;
+  z-index: 1000;
+  width: 100%; }
+
+.results-summary {
+  background-color: #1c3645;
+  padding-top: 10px;
+  padding-bottom: 2px;
+  position: fixed;
+  width: 100%;
+  top: 105px;
+  z-index: 1000;
+  height: 40px;
+  box-shadow: 0px 10px 10px #dde; }
+
 div.login {
   background-color: #1C3645;
   width: 100%;
@@ -123,6 +143,63 @@ div.search-event-item {
     width: 90%;
     overflow: hidden;
     font-weight: 400; }
+
+div.recent-updates {
+  border-radius: 5px;
+  background-color: #fff;
+  margin-top: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: #111; }
+  div.recent-updates h4 {
+    color: #152934; }
+
+div.recent-update {
+  background-color: #FFF;
+  border: solid 1px #999;
+  margin: 20px 10px 20px 10px;
+  padding: 0px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #ccc; }
+
+div.event-source-header {
+  background-color: #152934;
+  width: 100%;
+  padding: 20px 0 20px 0; }
+  div.event-source-header h5 {
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 10px 5px 10px 5px; }
+
+div.event-source-body {
+  padding-top: 40px;
+  padding-bottom: 40px; }
+  div.event-source-body h6 {
+    color: #152934;
+    font-size: 20px;
+    margin-bottom: 2px;
+    font-weight: 400;
+    text-align: center; }
+  div.event-source-body p {
+    margin: 3px 0 3px 0;
+    font-size: 20px;
+    color: #000;
+    font-weight: 400;
+    text-align: center; }
+
+span.reset-cards {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 2px 5px 2px;
+  border: solid 1px #ccc;
+  box-shadow: 2px 2px 2px #ccc;
+  width: 140px;
+  border-radius: 3px;
+  background-color: white;
+  font-size: 0.9em;
+  color: #1E3545; }
 
 div.busy {
   z-index: 100;
@@ -269,14 +346,5 @@ body {
     background-color: #366c8b; }
   body i.fa {
     cursor: pointer; }
-
-.nugget .name {
-  background-color: #366c8b;
-  color: white; }
-.nugget .val {
-  background-color: white;
-  display: inline; }
-  .nugget .val .fa-times:hover {
-    color: red; }
 
 /*# sourceMappingURL=site.css.map */

@@ -179,14 +179,6 @@ body {
   body i.fa {
     cursor: pointer; }
 
-.nugget .name {
-  background-color: #366c8b;
-  color: white; }
-.nugget .val {
-  background-color: white;
-  display: inline; }
-  .nugget .val .fa-times:hover {
-    color: red; }
 
 div.person-container{
     box-shadow: 10px 10px 10px #ccc;
