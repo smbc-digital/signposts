@@ -16,25 +16,7 @@ div.busy {
 
 }
 
-.selected-event {
-  width: 100%;
-  height: 100%;
-  color: #ffffff;
-  overflow: auto;
-  position: relative;
-}
 
-.event-details {
-  float: left;
-  border-radius: 5px;
-  height: 100%;
-  background-color: #1c3645;
-  .panel-heading {
-    background-color: #1c3645;
-    color: white;
-    border-bottom: 1px solid #c6d3e3;
-  }
-}
 
 .contact-panel {
   float: right;

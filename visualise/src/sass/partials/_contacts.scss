@@ -47,3 +47,29 @@ div.person {
    padding: 20px 0px 5px 0px;
    background-color:white;
 }
+
+div.events-header {
+   > h3 {
+     text-align: center;
+     color:  #152934;}
+    > p {
+     text-align: center;
+     color:  #152934;
+     }
+}
+
+div.toggle-data{
+    text-align:center;
+    color:#468cc8;
+
+    p{
+       font-size:0.9em;
+       font-weight: 600;
+       color:#468cc8;
+    }
+
+    i.fa{
+       font-size:2em;
+       color:#468cc8;
+    }
+}

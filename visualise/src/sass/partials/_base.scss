@@ -6,6 +6,7 @@
 @import "recentsearches";
 @import "recentupdates";
 @import "resetcards";
+@import "selectedevent";
 @import "signposting";
 @import "individuals";
 @import "timeline";
@@ -30,7 +31,7 @@ body {
   -o-user-select: text;
   user-select: text;
 
-  font-family:Open Sans, sans-serif;
+  font-family: Open Sans, sans-serif;
 }
 
 
