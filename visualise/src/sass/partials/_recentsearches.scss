@@ -2,15 +2,20 @@ div.recent-searches {
       z-index: 1;
       background-color: #eceeef;
       padding-top: 50px;
-      padding-bottom: 30px;
+      padding-bottom: 40px;
       color: #111;
 
-      h4 {
+      .container h4 {
           color: #152934;
+          margin-left: 11px;
+
+            a{
+             font-size: 15px;
+             text-decoration: underline;
+             margin-left: 30px;
+          }
       }
 }
-
-
 
 div.search-event {
    background-color: white;
@@ -22,6 +27,13 @@ div.search-event {
 
    div:first-child {
      padding-left:10px;
+   }
+
+   button {
+       color: white;
+       background-color: $bright-blue;
+       cursor: pointer;
+       height: 40px;
    }
 }
 

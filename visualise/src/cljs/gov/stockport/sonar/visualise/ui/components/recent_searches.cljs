@@ -26,7 +26,7 @@
      [:div.row (map nugget event)]]
     [:div.col.col-md-4
      {:style {:float "right" :text-align "right"}}
-     [:button.btn.search {:style {:color "white" :background-color "#2A98EF" :cursor "pointer" :height "40px"}:on-click #(stored-search-criteria idx)} "Search"] ]]])
+     [:button.btn.search {:on-click #(stored-search-criteria idx)} "Search"] ]]])
 
 (defn search-history []
   ^{:key (gensym)}

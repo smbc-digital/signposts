@@ -125,10 +125,15 @@ div.recent-searches {
   z-index: 1;
   background-color: #eceeef;
   padding-top: 50px;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
   color: #111; }
-  div.recent-searches h4 {
-    color: #152934; }
+  div.recent-searches .container h4 {
+    color: #152934;
+    margin-left: 11px; }
+    div.recent-searches .container h4 a {
+      font-size: 15px;
+      text-decoration: underline;
+      margin-left: 30px; }
 
 div.search-event {
   background-color: white;
@@ -139,6 +144,11 @@ div.search-event {
   box-shadow: 10px 10px 10px #dbdcdd; }
   div.search-event div:first-child {
     padding-left: 10px; }
+  div.search-event button {
+    color: white;
+    background-color: #0275d8;
+    cursor: pointer;
+    height: 40px; }
 
 div.search-event-item {
   border: solid 1px #ccc;
@@ -362,6 +372,10 @@ div.sp-individual {
         opacity: 0.6;
         cursor: pointer;
         color: green; }
+
+#welcome-message {
+  position: relative;
+  margin-top: 100px; }
 
 body {
   -moz-user-select: text;

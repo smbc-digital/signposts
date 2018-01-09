@@ -14,9 +14,9 @@
   [:div {:id "welcome-message" :style {:position "relative" :margin-top "100px"}}
      [:div.col-md-12.recent-searches
       [:div.container
-      [:h4 {:style {:margin-left "11px"}} "RECENT SEARCHES" "  "
+      [:h4  "RECENT SEARCHES" "  "
 
-       [:span  {:style {:font-size "15px" :text-decoration "underline" :margin-left "30px"}}
+       [:span
                 [:a {:on-click #(clear-all-searches!)}  " Clear all searches"]]]
        [:div
         [:div.row.col-12.recent-searches
