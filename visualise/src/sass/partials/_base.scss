@@ -34,4 +34,20 @@ body {
   font-family: Open Sans, sans-serif;
 }
 
+div.busy {
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0.75;
+  background-color: #1C3645;
+  }
+
+  div.busy .spinner {
+    color:#eee;
+    margin-top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
 

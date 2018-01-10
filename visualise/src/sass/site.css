@@ -262,13 +262,15 @@ div.busy {
   width: 100%;
   height: 100%;
   margin: 0;
-  opacity: 0.8;
-  background-color: gray; }
-  div.busy .spinner {
-    margin-top: 250px;
-    display: flex;
-    justify-content: center;
-    align-items: center; }
+  opacity: 0.75;
+  background-color: #1C3645; }
+
+div.busy .spinner {
+  color: #eee;
+  margin-top: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
 
 .contact-panel {
   float: right;
@@ -388,5 +390,21 @@ body {
     background-color: #366c8b; }
   body i.fa {
     cursor: pointer; }
+
+div.busy {
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0.75;
+  background-color: #1C3645; }
+
+div.busy .spinner {
+  color: #eee;
+  margin-top: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
 
 /*# sourceMappingURL=site.css.map */
