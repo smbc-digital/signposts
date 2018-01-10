@@ -37,15 +37,6 @@
 
 (defn new-query-control[]
      [:div.container-fluid.py-1
-     {:style
-      {:background-color "#fff"
-       :box-shadow "0px 10px 15px #999"
-       :border-bottom "1px solid black"
-       :z-index "1000"
-       :position "fixed"
-       :width "100%"
-       :height "50px"
-       :top "50px"}}
      [:div.form-inline.row
       [:div.input-group {:id "search-options"}
           (search-options 1)
@@ -53,10 +44,6 @@
       [:span.input-group-btn
          [:button.btn.btn-success.mr-2
           {:type :submit :id "search-button"
-           :style
-                 {:color "white"
-                   :background-color "#2A98EF"
-                   :cursor "pointer"
-                   :height "40px"}} "Search"]]]]])
+           } "Search"]]]]])
 
 

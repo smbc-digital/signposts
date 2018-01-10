@@ -49,7 +49,7 @@
   [:div.graph
    [:div.row.mt-2 {:style {:margin-bottom "-20px"}}
     [:div.column.showing.col.ml-2
-     [:div {:style {:font-weight 400 :font-size "1.2em" :margin-bottom "15px"}}
+     [:div {:style {:font-weight 400 :font-size "1.2em" :margin-bottom "15px" :margin-top "10px"}}
      "Viewing "
      [:span.from {:style {:font-weight "bold"}} ""]
      " to "
