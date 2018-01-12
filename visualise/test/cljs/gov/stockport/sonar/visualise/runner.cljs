@@ -16,6 +16,7 @@
             [gov.stockport.sonar.visualise.util.stack-tests]
             [gov.stockport.sonar.visualise.util.fmt-help-tests]
             [gov.stockport.sonar.visualise.ui.results.signposting-tests]
+            [gov.stockport.sonar.visualise.ui.search.search-history-tests]
             [gov.stockport.sonar.visualise.ui.search.search-control-state-tests]))
 
 ; run the tests from the command line with

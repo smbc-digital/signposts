@@ -16,7 +16,7 @@
 
 
 (defn query-from-search-control-state [search-history-item]
-                                 (map to-query-item search-history-item)
+     (map to-query-item search-history-item)
   )
 
 (defn stored-search-criteria[index]
