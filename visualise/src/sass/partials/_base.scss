@@ -1,16 +1,17 @@
 @import "mixins";
 @import "colors";
+@import "cards";
 @import "contacts";
 @import "header";
+@import "homepage";
 @import "login";
 @import "recentsearches";
 @import "recentupdates";
-@import "resetcards";
+@import "searchbar";
 @import "selectedevent";
 @import "signposting";
 @import "individuals";
 @import "timeline";
-@import "welcomemessage";
 
 //import open sans font
 @import url(//fonts.googleapis.com/css?family=Open+Sans);

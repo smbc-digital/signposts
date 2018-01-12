@@ -17,11 +17,11 @@
 
 
 (defn results [!data]
-  [:div.container-fluid {:style{:position "relative" :margin-top "150px" :background-color "#F0F4F7"}}
+  [:div.container-fluid {:id "results"}
    [:div.row.no-gutters
-    [:div.col-2
+    [:div.col-lg-2.col-sm-4
      [ic/cards !data]]
-    [:div.col-10 {:style {:background-color "white"}}
+    [:div.col-lg-10.col-sm-8.results-tab
      [tr/results-tab !data]]]])
 
 ;
@@ -32,12 +32,12 @@
    [busy/overlay]
     [:div.container-fluid.title
       [:div.row.align-items-center.py-1
-     [:div.column.col-1
+     [:div.column.col-lg-1.col-md-2.col-sm-2.col-xs-2
       [:div.row.justify-content-center
        [:i.fa.fa-map-signs.fa-2x]]]
-     [:div.column.col-10
+     [:div.column.col-lg-10.col-md-7.col-sm-8.col-xs-6
       [:span.h2 "SIGNPOSTS"]]
-     [:div.column.col-1
+     [:div.column.col-lg-1.col-md-3.col-sm-2.col-xs-4
       [:button.btn.btn-primary {:on-click ac/logout} "Logout"]]]]
    [nsc/new-search-control (h/default-handler !data)]
 

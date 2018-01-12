@@ -26,12 +26,7 @@
       :read-only "true"
       }]
     [:i.fa.fa-times.ml-2.delete-item
-     {:style {
-              :float "right"
-              :display "inline-block"
-              :font-size "1.2em"
-              }
-      :on-click #(scs/remove-search-criteria! query-type)}]
+     {:on-click #(scs/remove-search-criteria! query-type)}]
     ]
 
     ]
@@ -50,11 +45,12 @@
                  :flex-wrap :wrap}}
         ~@(map nugget (scs/search-criteria))]
 
+
       (if (> (count (scs/search-criteria)) 0)
        [:i.fa.fa-plus-circle {:aria-hidden "true" :style {:color "#2A98EF" :font-size "1.5em":margin-left "10px"}}])
+      [:div.input-group
        [:select.custom-select.form-control.mr-2
        {
-        :style {:margin-left "10px"}
         :value     (scs/selected-control)
         :autoFocus "autofocus"
         :on-change #(scs/set-selected-field! (keyword (-> % .-target .-value)))}
@@ -64,7 +60,7 @@
            [:option {:value target} (str/upper-case description)])
          (sort-by :display-order qcs/options))]
 
-      [:div.input-group
+
        [:div.search-event-item
         [:label  {:style {:width "100%"}}  (get-in qcs/query-types [(scs/selected-control) :placeholder])
          [:input

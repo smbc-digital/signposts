@@ -32,21 +32,20 @@
                     (when has-selected-event? " has-selected-event"))}
        [:div.row.no-gutters.align-items-center.upper
         [:div.column.col-2.left.px-2.pt-2 {:on-click #(swap! !data people/toggle-highlight-person pkey) }   [:i.fa " "]]
-        [:div.column.col-8.px-2.pt-2.text-truncate {:style {:font=size "1.1em"}:on-click #(swap! !data people/toggle-highlight-person pkey)}
+        [:div.column.col-8.px-2.pt-2.text-truncate.white {:style {:font=size "1.1em"}:on-click #(swap! !data people/toggle-highlight-person pkey)}
          (str name)]
-        [:div.column.col-2.px-2.pt-2
-         [:i.fa
+        [:div.column.col-2.px-2.pt-2.white {:style {:font=size "1.1em"}}
+         [:i.fa.fa-lock
           {:style  {
                     :color (if locked? "#00cc00" "#1C3645")
                     :font-size "1.1em"
                     :padding-left "10px"
                     :padding-right "12px"}
-           :class    "fa-lock"
            :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
 
        [:div.row.no-gutters.lower
         [:div.column.col-2.left {:on-click #(swap! !data people/toggle-highlight-person pkey)}]
-        [:div.column.col-10.px-2.pb-2{:on-click #(swap! !data people/toggle-highlight-person pkey)}
+        [:div.column.col-10.px-2.pb-2.white {:on-click #(swap! !data people/toggle-highlight-person pkey)}
          [:div
            [:strong "Date of birth"] [:br ]
            (date-of-birth pkey)]
@@ -59,8 +58,8 @@
   (fn []
     (when (not-empty (:people @!data))
       [:div.cards
-       [:p {:style {:padding "8px 2px 2px 3px"}} "You can select up to " [:b "6 individuals"] " to highlight their events on the graph"]
-        [:div.select=cards {:style {:width "100%" :padding "2px 2px 2px 3px"}}
+       [:p  "You can select up to " [:strong "6 individuals"] " to highlight their events on the graph"]
+        [:div.select=cards
         [:span.reset-cards
         [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/reset-selection)}
          [:span {:style {:font-family ["open sans" :arial :sans-serif] :font-weight "530" :color "#1C3645"}} " Reset selection"

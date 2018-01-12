@@ -5,15 +5,15 @@
     z-index: 1000;
     position: fixed;
     width: 100%;
-    height: 55px
+    height: 55px;
     top: 50px;
 
-
     i.fa.fa-plus-circle {
-      color $bright-blue;
-       font-size 1.5em
-       margin-left "10px"
+       color: $bright-blue;
+       font-size: 1.5em;
+       margin-left: 10px;
     }
+
 
     select{
      margin-left: 10px;
@@ -22,6 +22,17 @@
     input.form-control{
       margin-left:10px;
     }
+}
+
+
+i.fa.fa-times.delete-item{
+   float:right;
+   display:inline-block;
+   font-size:1.2em;
+
+   &:hover{
+    color:red;
+   }
 }
 
 input.form-control::-moz-placeholder {

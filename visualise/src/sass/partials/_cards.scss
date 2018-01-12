@@ -1,5 +1,16 @@
+div.cards{
+       > p{
+          padding: 8px 2px 2px 3px;
+          }
+}
+
+div.select-cards{
+    width:100%;
+    padding:2px 2px 2px 3px;
+    }
+
 span.reset-cards{
- display: inline-block;
+  display: inline-block;
   margin: 5px;
   padding: 5px 2px 5px 2px;
   border: solid 1px #ccc;
@@ -8,4 +19,4 @@ span.reset-cards{
   border-radius: 3px;
   background-color: white;
   font-size: 0.9em;
-  color: #1E3545 }
+  color: #1E3545; }
