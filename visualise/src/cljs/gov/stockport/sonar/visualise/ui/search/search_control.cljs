@@ -64,7 +64,7 @@
        [:div.search-event-item
         [:label  {:style {:width "100%"}}  (get-in qcs/query-types [(scs/selected-control) :placeholder])
          [:input
-          {:type "text"
+          {:type (get-in qcs/query-types [(scs/selected-control) :placeholder]
            :value  (scs/search-term)
            :name "search-term"
            :id "search-term"

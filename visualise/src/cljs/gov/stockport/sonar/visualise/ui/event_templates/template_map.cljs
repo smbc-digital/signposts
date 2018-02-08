@@ -61,10 +61,10 @@
    :gmp-caution gmp/caution
    :gmp-domestic gmp/domestic
    :gmp-domestic-violence-demo gmp/domestic
-   :homes-arrears-6-wk ho/arrears-6-wk
+   :homes-6-week-arrears ho/arrears-6-wk
    :homes-asb ho/asb
-   :homes-eviction-application ho/eviction-application
-   :homes-notice-seeking-possession ho/notice-seeking-posession
+   :homes-evictions ho/eviction-application
+   :homes-notice-possession ho/notice-seeking-posession
    :revsbens-counciltaxbill rb/ctax-bill
    :revsbens-cts-only rb/ct-support
    :revsbens-hb-cts rb/hb-cts

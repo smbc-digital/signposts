@@ -9,7 +9,7 @@
      :type    "text"
      :pattern "^[a-zA-Z]{1,2}"
      :name "name"
-     :placeholder "what postcode?"}]])
+     :placeholder "what name?"}]])
 
 (defn address[]
   [:label "Address"
