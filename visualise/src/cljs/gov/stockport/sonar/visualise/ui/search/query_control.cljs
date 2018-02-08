@@ -29,9 +29,6 @@
       (sort-by :display-order qcs/options))]])
 
 
-(defn add-search-option []
-  (js/alert "Here"))
-
 
 
 

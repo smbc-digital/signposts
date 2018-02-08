@@ -10,8 +10,7 @@
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
-  (add-search-history!)
-  )
+  (add-search-history!))
 
 (defn nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
@@ -23,15 +22,9 @@
       :name (name query-type)
       :id (name query-type)
       :size "15"
-      :read-only "true"
-      }]
+      :read-only "true"}]
     [:i.fa.fa-times.ml-2.delete-item
-     {:on-click #(scs/remove-search-criteria! query-type)}]
-    ]
-
-    ]
-
-  )
+     {:on-click #(scs/remove-search-criteria! query-type)}]]])
 
 
 (defn search-criteria-control [query-callback]
@@ -48,7 +41,7 @@
 
       (if (> (count (scs/search-criteria)) 0)
        [:i.fa.fa-plus-circle {:aria-hidden "true" :style {:color "#2A98EF" :font-size "1.5em":margin-left "10px"}}])
-      [:div.input-group
+      [:div.input-group {:style {:margin-left "10px"}}
        [:select.custom-select.form-control.mr-2
        {
         :value     (scs/selected-control)
@@ -64,21 +57,18 @@
        [:div.search-event-item
         [:label  {:style {:width "100%"}}  (get-in qcs/query-types [(scs/selected-control) :placeholder])
          [:input
-          {:type (get-in qcs/query-types [(scs/selected-control) :placeholder]
+          {:type (get-in qcs/query-types [(scs/selected-control) :placeholder])
            :value  (scs/search-term)
            :name "search-term"
            :id "search-term"
            :size "15"
            :on-change   #(scs/set-search-term! (-> % .-target .-value))
-           :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}
-         ]
+           :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]]
 
-        ]]
        [:span.input-group-btn
         [:button.btn.btn-primary
          {:on-click change-search-criteria :style {:background-color "#2A98EF" :margin-left "10px"}}
-         "Search"]]]
-    ]]))
+         "Search"]]]]]))
 
 (defn query-wrapper [handler]
   (fn [terms]

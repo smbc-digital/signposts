@@ -16,10 +16,6 @@
 
 
 
-(defn displayed-icon [displayed?]
-  (if displayed? "fa-check-square" "fa-square"))
-
-
 (defn card [!data]
   (let [highlighting-allowed? (:highlighting-allowed? @!data)]
     (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? locked? areas]}]]

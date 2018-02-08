@@ -8,11 +8,11 @@ div.select-cards {
 
 span.reset-cards {
   display: inline-block;
-  margin: 5px;
+  margin: 5px 5px 5px 0;
   padding: 5px 2px 5px 2px;
   border: solid 1px #ccc;
   box-shadow: 2px 2px 2px #ccc;
-  width: 140px;
+  width: 95%;
   border-radius: 3px;
   background-color: white;
   font-size: 0.9em;
@@ -267,7 +267,7 @@ div.event-source-body {
     font-size: 1.5em;
     margin-left: 10px; }
   .search-bar select {
-    margin-left: 10px; }
+    margin-left: 20px; }
   .search-bar input.form-control {
     margin-left: 10px; }
 
