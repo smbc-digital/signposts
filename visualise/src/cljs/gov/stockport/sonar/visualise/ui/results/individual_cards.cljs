@@ -56,14 +56,14 @@
       [:div.cards
        [:p  "You can select up to " [:strong "6 individuals"] " to highlight their events on the graph"]
         [:div.select=cards
-        [:span.reset-cards
-        [:i.fa.fa-times.ml-2 {:on-click #(swap! !data people/reset-selection)}
+        [:span.reset-cards {:on-click #(swap! !data people/reset-selection)}
+        [:i.fa.fa-times.ml-2
          [:span {:style {:font-family ["open sans" :arial :sans-serif] :font-weight "530" :color "#1C3645"}} " Reset selection"
           ]]]
 
-       [:span.reset-cards
+       [:span.reset-cards {:on-click #(swap! !data people/toggle-sort-by)}
         [:i.fa.fa-arrows-v.ml-2
-         {:id "sort-cards" :on-click #(swap! !data people/toggle-sort-by)}
+         {:id "sort-cards"}
          [:span {:style {:font-family ["open sans" :arial :sans-serif] :font-weight "530" :color "#1C3645"}}
           (if (people/sort-by-relevance @!data) " Sort by A - Z" " Sort by relevance")
           ]]]]
