@@ -7,7 +7,7 @@
     [:input.form-control
      {:value (scs/search-term)
      :type    "text"
-     :pattern "^[a-zA-Z]{1,2}"
+     :pattern "^[a-zA-Z\*]{1,2}"
      :name "name"
      :placeholder "what name?"}]])
 
@@ -78,3 +78,21 @@
      :name "event-type"
      :id "event-type"
      :placeholder "search for an event type"}]])
+
+
+
+
+(def search-control-map
+  {
+    :full-name full-name
+    :address address
+    :postcode postcode
+    :dob dob
+    :age-less-than age-less-than
+    :age-more-than age-more-than
+    :all-fields all-fields
+    :event-source event-source
+    :event-type event-type})
+
+(defn get-seach-control[search-term]
+  ((keyword search-term) search-control-map full-name))
