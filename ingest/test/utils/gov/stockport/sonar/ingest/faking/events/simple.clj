@@ -3,7 +3,7 @@
 
 (def event-sources
   [{:event-source :GMP
-    :event-types  [:ASBO :CAUTION]}])
+    :event-types  [:DOMESTIC]}])
 
 (defn rand-event-source []
   (let [{:keys [event-source event-types]} (rand-nth event-sources)]

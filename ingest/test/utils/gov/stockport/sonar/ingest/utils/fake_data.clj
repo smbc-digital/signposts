@@ -9,13 +9,13 @@
 
 (def event-sources
   [{:event-source :SCHOOLS
-    :event-types  [:EXCLUSION]}
-   {:event-source :HOMES
-    :event-types  [:ARREARS :EVICTION]}
+    :event-types  [:EXCLUSION :REGISTRATION]}
+   {:event-source :STOCKPORT-HOMES
+    :event-types  [:ARREARS-6-WK :NOTICE-SEEKING-POSSESSION :EVICTION :ASB]}
    {:event-source :GMP
-    :event-types  [:ASBO :CAUTION]}
+    :event-types  [:GMP-DOMESTIC]}
    {:event-source :EIS
-    :event-types  [:LIC :CIN]}
+    :event-types  [:LAC :CIN :CONTACT :schools-attendance ]}
    ])
 
 (defn rand-event-source []
