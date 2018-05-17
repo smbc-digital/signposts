@@ -36,14 +36,11 @@
       [:div.row.justify-content-center
        [:i.fa.fa-map-signs.fa-2x]]]
      [:div.column.col-lg-10.col-md-7.col-sm-8.col-xs-6
-      [:span.h2 "SIGNPOSTS"]]
-     [:div.column.col-lg-1.col-md-3.col-sm-2.col-xs-4
+      [:span.h2.page-title "SIGNPOSTS"]]
+     [:div.column.col-lg-1.col-md-3.col-sm-2.col-xs-4 {:style{:padding-left  "0"}}
       [:button.btn.btn-primary {:on-click ac/logout} "Logout"]]]]
    [nsc/new-search-control (h/default-handler !data)]
 
-   (when (not (nil? (:total @!data)))
-     [:div.container-fluid.results-summary
-      [:h6.text-white.pb-1 (people/results-summary @!data)]])
 
    (if (not-empty (:people @!data))
      [results !data]

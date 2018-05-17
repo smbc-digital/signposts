@@ -110,10 +110,10 @@
     ]
    [:div.col.col-md-4
     [:div.row
-     [:div.col.col-md-6
+     [:div.col.col-md-3
       [:strong "Address"]
       ]
-     [:div.col.col-md-6
+     [:div.col.col-md-9
       (:address event)
       [:br]
       (:postcode event)

@@ -4,6 +4,7 @@
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.util.blur :as b]
             [clojure.string :as s]
+            [gov.stockport.sonar.visualise.util.fmt-help :as fmt-help]
             [gov.stockport.sonar.visualise.util.stack :as p]))
 
 (def fortnight-in-millis (* 1000 60 60 24 14))
@@ -32,7 +33,7 @@
      :color      "#1C3645"
      :tickColor "#ccc"
      :position   :right
-     :ticks      (map (fn [[k v]] [v (s/lower-case(name k))]) labels)
+     :ticks      (map (fn [[k v]] [v (fmt-help/label(name k))]) labels)
      :labelWidth 180}))
 
 (defn collision-key [{:keys [:timestamp :event-type]}]

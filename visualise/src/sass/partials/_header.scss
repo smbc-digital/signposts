@@ -5,9 +5,29 @@
  top: 0;
  height: 50px;
  z-index: 1000;
- width: 100%;}
+ width: 100%;
 
- .results-summary{
+  .btn-primary{
+          background-color: #2b98f0;
+          font-weight: 600;
+          font-size: 18px;
+          font-family: "Source Sans Pro";
+      }
+
+  .page-title{
+      font-family: 'Source Sans Pro';
+      color:  white;
+      font-size: 32px;
+      font-weight: 400;
+      letter-spacing: 4.8px;
+      text-align: left;
+      padding-left:0;
+      margin:-15px;
+  }
+
+ }
+
+.results-summary{
   background-color: #1c3645;
   padding-top: 10px;
   padding-bottom: 2px;

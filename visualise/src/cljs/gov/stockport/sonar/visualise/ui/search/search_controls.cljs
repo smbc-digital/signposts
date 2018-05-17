@@ -7,7 +7,7 @@
     [:input.form-control
      {:value (scs/search-term)
      :type    "text"
-     :pattern "^[a-zA-Z\*]{1,2}"
+     :pattern "^[a-zA-Z]{1,2}"
      :name "name"
      :placeholder "what name?"}]])
 

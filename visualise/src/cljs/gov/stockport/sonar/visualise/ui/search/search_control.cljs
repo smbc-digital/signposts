@@ -14,7 +14,8 @@
 
 (defn nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
-  [:div.search-event-item
+  [:div.search-item
+   [:div.item-container
    [:label  {:style {:width "100%"}} (name query-type)
     [:input
      {:type "text"
@@ -22,8 +23,9 @@
       :name (name query-type)
       :id (name query-type)
       :size "15"
-      :read-only "true"}]
-    [:i.fa.fa-times.ml-2.delete-item
+      :read-only "true"}]]]
+     [:div.delete-item-container
+     [:i.fa.fa-times.ml-2.delete-item
      {:on-click #(scs/remove-search-criteria! query-type)}]]])
 
 
@@ -31,7 +33,7 @@
   (scs/init! query-callback)
   (fn []
     [:div.container-fluid.py-1
-     {:style {:background-color "#fff" :box-shadow "0px 10px 15px #999" :border-bottom "1px solid black" :z-index "1000" :position "fixed" :width "100%" :height "55px" :top "50px"}}
+     {:style {:background-color "#fff" :box-shadow "0px 10px 15px #ccc" :border-bottom "1px solid #ccc" :z-index "1000" :position "fixed" :width "100%" :height "55px" :top "50px"}}
      [:div.form-inline
       `[:span.py-1
         {:style {:display   :inline-flex
@@ -40,7 +42,17 @@
 
 
       (if (> (count (scs/search-criteria)) 0)
-       [:i.fa.fa-plus-circle {:aria-hidden "true" :style {:color "#2A98EF" :font-size "1.5em":margin-left "10px"}}])
+       [:i.fa.fa-plus-circle
+        {:aria-hidden "true"
+         :style {
+                 :color "#2A98EF"
+                 :font-size "1.5em"
+                 :margin-left "10px"
+                 }
+         :title "Add search criteria"
+         }
+
+        ])
       [:div.input-group {:style {:margin-left "10px"}}
        [:select.custom-select.form-control.mr-2
        {

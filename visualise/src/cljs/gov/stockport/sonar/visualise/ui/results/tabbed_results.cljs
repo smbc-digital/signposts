@@ -5,10 +5,6 @@
             [gov.stockport.sonar.visualise.ui.results.contacts :refer [contact-history]]
             [gov.stockport.sonar.visualise.ui.results.timeline-flot :refer [timeline-flot]]))
 
-
-
-
-
 (defn results-tab [!data]
   (let [!selected (r/atom :timeline)]
     (fn []

@@ -8,14 +8,6 @@
             [clojure.string :as str]
             ))
 
-(def age
-  (fn [dob]
-    (when dob
-      (let [years (t/in-years (t/->Interval (f/parse (f/formatter "YYYY-mm-dd") dob) (t/now)))]
-        (str " (" years " yrs)")))))
-
-
-
 (defn card [!data]
   (let [highlighting-allowed? (:highlighting-allowed? @!data)]
     (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? locked? areas]}]]
@@ -25,7 +17,9 @@
         :title   (str (if highlighted? "Unhighlight" "Highlight") " this person on the graph")
         :class (str (and color (cljs.core/name color))
                     (when (not highlighted?) " blur")
-                    (when has-selected-event? " has-selected-event"))}
+                    (when has-selected-event? " has-selected-event"))
+        :style {:width "180px"}
+        }
        [:div.row.no-gutters.align-items-center.upper
         [:div.column.col-2.left.px-2.pt-2 {:on-click #(swap! !data people/toggle-highlight-person pkey) }   [:i.fa " "]]
         [:div.column.col-8.px-2.pt-2.text-truncate.white {:style {:font=size "1.1em"}:on-click #(swap! !data people/toggle-highlight-person pkey)}
@@ -35,7 +29,7 @@
           {:style  {
                     :color (if locked? "#00cc00" "#1C3645")
                     :font-size "1.1em"
-                    :padding-left "10px"
+                    :padding-left "0"
                     :padding-right "12px"}
            :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
 
@@ -56,17 +50,14 @@
       [:div.cards
        [:p  "You can select up to " [:strong "6 individuals"] " to highlight their events on the graph"]
         [:div.select=cards
-        [:span.reset-cards {:on-click #(swap! !data people/reset-selection)}
-        [:i.fa.fa-times.ml-2
-         [:span {:style {:font-family ["open sans" :arial :sans-serif] :font-weight "530" :color "#1C3645"}} " Reset selection"
-          ]]]
+        [:div.reset-cards {:on-click #(swap! !data people/reset-selection)}
+         [:div.icon[:i.fa.fa-times.ml-2]]
+         [:div.reset-cards-text " Reset selection"]]
 
-       [:span.reset-cards {:on-click #(swap! !data people/toggle-sort-by)}
-        [:i.fa.fa-arrows-v.ml-2
-         {:id "sort-cards"}
-         [:span {:style {:font-family ["open sans" :arial :sans-serif] :font-weight "530" :color "#1C3645"}}
-          (if (people/sort-by-relevance @!data) " Sort by A - Z" " Sort by relevance")
-          ]]]]
+          [:div.reset-cards {:on-click #(swap! !data people/toggle-sort-by)}
+          [:div.icon[:i.fa.fa-arrows-v.ml-2]]
+          [:div.reset-cards-text
+          (if (people/sort-by-relevance @!data) " Sort by A-Z" " Sort by relevance")]]]
        [:div.fixed-height (map (card !data) (people/sort-as @!data))]])))
 
 (defonce !current (atom nil))

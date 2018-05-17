@@ -29,7 +29,7 @@
 (defn int-comma [n]
   (cl-format nil "~:d" n))
 
-(def always-uppercase #{"DOB" "NINO"})
+(def always-uppercase #{"DOB" "NINO" "CIN" "LAC" "ASBO" "ASB" "SEN" "AWOL"})
 
 (defn -label [s]
   (if (contains? always-uppercase (str/upper-case s))

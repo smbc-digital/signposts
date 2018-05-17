@@ -1,8 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-control-state
   (:require [clojure.string :as str]
             [hodgepodge.core :refer [local-storage clear!]]
-            [gov.stockport.sonar.visualise.state :refer [!search-control-state !search-history]]
-             [gov.stockport.sonar.visualise.ui.search.search-controls :as sc]
+             [gov.stockport.sonar.visualise.state :refer [!search-control-state !search-history]]
             ))
 
 (defn init! [on-change-callback]

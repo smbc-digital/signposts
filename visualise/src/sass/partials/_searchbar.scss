@@ -1,7 +1,7 @@
 .search-bar{
     background-color: #fff;
     box-shadow: 0px 10px 15px #999;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #999;
     z-index: 1000;
     position: fixed;
     width: 100%;
@@ -17,23 +17,34 @@
 
     select{
      margin-left: 20px;
+     border-radiaus:5px;
+     border:1px solid #AAA;
     }
 
     input.form-control{
       margin-left:10px;
+
+      &:focus{
+        border:none;
+      }
     }
 }
 
 
 i.fa.fa-times.delete-item{
-   float:right;
    display:inline-block;
    font-size:1.2em;
-
    &:hover{
     color:red;
    }
 }
+
+ .btn-primary{
+         background-color: #2b98f0;
+         font-weight: 600;
+         font-size: 18px;
+         font-family: "Source Sans Pro";
+     }
 
 input.form-control::-moz-placeholder {
  color : $mid-grey;
@@ -57,4 +68,56 @@ input.form-control::-ms-input-placeholder {
  padding-left:0;
  font-size: 1em;
  margin-left:0;
+}
+
+div.search-item{
+    border: solid 1px #AAA;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding:2px 1px 0px 8px;
+    height:36px;
+    display:inline-block;
+
+     &:hover{
+        border-color:#2196f3;
+     }
+     .item-container
+     {
+     > label{
+       display: inline-block;
+       margin-left: 0;
+       font-size: 11px;
+       text-transform: uppercase;
+       color: #aaa;
+       line-height:1.1;
+
+       > input {
+              display: inline-block;
+              font-size: 16px;
+              border: none;
+              line-height:1;
+              width: 90%;
+              overflow: hidden;
+              font-weight:400;
+              }
+    }
+
+
+    }
+
+    .item-container
+    {
+       display:table-cell;
+       width:80%
+    }
+
+    .delete-item-container
+    {
+        height:36px;
+        display:table-cell;
+        text-align:center;
+        border-left:solid #ccc 1px;
+        vertical-align:middle;
+        width:20%;
+    }
 }
