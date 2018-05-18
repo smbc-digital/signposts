@@ -2,59 +2,61 @@
   (:require [gov.stockport.sonar.visualise.ui.search.search-controls :as sc])
   )
 
-(def query-types {:name          {:display-order        1
+(def query-types {
+
+                  :name          {:display-order 2
                                   :field-name  :name
                                   :field-type  :wildcard
                                   :description "Name"
                                   :placeholder "what name?"
                                   :control sc/full-name
                                   }
-                  :address       {:display-order        2
+                  :address       {:display-order 3
                                   :field-name  :address
                                   :field-type  :address-with-postcode
                                   :description "Address"
                                   :placeholder "what address?"
                                   :control sc/address
                                   }
-                  :postcode      {:display-order        3
+                  :postcode      {:display-order   4
                                   :field-name  :postcode
                                   :field-type  :postcode
                                   :description "Postcode"
                                   :placeholder "what postcode?"
                                   :control sc/postcode}
-                  :dob           {:display-order        4
+                  :dob           {:display-order   5
                                   :field-name  :dob
                                   :field-type  :date-of-birth
                                   :description "Date of birth"
                                   :placeholder "e.g.25/01/2016"
                                   :control sc/dob}
-                  :age-less-than {:display-order        5
+                  :age-less-than {:display-order        6
                                   :field-name  :dob
                                   :field-type  :age-less-than
                                   :description "Aged up to"
                                   :placeholder "maximum age in years"
                                   :control sc/age-less-than}
-                  :age-more-than {:display-order        6
+                  :age-more-than {:display-order        7
                                   :field-name  :dob
                                   :field-type  :age-more-than
                                   :description "Aged over"
                                   :placeholder "minimum age in years"
                                   :control sc/age-more-than
                                   }
-                  :all-fields    {:display-order        7
+                  :all-fields    {:display-order     8
                                   :field-type  :query-all
                                   :description "All fields"
                                   :placeholder "enter general search"
                                   :control sc/all-fields
                                   }
-                  :event-source  {:display-order        8
+                  :event-source  {:display-order        9
                                   :field-name  :event-source
                                   :field-type  :match-text
                                   :description "Event Source"
                                   :placeholder "search for event source"
                                   :control sc/event-source
                                   }
-                  :event-type    {:display-order        9
+                  :event-type    {:display-order      10
                                   :field-name  :event-type
                                   :field-type  :match-text
                                   :description "Event Type"

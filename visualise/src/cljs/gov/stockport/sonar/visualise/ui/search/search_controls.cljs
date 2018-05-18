@@ -1,11 +1,10 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-controls
-  (:require [reagent.core :as r]
-            [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]))
+  (:require [reagent.core :as r]))
 
 (defn full-name[]
   [:label "Name"
     [:input.form-control
-     {:value (scs/search-term)
+     {
      :type    "text"
      :pattern "^[a-zA-Z]{1,2}"
      :name "name"

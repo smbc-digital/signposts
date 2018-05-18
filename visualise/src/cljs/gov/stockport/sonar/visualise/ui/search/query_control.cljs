@@ -30,14 +30,12 @@
 
 
 
-
-
 (defn new-query-control[]
      [:div.container-fluid.py-1
      [:div.form-inline.row
       [:div.input-group {:id "search-options"}
           (search-options 1)
-       [:i.fa.fa-plus{:on-click add-search-option}]
+       [:i.fa.fa-plus]
       [:span.input-group-btn
          [:button.btn.btn-success.mr-2
           {:type :submit :id "search-button"

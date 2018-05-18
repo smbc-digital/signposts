@@ -39,11 +39,12 @@ i.fa.fa-times.delete-item{
    }
 }
 
- .btn-primary{
-         background-color: #2b98f0;
+ button.search{
+         background-color: #2A98EF !important;
          font-weight: 600;
          font-size: 18px;
          font-family: "Source Sans Pro";
+         margin-left: 10px !important;
      }
 
 input.form-control::-moz-placeholder {
@@ -113,11 +114,11 @@ div.search-item{
 
     .delete-item-container
     {
-        height:36px;
+        height:34px;
         display:table-cell;
-        text-align:center;
+        text-align:left;
         border-left:solid #ccc 1px;
         vertical-align:middle;
-        width:20%;
+        width:15%;
     }
 }

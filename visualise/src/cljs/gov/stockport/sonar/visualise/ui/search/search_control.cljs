@@ -7,7 +7,6 @@
             [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
             [clojure.string :as str]))
 
-
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
   (add-search-history!))
@@ -28,6 +27,9 @@
      [:i.fa.fa-times.ml-2.delete-item
      {:on-click #(scs/remove-search-criteria! query-type)}]]])
 
+(defn show-input-group []
+  (.alert "Here")
+  )
 
 (defn search-criteria-control [query-callback]
   (scs/init! query-callback)
@@ -39,8 +41,6 @@
         {:style {:display   :inline-flex
                  :flex-wrap :wrap}}
         ~@(map nugget (scs/search-criteria))]
-
-
       (if (> (count (scs/search-criteria)) 0)
        [:i.fa.fa-plus-circle
         {:aria-hidden "true"
@@ -50,10 +50,14 @@
                  :margin-left "10px"
                  }
          :title "Add search criteria"
+         :on-click
+                      #(show-input-group)
          }
 
         ])
-      [:div.input-group {:style {:margin-left "10px"}}
+      [:div.input-group
+       {:style
+        {:margin-left "10px"}}
        [:select.custom-select.form-control.mr-2
        {
         :value     (scs/selected-control)
@@ -65,9 +69,12 @@
            [:option {:value target} (str/upper-case description)])
          (sort-by :display-order qcs/options))]
 
+       (if (not= "" (get-in qcs/query-types [(scs/selected-control) :placeholder] ))
 
        [:div.search-event-item
-        [:label  {:style {:width "100%"}}  (get-in qcs/query-types [(scs/selected-control) :placeholder])
+        [:label
+         {:style {:width "100%"}}  (get-in qcs/query-types [(scs/selected-control) :placeholder])
+
          [:input
           {:type (get-in qcs/query-types [(scs/selected-control) :placeholder])
            :value  (scs/search-term)
@@ -75,12 +82,12 @@
            :id "search-term"
            :size "15"
            :on-change   #(scs/set-search-term! (-> % .-target .-value))
-           :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]]
-
+           :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]])
+       (if (not= "" (get-in qcs/query-types [(scs/selected-control) :placeholder] ))
        [:span.input-group-btn
-        [:button.btn.btn-primary
-         {:on-click change-search-criteria :style {:background-color "#2A98EF" :margin-left "10px"}}
-         "Search"]]]]]))
+        [:button.btn.btn-primary.search
+         {:on-click change-search-criteria}
+         "Search"]])]]]))
 
 (defn query-wrapper [handler]
   (fn [terms]
@@ -91,5 +98,3 @@
 (defn new-search-control [handler]
   (let [query-callback (query-wrapper handler)]
     [search-criteria-control query-callback]))
-
-

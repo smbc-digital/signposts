@@ -21,8 +21,18 @@
         :style {:width "180px"}
         }
        [:div.row.no-gutters.align-items-center.upper
-        [:div.column.col-2.left.px-2.pt-2 {:on-click #(swap! !data people/toggle-highlight-person pkey) }   [:i.fa " "]]
-        [:div.column.col-8.px-2.pt-2.text-truncate.white {:style {:font=size "1.1em"}:on-click #(swap! !data people/toggle-highlight-person pkey)}
+        [:div.column.col-2.left.px-2.pt-2
+           {:on-click
+            #((when (or highlighted? highlighting-allowed?)
+                (swap! !data people/toggle-highlight-person pkey))) }
+         [:i.fa " "]]
+        [:div.column.col-8.px-2.pt-2.text-truncate.white
+         {:style
+          {:font=size "1.1em"}
+          :on-click
+          #((when (or highlighted? highlighting-allowed?)
+              (swap! !data people/toggle-highlight-person pkey)))
+          }
          (str name)]
         [:div.column.col-2.px-2.pt-2.white {:style {:font=size "1.1em"}}
          [:i.fa.fa-lock
@@ -34,8 +44,14 @@
            :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
 
        [:div.row.no-gutters.lower
-        [:div.column.col-2.left {:on-click #(swap! !data people/toggle-highlight-person pkey)}]
-        [:div.column.col-10.px-2.pb-2.white {:on-click #(swap! !data people/toggle-highlight-person pkey)}
+        [:div.column.col-2.left
+         {:on-click
+          #((when (or highlighted? highlighting-allowed?)
+              (swap! !data people/toggle-highlight-person pkey)))}]
+        [:div.column.col-10.px-2.pb-2.white
+         {:on-click
+          #((when (or highlighted? highlighting-allowed?)
+              (swap! !data people/toggle-highlight-person pkey)))}
          [:div
            [:strong "Date of birth"] [:br ]
            (date-of-birth pkey)]
@@ -53,8 +69,8 @@
         [:div.reset-cards {:on-click #(swap! !data people/reset-selection)}
          [:div.icon[:i.fa.fa-times.ml-2]]
          [:div.reset-cards-text " Reset selection"]]
-
-          [:div.reset-cards {:on-click #(swap! !data people/toggle-sort-by)}
+          [:div.reset-cards {:on-click
+                             #(swap! !data people/toggle-sort-by)}
           [:div.icon[:i.fa.fa-arrows-v.ml-2]]
           [:div.reset-cards-text
           (if (people/sort-by-relevance @!data) " Sort by A-Z" " Sort by relevance")]]]
