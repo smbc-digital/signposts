@@ -53,7 +53,7 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :score (apply max (map :score (:data v))))}) people))))
 
-(def area #(first (str/split (or (:postcode %) "") #" ")))
+(def area #(first (str/split (or (:postcode %) "") #"--")))
 
 (defn with-areas [{:keys [people] :as data}]
   (assoc data :people

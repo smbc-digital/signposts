@@ -1,3 +1,14 @@
+.search-criteria-control{
+   background-color: #fff;
+   box-shadow: 0px 10px 15px #ccc;
+   border-bottom:  1px solid #ccc;
+   z-index: 1000;
+   position: fixed;
+   width: 100%;
+   height: 55px;
+   top: 50px;
+}
+
 .search-bar{
     background-color: #fff;
     box-shadow: 0px 10px 15px #999;
@@ -121,4 +132,12 @@ div.search-item{
         vertical-align:middle;
         width:15%;
     }
+
+
+}
+
+.add-search-item{
+          color: #2A98EF;
+          font-size: 1.5em;
+          margin-left: 10px;
 }

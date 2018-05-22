@@ -19,7 +19,7 @@
        [:strong "Key worker"]
        ]
       [:div.col.col-md-9
-       (:officer event)
+       (:keyworker event)
        ]]
      (when(some? (:otherinfo event ))
      [:div.row

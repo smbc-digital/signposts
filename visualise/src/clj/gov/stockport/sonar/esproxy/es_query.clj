@@ -63,6 +63,12 @@
 (defn with-age-more-than [qip term value]
   (must qip {:range {term {:lte (str "now-" value "y")}}}))
 
+(defn with-age-range [qip term value1 value2]
+  (must qip {:range
+             { term
+              {:lte (str "now-" value1 "y")
+               :gte (str "now-" value2 "y")}}}))
+
 (defn with-address [qip value]
   (-> qip
       (must {:bool {:should               [{:match {:address {:query    value

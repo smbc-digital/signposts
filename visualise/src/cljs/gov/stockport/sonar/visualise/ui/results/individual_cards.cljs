@@ -57,7 +57,7 @@
            (date-of-birth pkey)]
          (let [areas (str/join ", " (sort areas))]
            [:div
-            [:strong "Address on record"] [:br ]
+            [:strong "Addresses on record"] [:br ]
             (if (empty? areas) "no locations" areas)])]]])))
 
 (defn cards-render [!data]

@@ -3,7 +3,15 @@
   )
 
 (def query-types {
-
+                  :none          {
+                                  :display-order 1
+                                  :field-name :none
+                                  :field-type :none
+                                  :description "Please Select"
+                                  :placeholder ""
+                                  :control :none
+                                  :select "true"
+                                 }
                   :name          {:display-order 2
                                   :field-name  :name
                                   :field-type  :wildcard
@@ -66,10 +74,12 @@
 
 (def options
   (map
-    (fn [[query-type {:keys [description display-order]}]]
+    (fn [[query-type {:keys [description display-order selected]}]]
       {:target        query-type
        :description   description
-       :display-order display-order})
+       :display-order display-order
+       :selected    selected
+       })
     query-types))
 
 (defn extract-query-defs [terms]

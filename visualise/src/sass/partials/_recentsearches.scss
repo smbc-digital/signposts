@@ -29,11 +29,18 @@ div.search-event {
      padding-left:10px;
    }
 
-   button {
+   .search-history-button
+   {
+    float:right;
+    text-align:right;
+    padding-right:18px;
+
+    button {
        color: white;
        background-color: $bright-blue;
        cursor: pointer;
        height: 40px;
+   }
    }
 }
 
