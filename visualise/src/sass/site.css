@@ -30,7 +30,7 @@ div.reset-cards-text {
   font-family: "open sans", arial, sans-serif;
   font-weight: 400;
   color: #1C3645;
-  display: table-cell;
+  display: inline-block;
   width: 80%;
   float: right;
   vertical-align: middle;
@@ -209,7 +209,8 @@ div.search-event {
       color: white;
       background-color: #0275d8;
       cursor: pointer;
-      height: 40px; }
+      height: 40px;
+      border: none !important; }
 
 div.search-event-item {
   border: solid 1px #999;
