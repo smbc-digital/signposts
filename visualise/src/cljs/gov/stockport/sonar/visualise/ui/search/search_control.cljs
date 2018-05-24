@@ -4,7 +4,7 @@
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.query.client :refer [search]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
-            [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
+            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data]]
             [clojure.string :as str]))
 
 (defn- change-search-criteria[]
@@ -39,11 +39,13 @@
     {
      :value     (scs/selected-control)
      :autoFocus "autofocus"
+     :default-value "none"
      :on-change #(scs/set-selected-field! (keyword (-> % .-target .-value)))}
+
     (map
       (fn [{:keys [target description selected]}]
         ^{:key target}
-        [:option {:value target :selected "selected"} (str/upper-case description)])
+        [:option {:value target} (str/upper-case description)])
       (sort-by :display-order qcs/options))]
 
    (if (not= "" (get-in qcs/query-types [(scs/selected-control) :placeholder] ))
@@ -61,6 +63,7 @@
          :on-change   #(scs/set-search-term! (-> % .-target .-value))
          :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]])])
 
+
 (defn search-criteria-control [query-callback]
   (scs/init! query-callback)
   (fn []
@@ -77,18 +80,20 @@
         :title "Add search criteria"
         :on-click change-search-criteria}
        ]
-      (if (not= "" (get-in qcs/query-types [(scs/selected-control) :placeholder] ))
+
         [:span.input-group-btn
          [:button.btn.btn-primary.search
           {:on-click change-search-criteria}
-          "Search"]])
+          "Search"]]
       ]]))
+
 
 (defn query-wrapper [handler]
   (fn [terms]
     (if (not-empty terms)
       (search (qcs/extract-query-defs terms) handler)
-      (handler {}))))
+      (handler {})
+    )))
 
 (defn new-search-control [handler]
   (let [query-callback (query-wrapper handler)]

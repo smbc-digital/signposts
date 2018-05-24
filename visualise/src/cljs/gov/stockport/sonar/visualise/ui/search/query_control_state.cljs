@@ -10,7 +10,6 @@
                                   :description "Please Select"
                                   :placeholder ""
                                   :control :none
-                                  :select "true"
                                  }
                   :name          {:display-order 2
                                   :field-name  :name

@@ -38,7 +38,7 @@
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (:end-date event)
+     (fh/close-date(:end-date event))
      ]]
    ]
   )
@@ -70,7 +70,7 @@
      [:div.col.col-md-8
       (:supervisor-name event)[:br]
       [:strong "id:"](:supervisor-id event)[:br]
-      [:a {:href (str "mailto:"(:superviser-email event))} (:superviser-email event)][:br]
+      [:a {:href (str "mailto:"(:supervisor-email event))} (:supervisor-email event)][:br]
       (:supervisor-mobile event)[:br]
       (:supervisor-phone event)
       ]]]]])
