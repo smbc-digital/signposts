@@ -35,7 +35,7 @@
   (if dependents
     (h/perhaps cfg/exclusions-per-household
                (fn []
-                 (map (partial school-event :EXCLUSION)
+                 (map (partial school-event :EXCLUSIONS)
                       (randomly-select-from
                         (dependents-at-junior-school-or-above dependents)))))))
 

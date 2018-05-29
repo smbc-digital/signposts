@@ -33,7 +33,7 @@
   (defn arrears-6-wk[event]
      [:div.event-details.
       [:div.panel-heading
-      [:h4   "Homes " [:span {:style {:font-weight "normal"}} "6 Week Arrears"]]]
+      [:h4   "Stockport Homes " [:span {:style {:font-weight "normal"}} "6 Week Arrears"]]]
       [:div.row {:class "cin"}
       [:div.col.col-md-4
        [:div.row
@@ -107,7 +107,7 @@
   (defn eviction-application[event]
         [:div.event-details
          [:div.panel-heading
-         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Eviction Application"]]]
+         [:h4   "Stockport Homes " [:span {:style {:font-weight "normal"}} "Eviction Application"]]]
          [:div.row {:class "cin"}
           [:div.col.col-md-4
            [:div.row
@@ -147,7 +147,7 @@
   (defn notice-seeking-posession[event]
         [:div.event-details
          [:div.panel-heading
-         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Notice Seeking Possesion"]]]
+         [:h4   "Stockport Homes " [:span {:style {:font-weight "normal"}} "Notice Seeking Possesion"]]]
          [:div.row {:class "notice-seeking-possession"}
           [:div.col.col-md-4
            [:div.row

@@ -12,6 +12,7 @@
 (defonce !search-history (r/atom ()))
 (defonce !search-options (r/atom []))
 (defonce !show-search-control (r/atom 0))
+(defonce !search-type  (r/atom ""))
 (defn- load-signposting-configuration []
   (GET "/signposting-config" {:response-format :json
                               :keywords?       true

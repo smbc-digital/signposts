@@ -4,7 +4,7 @@
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.query.client :refer [search]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
-            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data]]
+            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data !search-type]]
             [clojure.string :as str]))
 
 (defn- change-search-criteria[]
@@ -37,9 +37,8 @@
     {:margin-left "10px"}}
    [:select.custom-select.form-control.mr-2
     {
-     :value     (scs/selected-control)
+     :value     "none"
      :autoFocus "autofocus"
-     :default-value "none"
      :on-change #(scs/set-selected-field! (keyword (-> % .-target .-value)))}
 
     (map
@@ -48,7 +47,7 @@
         [:option {:value target} (str/upper-case description)])
       (sort-by :display-order qcs/options))]
 
-   (if (not= "" (get-in qcs/query-types [(scs/selected-control) :placeholder] ))
+   (if (not= "none" (get-in qcs/query-types [(scs/selected-control) :placeholder] ))
 
      [:div.search-event-item
       [:label
