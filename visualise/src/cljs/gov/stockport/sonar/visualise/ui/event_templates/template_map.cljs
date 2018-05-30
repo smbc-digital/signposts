@@ -65,6 +65,10 @@
    :homes-asb ho/asb
    :homes-eviction-application ho/eviction-application
    :homes-notice-seeking-possession ho/notice-seeking-posession
+   :stockport-homes-arrears-6-wk ho/arrears-6-wk
+   :stockport-homes-asb ho/asb
+   :stockport-homes-eviction-application ho/eviction-application
+   :stockport-homes-notice-seeking-possession ho/notice-seeking-posession
    :revsbens-counciltaxbill rb/ctax-bill
    :revsbens-cts-only rb/ct-support
    :revsbens-hb-cts rb/hb-cts

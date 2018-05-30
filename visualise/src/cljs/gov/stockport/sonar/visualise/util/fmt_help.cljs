@@ -50,6 +50,8 @@
 
 (def dob-unformatter (f/formatter "yyyy-MM-dd"))
 (def dob-formatter (f/formatter "d MMM yyyy"))
+(def uk-date-formatter (f/formatter uk-date-format))
+
 
 (defn to-dob [date]
   (if (s/blank? date)
@@ -57,8 +59,10 @@
   (f/unparse dob-formatter(f/parse dob-unformatter date))))
 
 
-(defn close-date[date-time]
-  (f/unparse custom-formatter (f/parse dob-unformatter )))
+(defn close-date[date]
+  (if (s/blank? date)
+    ""
+  (f/unparse custom-formatter (f/parse uk-date-formatter date))))
 
 (defn unparse-dob [event]
   (if-let [ts (:dob event)]
