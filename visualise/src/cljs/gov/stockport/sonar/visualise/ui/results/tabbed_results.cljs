@@ -2,7 +2,6 @@
   (:require [reagent.core :as r]
             [cljs-time.format :as f]
             [gov.stockport.sonar.visualise.util.fmt-help :as fh]
-            [gov.stockport.sonar.visualise.ui.results.raw-table :as rt]
             [gov.stockport.sonar.visualise.ui.results.contacts :refer [contact-history]]
             [gov.stockport.sonar.visualise.ui.results.timeline-flot :refer [timeline-flot]]))
 

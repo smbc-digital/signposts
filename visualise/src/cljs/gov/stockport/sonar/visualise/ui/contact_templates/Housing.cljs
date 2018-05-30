@@ -79,7 +79,7 @@
              [:strong "Close Date"]
              ]
             [:div.col.col-md-9
-             (:date-completed event)
+             (fh/close-date(:date-completed event))
              ]]
            ]
           (middle-column event)

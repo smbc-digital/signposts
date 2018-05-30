@@ -58,7 +58,7 @@
 
 
 (defn close-date[date-time]
-  (f/unparse custom-formatter date-time))
+  (f/unparse custom-formatter (f/parse dob-unformatter )))
 
 (defn unparse-dob [event]
   (if-let [ts (:dob event)]
