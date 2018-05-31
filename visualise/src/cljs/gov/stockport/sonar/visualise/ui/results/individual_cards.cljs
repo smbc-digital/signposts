@@ -18,7 +18,7 @@
         :class (str (and color (cljs.core/name color))
                     (when (not highlighted?) " blur")
                     (when has-selected-event? " has-selected-event"))
-        :style {:width "180px"}
+        :style {:width "97%"}
         }
        [:div.row.no-gutters.align-items-center.upper
         [:div.column.col-2.left.px-2.pt-2

@@ -306,10 +306,6 @@ div.event-source-body {
     color: #0275d8;
     font-size: 1.5em;
     margin-left: 10px; }
-  .search-bar select {
-    margin-left: 20px;
-    border-radiaus: 5px;
-    border: 1px solid #AAA; }
   .search-bar input.form-control {
     margin-left: 10px; }
     .search-bar input.form-control:focus {
@@ -385,9 +381,25 @@ div.search-item {
     width: 15%; }
 
 .add-search-item {
-  color: #2A98EF;
+  color: #999;
   font-size: 1.5em;
   margin-left: 10px; }
+  .add-search-item.active {
+    color: #2A98EF; }
+
+.search-event-item > label {
+  width: 100%; }
+
+select.custom-select {
+  margin-left: 20px;
+  border-radius: 5px;
+  border: 1px solid #AAA; }
+  select.custom-select option {
+    padding: 5px 0px 5px 0px;
+    font-size: 0.9em; }
+    select.custom-select option :first-child {
+      color: #ccc;
+      text-transfrom: capitalize; }
 
 .selected-event {
   width: 100%;

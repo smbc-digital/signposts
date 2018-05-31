@@ -4,12 +4,21 @@
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.query.client :refer [search]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
-            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data !search-type]]
+            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data !search-type !show-select]]
             [clojure.string :as str]))
+
+
+(defn toggle-view[field]
+  (if (= :none field)
+    (reset! !show-select 1)
+    ((reset! !show-select 0)
+    (scs/set-selected-field! field))))
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
-  (add-search-history!))
+  (add-search-history!)
+  (reset! !show-select 1)
+  )
 
 (defn nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
@@ -33,26 +42,24 @@
 
 (defn input-group[]
   [:div.input-group
-   {:style
-    {:margin-left "10px"}}
-   [:select.custom-select.form-control.mr-2
-    {
-     :value     "none"
-     :autoFocus "autofocus"
-     :on-change #(scs/set-selected-field! (keyword (-> % .-target .-value)))}
-
-    (map
-      (fn [{:keys [target description selected]}]
-        ^{:key target}
-        [:option {:value target} (str/upper-case description)])
-      (sort-by :display-order qcs/options))]
-
-   (if (not= "none" (get-in qcs/query-types [(scs/selected-control) :placeholder] ))
-
+   {:style {:margin-left "10px"}}
+   (when (> @!show-select 0)
+     [:select.custom-select.form-control.mr-2
+      {
+       :value     "none"
+       :autoFocus "autofocus"
+       :on-change #((toggle-view (keyword (-> % .-target .-value))))
+       }
+      (map
+        (fn [{:keys [target description selected]}]
+          ^{:key target}
+          [:option {:value target} (str/upper-case description)])
+        (sort-by :display-order qcs/options))]
+     )
+   (when (= 0 @!show-select )
      [:div.search-event-item
       [:label
-       {:style {:width "100%"}}  (get-in qcs/query-types [(scs/selected-control) :placeholder])
-
+        (get-in qcs/query-types [(scs/selected-control) :placeholder])
        [:input
         {:type (get-in qcs/query-types [(scs/selected-control) :placeholder])
          :value  (scs/search-term)
@@ -73,13 +80,19 @@
                  :flex-wrap :wrap}}
         ~@(map nugget (scs/search-criteria))]
       [input-group]
-      [:i.fa.fa-plus-circle.add-search-item
-       {
-        :aria-hidden "true"
-        :title "Add search criteria"
-        :on-click change-search-criteria}
-       ]
-
+      (if (> (count (scs/search-criteria)) 0)
+        [:i.fa.fa-plus-circle.add-search-item.active
+         {
+          :aria-hidden "true"
+          :title       "Add search criteria"
+          :on-click    change-search-criteria}
+         ]
+        [:i.fa.fa-plus-circle.add-search-item
+         {
+          :aria-hidden "true"
+          }
+      ]
+        )
         [:span.input-group-btn
          [:button.btn.btn-primary.search
           {:on-click change-search-criteria}

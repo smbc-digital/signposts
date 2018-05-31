@@ -26,11 +26,6 @@
     }
 
 
-    select{
-     margin-left: 20px;
-     border-radiaus:5px;
-     border:1px solid #AAA;
-    }
 
     input.form-control{
       margin-left:10px;
@@ -137,7 +132,34 @@ div.search-item{
 }
 
 .add-search-item{
-          color: #2A98EF;
+          color: $mid-grey;
           font-size: 1.5em;
           margin-left: 10px;
+
+     &.active {
+        color: #2A98EF;
+     }
 }
+
+.search-event-item > label{
+    width: 100%;
+}
+
+select.custom-select{
+     margin-left: 20px;
+     border-radius:5px;
+     border:1px solid #AAA;
+
+
+
+     option {
+        padding: 5px 0px 5px 0px;
+        font-size: 0.9em;
+
+        :first-child{
+            color:#ccc;
+            text-transfrom: capitalize;
+        }
+     }
+    }
+

@@ -8,8 +8,7 @@
                                   :field-name :none
                                   :field-type :none
                                   :description "Please Select"
-                                  :placeholder ""
-                                  :control :none
+                                  :placeholder "none"
                                  }
                   :name          {:display-order 2
                                   :field-name  :name

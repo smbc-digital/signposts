@@ -52,7 +52,7 @@
   (defn asb[event]
         [:div.event-details
          [:div.panel-heading
-         [:h4   "Homes " [:span {:style {:font-weight "normal"}} "Anti Social Behaviour"]]]
+         [:h4   "Stockport Homes " [:span {:style {:font-weight "normal"}} "Anti Social Behaviour"]]]
          [:div.row {:class "asb"}
           [:div.col.col-md-4
            [:div.row
@@ -144,7 +144,7 @@
           ]])
 
 
-  (defn notice-seeking-posession[event]
+  (defn notice-seeking-possession[event]
         [:div.event-details
          [:div.panel-heading
          [:h4   "Stockport Homes " [:span {:style {:font-weight "normal"}} "Notice Seeking Possesion"]]]
