@@ -54,6 +54,26 @@
      :id  "age-more-than"
      :placeholder "minimum age in years"}]])
 
+(defn age-range[]
+  [:div
+  [:label "Aged Over"
+   [:input.form-control
+    {:type "number"
+     :min "0"
+     :max "100"
+     :name "age-more-than"
+     :id  "age-more-than"
+     :placeholder "minimum age in years"}]
+   [:label "Aged up to"
+    [:input.form-control
+     {:type "number"
+      :min "1" :max "150"
+      :placeholder "maximum age in years"
+      :name "age=less=than"
+      :id "age=less=than" }]]]])
+
+
+
 (defn all-fields[]
   [:label "All fields"
    [:input.form-control

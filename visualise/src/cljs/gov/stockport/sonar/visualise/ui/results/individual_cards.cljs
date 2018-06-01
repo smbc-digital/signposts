@@ -30,8 +30,8 @@
          {:style
           {:font=size "1.1em"}
           :on-click
-          #((when (or highlighted? highlighting-allowed?)
-              (swap! !data people/toggle-highlight-person pkey)))
+          #(when (or highlighted? highlighting-allowed?)
+              (swap! !data people/toggle-highlight-person pkey))
           }
          (str name)]
         [:div.column.col-2.px-2.pt-2.white {:style {:font=size "1.1em"}}
@@ -50,8 +50,8 @@
               (swap! !data people/toggle-highlight-person pkey)))}]
         [:div.column.col-10.px-2.pb-2.white
          {:on-click
-          #((when (or highlighted? highlighting-allowed?)
-              (swap! !data people/toggle-highlight-person pkey)))}
+          #(when (or highlighted? highlighting-allowed?)
+              (swap! !data people/toggle-highlight-person pkey))}
          [:div
            [:strong "Date of birth"] [:br ]
            (date-of-birth pkey)]

@@ -4,21 +4,50 @@
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.query.client :refer [search]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
-            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data !search-type !show-select]]
+            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data !search-type !show-select !show-input   !active-plus]]
             [clojure.string :as str]))
 
 
-(defn toggle-view[field]
+(defn- show-dropdown! []
+  (reset! !show-select 1))
+
+(defn- hide-dropdown! []
+  (reset! !show-select 0))
+
+(defn- show-search-item! []
+  (reset! !show-input 1))
+
+(defn- hide-search-item! []
+  (reset! !show-input 0)
+  )
+
+(defn activate-plus[]
+  (reset! !active-plus 1)
+  )
+
+(defn deactivate-plus[]
+  (reset! !active-plus 0)
+  )
+
+
+(defn- hide-search-field[]
+  (show-dropdown!)
+  (hide-search-item!)
+  )
+
+(defn- toggle-view[field]
   (if (= :none field)
-    (reset! !show-select 1)
-    ((reset! !show-select 0)
-    (scs/set-selected-field! field))))
+    (do
+    (show-dropdown!)
+    (hide-search-item!))
+    (do
+      (hide-dropdown!)
+      (show-search-item!)
+      (scs/set-selected-field! field) )))
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
-  (add-search-history!)
-  (reset! !show-select 1)
-  )
+  (add-search-history!))
 
 (defn nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
@@ -48,26 +77,31 @@
       {
        :value     "none"
        :autoFocus "autofocus"
-       :on-change #((toggle-view (keyword (-> % .-target .-value))))
+       :on-change #(toggle-view (keyword (-> % .-target .-value)))
        }
       (map
         (fn [{:keys [target description selected]}]
           ^{:key target}
-          [:option {:value target} (str/upper-case description)])
+          [:option.option {:value target}  description])
         (sort-by :display-order qcs/options))]
      )
-   (when (= 0 @!show-select )
-     [:div.search-event-item
-      [:label
+   (when (= 1 @!show-input)
+     [:div.search-item
+      [:div.item-container
+      [:label {:style {:width "100%"}}
         (get-in qcs/query-types [(scs/selected-control) :placeholder])
        [:input
         {:type (get-in qcs/query-types [(scs/selected-control) :placeholder])
          :value  (scs/search-term)
          :name "search-term"
          :id "search-term"
-         :size "15"
+         :size "10"
          :on-change   #(scs/set-search-term! (-> % .-target .-value))
-         :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]])])
+         :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]]
+      [:div.delete-item-container
+       [:i.fa.fa-times.ml-2.delete-item
+        {:on-click  hide-search-field}]]
+      ])])
 
 
 (defn search-criteria-control [query-callback]
@@ -80,12 +114,14 @@
                  :flex-wrap :wrap}}
         ~@(map nugget (scs/search-criteria))]
       [input-group]
-      (if (> (count (scs/search-criteria)) 0)
+      (if (or
+            (> (count (scs/search-criteria)) 0)
+            (=  0 !show-select ))
         [:i.fa.fa-plus-circle.add-search-item.active
          {
           :aria-hidden "true"
           :title       "Add search criteria"
-          :on-click    change-search-criteria}
+          :on-click    show-dropdown!}
          ]
         [:i.fa.fa-plus-circle.add-search-item
          {
@@ -109,4 +145,7 @@
 
 (defn new-search-control [handler]
   (let [query-callback (query-wrapper handler)]
+    (hide-search-item!)
+    (show-dropdown!)
+
     [search-criteria-control query-callback]))

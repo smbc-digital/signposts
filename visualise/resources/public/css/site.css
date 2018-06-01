@@ -394,10 +394,10 @@ select.custom-select {
   margin-left: 20px;
   border-radius: 5px;
   border: 1px solid #AAA; }
-  select.custom-select option {
-    padding: 5px 0px 5px 0px;
+  select.custom-select .option {
+    padding: 0px 10px 0px 10px;
     font-size: 0.9em; }
-    select.custom-select option :first-child {
+    select.custom-select .option :first-child {
       color: #ccc;
       text-transfrom: capitalize; }
 

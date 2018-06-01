@@ -13,7 +13,10 @@
 (defonce !search-options (r/atom []))
 (defonce !show-search-control (r/atom 0))
 (defonce !show-select  (r/atom 1))
+(defonce !show-input  (r/atom 0))
+(defonce !active-plus (r/atom 0))
 (defonce !search-type  (r/atom ""))
+
 (defn- load-signposting-configuration []
   (GET "/signposting-config" {:response-format :json
                               :keywords?       true
