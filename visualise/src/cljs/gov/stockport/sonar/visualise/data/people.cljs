@@ -60,6 +60,13 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :areas (into #{} (remove str/blank? (map area (:data v)))))}) people))))
 
+(def event-type #(first (str/split (or (:event-type %) "") #"--")))
+
+(defn with-event-types [{:keys [people] :as data}]
+  (assoc data :people
+              (reduce merge {}
+                      (map (fn [[k v]] {k (assoc v :event-types (into #{} (remove str/blank? (map event-type (:data v)))))}) people))))
+
 (def surname #(str/lower-case(last (str/split (:name %) #"\s+"))))
 
 
@@ -155,6 +162,7 @@
       (by-people)
       (with-max-score)
       (with-areas)
+      (with-event-types)
       (with-timespan)
       (with-name-rank)
       (with-relevance-rank)

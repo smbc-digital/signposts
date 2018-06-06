@@ -68,7 +68,7 @@
    :stockport-homes-arrears=6-week ho/arrears-6-wk
    :stockport-homes-asb ho/asb
    :stockport-homes-evictions ho/eviction-application
-   :stockport-homes-notice-possession ho/notice-seeking-posession
+   :stockport-homes-notice-possession ho/notice-seeking-possession
    :revsbens-counciltaxbill rb/ctax-bill
    :revsbens-cts-only rb/ct-support
    :revsbens-hb-cts rb/hb-cts

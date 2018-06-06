@@ -19,9 +19,10 @@
 (defn results [!data]
   [:div.container-fluid {:id "results"}
    [:div.row.no-gutters
-    [:div.col-lg-2..col-md-3.col-sm-4
+    [:div.col-lg-2.col-md-3.col-sm-4
+
      [ic/cards !data]]
-    [:div.col-lg-10.col-sm-8.results-tab
+    [:div.col-lg-10.col-md-9.col-sm-8.results-tab
      [tr/results-tab !data]]]])
 
 ;

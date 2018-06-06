@@ -3,14 +3,14 @@
             [gov.stockport.sonar.visualise.data.people :as people]
             [cljs-time.core :as t]
             [cljs-time.format :as f]
-            [gov.stockport.sonar.visualise.util.fmt-help :refer [address-summary date-of-birth]]
+            [gov.stockport.sonar.visualise.util.fmt-help :refer [address-summary date-of-birth -label]]
             [reagent.core :as reagent]
             [clojure.string :as str]
             ))
 
 (defn card [!data]
   (let [highlighting-allowed? (:highlighting-allowed? @!data)]
-    (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? locked? areas]}]]
+    (fn [[{:keys [name dob] :as pkey} {:keys [has-selected-event? color highlighted? locked? areas event-types]}]]
       ^{:key (gensym)}
       [:div.mb-2.sp-individual
        {
@@ -23,8 +23,8 @@
        [:div.row.no-gutters.align-items-center.upper
         [:div.column.col-2.left.px-2.pt-2
            {:on-click
-            #((when (or highlighted? highlighting-allowed?)
-                (swap! !data people/toggle-highlight-person pkey))) }
+            #(when (or highlighted? highlighting-allowed?)
+                (swap! !data people/toggle-highlight-person pkey))}
          [:i.fa " "]]
         [:div.column.col-8.px-2.pt-2.text-truncate.white
          {:style
@@ -46,8 +46,8 @@
        [:div.row.no-gutters.lower
         [:div.column.col-2.left
          {:on-click
-          #((when (or highlighted? highlighting-allowed?)
-              (swap! !data people/toggle-highlight-person pkey)))}]
+          #(when (or highlighted? highlighting-allowed?)
+              (swap! !data people/toggle-highlight-person pkey))}]
         [:div.column.col-10.px-2.pb-2.white
          {:on-click
           #(when (or highlighted? highlighting-allowed?)
@@ -58,12 +58,12 @@
          (let [areas (str/join ", " (sort areas))]
            [:div
             [:strong "Addresses on record"] [:br]
-            (if (empty? areas) "no locations" areas)])
-         (let [event-types "event type" ]
+            (if (str/blank? areas) "no locations" areas)])
+         (let [event-type (str/join ", " (map #(-label %)(sort event-types)))]
            [:div
             [:strong "Event Types"] [:br]
-             event-types
-             ])]]])))
+            (if (str/blank? event-type) "" event-type)])
+             ]]])))
 
 (defn cards-render [!data]
   (fn []
@@ -74,8 +74,7 @@
         [:div.reset-cards {:on-click #(swap! !data people/reset-selection)}
          [:div.icon[:i.fa.fa-times.ml-2]]
          [:div.reset-cards-text " Reset selection"]]
-          [:div.reset-cards {:on-click
-                             #(swap! !data people/toggle-sort-by)}
+          [:div.reset-cards {:on-click #(swap! !data people/toggle-sort-by)}
           [:div.icon[:i.fa.fa-arrows-v.ml-2]]
           [:div.reset-cards-text
           (if (people/sort-by-relevance @!data) " Sort by A-Z" " Sort by relevance")]]]
