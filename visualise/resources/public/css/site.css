@@ -395,7 +395,7 @@ select.custom-select {
   border-radius: 5px;
   border: 1px solid #AAA; }
   select.custom-select .option {
-    padding: 0px 10px 0px 10px;
+    padding: 0px 20px 0px 20px;
     font-size: 0.9em; }
     select.custom-select .option :first-child {
       color: #ccc;
