@@ -29,13 +29,13 @@ div.login-form{
 
   > h4 {
      text-align:center;
-     color:#1C3645;
+     color:$darkest-blue;
      line-height:1.75em;
  }
 
  &.input-group-addon {
      background-color: white;
-     color:#1C3645;
+     color:$darkest-blue;
      border-right:none;
     }
 

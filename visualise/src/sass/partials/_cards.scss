@@ -21,20 +21,20 @@ div.reset-cards{
   display: inline-block;
   margin:5px 5px 5px 0;
   padding: 5px 2px 5px 2px;
-  border: solid 1px #ccc;
+  border: solid 1px $base-gray;
   box-shadow: 2px 2px 2px #ccc;
   width: 45%;
   cursor:pointer;
   border-radius: 3px;
   background-color: white;
   font-size: 0.9em;
-  color: #1E3545; }
+  color: $darkest-blue;}
 
 
 div.reset-cards-text{
-   font-family: "open sans", arial, sans-serif;
+   font-family: "Source Open Sans", arial, sans-serif;
    font-weight: 400;
-   color:#1C3645;
+   color:$darkest-blue;
    display:inline-block;
    width:80%;
    float:right;

@@ -1,7 +1,7 @@
 div.person-container{
     box-shadow: 10px 10px 10px #ccc;
     margin:  10px 0px 20px 0px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid $base-gray;
     border-radius: 5px;
     padding-left:5px;
 
@@ -77,7 +77,7 @@ div.person {
    background-color:white;
 
    .event-details-contact{
-        border-bottom: solid 1px #ccc;
+        border-bottom: solid 1px $base-gray;
         margin: 15px 0 10px 0;
         padding: 10px 0 10px 0;
     }
@@ -91,10 +91,10 @@ div.person {
 div.events-header {
    > h3 {
      text-align: center;
-     color:  #152934;}
+     color:  $darkest-blue;}
     > p {
      text-align: center;
-     color:  #152934;
+     color:  $darkest-blue;
      }
 }
 

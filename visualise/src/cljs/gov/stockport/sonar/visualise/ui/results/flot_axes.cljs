@@ -15,8 +15,8 @@
    :minTickSize [1 "day"]
    :min         from-date
    :max         to-date
-   :color      "#1C3645"
-   :tickColor "#ccc"
+   :color       "#142934"
+   :tickColor   "#999999"
    :font-weight "bold"
    :zoomRange   [fortnight-in-millis nil]
    :panRange    [from-date to-date]})
@@ -30,8 +30,8 @@
      :max        (+ 2 (count labels))
      :zoomRange  false
      :panRange   false
-     :color      "#1C3645"
-     :tickColor "#ccc"
+     :color      "#142934"
+     :tickColor "#999999"
      :position   :right
      :ticks      (map (fn [[k v]] [v (fmt-help/label(name k))]) labels)
      :labelWidth 180}))

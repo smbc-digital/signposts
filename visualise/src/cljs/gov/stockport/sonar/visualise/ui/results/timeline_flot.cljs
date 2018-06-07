@@ -23,7 +23,7 @@
                      :margin          {:top    0
                                        :bottom 10
                                        :left   0
-                                       :right  40}}
+                                       :right  30}}
             :pan    {:interactive true
                      :cursor      :move
                      :frameRate   20}

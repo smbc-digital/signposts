@@ -17,19 +17,19 @@ div.reset-cards {
   display: inline-block;
   margin: 5px 5px 5px 0;
   padding: 5px 2px 5px 2px;
-  border: solid 1px #ccc;
+  border: solid 1px #999999;
   box-shadow: 2px 2px 2px #ccc;
   width: 45%;
   cursor: pointer;
   border-radius: 3px;
   background-color: white;
   font-size: 0.9em;
-  color: #1E3545; }
+  color: #142934; }
 
 div.reset-cards-text {
-  font-family: "open sans", arial, sans-serif;
+  font-family: "Source Open Sans", arial, sans-serif;
   font-weight: 400;
-  color: #1C3645;
+  color: #142934;
   display: inline-block;
   width: 80%;
   float: right;
@@ -39,7 +39,7 @@ div.reset-cards-text {
 div.person-container {
   box-shadow: 10px 10px 10px #ccc;
   margin: 10px 0px 20px 0px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #999999;
   border-radius: 5px;
   padding-left: 5px; }
   div.person-container.yellow {
@@ -87,7 +87,7 @@ div.person {
   padding: 20px 0px 5px 0px;
   background-color: white; }
   div.person .event-details-contact {
-    border-bottom: solid 1px #ccc;
+    border-bottom: solid 1px #999999;
     margin: 15px 0 10px 0;
     padding: 10px 0 10px 0; }
   div.person div.events-list :last-of-type {
@@ -95,10 +95,10 @@ div.person {
 
 div.events-header > h3 {
   text-align: center;
-  color: #152934; }
+  color: #142934; }
 div.events-header > p {
   text-align: center;
-  color: #152934; }
+  color: #142934; }
 
 div.toggle-data {
   text-align: center;
@@ -125,7 +125,7 @@ div.toggle-data {
     font-size: 18px;
     font-family: "Source Sans Pro"; }
   .title .page-title {
-    font-family: 'Source Sans Pro';
+    font-family: "Source Sans Pro";
     color: white;
     font-size: 32px;
     font-weight: 400;
@@ -139,7 +139,7 @@ div.toggle-data {
   margin-top: 120px;
   background-color: #F0F4F7; }
   #results .results-tab {
-    background-color: #fff; }
+    background-color: white; }
 
 #welcome-message {
   position: relative;
@@ -173,11 +173,11 @@ div.login-form {
   padding: 30px 20px 40px 20px; }
   div.login-form > h4 {
     text-align: center;
-    color: #1C3645;
+    color: #142934;
     line-height: 1.75em; }
   div.login-form.input-group-addon {
     background-color: white;
-    color: #1C3645;
+    color: #142934;
     border-right: none; }
   div.login-form input::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */
@@ -201,7 +201,7 @@ div.recent-searches {
   padding-bottom: 40px;
   color: #111; }
   div.recent-searches .container h4 {
-    color: #152934;
+    color: #142934;
     margin-left: 11px; }
     div.recent-searches .container h4 a {
       font-size: 15px;
@@ -311,8 +311,8 @@ div.event-source-body {
 
 .search-bar {
   background-color: #fff;
-  box-shadow: 0px 10px 15px #999;
-  border-bottom: 1px solid #999;
+  box-shadow: 0px 10px 15px #999999;
+  border-bottom: 1px solid #999999;
   z-index: 1000;
   position: fixed;
   width: 100%;
@@ -375,7 +375,7 @@ div.search-item {
     margin-left: 0;
     font-size: 11px;
     text-transform: uppercase;
-    color: #aaa;
+    color: #999999;
     line-height: 1.1; }
     div.search-item .item-container > label > input {
       display: inline-block;
@@ -409,12 +409,12 @@ div.search-item {
 select.custom-select {
   margin-left: 20px;
   border-radius: 5px;
-  border: 1px solid #AAA; }
+  border: 1px solid #999999; }
   select.custom-select .option {
     padding: 0px 20px 0px 20px;
     font-size: 0.9em; }
     select.custom-select .option :first-child {
-      color: #ccc;
+      color: #999999;
       text-transfrom: capitalize; }
 
 .selected-event {
@@ -532,18 +532,18 @@ div.sp-individual {
     font-size: 1rem;
     font-weight: bold; }
     div.sp-individual div.upper .left {
-      border-left: 5px solid #919a9f;
+      border-left: 5px solid #999999;
       border-radius: 5px 0px 0px 0px;
-      background-color: rgba(145, 154, 159, 0.4); }
+      background-color: rgba(153, 153, 153, 0.4); }
   div.sp-individual div.lower {
     border-radius: 0px 0px 5px 5px;
     border-bottom: 1px solid #c6d4e5;
     border-right: 1px solid #c6d4e5;
     font-size: 0.8rem; }
     div.sp-individual div.lower .left {
-      border-left: 5px solid #919a9f;
+      border-left: 5px solid #999999;
       border-radius: 0px 0px 0px 5px;
-      background-color: rgba(145, 154, 159, 0.4); }
+      background-color: rgba(153, 153, 153, 0.4); }
 
 .graph div.flot-timeline {
   width: 100%;
@@ -588,7 +588,7 @@ body {
   -ms-user-select: text;
   -o-user-select: text;
   user-select: text;
-  font-family: Open Sans, sans-serif; }
+  font-family: "Source Sans Pro",arial, sans-serif; }
   body .btn-primary {
     background-color: #366c8b; }
   body i.fa {

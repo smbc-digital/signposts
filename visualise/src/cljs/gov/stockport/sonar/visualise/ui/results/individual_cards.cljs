@@ -77,7 +77,7 @@
           [:div.reset-cards {:on-click #(swap! !data people/toggle-sort-by)}
           [:div.icon[:i.fa.fa-arrows-v.ml-2]]
           [:div.reset-cards-text
-          (if (people/sort-by-relevance @!data) " Sort by A-Z" " Sort by relevance")]]]
+          (if (people/sort-by-relevance @!data) [:span " Sort by" [:br] "A-Z"] [:span " Sort by relevance"])]]]
        [:div.fixed-height (map (card !data) (people/sort-as @!data))]])))
 
 (defonce !current (atom nil))
