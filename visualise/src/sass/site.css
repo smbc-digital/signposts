@@ -192,7 +192,7 @@ div.login-form {
     color: #aaa;
     font-size: 0.9em; }
   div.login-form button.btn-primary {
-    background-color: #0275d8; }
+    background-color: #2b98f0; }
 
 div.recent-searches {
   z-index: 1;
@@ -223,7 +223,7 @@ div.search-event {
     padding-right: 18px; }
     div.search-event .search-history-button button {
       color: white;
-      background-color: #0275d8;
+      background-color: #2b98f0;
       cursor: pointer;
       height: 40px;
       border: none !important; }
@@ -319,7 +319,7 @@ div.event-source-body {
   height: 55px;
   top: 50px; }
   .search-bar i.fa.fa-plus-circle {
-    color: #0275d8;
+    color: #2b98f0;
     font-size: 1.5em;
     margin-left: 10px; }
   .search-bar input.form-control {
@@ -334,7 +334,7 @@ i.fa.fa-times.delete-item {
     color: red; }
 
 button.search {
-  background-color: #2A98EF !important;
+  background-color: #2b98f0 !important;
   font-weight: 600;
   font-size: 18px;
   font-family: "Source Sans Pro";
@@ -435,7 +435,7 @@ select.custom-select {
   padding: 5px 15px 15px 12px;
   margin: 15px 5px 20px 5px;
   border-bottom: solid 1px white;
-  box-shadow: 10px 10px 10px #ddd; }
+  box-shadow: 10px 10px 10px #ccc; }
   .event-details .panel-heading {
     background-color: #1c3645;
     color: white;
