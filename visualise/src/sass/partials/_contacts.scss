@@ -5,17 +5,21 @@ div.person-container{
     border-radius: 5px;
     padding-left:5px;
 
-    &.red{
-       border-top: 1px solid $base-red;
-       border-left: 5px solid $base-red;
-       background-color: $base-red-l;
+
+
+     &.yellow{
+            border-top: 1px solid $base-yellow;
+             border-left: 5px solid $base-yellow;
+             background-color: $base-yellow-l;
+      }
+
+
+    &.orange{
+       border-top: 1px solid $base-orange;
+       border-left: 5px solid $base-orange;
+       background-color: $base-orange-l;
     }
 
-    &.yellow{
-        border-top: 1px solid $base-yellow;
-         border-left: 5px solid $base-yellow;
-         background-color: $base-yellow-l;
-         }
 
     &.green{
        border-top: 1px solid $base-green;
@@ -23,22 +27,47 @@ div.person-container{
        background-color: $base-green-l;
     }
 
-    &.blue{
-        border-top: 1px solid $base-blue;
-        border-left: 5px solid $base-blue;
-        background-color: $base-blue-l;
+    &.navy{
+        border-top: 1px solid $base-navy;
+        border-left: 5px solid $base-navy;
+        background-color: $base-navy-l;
     }
 
-    &.aqua{
-      border-top: 1px solid $base-aqua;
-      border-left: 5px solid $base-aqua;
-      background-color: $base-aqua-l;
+    &.turquoise{
+      border-top: 1px solid $base-turquoise;
+      border-left: 5px solid $base-turquoise;
+      background-color: $base-turquoise-l;
     }
 
     &.purple{
         border-top: 1px solid $base-purple;
         border-left: 5px solid $base-purple;
         background-color: $base-purple-l;
+    }
+
+     &.pink{
+            border-top: 1px solid $base-pink;
+            border-left: 5px solid $base-pink;
+            background-color: $base-pink-l;
+        }
+
+    &.forest-green{
+            border-top: 1px solid $base-forest-green;
+            border-left: 5px solid $base-forest-green;
+            background-color: $base-forest-green-l;
+        }
+
+
+    &.lighter-purple{
+             border-top: 1px solid $base-lighter-purple;
+             border-left: 5px solid $base-lighter-purple;
+             background-color: $base-lighter-purple-l;
+         }
+
+     &.lighter-turquoise{
+                border-top: 1px solid $base-lighter-turquoise;
+                border-left: 5px solid $base-lighter-turquoise;
+                background-color: $base-turquoise-l;
     }
 }
 

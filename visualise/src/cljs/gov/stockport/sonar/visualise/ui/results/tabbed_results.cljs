@@ -10,7 +10,6 @@
     (fn []
       [:div
        [timeline-flot !data]
-       [contact-history !data]
-         ])))
+       [contact-history !data]])))
 
 

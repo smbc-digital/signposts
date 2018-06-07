@@ -42,23 +42,23 @@ div.person-container {
   border-top: 1px solid #ccc;
   border-radius: 5px;
   padding-left: 5px; }
-  div.person-container.red {
-    border-top: 1px solid #f36624;
-    border-left: 5px solid #f36624;
-    background-color: rgba(243, 102, 36, 0.4); }
   div.person-container.yellow {
     border-top: 1px solid #ffc502;
     border-left: 5px solid #ffc502;
     background-color: rgba(255, 197, 2, 0.4); }
+  div.person-container.orange {
+    border-top: 1px solid #f36624;
+    border-left: 5px solid #f36624;
+    background-color: rgba(243, 102, 36, 0.4); }
   div.person-container.green {
     border-top: 1px solid #8dc702;
     border-left: 5px solid #8dc702;
     background-color: rgba(141, 199, 2, 0.4); }
-  div.person-container.blue {
+  div.person-container.navy {
     border-top: 1px solid #2e3292;
     border-left: 5px solid #2e3292;
     background-color: rgba(46, 50, 146, 0.4); }
-  div.person-container.aqua {
+  div.person-container.turquoise {
     border-top: 1px solid #01a79d;
     border-left: 5px solid #01a79d;
     background-color: rgba(1, 167, 157, 0.4); }
@@ -66,6 +66,22 @@ div.person-container {
     border-top: 1px solid #91278e;
     border-left: 5px solid #91278e;
     background-color: rgba(145, 39, 142, 0.4); }
+  div.person-container.pink {
+    border-top: 1px solid #da4167;
+    border-left: 5px solid #da4167;
+    background-color: rgba(218, 65, 103, 0.4); }
+  div.person-container.forest-green {
+    border-top: 1px solid #295943;
+    border-left: 5px solid #295943;
+    background-color: rgba(41, 89, 67, 0.4); }
+  div.person-container.lighter-purple {
+    border-top: 1px solid #ca9de2;
+    border-left: 5px solid #ca9de2;
+    background-color: rgba(202, 157, 226, 0.4); }
+  div.person-container.lighter-turquoise {
+    border-top: 1px solid #06d7a0;
+    border-left: 5px solid #06d7a0;
+    background-color: rgba(1, 167, 157, 0.4); }
 
 div.person {
   padding: 20px 0px 5px 0px;
@@ -466,8 +482,8 @@ div.busy .spinner {
 div.sp-individual {
   cursor: pointer;
   background-color: #f3f7fa; }
-  div.sp-individual.red div.upper > .left,
-  div.sp-individual.red div.lower > .left {
+  div.sp-individual.orange div.upper > .left,
+  div.sp-individual.orange div.lower > .left {
     border-left: 5px solid #f36624;
     background-color: rgba(243, 102, 36, 0.4); }
   div.sp-individual.yellow div.upper > .left,
@@ -478,18 +494,34 @@ div.sp-individual {
   div.sp-individual.green div.lower > .left {
     border-left: 5px solid #8dc702;
     background-color: rgba(141, 199, 2, 0.4); }
-  div.sp-individual.aqua div.upper > .left,
-  div.sp-individual.aqua div.lower > .left {
+  div.sp-individual.turquoise div.upper > .left,
+  div.sp-individual.turquoise div.lower > .left {
     border-left: 5px solid #01a79d;
     background-color: rgba(1, 167, 157, 0.4); }
   div.sp-individual.purple div.upper > .left,
   div.sp-individual.purple div.lower > .left {
     border-left: 5px solid #91278e;
     background-color: rgba(145, 39, 142, 0.4); }
-  div.sp-individual.blue div.upper > .left,
-  div.sp-individual.blue div.lower > .left {
+  div.sp-individual.navy div.upper > .left,
+  div.sp-individual.navy div.lower > .left {
     border-left: 5px solid #2e3292;
     background-color: rgba(46, 50, 146, 0.4); }
+  div.sp-individual.pink div.upper > .left,
+  div.sp-individual.pink div.lower > .left {
+    border-left: 5px solid #da4167;
+    background-color: rgba(218, 65, 103, 0.4); }
+  div.sp-individual.forest-green div.upper > .left,
+  div.sp-individual.forest-green div.lower > .left {
+    border-left: 5px solid #295943;
+    background-color: rgba(41, 89, 67, 0.4); }
+  div.sp-individual.lighter-purple div.upper > .left,
+  div.sp-individual.lighter-purple div.lower > .left {
+    border-left: 5px solid #ca9de2;
+    background-color: rgba(202, 157, 226, 0.4); }
+  div.sp-individual.lighter-turquoise div.upper > .left,
+  div.sp-individual.lighter-turquoise div.lower > .left {
+    border-left: 5px solid #06d7a0;
+    background-color: rgba(6, 215, 160, 0.4); }
   div.sp-individual.has-selected-event {
     border-left: 5px solid red;
     padding-left: 5px; }

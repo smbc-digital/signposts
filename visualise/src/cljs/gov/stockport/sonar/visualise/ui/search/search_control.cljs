@@ -1,11 +1,13 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-control
   (:require [reagent.core :as r]
+            [clojure.string :as str]
             [gov.stockport.sonar.visualise.ui.search.query-control-state :as qcs]
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.query.client :refer [search]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
-            [gov.stockport.sonar.visualise.state :refer [!search-control-state !data !search-type !show-select !show-input   !active-plus]]
-            [clojure.string :as str]))
+            [gov.stockport.sonar.visualise.state
+               :refer
+             [!search-control-state !data !search-type !show-select !show-input   !active-plus]]))
 
 
 (defn- show-dropdown! []
@@ -22,18 +24,15 @@
   )
 
 (defn activate-plus[]
-  (reset! !active-plus 1)
-  )
+  (reset! !active-plus 1))
 
 (defn deactivate-plus[]
-  (reset! !active-plus 0)
-  )
+  (reset! !active-plus 0))
 
 
 (defn- hide-search-field[]
   (show-dropdown!)
-  (hide-search-item!)
-  )
+  (hide-search-item!))
 
 (defn- toggle-view[field]
   (if (= :none field)
@@ -43,7 +42,7 @@
     (do
       (hide-dropdown!)
       (show-search-item!)
-      (scs/set-selected-field! field) )))
+      (scs/set-selected-field! field))))
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
@@ -100,8 +99,7 @@
          :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]]
       [:div.delete-item-container
        [:i.fa.fa-times.ml-2.delete-item
-        {:on-click  hide-search-field}]]
-      ])])
+        {:on-click  hide-search-field}]]])])
 
 
 (defn search-criteria-control [query-callback]
@@ -119,33 +117,23 @@
             (=  0 !show-select ))
         [:i.fa.fa-plus-circle.add-search-item.active
          {
-          :aria-hidden "true"
           :title       "Add search criteria"
           :on-click    show-dropdown!}
          ]
-        [:i.fa.fa-plus-circle.add-search-item
-         {
-          :aria-hidden "true"
-          }
-      ]
-        )
+        [:i.fa.fa-plus-circle.add-search-item])
         [:span.input-group-btn
          [:button.btn.btn-primary.search
-          {:on-click change-search-criteria}
-          "Search"]]
-      ]]))
+          {:on-click change-search-criteria}"Search"]]]]))
 
 
 (defn query-wrapper [handler]
   (fn [terms]
     (if (not-empty terms)
       (search (qcs/extract-query-defs terms) handler)
-      (handler {})
-    )))
+      (handler {}))))
 
 (defn new-search-control [handler]
   (let [query-callback (query-wrapper handler)]
     (hide-search-item!)
     (show-dropdown!)
-
     [search-criteria-control query-callback]))

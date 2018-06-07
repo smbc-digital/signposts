@@ -57,7 +57,7 @@
            (date-of-birth pkey)]
          (let [areas (str/join ", " (sort areas))]
            [:div
-            [:strong "Addresses on record"] [:br]
+            [:strong "Address on record"] [:br]
             (if (str/blank? areas) "no locations" areas)])
          (let [event-type (str/join ", " (map #(-label %)(sort event-types)))]
            [:div

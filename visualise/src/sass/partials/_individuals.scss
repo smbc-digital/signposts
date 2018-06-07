@@ -20,8 +20,8 @@ div.sp-individual {
   cursor: pointer;
   background-color: $individual;
 
-  &.red {
-    @include individual($base-red, $base-red-l);
+  &.orange {
+    @include individual($base-orange, $base-orange-l);
   }
 
   &.yellow {
@@ -32,17 +32,34 @@ div.sp-individual {
     @include individual($base-green, $base-green-l);
   }
 
-  &.aqua {
-    @include individual($base-aqua, $base-aqua-l);
+  &.turquoise {
+    @include individual($base-turquoise, $base-turquoise-l);
   }
 
   &.purple {
     @include individual($base-purple, $base-purple-l);
   }
 
-  &.blue {
-    @include individual($base-blue, $base-blue-l);
+  &.navy {
+    @include individual($base-navy, $base-navy-l);
   }
+
+   &.pink {
+      @include individual($base-pink, $base-pink-l);
+    }
+
+    &.forest-green {
+          @include individual($base-forest-green, $base-forest-green-l);
+    }
+
+     &.lighter-purple{
+           @include individual($base-lighter-purple, $base-lighter-purple-l);
+        }
+
+
+    &.lighter-turquoise{
+       @include individual($base-lighter-turquoise, $base-lighter-turquoise-l);
+    }
 
   &.has-selected-event {
     border-left: 5px solid red;
