@@ -7,8 +7,11 @@
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
             [gov.stockport.sonar.visualise.state
                :refer
-             [!search-control-state !data !search-type !show-select !show-input   !active-plus]]))
+             [!search-control-state !data !search-type !show-select !show-input
+              !active-plus !selected-options]]))
 
+
+(def selected-options #{})
 
 (defn- show-dropdown! []
   (reset! !show-select 1))
@@ -23,12 +26,11 @@
   (reset! !show-input 0)
   )
 
-(defn activate-plus[]
+(defn activate-plus![]
   (reset! !active-plus 1))
 
-(defn deactivate-plus[]
+(defn deactivate-plus![]
   (reset! !active-plus 0))
-
 
 (defn- hide-search-field[]
   (show-dropdown!)
@@ -42,11 +44,35 @@
     (do
       (hide-dropdown!)
       (show-search-item!)
-      (scs/set-selected-field! field))))
+      (scs/set-selected-field! field)
+      (swap! !selected-options conj field)
+      ))
+  (deactivate-plus!)
+  )
+
+(defn remove-search-criteria[query-type]
+  (js/console.log (pr-str !selected-options))
+  (swap! !selected-options disj query-type)
+  (js/console.log (pr-str !selected-options))
+  (scs/remove-search-criteria! query-type)
+  )
+
+(defn set-search-term[value]
+  (scs/set-search-term! value)
+  (activate-plus!))
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
-  (add-search-history!))
+  (hide-search-field)
+  (show-dropdown!)
+  )
+
+(defn- change-search-criteria-and-search[]
+  (scs/add-search-criteria-and-search!)
+  (hide-search-field)
+  (show-dropdown!)
+  (add-search-history!)
+  )
 
 (defn nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
@@ -62,10 +88,15 @@
       :read-only "true"}]]]
      [:div.delete-item-container
      [:i.fa.fa-times.ml-2.delete-item
-     {:on-click #(scs/remove-search-criteria! query-type)}]]])
+     {:on-click #(remove-search-criteria query-type)}]]])
 
 (defn show-input-group []
   (scs/add-search-criteria!)
+  )
+
+(defn reset-search-field[]
+  (hide-search-field)
+  (swap! !search-control-state assoc :search-term "")
   )
 
 (defn input-group[]
@@ -78,11 +109,13 @@
        :autoFocus "autofocus"
        :on-change #(toggle-view (keyword (-> % .-target .-value)))
        }
+      (let [foo  @!selected-options]
       (map
         (fn [{:keys [target description selected]}]
+          (when (not(contains? foo target))
           ^{:key target}
-          [:option.option {:value target}  description])
-        (sort-by :display-order qcs/options))]
+          [:option.option {:value target}  description]))
+          (sort-by :display-order qcs/options)))]
      )
    (when (= 1 @!show-input)
      [:div.search-item
@@ -96,10 +129,10 @@
          :id "search-term"
          :size "10"
          :on-change   #(scs/set-search-term! (-> % .-target .-value))
-         :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria))}]]]
+         :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))}]]]
       [:div.delete-item-container
        [:i.fa.fa-times.ml-2.delete-item
-        {:on-click  hide-search-field}]]])])
+        {:on-click  reset-search-field}]]])])
 
 
 (defn search-criteria-control [query-callback]
@@ -112,18 +145,14 @@
                  :flex-wrap :wrap}}
         ~@(map nugget (scs/search-criteria))]
       [input-group]
-      (if (or
-            (> (count (scs/search-criteria)) 0)
-            (=  0 !show-select ))
-        [:i.fa.fa-plus-circle.add-search-item.active
+      [:i.fa.fa-plus-circle.add-search-item.active
          {
           :title       "Add search criteria"
-          :on-click    show-dropdown!}
+          :on-click    change-search-criteria}
          ]
-        [:i.fa.fa-plus-circle.add-search-item])
         [:span.input-group-btn
          [:button.btn.btn-primary.search
-          {:on-click change-search-criteria}"Search"]]]]))
+          {:on-click change-search-criteria-and-search}"Search"]]]]))
 
 
 (defn query-wrapper [handler]

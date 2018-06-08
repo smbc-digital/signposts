@@ -16,6 +16,7 @@
 (defonce !show-input  (r/atom 0))
 (defonce !active-plus (r/atom 0))
 (defonce !search-type  (r/atom ""))
+(defonce !selected-options  (r/atom (set [])))
 
 (defn- load-signposting-configuration []
   (GET "/signposting-config" {:response-format :json

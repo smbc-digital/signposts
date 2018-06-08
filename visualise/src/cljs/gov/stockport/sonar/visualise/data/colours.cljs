@@ -25,5 +25,5 @@
    :pink "#da4167"
    :forest-green "#295943"
    :lighter-purple "#ca9de2"
-   :lighter-turquoise "#06d7a0"
+   :lighter-turquoise "#540e2b"
    :black  "rgba(0,0,0,0.4)"})
