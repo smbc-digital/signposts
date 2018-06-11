@@ -57,8 +57,8 @@ div.sp-individual {
         }
 
 
-    &.lighter-turquoise{
-       @include individual($base-lighter-turquoise, $base-lighter-turquoise-l);
+    &.burgundy{
+       @include individual($base-burgundy, $base-burgundy-l);
     }
 
   &.has-selected-event {

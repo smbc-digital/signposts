@@ -5,7 +5,7 @@
 
 (def colour-priority
   [:orange :yellow :green :turquoise :navy :purple
-   :pink :forest-green :lighter-turquoise :lighter-purple])
+   :pink :forest-green :burgundy :lighter-purple])
 
 (defn colour [idx] (or (get colour-priority idx) :black))
 
@@ -23,7 +23,7 @@
    :purple "#91278e"
    :navy   "#2e3292"
    :pink "#da4167"
-   :forest-green "#295943"
+   :forest-green "#013326"
    :lighter-purple "#ca9de2"
-   :lighter-turquoise "#540e2b"
+   :burgundy "#540e2b"
    :black  "rgba(0,0,0,0.4)"})

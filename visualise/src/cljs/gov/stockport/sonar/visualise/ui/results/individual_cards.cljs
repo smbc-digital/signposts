@@ -61,7 +61,7 @@
             (if (str/blank? areas) "no locations" areas)])
          (let [event-type (str/join ", " (map #(-label %)(sort event-types)))]
            [:div
-            [:strong "Event Types"] [:br]
+            [:strong "Data type"] [:br]
             (if (str/blank? event-type) "" event-type)])
              ]]])))
 

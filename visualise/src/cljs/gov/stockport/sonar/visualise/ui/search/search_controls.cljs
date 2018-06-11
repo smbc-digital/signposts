@@ -2,103 +2,103 @@
   (:require [reagent.core :as r]))
 
 (defn full-name[]
-  [:label "Name"
-    [:input.form-control
-     {
-     :type    "text"
+  [:label "What name?"
+    [:input.form-control {:style {:width "100%"}}
+     {:type    "text"
      :pattern "^[a-zA-Z]{1,2}"
-     :name "name"
-     :placeholder "what name?"}]])
+     :name "search-term"
+     :id "search-term"
+     }]])
 
 (defn address[]
-  [:label "Address"
+  [:label "Address" {:style {:width "100%"}}
    [:input.form-control
     {:type :text
      :pattern "^[a-zA-Z]{1,2}"
-     :name "address"
-     :id "address"
+     :name "search-term"
+     :id "search-term"
+     :size "15"
      :placeholder "what address?"}]])
 
 (defn postcode[]
-  [:label "Postcode"
+  [:label "Postcode" {:style {:width "100%"}}
    [:input.form-control
     {:type "text"
+     :size "8"
      :pattern "^[a-zA-Z]{1,2}[0-9]{1,2}"
-     :name "postcode"
-     :id "postcode"
-     :placeholder "what postcode"}]])
+     :name "search-term"
+     :id "search-term"}]])
 
 (defn dob[]
-  [:label "Date of birth"
+  [:label "Date of birth" {:style {:width "100%"}}
    [:input.form-control
-    {:type "date"
-     :name "dob"
+    {:type "search-term"
+     :name "search-term"
+     :size "10"
      :id "dob"}]])
 
 (defn age-less-than[]
-  [:label "Aged up to"
+  [:label "Aged up to" {:style {:width "100%"}}
    [:input.form-control
     {:type "number"
      :min "1" :max "150"
-     :placeholder "maximum age in years"
-     :name "age=less=than"
-     :id "age=less=than" }]])
+     :size "3"
+     :placeholder "search-term"
+     :name "search-term"
+     :id "search-term" }]])
 
 (defn age-more-than[]
   [:label "Aged Over"
-   [:input.form-control
+   [:input.form-control {:style {:width "100%"}}
     {:type "number"
+     :size "3"
      :min "0"
      :max "100"
-     :name "age-more-than"
-     :id  "age-more-than"
-     :placeholder "minimum age in years"}]])
+     :name "search-term"
+     :id  "search-term"}]])
 
 (defn age-range[]
   [:div
   [:label "Aged Over"
-   [:input.form-control
+   [:input.form-control{:style {:width "100%"}}
     {:type "number"
      :min "0"
      :max "100"
-     :name "age-more-than"
-     :id  "age-more-than"
+     :size "3"
+     :name "search-term"
+     :id  "search-term"
      :placeholder "minimum age in years"}]
-   [:label "Aged up to"
+   [:label "Aged up to" {:style {:width "100%"}}
     [:input.form-control
      {:type "number"
       :min "1" :max "150"
+      :size "3"
       :placeholder "maximum age in years"
-      :name "age=less=than"
-      :id "age=less=than" }]]]])
-
-
+      :name "age=less=than" :id "age=less=than" }]]]])
 
 (defn all-fields[]
-  [:label "All fields"
+  [:label "All fields" {:style {:width "100%"}}
    [:input.form-control
     {:type "text"
-     :name "all-fields"
-     :placeholder "general search"
-     :id "all-fields"}]])
+     :name "search-term"
+     :id "search-term"
+     :size "15"}]])
 
 (defn event-source[]
-  [:label "Event Source"
+  [:label "Event Source" {:style {:width "100%"}}
    [:input.form-control
     {:type "text"
-     :name "event-type"
-     :id "event-type"
-     :placeholder "search for event source"}]])
+     :size "10"
+     :name "search-term"
+     :id"search-term"}]])
 
 (defn event-type[]
-  [:label "Event Type"
+  [:label "Event Type" {:style {:width "100%"}}
    [:input.form-control
     {:type "text"
-     :name "event-type"
-     :id "event-type"
-     :placeholder "search for an event type"}]])
-
-
+     :name "search-term"
+     :id "search-term"
+     :size "10"}]])
 
 
 (def search-control-map

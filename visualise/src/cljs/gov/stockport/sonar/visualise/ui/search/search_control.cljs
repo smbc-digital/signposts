@@ -11,8 +11,6 @@
               !active-plus !selected-options]]))
 
 
-(def selected-options #{})
-
 (defn- show-dropdown! []
   (reset! !show-select 1))
 
@@ -109,6 +107,8 @@
        :autoFocus "autofocus"
        :on-change #(toggle-view (keyword (-> % .-target .-value)))
        }
+      (when (empty? (scs/search-criteria))
+        (reset! !selected-options  #{}) )
       (let [foo  @!selected-options]
       (map
         (fn [{:keys [target description selected]}]
