@@ -28,7 +28,7 @@
       [:div.col.col-md-4
        [:strong.label "Close Date"]]
       [:div.col.col-md-8
-       (:end-date event)
+       (fh/cf-close-date(:end-date event))
        ]])
    ])
 
@@ -48,7 +48,7 @@
      [:strong "Address start date"]
      ]
     [:div.col.col-9-sm
-     (:address-start event)
+     (fh/cf-close-date (:address-start event))
      ]]
    (if (not (s/blank? (:address-end event)))
    [:div.row
@@ -56,7 +56,7 @@
      [:strong "Address end date"]
      ]
     [:div.col.col-9-sm
-     (:address-end event)
+     (fh/cf-close-date(:address-end event))
      ]])
    ]
 

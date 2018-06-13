@@ -380,11 +380,13 @@ div.search-item {
     div.search-item .item-container > label > input {
       display: inline-block;
       font-size: 16px;
-      border: none;
+      border: none !important;
       line-height: 1;
       width: 90%;
       overflow: hidden;
       font-weight: 400; }
+      div.search-item .item-container > label > input:focus {
+        border: none !important; }
   div.search-item .item-container {
     display: table-cell;
     width: 80%; }

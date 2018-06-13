@@ -2,9 +2,10 @@
   (:require [reagent.core :as r]))
 
 (defn full-name[]
-  [:label "What name?"
-    [:input.form-control {:style {:width "100%"}}
-     {:type    "text"
+  [:label "What name?" {:style {:width "100%"}}
+    [:input.form-control
+     {:type "text"
+     :size "10"
      :pattern "^[a-zA-Z]{1,2}"
      :name "search-term"
      :id "search-term"
@@ -32,7 +33,7 @@
 (defn dob[]
   [:label "Date of birth" {:style {:width "100%"}}
    [:input.form-control
-    {:type "search-term"
+    {:type "date"
      :name "search-term"
      :size "10"
      :id "dob"}]])
@@ -82,7 +83,7 @@
     {:type "text"
      :name "search-term"
      :id "search-term"
-     :size "15"}]])
+     :size "10"}]])
 
 (defn event-source[]
   [:label "Event Source" {:style {:width "100%"}}

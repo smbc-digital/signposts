@@ -34,7 +34,7 @@
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (:end-date event)
+     (fh/cf-close-date(:end-date event))
      ]])
    ])
 

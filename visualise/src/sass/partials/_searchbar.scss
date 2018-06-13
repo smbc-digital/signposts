@@ -101,15 +101,19 @@ div.search-item{
        > input {
               display: inline-block;
               font-size: 16px;
-              border: none;
+              border: none !important;
               line-height:1;
               width: 90%;
               overflow: hidden;
               font-weight:400;
+
+              &:focus {
+                 border: none !important;
               }
     }
 
 
+    }
     }
 
     .item-container

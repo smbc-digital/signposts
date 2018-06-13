@@ -37,25 +37,21 @@
 (defn- toggle-view[field]
   (if (= :none field)
     (do
-    (show-dropdown!)
-    (hide-search-item!))
+      (show-dropdown!)
+      (hide-search-item!))
     (do
       (hide-dropdown!)
       (show-search-item!)
       (scs/set-selected-field! field)
-      (swap! !selected-options conj field)
-      ))
+      (swap! !selected-options conj field)))
   (deactivate-plus!)
   )
 
-(defn remove-search-criteria[query-type]
-  (js/console.log (pr-str !selected-options))
+(defn- remove-search-criteria[query-type]
   (swap! !selected-options disj query-type)
-  (js/console.log (pr-str !selected-options))
-  (scs/remove-search-criteria! query-type)
-  )
+  (scs/remove-search-criteria! query-type))
 
-(defn set-search-term[value]
+(defn- set-search-term[value]
   (scs/set-search-term! value)
   (activate-plus!))
 
@@ -72,7 +68,7 @@
   (add-search-history!)
   )
 
-(defn nugget [{:keys [query-type search-term]}]
+(defn- nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
   [:div.search-item
    [:div.item-container
@@ -115,19 +111,18 @@
           (when (not(contains? foo target))
           ^{:key target}
           [:option.option {:value target}  description]))
-          (sort-by :display-order qcs/options)))]
-     )
+          (sort-by :display-order qcs/options)))])
    (when (= 1 @!show-input)
      [:div.search-item
       [:div.item-container
       [:label {:style {:width "100%"}}
         (get-in qcs/query-types [(scs/selected-control) :placeholder])
        [:input
-        {:type (get-in qcs/query-types [(scs/selected-control) :placeholder])
+        {:type "text"
          :value  (scs/search-term)
          :name "search-term"
          :id "search-term"
-         :size "10"
+         :size (get-in qcs/query-types [(scs/selected-control) :size])
          :on-change   #(scs/set-search-term! (-> % .-target .-value))
          :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))}]]]
       [:div.delete-item-container
@@ -148,8 +143,7 @@
       [:i.fa.fa-plus-circle.add-search-item.active
          {
           :title       "Add search criteria"
-          :on-click    change-search-criteria}
-         ]
+          :on-click    change-search-criteria}]
         [:span.input-group-btn
          [:button.btn.btn-primary.search
           {:on-click change-search-criteria-and-search}"Search"]]]]))
