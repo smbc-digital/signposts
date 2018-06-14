@@ -72,12 +72,6 @@
     ""
   (f/unparse custom-formatter (local/to-local-date-time  date-time))))
 
-(defn cf-close-date[date-time]
-  (js/console.log date-time)
-  (if (s/blank? date-time)
-    ""
-  (f/unparse custom-formatter (f/parse carefirst-unformatter "20-Jun-15"))))
-
 (defn unparse-dob [event]
   (if-let [ts (:dob event)]
     (assoc event :dob (->> ts (f/parse dob-unformatter) (f/unparse dob-formatter)))
