@@ -62,9 +62,8 @@
      [:strong "Address end date"]
      ]
     [:div.col.col-md-9
-     (:address-end event)
-     ]])
-   ])
+      (:address-end event)
+     ]])])
 
 (defn contact[event]
   [:div.event-details
@@ -93,8 +92,7 @@
       (:worker-tel event)
       ]
     ]
-   ]]]
-  )
+   ]]])
 
 
 (defn service-agreement[event]
@@ -129,5 +127,4 @@
      [:div.col.col-md-8
       (:service-end-reason event) [:br]
       ]
-     ]
-    ]]])
+     ]]]])

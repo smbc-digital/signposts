@@ -16,32 +16,27 @@
     [:div.col.col-md-4
      [:strong.label "EIS Number"]]
     [:div.col.col-md-8
-     (:eis-number event)
-     ]]
+     (:eis-number event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "DOB"]]
     [:div.col.col-md-8
-     (fh/to-dob(:dob event))
-     ]]
+     (fh/to-dob(:dob event))]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Unique Pupil ID"]]
     [:div.col.col-md-8
-     (:unique-pupil-number event)
-     ]]
+     (:unique-pupil-number event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Open Date"]]
     [:div.col.col-md-8
-     (:timestamp (fh/unparse-timestamp event))
-     ]]
+     (:timestamp (fh/unparse-timestamp event))]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (:end-date event)
-     ]]])
+     (fh/eis-close-date(:end-date event))]]])
 
 (defn- middle-column[event]
   [:div.col.col-md-4
@@ -51,10 +46,7 @@
      ]
     [:div.col.col-md-9
      (:address event)"," [:br]
-     (:postcode event)
-     ]]
-   ]
-  )
+     (:postcode event)]]])
 
 (defn contact [event]
   [:div
@@ -73,9 +65,7 @@
       [:strong "Outcome"]]
      [:div.col.col-md-8
       "Proceed to Social Care Referral"]]
-    ]
-   ]]
-  )
+    ]]])
 
 (defn cin [event]
   [:div
@@ -94,9 +84,7 @@
       [:strong "Closure reason"]]
      [:div.col.col-md-8
       (:closure event)]]
-    ]
-   ]]
-  )
+    ]]])
 
 (defn lac [event]
   [:div
@@ -114,10 +102,7 @@
      [:div.col.col-md-4
       [:strong "Closure reason"]]
      [:div.col.col-md-8
-      (:closure-reason event)]]
-    ]
-    ]]
-  )
+      (:closure-reason event)]]]]])
 
 (defn sen [event]
   [:div
@@ -135,7 +120,4 @@
      [:div.col.col-md-4
       [:strong "Ongoing"]]
      [:div.col.col-md-8
-      (:on-going event)]]
-    ]
-   ]]
-  )
+      (:on-going event)]]]]])
