@@ -20,12 +20,10 @@
   [:div.container-fluid {:id "results"}
    [:div.row.no-gutters
     [:div.col-lg-2.col-md-3.col-sm-4
-
      [ic/cards !data]]
     [:div.col-lg-10.col-md-9.col-sm-8.results-tab
      [tr/results-tab !data]]]])
 
-;
 (defn home-page []
   (js/setInterval refresh-status! 60000)
   (fn []
@@ -41,8 +39,6 @@
      [:div.column.col-lg-1.col-md-3.col-sm-2.col-xs-4 {:style{:padding-left  "0"}}
       [:button.btn.btn-primary {:on-click ac/logout} "Logout"]]]]
    [nsc/new-search-control (h/default-handler !data)]
-
-
    (if (not-empty (:people @!data))
      [results !data]
      [welcome-message])]))

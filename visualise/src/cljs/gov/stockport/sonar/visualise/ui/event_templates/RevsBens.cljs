@@ -9,67 +9,52 @@
       [:div.col.col-md-4
        [:strong.label "Name"]]
       [:div.col.col-md-8
-       (:name event)
-       ]]
+       (:name event)]]
       [:div.row
        [:div.col.col-md-4
         [:strong.label "DOB"]]
        [:div.col.col-md-8
-        (fh/to-dob(:dob event))
-        ]]
+        (fh/to-dob(:dob event))]]
      [:div.row
       [:div.col.col-md-4
        [:strong.label "Council Tax ID"]]
       [:div.col.col-md-8
-       (:council-tax-id event)
-       ]]
+       (:council-tax-id event)]]
      (if (some? (:housing-benefit-id event))
        [:div.row
         [:div.col.col-md-4
          [:strong.label "Housing Benefit ID"]]
         [:div.col.col-md-8
-         (:housing-benefit-id event)
-         ]]
-
-       )
+         (:housing-benefit-id event)]])
      [:div.row
       [:div.col.col-md-4
        [:strong.label "National Insurance"]]
       [:div.col.col-md-8
-       (:ni-number event)
-       ]]
+       (:ni-number event)]]
      [:div.row
       [:div.col.col-md-4
        [:strong.label "Open Date"]]
       [:div.col.col-md-8
-       (:timestamp (fh/unparse-timestamp event))
-       ]]
+       (:timestamp (fh/unparse-timestamp event))]]
      [:div.row
       [:div.col.col-md-4
        [:strong.label "Dependents"]]
       [:div.col.col-md-8
-       (:non-dependents event)
-       ]]
+       (:non-dependents event)]]
      [:div.row
       [:div.col.col-md-4
        [:strong.label "Non Dependents"]]
       [:div.col.col-md-8
-       (:number-of-non-dependents event)
-       ]]
-     ])
+       (:number-of-non-dependents event)]]])
 
 (defn- middle-column[event]
   [:div.col.col-md-4
    [:div.row
     [:div.col.col-md-3
-     [:strong "Address"]
-     ]
+     [:strong "Address"]]
     [:div.col.col-md-9
      (:address event) [:br]
-     (:postcode event)
-     ]]
-   ]
-  )
+     (:postcode event)]]])
 
 (defn ct-support[event]
     [:div.event-details
@@ -81,26 +66,19 @@
       [:div.col.col-md-4
        [:div.row
         [:div.col.col-md-4
-         [:strong "Benefit Type"]
-         ]
+         [:strong "Benefit Type"]]
         [:div.col-md-8
-         (:benefit-type event)
-         ]]
+         (:benefit-type event)]]
        [:div.row
         [:div.col-md-4
-         [:strong "Claim status"]
-         ]
+         [:strong "Claim status"]]
         [:div.col-md-8
-         (:ctb-claim-status event)
-         ]]
+         (:ctb-claim-status event)]]
        [:div.row
         [:div.col.col-md-4
-         [:strong "Tenancy Type"]
-         ]
+         [:strong "Tenancy Type"]]
         [:div.col.col-md-8
-         (:tenancy-type event)
-         ]]
-       ]]])
+         (:tenancy-type event)]]]]])
 
 (defn ctax-bill[event]
   [:div.event-details
@@ -112,19 +90,14 @@
      [:div.col.col-md-4
       [:strong.label "Name"]]
      [:div.col.col-md-8
-      (:name event)
-      ]]
+      (:name event)]]
     [:div.row
      [:div.col.col-md-4
       [:strong.label "Event Logged"]]
      [:div.col.col-md-8
-      (:timestamp (fh/unparse-timestamp event))
-      ]]
-    ]
+      (:timestamp (fh/unparse-timestamp event))]]]
     (middle-column event)
-    [:div.col.col-md-4
-     ]
-]])
+    [:div.col.col-md-4]]])
 
 (defn hb-cts[event]
   [:div.event-details
@@ -136,29 +109,20 @@
     [:div.col.col-md-4
      [:div.row
       [:div.col.col-md-4
-       [:strong "Benefit Type"]
-       ]
+       [:strong "Benefit Type"]]
       [:div.col.col-md-8
-       (:benefit-type event)
-       ]]
+       (:benefit-type event)]]
      [:div.row
       [:div.col.col-md-4
-       [:strong "HB Claim status"]
-       ]
+       [:strong "HB Claim status"]]
       [:div.col.col-md-8
-       (:hb-claim-status event)
-       ]]
+       (:hb-claim-status event)]]
      [:div.col.col-md-4
-      [:strong "CTS Claim status"]
-      ]
+      [:strong "CTS Claim status"]]
      [:div.col.col-md-8
-      (:ctb-claim-status event)
-      ]]
+      (:ctb-claim-status event)]]
      [:div.row
       [:div.col.col-md-4
-       [:strong "Tenancy Type"]
-       ]
+       [:strong "Tenancy Type"]]
       [:div.col.col-md-8
-       (:tenancy-type event)
-       ]]
-     ]])
+       (:tenancy-type event)]]]])

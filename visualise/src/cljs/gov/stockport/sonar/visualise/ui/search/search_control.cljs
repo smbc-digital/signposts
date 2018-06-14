@@ -46,8 +46,7 @@
       (activate-plus!)
       (show-search-item!)
       (scs/set-selected-field! field)
-      (swap! !selected-options conj field)))
-  )
+      (swap! !selected-options conj field))))
 
 (defn- remove-search-criteria[query-type]
   (swap! !selected-options disj query-type)
@@ -60,15 +59,13 @@
   (scs/add-search-criteria!)
   (hide-search-field)
   (show-dropdown!)
-  (deactivate-plus!)
-  )
+  (deactivate-plus!))
 
 (defn- change-search-criteria-and-search[]
   (scs/add-search-criteria-and-search!)
   (hide-search-field)
   (show-dropdown!)
-  (add-search-history!)
-  )
+  (add-search-history!))
 
 (defn- nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}

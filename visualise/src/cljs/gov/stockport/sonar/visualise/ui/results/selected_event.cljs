@@ -8,5 +8,4 @@
       (when (not-empty selected)
         [:div.selected-event
          ((tm/get-template selected) selected)
-         ]
-        ))))
+         ]))))

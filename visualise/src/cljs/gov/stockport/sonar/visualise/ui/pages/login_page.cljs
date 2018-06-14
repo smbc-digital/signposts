@@ -8,5 +8,4 @@
    [busy/overlay]
       [:div.login-form
      [:h4 [:i.fa.fa-map-signs.mr-2] [:br] "SIGNPOSTS"]
-     [login-form]
-     ]])
+     [login-form]]])

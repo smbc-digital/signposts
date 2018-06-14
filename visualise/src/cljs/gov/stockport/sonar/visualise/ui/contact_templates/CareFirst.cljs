@@ -28,9 +28,8 @@
       [:div.col.col-md-4
        [:strong.label "Close Date"]]
       [:div.col.col-md-8
-       (fh/cf-close-date(:end-date event))
-       ]])
-   ])
+       (:end-date event)
+       ]])])
 
 
 (defn- middle-column [event]
@@ -45,22 +44,16 @@
      ]]
    [:div.row
     [:div.col.col-md-8
-     [:strong "Address start date"]
-     ]
+     [:strong "Address start date"]]
     [:div.col.col-9-sm
-     (fh/cf-close-date (:address-start event))
-     ]]
+     (fh/cf-close-date (:address-start event))]]
    (if (not (s/blank? (:address-end event)))
    [:div.row
     [:div.col.col-md-8
-     [:strong "Address end date"]
-     ]
+     [:strong "Address end date"]]
     [:div.col.col-9-sm
-     (fh/cf-close-date(:address-end event))
-     ]])
-   ]
-
-  )
+     (fh/cf-close-date(:address-end event))]])
+   ])
 
 (defn contact[event]
   [:div
@@ -85,11 +78,7 @@
       [:strong "Worker"]]
      [:div.col.col-md-8
       (:worker-name event) [:br]
-      (:worker-tel event)
-      ]
-    ]
-   ]]]
-  )
+      (:worker-tel event)]]]]])
 
 
 (defn service-agreement[event]
@@ -103,8 +92,7 @@
      [:div.col.col-md-4
       [:strong "Service Provider"]]
      [:div.col.col-md-8
-      (:service-provider event)
-      ]]
+      (:service-provider event)]]
     [:div.row
      [:div.col.col-md-4
       [:strong "Type"]]
@@ -114,14 +102,9 @@
      [:div.col.col-md-4
       [:strong "Element"]]
      [:div.col.col-md-8
-      (:service-element event) [:br]
-      ]
-     ]
+      (:service-element event) [:br]]]
     [:div.row
      [:div.col.col-md-4
       [:strong "End Reasom"]]
      [:div.col.col-md-8
-      (:service-end-reason event) [:br]
-      ]
-     ]
-    ]]])
+      (:service-end-reason event) [:br]]]]]])

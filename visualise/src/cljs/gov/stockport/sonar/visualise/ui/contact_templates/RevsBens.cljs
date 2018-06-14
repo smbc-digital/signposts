@@ -9,54 +9,42 @@
       [:div.col.col-md-3
        [:strong.label "Council Tax ID"]]
       [:div.col.col-md-9
-       (:eis-number event)
-       ]]
+       (:eis-number event)]]
      [:div.row
       [:div.col.col-md-3
        [:strong.label "National Insurance"]]
       [:div.col.col-md-9
-       (:ni-number event)
-       ]]
+       (:ni-number event)]]
      [:div.row
       [:div.col.col-md-4
        [:strong.label "DOB"]]
       [:div.col.col-md-8
-       (fh/to-dob(:dob event))
-       ]]
+       (fh/to-dob(:dob event))]]
      [:div.row
       [:div.col.col-md-3
        [:strong.label "Open Date"]]
       [:div.col.col-md-9
-       (:timestamp (fh/unparse-timestamp event))
-       ]]
+       (:timestamp (fh/unparse-timestamp event))]]
      [:div.row
       [:div.col.col-md-3
        [:strong.label "Dependents"]]
       [:div.col.col-md-9
-       (:non-dependents event)
-       ]]
+       (:non-dependents event)]]
      [:div.row
       [:div.col.col-md-3
        [:strong.label "Non Dependents"]]
       [:div.col.col-md-9
        (:number-of-non-dependents event)
-       ]]
-     ])
-
+       ]]])
 
 (defn- middle-column[event]
   [:div.col.col-md-4
    [:div.row
     [:div.col.col-md-3
-     [:strong "Address"]
-     ]
+     [:strong "Address"]]
     [:div.col.col-md-9
      (:address event) [:br]
-     (:postcode event)
-     ]]
-   ]
-  )
-
+     (:postcode event)]]])
 
 (defn ct-support[event]
     [:div
@@ -67,26 +55,19 @@
       [:div.col.col-md-4
        [:div.row
         [:div.col.col-md-3
-         [:strong "Benefit Type"]
-         ]
+         [:strong "Benefit Type"]]
         [:div.col.col-md-9
-         (:benefit-type event)
-         ]]
+         (:benefit-type event)]]
        [:div.row
         [:div.col.col-md-3
-         [:strong "CTS Claim status"]
-         ]
+         [:strong "CTS Claim status"]]
         [:div.col.col-md-9
-         (:ctb-claim-status event)
-         ]]
+         (:ctb-claim-status event)]]
        [:div.row
         [:div.col.col-md-3
-         [:strong "Tenancy Type"]
-         ]
+         [:strong "Tenancy Type"]]
         [:div.col.col-md-9
-         (:tenancy-type event)
-         ]]
-       ]]])
+         (:tenancy-type event)]]]]])
 
 (defn ctax-bill[event]
   [:div
@@ -97,19 +78,14 @@
      [:div.col.col-md-3
       [:strong.label "Other Name on Bill"]]
      [:div.col.col-md-9
-      (:other-name-on-bill event)
-      ]]
+      (:other-name-on-bill event)]]
     [:div.row
      [:div.col.col-md-3
       [:strong.label "Event Logged"]]
      [:div.col.col-md-9
-      (:timestamp (fh/unparse-timestamp event))
-      ]]
-    ]
+      (:timestamp (fh/unparse-timestamp event))]]]
     (middle-column event)
-    [:div.col.col-md-4
-     ]
-]])
+    [:div.col.col-md-4]]])
 
 
 (defn hb-cts[event]
@@ -121,38 +97,27 @@
     [:div.col.col-md-4
      [:div.row
       [:div.col.col-md-9
-       [:strong "Benefit Type"]
-       ]
+       [:strong "Benefit Type"]]
       [:div.col.col-md-9
-       (:benefit-type event)
-       ]]
+       (:benefit-type event)]]
      [:div.row
       [:div.col.col-md-9
-       [:strong "HB Claim status"]
-       ]
+       [:strong "HB Claim status"]]
       [:div.col.col-md-9
-       (:hb-claim-status event)
-       ]]
+       (:hb-claim-status event)]]
      [:div.row
       [:div.col.col-md-3
-       [:strong "CTS Claim status"]
-       ]
+       [:strong "CTS Claim status"]]
       [:div.col.col-md-9
-       (:ctb-claim-status event)
-       ]]
+       (:ctb-claim-status event)]]
      [:div.row
       [:div.col.col-md-9
-       [:strong "Claim status"]
-       ]
+       [:strong "Claim status"]]
       [:div.col.col-md-9
-       (:hb-claim-status event)
-       ]]
+       (:hb-claim-status event)]]
      [:div.row
       [:div.col.col-md-9
-       [:strong "Tenancy Type"]
-       ]
+       [:strong "Tenancy Type"]]
       [:div.col.col-md-9
-       (:tenancy-type event)
-       ]]
-     ]]])
+       (:tenancy-type event)]]]]])
 

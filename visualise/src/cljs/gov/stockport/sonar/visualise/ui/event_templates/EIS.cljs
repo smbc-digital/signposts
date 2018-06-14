@@ -43,21 +43,16 @@
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (fh/eis-close-date(:end-date event))
-     ]]
-   ]
-  )
+     (fh/eis-close-date(:end-date event))]]])
 
 (defn- middle-column[event]
   [:div.col.col-md-4
    [:div.row
     [:div.col.col-sm-3
-     [:strong "Address"]
-     ]
+     [:strong "Address"]]
     [:div.col.col-sm-9
      (:address event)[:br]
-     (:postcode event)
-     ]]])
+     (:postcode event)]]])
 
 (defn contact [event]
   [:div.event-details
@@ -76,8 +71,7 @@
      [:div.col.col-md-4
       [:strong "Outcome"]]
      [:div.col.col-md-8
-      "Proceed to Social Care Referral"]]
-    ]]])
+      "Proceed to Social Care Referral"]]]]])
 
 (defn cin [event]
   [:div.event-details
@@ -96,8 +90,7 @@
      [:div.col.col-md-4
       [:strong "Closure reason"]]
      [:div.col.col-md-8
-      (:closure event)]]
-    ]]])
+      (:closure event)]]]]])
 
 (defn lac [event]
   [:div.event-details
@@ -111,8 +104,7 @@
      [:div.col.col-md-4
       [:strong "Presenting Issue"]]
      [:div.col.col-md-8
-      (:primary-presenting-issue event)]]
-    ]]])
+      (:primary-presenting-issue event)]]]]])
 
 (defn sen [event]
   [:div.event-details
@@ -131,5 +123,4 @@
      [:div.col.col-md-4
       [:strong "On going"]]
      [:div.col.col-md-8
-      (:on-going event)]]
-    ]]])
+      (:on-going event)]]]]])

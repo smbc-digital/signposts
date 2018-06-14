@@ -11,8 +11,7 @@
     [gov.stockport.sonar.visualise.ui.event-templates.Yos :as yos]
     ;;Other Namespaces
     [clojure.string :as s]
-    [gov.stockport.sonar.visualise.util.fmt-help :as fh]
-  ))
+    [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 (defn- make-template-key [event]
   (s/lower-case(str (:event-source event) "-"
@@ -28,25 +27,19 @@
      [:div.col.col-6-sm
       [:strong.label "Date issued"]]
      [:div.col-6-sm
-      (:timestamp (fh/unparse-timestamp event))
-      ]]
-    ]
+      (:timestamp (fh/unparse-timestamp event))]]]
    [:div.col.col-4-sm
     [:div.row
      [:div.col-1-sm
-      [:strong "Address"]
-      ]
+      [:strong "Address"]]
      [:div.col-3-sm
-      (:address event)
-      ]]
-    ]
+      (:address event)]]]
    [:div.col.col-4-sm
     [:div.row
      [:div.col.col-4-sm
       [:strong "Postcode"]]
      [:div.col.col-8-sm
-      (:postcode event)]]
-    ]]])
+      (:postcode event)]]]]])
 
 (def templates
   {

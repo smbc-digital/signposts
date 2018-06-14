@@ -81,44 +81,35 @@
      [:div.col.col-md-6
       [:strong.label "Crime Number"]]
      [:div.col.col-md-6
-      (:source-crime-ref event)
-      ]]
+      (:source-crime-ref event)]]
     [:div.row
      [:div.col.col-md-6
       [:strong.label "Victim Unique Refernce Number"]]
      [:div.col.col-md-6
-      (:victim-urn event)
-      ]]
+      (:victim-urn event)]]
     [:div.row
      [:div.col.col-md-6
       [:strong.label "Victim Gender"]]
      [:div.col.col-md-6
-      (:gender event)
-      ]]
+      (:gender event)]]
     [:div.row
      [:div.col.col-md-6
       [:strong.label "Open Date"]]
      [:div.col.col-md-6
-      (:timestamp (fh/unparse-timestamp event))
-      ]]
+      (:timestamp (fh/unparse-timestamp event))]]
     [:div.row
      [:div.col.col-md-6
       [:strong.label "Crime Date"]]
      [:div.col.col-md-6
-      (:crime-committed-from-full-date event)
-      ]]
-    ]
+      (:crime-committed-from-full-date event)]]]
    [:div.col.col-md-4
     [:div.row
      [:div.col.col-md-3
-      [:strong "Address"]
-      ]
+      [:strong "Address"]]
      [:div.col.col-md-9
       (:address event)
       [:br]
-      (:postcode event)
-      ]]
-    ]
+      (:postcode event)]]]
    [:div.col.col-md-4
     [:div.row
      [:div.col.col-md-4
@@ -134,6 +125,4 @@
      [:div.col.col-md-4
       [:strong "Outcome"]]
      [:div.col.col-8-sm
-      (:crime-outcome-short-description event)]]
-    ]
-   ]])
+      (:crime-outcome-short-description event)]]]]])

@@ -18,8 +18,7 @@
         :class (str (and color (cljs.core/name color))
                     (when (not highlighted?) " blur")
                     (when has-selected-event? " has-selected-event"))
-        :style {:width "97%"}
-        }
+        :style {:width "97%"}}
        [:div.row.no-gutters.align-items-center.upper
         [:div.column.col-2.left.px-2.pt-2
            {:on-click
@@ -31,8 +30,7 @@
           {:font=size "1.1em"}
           :on-click
           #(when (or highlighted? highlighting-allowed?)
-              (swap! !data people/toggle-highlight-person pkey))
-          }
+              (swap! !data people/toggle-highlight-person pkey))}
          (str name)]
         [:div.column.col-2.px-2.pt-2.white {:style {:font=size "1.1em"}}
          [:i.fa.fa-lock
@@ -42,7 +40,6 @@
                     :padding-left "0"
                     :padding-right "12px"}
            :on-click #(swap! !data people/toggle-lock-person pkey)}]]]
-
        [:div.row.no-gutters.lower
         [:div.column.col-2.left
          {:on-click
@@ -62,8 +59,7 @@
          (let [event-type (str/join ", " (map #(-label %)(sort event-types)))]
            [:div
             [:strong "Data type"] [:br]
-            (if (str/blank? event-type) "" event-type)])
-             ]]])))
+            (if (str/blank? event-type) "" event-type)])]]])))
 
 (defn cards-render [!data]
   (fn []
@@ -95,7 +91,6 @@
       (scroll-fn))
     (update-current-selected !data)))
 
-
 (defn scroll-to-selected []
   (if-let [selected (.get (js/jQuery "div.has-selected-event") 0)]
     (let [top-of-selected-event (.-offsetTop selected)
@@ -105,11 +100,9 @@
       (-> (js/jQuery "div.fixed-height")
           (.animate (clj->js {:scrollTop (- top-of-selected-event top-of-fixed-height)}))))))
 
-
 (defn cards [!data]
   (fn []
     (reagent/create-class {:reagent-render       (cards-render !data)
                            :component-did-mount  (wrap-scroll !data scroll-to-selected)
-                           :component-did-update (wrap-scroll !data scroll-to-selected)
-                           })))
+                           :component-did-update (wrap-scroll !data scroll-to-selected)})))
 

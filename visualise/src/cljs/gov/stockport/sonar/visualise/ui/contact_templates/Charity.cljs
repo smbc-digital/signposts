@@ -8,43 +8,32 @@
         [:div.col.col-md-4
          [:strong.label "Diary Reference Number"]]
         [:div.col.col-md-8
-         (:diary-reference-number event)
-         ]]
+         (:diary-reference-number event)]]
        [:div.row
         [:div.col.col-md-4
          [:strong.label "DOB"]]
         [:div.col.col-md-8
-         (fh/to-dob(:dob event))
-         ]]
+         (fh/to-dob(:dob event))]]
        [:div.row
         [:div.col.col-md-4
          [:strong.label "Referral Date"]]
         [:div.col.col-md-8
-         (:timestamp (fh/unparse-timestamp event))
-         ]]
+         (:timestamp (fh/unparse-timestamp event))]]
        [:div.row
         [:div.col.col-md-4
          [:strong.label "Closure Date"]]
         [:div.col.col-md-8
-         (:closure-date event)
-         ]]])
-
-
+         (:closure-date event)]]])
 
   (defn- middle-column [event]
     [:div.col.col-md-4
      [:div.row
       [:div.col.col-md-3
-       [:strong "Address"]
-       ]
+       [:strong "Address"]]
       [:div.col.col-md-9
        (:address event)
        [:br]
-       (:postcode event)
-       ]]])
-
-
-
+       (:postcode event)]]])
 
   (defn prevention-alliance[event]
     [:div
@@ -78,7 +67,4 @@
          [:strong "Report Person Type"]]
         [:div.col.col-md-8
          (:report-person-type event)]]
-       ]
-      ]]
-
-        )
+       ]]])

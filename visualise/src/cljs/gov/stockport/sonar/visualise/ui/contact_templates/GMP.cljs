@@ -15,27 +15,21 @@
          [:div.col.col-md-3
          [:strong.label "Date issued"]]
          [:div.col.col-md-9
-          (:timestamp (fh/unparse-timestamp event))
-          ]]
+          (:timestamp (fh/unparse-timestamp event))]]
       ]
       [:div.col.col-md-4
         [:div.row
         [:div.col.col-md-3
-        [:strong "Address"]
-         ]
+        [:strong "Address"]]
         [:div.col.col-md-9
-         (:address event)
-         ]]
+         (:address event)]]
       ]
       [:div.col.col-md-4
        [:div.row
        [:div.col.col-md-4
        [:strong "Postcode"]]
        [:div.col.col-md-8
-       (:postcode event)]]
-      ]
-    ]]
-)
+       (:postcode event)]]]]])
 
 
 (defn caution [event]
@@ -47,27 +41,19 @@
      [:div.col.col-md-4
       [:strong.label "Date issued"]]
      [:div.col.col-md-3
-      (:timestamp (fh/unparse-timestamp event))
-      ]]
-    ]
+      (:timestamp (fh/unparse-timestamp event))]]]
    [:div.col.col-md-4
     [:div.row
      [:div.col.col-md-4
-      [:strong "Address"]
-      ]
+      [:strong "Address"]]
      [:div.col.col-md-3
-      (:address event)
-      ]]
-    ]
+      (:address event)]]]
    [:div.col.col-md-4
     [:div.row
      [:div.col.col-2-sm
       [:strong "Postcode"]]
      [:div.col.col-2-sm
-      (:postcode event)]]
-    ]
-   ]]
-  )
+      (:postcode event)]]]]])
 
 (defn domestic [event]
   [:div
@@ -78,44 +64,36 @@
      [:div.col.col-md-4
       [:strong.label "Crime Number"]]
      [:div.col.col-md-8
-      (:source-crime-ref event)
-      ]]
+      (:source-crime-ref event)]]
     [:div.row
      [:div.col.col-md-4
       [:strong.label "Victim Unique Refernce Number"]]
      [:div.col.col-md-8
-      (:victim-urn event)
-      ]]
+      (:victim-urn event)]]
     [:div.row
      [:div.col.col-md-4
       [:strong.label "Victim Gender"]]
      [:div.col.col-md-8
-      (:gender event)
-      ]]
+      (:gender event)]]
     [:div.row
      [:div.col.col-md-4
       [:strong.label "Open Date"]]
      [:div.col.col-md-8
-      (:timestamp (fh/unparse-timestamp event))
-      ]]
+      (:timestamp (fh/unparse-timestamp event))]]
     [:div.row
      [:div.col.col-md-4
       [:strong.label "Crime Date"]]
      [:div.col.col-md-8
-      (:crime-committed-from-full-date event)
-      ]]
-    ]
+      (:crime-committed-from-full-date event)]]]
    [:div.col.col-md-4
     [:div.row
      [:div.col.col-md-3
-      [:strong "Address"]
-      ]
+      [:strong "Address"]]
      [:div.col.col-md-9
       (:address event)
       [:br]
       (:postcode event)
-      ]]
-    ]
+      ]]]
    [:div.col.col-md-4
     [:div.row
      [:div.col.col-md-4

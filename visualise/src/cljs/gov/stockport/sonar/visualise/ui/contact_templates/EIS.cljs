@@ -94,9 +94,7 @@
       [:strong "Closure reason"]]
      [:div.col.col-md-8
       (:closure event)]]
-    ]
-   ]]
-  )
+    ]]])
 
 (defn lac [event]
   [:div
@@ -114,10 +112,7 @@
      [:div.col.col-md-4
       [:strong "Closure reason"]]
      [:div.col.col-md-8
-      (:closure-reason event)]]
-    ]
-    ]]
-  )
+      (:closure-reason event)]]]]])
 
 (defn sen [event]
   [:div
@@ -135,7 +130,4 @@
      [:div.col.col-md-4
       [:strong "Ongoing"]]
      [:div.col.col-md-8
-      (:on-going event)]]
-    ]
-   ]]
-  )
+      (:on-going event)]]]]])

@@ -8,53 +8,42 @@
     [:div.col.col-md-4
      [:strong.label "Childview Id"]]
     [:div.col.col-md-8
-     (:child-view-id event)
-     ]]
+     (:child-view-id event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Ethnicity"]]
     [:div.col.col-md-8
-     (:ethnicity event)
-     ]]
+     (:ethnicity event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Gender"]]
     [:div.col.col-md-8
-     (:gender event)
-     ]]
+     (:gender event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "DOB"]]
     [:div.col.col-md-8
-     (fh/to-dob(:dob event))
-     ]]
+     (fh/to-dob(:dob event))]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Open Date"]]
     [:div.col.col-md-8
-     (:timestamp (fh/unparse-timestamp event))
-     ]]
+     (:timestamp (fh/unparse-timestamp event))]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (fh/close-date(:end-date event))
-     ]]
-   ]
-  )
+     (fh/close-date(:end-date event))]]])
 
 (defn- middle-column [event]
   [:div.col.col-md-4
    [:div.row
     [:div.col.col-md-3
-     [:strong "Address"]
-     ]
+     [:strong "Address"]]
     [:div.col.col-md-8
      (:address-type event) [:br]
      (:address event) [:br]
-     (:postcode event)]
-    ]]
-  )
+     (:postcode event)]]])
 
 
 (defn non-statutory-intervention[event]
@@ -72,8 +61,7 @@
       [:strong "id:"](:supervisor-id event)[:br]
       [:a {:href (str "mailto:"(:supervisor-email event))} (:supervisor-email event)][:br]
       (:supervisor-mobile event)[:br]
-      (:supervisor-phone event)
-      ]]]]])
+      (:supervisor-phone event)]]]]])
 
 (defn statutory-intervention[event]
   [:div
@@ -90,5 +78,4 @@
      [:strong "id:"](:supervisor-id event)[:br]
      [:a {:href (str "mailto:"(:superviser-email event))} (:superviser-email event)][:br]
      (:supervisor-mobile event)[:br]
-     (:supervisor-phone event)
-     ]]]]])
+     (:supervisor-phone event)]]]]])

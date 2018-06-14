@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.util.fmt-help
   (:require [clojure.string :as str]
             [cljs-time.format :as f]
+            [cljs-time.local :as local]
             [cljs.pprint :refer [cl-format]]
             [camel-snake-kebab.core :refer [convert-case]]
             [clojure.string :as s]))
@@ -56,24 +57,25 @@
 
 (def dob-unformatter (f/formatter "yyyy-MM-dd"))
 (def dob-formatter (f/formatter "d MMM yyyy"))
-(def si-unformatter (f/formatter "yyyy-MM-ddThh:mm:ssz"))
+(def uk-date-formatter (f/formatter uk-date-format))
 (def uk-unformatter(f/formatter uk-date-format))
-
 
 (defn to-dob [date]
   (if (s/blank? date)
     ""
-  (f/unparse dob-formatter(f/parse dob-unformatter date))))
+    (f/unparse dob-formatter(f/parse dob-unformatter date))))
 
 
-(defn close-date[date-time]
-  (f/unparse custom-formatter (f/parse dob-unformatter  date-time)))
+(defn close-date[date]
+  (if (s/blank? date)
+    ""
+    (f/unparse custom-formatter (f/parse uk-date-formatter date))))
+
 
 (defn eis-close-date[date-time]
-  (f/unparse custom-formatter (f/parse si-unformatter  date-time)))
-
-(defn cf-close-date[date-time]
-  (f/unparse custom-formatter (f/parse uk-unformatter  date-time)))
+  (if (s/blank? date-time)
+    ""
+    (f/unparse custom-formatter (local/to-local-date-time  date-time))))
 
 (defn unparse-dob [event]
   (if-let [ts (:dob event)]

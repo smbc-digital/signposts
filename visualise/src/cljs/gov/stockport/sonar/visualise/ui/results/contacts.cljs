@@ -8,8 +8,7 @@
             [gov.stockport.sonar.visualise.data.people :as people]
             [gov.stockport.sonar.visualise.ui.contact-templates.template-map :as tmpl-map]
             [gov.stockport.sonar.visualise.data.colours :as co]
-            [gov.stockport.sonar.visualise.util.date :as d]
-            ))
+            [gov.stockport.sonar.visualise.util.date :as d]))
 
 (def dob-unformatter (f/formatter "yyyy-mm-dd"))
 (def dob-formatter (f/formatter "dd MMM yyyy"))
@@ -53,7 +52,6 @@
 (defn sort-event-by-timestamp[events-list]
   (sort-by #(- 0 (d/as-millis (:timestamp %))) events-list))
 
-()
 
 (defn list-events[events]
   (r/with-let [expanded? (r/atom false)]
@@ -63,18 +61,15 @@
       [:div.events-list
       (if (true? @expanded?)
         (map event-details events-list)
-        (map event-details (take 2 events-list)))
-        ]
+        (map event-details (take 2 events-list)))]
       (if (> (count events-list) 2)
        [:div.toggle-data
         (if (true? @expanded?)
         [:p  "SHOW LESS DATA" [:br]
        [:i.fa.fa-arrow-circle-up
-        {:on-click #(swap! expanded? not)}
-        ]]
+        {:on-click #(swap! expanded? not)}]]
         [:p  "SHOW MORE DATA" [:br]
-       [:i.fa.fa-arrow-circle-down {:on-click #(swap! expanded? not)}
-        ]])])])))
+       [:i.fa.fa-arrow-circle-down {:on-click #(swap! expanded? not)}]])])])))
 
 (defn list-people [people]
   (map (fn [[person-key  events]]
@@ -95,5 +90,4 @@
     (if  (> (count people-list)  0)
     [:div.contact-history.container-fluid
      [:h4 "All Contact Data"]
-        people-list
-     ]))))
+        people-list]))))
