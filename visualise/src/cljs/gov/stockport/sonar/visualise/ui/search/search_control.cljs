@@ -35,16 +35,18 @@
   (hide-search-item!))
 
 (defn- toggle-view[field]
-  (if (= :none field)
+  (if (= "none" field)
     (do
       (show-dropdown!)
-      (hide-search-item!))
+      (hide-search-item!)
+      (deactivate-plus!)
+      )
     (do
       (hide-dropdown!)
+      (activate-plus!)
       (show-search-item!)
       (scs/set-selected-field! field)
       (swap! !selected-options conj field)))
-  (deactivate-plus!)
   )
 
 (defn- remove-search-criteria[query-type]
@@ -52,13 +54,13 @@
   (scs/remove-search-criteria! query-type))
 
 (defn- set-search-term[value]
-  (scs/set-search-term! value)
-  (activate-plus!))
+  (scs/set-search-term! value))
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
   (hide-search-field)
   (show-dropdown!)
+  (deactivate-plus!)
   )
 
 (defn- change-search-criteria-and-search[]
@@ -89,9 +91,10 @@
   )
 
 (defn reset-search-field[]
+  (let [selected-control (scs/selected-control)]
+  (swap! !selected-options disj selected-control)
   (hide-search-field)
-  (swap! !search-control-state assoc :search-term "")
-  )
+  (swap! !search-control-state assoc :search-term "")))
 
 (defn input-group[]
   [:div.input-group
@@ -139,11 +142,12 @@
         {:style {:display   :inline-flex
                  :flex-wrap :wrap}}
         ~@(map nugget (scs/search-criteria))]
-      [input-group]
-      [:i.fa.fa-plus-circle.add-search-item.active
-         {
-          :title       "Add search criteria"
-          :on-click    change-search-criteria}]
+          [input-group]
+      (if (= @!active-plus 0)
+         [:i.fa.fa-plus-circle.add-search-item]
+         [:i.fa.fa-plus-circle.add-search-item.active
+         {:title       "Add search criteria"
+          :on-click    change-search-criteria}])
         [:span.input-group-btn
          [:button.btn.btn-primary.search
           {:on-click change-search-criteria-and-search}"Search"]]]]))
