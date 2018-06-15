@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.components.recent-searches
+  "Library for dealing with recent searches uses search history which use local storage"
   (:require
     [gov.stockport.sonar.visualise.state :refer [!search-history]]
     [reagent.core :as r]
@@ -14,9 +15,7 @@
       :name (name query-type)
       :id (name query-type)
       :size "20"
-      :read-only "true"
-      }]]]
-  )
+      :read-only "true"}]]])
 
 (defn search-event[idx event]
   ^{:key (gensym)}

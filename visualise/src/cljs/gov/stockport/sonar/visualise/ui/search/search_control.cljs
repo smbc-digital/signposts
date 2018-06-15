@@ -12,29 +12,36 @@
 
 
 (defn- show-dropdown! []
+  "Shows DropDown"
   (reset! !show-select 1))
 
 (defn- hide-dropdown! []
+  "Hides Dropdown"
   (reset! !show-select 0))
 
 (defn- show-search-item! []
+  "Shows Text Field"
   (reset! !show-input 1))
 
 (defn- hide-search-item! []
-  (reset! !show-input 0)
-  )
+  "Hides Text Field"
+  (reset! !show-input 0))
 
 (defn activate-plus![]
+  "Activates Plus Item"
   (reset! !active-plus 1))
 
 (defn deactivate-plus![]
+  "Deactivates Plus Sign"
   (reset! !active-plus 0))
 
 (defn- hide-search-field[]
+  "Hides text input and shows Seletc"
   (show-dropdown!)
   (hide-search-item!))
 
 (defn- toggle-view[field]
+  "Shows text field if seach field is selected"
   (if (= "none" field)
     (do
       (show-dropdown!)
@@ -54,6 +61,10 @@
 
 (defn- set-search-term[value]
   (scs/set-search-term! value))
+
+(defn show-input-group []
+  (scs/add-search-criteria!)
+  )
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)
@@ -82,10 +93,6 @@
      [:div.delete-item-container
      [:i.fa.fa-times.ml-2.delete-item
      {:on-click #(remove-search-criteria query-type)}]]])
-
-(defn show-input-group []
-  (scs/add-search-criteria!)
-  )
 
 (defn reset-search-field[]
   (let [selected-control (scs/selected-control)]
@@ -129,7 +136,6 @@
        [:i.fa.fa-times.ml-2.delete-item
         {:on-click  reset-search-field}]]])])
 
-
 (defn search-criteria-control [query-callback]
   (scs/init! query-callback)
   (fn []
@@ -148,7 +154,6 @@
         [:span.input-group-btn
          [:button.btn.btn-primary.search
           {:on-click change-search-criteria-and-search}"Search"]]]]))
-
 
 (defn query-wrapper [handler]
   (fn [terms]

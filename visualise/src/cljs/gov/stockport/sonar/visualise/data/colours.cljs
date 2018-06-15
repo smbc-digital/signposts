@@ -10,6 +10,7 @@
 (defn colour [idx] (or (get colour-priority idx) :black))
 
 (defn colour-for [items]
+  "Gets colour form colour map it is in the list else black"
   (if (> (count items) (count colour-priority))
     (fn [_] :black)
     (fn [idx] (colour idx))))

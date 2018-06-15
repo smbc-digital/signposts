@@ -40,7 +40,7 @@
                                   :field-name  :dob
                                   :field-type  :date-of-birth
                                   :description "DATE OF BIRTH"
-                                  :placeholder "e.g.25/01/2016"
+                                  :placeholder "DOB e.g.25/01/2016"
                                   :type "date"
                                   :size "8"
                                   :control sc/dob}

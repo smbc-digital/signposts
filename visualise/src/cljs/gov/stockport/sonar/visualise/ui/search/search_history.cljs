@@ -5,7 +5,7 @@
             [gov.stockport.sonar.visualise.query.handler :as h]
             [gov.stockport.sonar.visualise.ui.search.query-control-state :refer [query-types]]))
 
-(defn to-query-item[{:keys [query-type search-term]}]
+(defn- to-query-item[{:keys [query-type search-term]}]
            (let [query-item {}]
              (-> query-item
              (assoc  :field-type (get-in query-types [query-type :field-type] ))

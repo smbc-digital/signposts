@@ -2,6 +2,7 @@
   (:require [gov.stockport.sonar.visualise.state :refer [!app]]))
 
 (defn overlay []
+  "Shows Spinner over translucant backgorund"
   (when (:ajax-in-progress @!app)
     [:div.busy
      [:div.spinner

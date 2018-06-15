@@ -7,11 +7,13 @@
 (def initial-state {:username "" :password ""})
 
 (defn- perform-login [!local]
+  "Performs Logon"
   (let [creds @!local]
     (reset! !local initial-state)
     (login creds)))
 
 (defn login-form []
+  "Displays Login Form"
   (let [!local (r/atom initial-state) login-message (:login-message local-storage) login-error (:login-error local-storage)  ]
     (fn []
       [:div.login-form-container

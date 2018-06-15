@@ -6,6 +6,7 @@
             [gov.stockport.sonar.visualise.ui.results.timeline-flot :refer [timeline-flot]]))
 
 (defn results-tab [!data]
+  "Shows graph and contact history from returned data"
   (let [!selected (r/atom :timeline)]
     (fn []
       [:div
