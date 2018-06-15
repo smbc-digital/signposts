@@ -1,10 +1,8 @@
 (ns gov.stockport.sonar.visualise.ui.event-templates.GMP
+  "GMP event templates"
   (:require
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]
-  [clojure.string :as str]
-  ))
-
-
+  [clojure.string :as str]))
 
 (defn asbo [event]
   [:div.event-details

@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.event-templates.Charity
+  "Charity Event Templates"
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [clojure.string :as s]))
 
@@ -30,8 +31,6 @@
     [:div.col.col-md-8
      (:closure-date event)]]])
 
-
-
 (defn- middle-column [event]
   [:div.col.col-md-4
    [:div.row
@@ -41,9 +40,6 @@
      (:address event)
      [:br]
      (:postcode event)]]])
-
-
-
 
 (defn prevention-alliance[event]
   [:div.event-details

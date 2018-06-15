@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.results.contacts
+  "Contacts"
   (:require [reagent.core :as r]
             [cljs-time.format :as f]
             [gov.stockport.sonar.visualise.util.fmt-help :as fh]

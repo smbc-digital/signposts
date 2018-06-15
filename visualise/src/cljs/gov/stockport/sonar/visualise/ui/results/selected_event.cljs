@@ -3,9 +3,9 @@
     [gov.stockport.sonar.visualise.ui.event-templates.template-map :as tm]))
 
 (defn selected-event [!data]
+  "Renders event"
   (fn []
     (let [selected (:selected-event @!data)]
       (when (not-empty selected)
         [:div.selected-event
-         ((tm/get-template selected) selected)
-         ]))))
+         ((tm/get-template selected) selected)]))))

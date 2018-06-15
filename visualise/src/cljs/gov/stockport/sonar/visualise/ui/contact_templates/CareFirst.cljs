@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.contact-templates.CareFirst
+  "Care First Templates"
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [clojure.string :as s]))
 

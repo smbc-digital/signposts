@@ -1,12 +1,36 @@
 (ns gov.stockport.sonar.visualise.ui.results.individual-cards
+  "Renders cards on left hand side"
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.data.people :as people]
             [cljs-time.core :as t]
             [cljs-time.format :as f]
             [gov.stockport.sonar.visualise.util.fmt-help :refer [address-summary date-of-birth -label]]
             [reagent.core :as reagent]
-            [clojure.string :as str]
-            ))
+            [clojure.string :as str]))
+
+(defonce !current (atom nil))
+
+(defn- update-current-selected [!data]
+  (reset! !current (:selected-event @!data)))
+
+(defn- event-newly-selected? [!data]
+  (and (:selected-event @!data)
+       (not= @!current (:selected-event @!data))))
+
+(defn wrap-scroll [!data scroll-fn]
+  (fn [& _]
+    (if (event-newly-selected? !data)
+      (scroll-fn))
+    (update-current-selected !data)))
+
+(defn scroll-to-selected []
+  (if-let [selected (.get (js/jQuery "div.has-selected-event") 0)]
+    (let [top-of-selected-event (.-offsetTop selected)
+          top-of-fixed-height (-> (js/jQuery "div.fixed-height")
+                                  (.get 0)
+                                  (.-offsetTop))]
+      (-> (js/jQuery "div.fixed-height")
+          (.animate (clj->js {:scrollTop (- top-of-selected-event top-of-fixed-height)}))))))
 
 (defn card [!data]
   (let [highlighting-allowed? (:highlighting-allowed? @!data)]
@@ -76,33 +100,8 @@
           (if (people/sort-by-relevance @!data) [:span " Sort by" [:br] "A-Z"] [:span " Sort by relevance"])]]]
        [:div.fixed-height (map (card !data) (people/sort-as @!data))]])))
 
-(defonce !current (atom nil))
-
-(defn- update-current-selected [!data]
-  (reset! !current (:selected-event @!data)))
-
-(defn- event-newly-selected? [!data]
-  (and (:selected-event @!data)
-       (not= @!current (:selected-event @!data))))
-
-(defn wrap-scroll [!data scroll-fn]
-  (fn [& _]
-    (if (event-newly-selected? !data)
-      (scroll-fn))
-    (update-current-selected !data)))
-
-(defn scroll-to-selected []
-  (if-let [selected (.get (js/jQuery "div.has-selected-event") 0)]
-    (let [top-of-selected-event (.-offsetTop selected)
-          top-of-fixed-height (-> (js/jQuery "div.fixed-height")
-                                  (.get 0)
-                                  (.-offsetTop))]
-      (-> (js/jQuery "div.fixed-height")
-          (.animate (clj->js {:scrollTop (- top-of-selected-event top-of-fixed-height)}))))))
-
 (defn cards [!data]
   (fn []
     (reagent/create-class {:reagent-render       (cards-render !data)
                            :component-did-mount  (wrap-scroll !data scroll-to-selected)
                            :component-did-update (wrap-scroll !data scroll-to-selected)})))
-

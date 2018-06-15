@@ -34,7 +34,7 @@
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (fh/close-date(:end-date event))]])])
+     (fh/eis-close-date(:end-date event))]])])
 
 (defn- middle-column [event]
   [:div.col.col-md-4

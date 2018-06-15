@@ -5,7 +5,7 @@
     [gov.stockport.sonar.visualise.ui.event-templates.Charity :as ch]
     [gov.stockport.sonar.visualise.ui.event-templates.EIS :as eis]
     [gov.stockport.sonar.visualise.ui.event-templates.GMP :as gmp]
-    [gov.stockport.sonar.visualise.ui.event-templates.Homes :as ho]
+    [gov.stockport.sonar.visualise.ui.event-templates.StockportHomes :as ho]
     [gov.stockport.sonar.visualise.ui.event-templates.RevsBens :as rb]
     [gov.stockport.sonar.visualise.ui.event-templates.Schools :as sch]
     [gov.stockport.sonar.visualise.ui.event-templates.Yos :as yos]

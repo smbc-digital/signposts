@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.contact-templates.Schools
+  "Schools Templates"
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [clojure.string :as s]))
 
@@ -29,7 +30,7 @@
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (:end-date event)
+     (fh/eis-close-date(:end-date event))
      ]])])
 
 (defn- middle-column [event]

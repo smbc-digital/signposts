@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.results.flot-axes
+  "Renders Events on Graph"
   (:require [cljs-time.core :as t]
             [gov.stockport.sonar.visualise.data.colours :refer [colour-map]]
             [gov.stockport.sonar.visualise.data.people :as people]

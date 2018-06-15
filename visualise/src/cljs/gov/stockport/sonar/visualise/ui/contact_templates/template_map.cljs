@@ -6,7 +6,7 @@
     [gov.stockport.sonar.visualise.ui.contact-templates.EIS :as eis]
     [gov.stockport.sonar.visualise.ui.contact-templates.EIS :as eis]
     [gov.stockport.sonar.visualise.ui.contact-templates.GMP :as gmp]
-    [gov.stockport.sonar.visualise.ui.contact-templates.Homes :as ho]
+    [gov.stockport.sonar.visualise.ui.contact-templates.StockportHomes :as ho]
     [gov.stockport.sonar.visualise.ui.contact-templates.RevsBens :as rb]
     [gov.stockport.sonar.visualise.ui.contact-templates.Schools :as sch]
     [gov.stockport.sonar.visualise.ui.contact-templates.Yos :as yos]

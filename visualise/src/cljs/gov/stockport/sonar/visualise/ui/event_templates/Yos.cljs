@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.event-templates.Yos
+  "Youth Offending Services Templates"
   (:require
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 

@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.pages.home-page
+  "Home Page of Signposts"
   (:require [reagent.core :as r]
             [gov.stockport.sonar.visualise.query.handler :as h]
             [gov.stockport.sonar.visualise.ui.search.search-control :as nsc]

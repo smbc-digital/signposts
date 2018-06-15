@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.event-templates.EIS
+  "EIS event templates"
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [clojure.string :as s]))
 
