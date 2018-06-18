@@ -67,5 +67,4 @@
         [:div.col.col-md-4
          [:strong "Report Person Type"]]
         [:div.col.col-md-8
-         (:report-person-type event)]]
-       ]]])
+         (:report-person-type event)]]]]])

@@ -2,10 +2,7 @@
   "Greate Manchester Police Templates"
   (:require
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]
-  [clojure.string :as str]
-  ))
-
-
+  [clojure.string :as str]))
 
 (defn asbo [event]
   [:div
@@ -16,22 +13,19 @@
          [:div.col.col-md-3
          [:strong.label "Date issued"]]
          [:div.col.col-md-9
-          (:timestamp (fh/unparse-timestamp event))]]
-      ]
+          (:timestamp (fh/unparse-timestamp event))]]]
       [:div.col.col-md-4
         [:div.row
         [:div.col.col-md-3
         [:strong "Address"]]
         [:div.col.col-md-9
-         (:address event)]]
-      ]
+         (:address event)]]]
       [:div.col.col-md-4
        [:div.row
        [:div.col.col-md-4
        [:strong "Postcode"]]
        [:div.col.col-md-8
        (:postcode event)]]]]])
-
 
 (defn caution [event]
   [:div
@@ -93,8 +87,7 @@
      [:div.col.col-md-9
       (:address event)
       [:br]
-      (:postcode event)
-      ]]]
+      (:postcode event)]]]
    [:div.col.col-md-4
     [:div.row
      [:div.col.col-md-4
@@ -110,6 +103,4 @@
      [:div.col.col-md-4
       [:strong "Outcome"]]
      [:div.col.col-md-8
-      (:crime-outcome-short-description event)]]
-    ]
-   ]])
+      (:crime-outcome-short-description event)]]]]])

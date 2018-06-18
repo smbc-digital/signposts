@@ -14,32 +14,27 @@
     [:div.col.col-md-4
      [:strong.label "EIS Number"]]
     [:div.col.col-md-8
-     (:eis-number event)
-     ]]
+     (:eis-number event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Unique Pupil ID"]]
     [:div.col.col-md-8
-     (:unique-pupil-number event)
-     ]]
+     (:unique-pupil-number event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Name"]]
     [:div.col.col-md-8
-     (:name event)
-     ]]
+     (:name event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "DOB"]]
     [:div.col.col-md-8
-     (fh/to-dob(:dob event))
-     ]]
+     (fh/to-dob(:dob event))]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Open Date"]]
     [:div.col.col-md-8
-     (:timestamp (fh/unparse-timestamp event))
-     ]]
+     (:timestamp (fh/unparse-timestamp event))]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Close Date"]]

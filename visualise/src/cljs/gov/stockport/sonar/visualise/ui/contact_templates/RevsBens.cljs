@@ -35,8 +35,7 @@
       [:div.col.col-md-3
        [:strong.label "Non Dependents"]]
       [:div.col.col-md-9
-       (:number-of-non-dependents event)
-       ]]])
+       (:number-of-non-dependents event)]]])
 
 (defn- middle-column[event]
   [:div.col.col-md-4

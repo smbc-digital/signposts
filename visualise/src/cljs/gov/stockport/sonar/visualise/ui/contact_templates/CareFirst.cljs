@@ -1,5 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.contact-templates.CareFirst
-  "Care First Templates"
+  "Care FRirst"
   (:require [gov.stockport.sonar.visualise.util.fmt-help :as fh]
             [clojure.string :as s]))
 
@@ -47,13 +47,13 @@
     [:div.col.col-md-8
      [:strong "Address start date"]]
     [:div.col.col-9-sm
-     (fh/cf-close-date (:address-start event))]]
+     (:address-start event)]]
    (if (not (s/blank? (:address-end event)))
    [:div.row
     [:div.col.col-md-8
      [:strong "Address end date"]]
     [:div.col.col-9-sm
-     (fh/cf-close-date(:address-end event))]])
+     (:address-end event)]])
    ])
 
 (defn contact[event]

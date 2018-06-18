@@ -30,8 +30,7 @@
     [:div.col.col-md-4
      [:strong.label "Close Date"]]
     [:div.col.col-md-8
-     (fh/eis-close-date(:end-date event))
-     ]])])
+     (fh/eis-close-date(:end-date event))]])])
 
 (defn- middle-column [event]
   [:div.col.col-md-4
@@ -44,8 +43,7 @@
      (:school-type event)[:br]
      (:school-phone event) [:br]
      (:school-email event) [:br]
-     (:school-website event)]]
-   ])
+     (:school-website event)]]])
 
 (defn attendance[event]
   [:div
