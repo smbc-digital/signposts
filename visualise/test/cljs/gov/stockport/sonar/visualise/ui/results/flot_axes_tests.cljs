@@ -10,18 +10,18 @@
 
 (def one-person {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
                                                       {:timestamp 4 :event-type :caution}]
-                                       :color        :red
+                                       :color        :orange
                                        :highlighted? true}}})
 
 (def two-people {:people {{:name "A"} {:data         [{:timestamp 1 :event-type :asbo}
                                                       {:timestamp 4 :event-type :caution}]
                                        :rank         1
-                                       :color        :red
+                                       :color        :orange
                                        :highlighted? true}
                           {:name "B"} {:data         [{:timestamp 4 :event-type :zoology}
                                                       {:timestamp 1 :event-type :caution}]
                                        :rank         2
-                                       :color        :blue
+                                       :color        :yellow
                                        :highlighted? true}}})
 
 (def two-people-one-highlighted {:people {{:name "A"} {:data         [{:id 1 :timestamp 1 :event-type :asbo}
@@ -33,7 +33,7 @@
                                                                       {:id 4 :timestamp 1 :event-type :caution}]
                                                        :rank         2
                                                        :highlighted? true
-                                                       :color        :red}}})
+                                                       :color        :orange}}})
 
 (def two-people-both-highlighted {:people {{:name "A"} {:data         [{:id 1 :timestamp 1 :event-type :asbo}
                                                                        {:id 3 :timestamp 4 :event-type :caution}]
@@ -44,7 +44,7 @@
                                                                        {:id 4 :timestamp 1 :event-type :caution}]
                                                         :rank         2
                                                         :highlighted? true
-                                                        :color        :red}}})
+                                                        :color        :orange}}})
 
 (def multiple-highlights {:people {{:name "A"} {:data [{:id :e1 :timestamp 1 :event-type :asbo}] :highlighted? true}
                                    {:name "B"} {:data [{:id :e2 :timestamp 2 :event-type :asbo}] :highlighted? false}
@@ -58,12 +58,12 @@
                                                           {:timestamp 1 :event-type :asbo}
                                                           {:timestamp 4 :event-type :caution}]
                                            :rank         1
-                                           :color        :red
+                                           :color        :orange
                                            :highlighted? true}
                               {:name "B"} {:data         [{:timestamp 1 :event-type :asbo}
                                                           {:timestamp 4 :event-type :caution}]
                                            :rank         2
-                                           :color        :blue
+                                           :color        :yellow
                                            :highlighted? true}
                               {:name "C"} {:data         [{:timestamp 1 :event-type :asbo}
                                                           {:timestamp 1 :event-type :asbo}
@@ -109,12 +109,12 @@
     (testing "ticks are good for single event type plus one to make space for controls"
       (let [result (fa/y-axis single-event)]
         (is (= (:max result) 3))
-        (is (= (:ticks result) [[1 "asbo"]]))))
+        (is (= (:ticks result) [[1 "ASBO"]]))))
 
     (testing "ticks are good for multiple event types plus one to make space for controls"
       (let [result (fa/y-axis two-people)]
         (is (= (:max result) 5))
-        (is (= (:ticks result) [[1 "zoology"] [2 "caution"] [3 "asbo"]])))))
+        (is (= (:ticks result) [[1 "Zoology"] [2 "Caution"] [3 "ASBO"]])))))
 
   (testing "collision keys"
 
@@ -134,24 +134,24 @@
       (testing "are derived as series based on people"
 
         (is (= (:flot-data (fa/data-points one-person))
-               [{:points {:show true :fillColor false :fill 0.4} :color (:red colour-map) :data [[1 2] [4 1]]}
+               [{:points {:show true :fillColor false :fill 0.6} :color (:orange colour-map) :data [[1 2] [4 1]]}
                 {:points {:show false}}]))
 
         (is (= (:flot-data (fa/data-points two-people))
-               [{:points {:show true :fillColor false :fill 0.4} :color (:red colour-map) :data [[1 3] [4 2]]}
-                {:points {:show true :fillColor false :fill 0.4} :color (:blue colour-map) :data [[4 1] [1 2]]}
+               [{:points {:show true :fillColor false :fill 0.6} :color (:orange colour-map) :data [[1 3] [4 2]]}
+                {:points {:show true :fillColor false :fill 0.6} :color (:yellow colour-map) :data [[4 1] [1 2]]}
                 {:points {:show false}}])))
 
       (testing "are only produced for highlighted people"
 
         (is (= (:flot-data (fa/data-points two-people-one-highlighted))
-               [{:points {:show true :fillColor false :fill 0.4} :color (:red colour-map) :data [[4 1] [1 2]]}
+               [{:points {:show true :fillColor false :fill 0.6} :color (:orange colour-map) :data [[4 1] [1 2]]}
                 {:points {:show false}}])))
 
       (testing "events are shifted a little when they are displayed on top of each other"
         (is (= (:flot-data (fa/data-points colliding-data))
-               [{:points {:show true :fillColor false :fill 0.4} :color (:red colour-map) :data [[1 1.8] [1 2] [4 0.9]]}
-                {:points {:show true :fillColor false :fill 0.4} :color (:blue colour-map) :data [[1 2.2] [4 1.1]]}
+               [{:points {:show true :fillColor false :fill 0.6} :color (:orange colour-map) :data [[1 1.8] [1 2] [4 0.9]]}
+                {:points {:show true :fillColor false :fill 0.6} :color (:yellow colour-map) :data [[1 2.2] [4 1.1]]}
                 {:points {:show false}}])))
 
       (testing "data points come with a map so that we can lookup the event when it is selected on the graph"

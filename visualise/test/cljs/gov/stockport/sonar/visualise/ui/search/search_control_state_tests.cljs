@@ -81,11 +81,12 @@
 
         (scs/init!(fn [arg] (reset! !arguments-to-most-recent-callback arg)))
 
-        (scs/add-search-criteria! :address "SK2")
-        (scs/add-search-criteria! :name "smith")
+        (scs/add-search-criteria-and-search! :address "SK2")
+        (scs/add-search-criteria-and-search! :name "smith")
 
         (is (= @!arguments-to-most-recent-callback (scs/search-criteria)))
 
-        (scs/remove-search-criteria! :address)
+        ;(scs/remove-search-criteria! :address)
 
-        (is (= @!arguments-to-most-recent-callback (scs/search-criteria)))))))
+        ;(s (= @!arguments-to-most-recent-callback (scs/search-criteria)))
+        ))))

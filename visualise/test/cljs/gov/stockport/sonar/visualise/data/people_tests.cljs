@@ -50,11 +50,11 @@
              {:people {
                        {:name "1"} {:data  [{:postcode "SK1 1AA"} {:postcode "SK2 1AA"}
                                             {:postcode nil} {:postcode ""} {:postcode "SK1 2AA"}]
-                                    :areas #{"SK1" "SK2"}}
+                                    :areas #{"SK1 1AA" "SK2 1AA" "SK1 2AA"}}
                        {:name "2"} {:data  []
                                     :areas #{}}
                        {:name "3"} {:data  [{:postcode "SK3 3AA"}]
-                                    :areas #{"SK3"}}}})))
+                                    :areas #{"SK3 3AA"}}}})))
 
     (testing "ranks people by whether locked, then score and sort order of surname"
 
@@ -242,16 +242,21 @@
                                                         :score 4
                                                         :relevance-rank  1
                                                         :name-rank 1
-                                                        :areas #{}}
+                                                        :areas #{}
+                                                        :event-types #{}
+                                                        }
                                           {:name "N2"} {:data  [{:name "N2" :score 3}]
                                                         :score 3
                                                         :relevance-rank  2
                                                         :name-rank 2
-                                                        :areas #{}}
+                                                        :areas #{}
+                                                        :event-types #{}
+                                                        }
                                           {:name "N3"} {:data  [{:name "N3" :score 2}]
                                                         :score 2
                                                         :relevance-rank  3
                                                         :name-rank 3
+                                                        :event-types #{}
                                                         :areas #{}}}
                   :rank-by :by-relevance
                   }))))))
@@ -398,6 +403,7 @@
                     :score        5
                     :areas        #{}
                     :name-rank    1
+                    :event-types #{}
                     :relevance-rank 1
                     :locked?      true
                     :highlighted? true}))
