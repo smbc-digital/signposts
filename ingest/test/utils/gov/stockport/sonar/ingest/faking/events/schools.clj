@@ -43,7 +43,7 @@
   (if dependents
     (h/perhaps cfg/awol-per-household
                (fn []
-                 (map (partial school-event :AWOL)
+                 (map (partial school-event :REGISTRATION)
                       (randomly-select-from
                         (dependents-at-junior-school-or-above dependents)))))))
 

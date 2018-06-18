@@ -61,3 +61,12 @@
 (defmethod format-event :homes [timeline] (home-event timeline))
 
 (defmethod format-event :default [timeline] (base-details timeline))
+
+
+;YOS
+(defn- yos-event[timeline]
+       (merge base-details)
+
+
+       )
+

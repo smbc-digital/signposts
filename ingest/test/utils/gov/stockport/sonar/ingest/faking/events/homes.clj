@@ -7,7 +7,7 @@
 
 (defn home-events [{:keys [adults] :as household}]
   (let [durations (take (+ 1 (rand-int 5)) (h/durations 24 32))
-        event-type (rand-nth [:ASB :ARREARS-6-WK :NOTICE-SEEKING-POSSESSION :EVICTION-APPLICATION ])
+        event-type (rand-nth [:ASB :6-WEEK-ARREARS :NOTICE-POSSESSION :EVICTIONS ])
         keyworker (rand-nth people/key-worker-pool)]
     (map
       (fn [{:keys [timestamp] :as duration}]
