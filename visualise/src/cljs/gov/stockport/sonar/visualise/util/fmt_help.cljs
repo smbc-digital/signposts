@@ -10,6 +10,12 @@
 
 (def ->Title-Case (partial convert-case clojure.string/capitalize clojure.string/capitalize " "))
 
+(defn title-case[word]
+  (-> word
+      (str/lower-case)
+      (str/replace  #"\b." #(.toUpperCase %1))
+      ))
+
 (defn address-summary [{:keys [address postcode]}]
   (when (some not-empty [address postcode])
     (str
