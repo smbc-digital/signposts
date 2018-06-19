@@ -338,7 +338,8 @@ button.search {
   font-weight: 600;
   font-size: 18px;
   font-family: "Source Sans Pro";
-  margin-left: 10px !important; }
+  margin-left: 10px !important;
+  border-radius: 4px !important; }
 
 input.form-control::-moz-placeholder {
   color: #999;
@@ -396,7 +397,8 @@ div.search-item {
     text-align: left;
     border-left: solid #ccc 1px;
     vertical-align: middle;
-    width: 15%; }
+    width: 15%;
+    padding: 2px 2px 3px 2px; }
 
 .add-search-item {
   color: #999;

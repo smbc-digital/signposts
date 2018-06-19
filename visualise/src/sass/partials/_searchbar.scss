@@ -51,6 +51,7 @@ i.fa.fa-times.delete-item{
          font-size: 18px;
          font-family: "Source Sans Pro";
          margin-left: 10px !important;
+         border-radius:4px !important;
      }
 
 input.form-control::-moz-placeholder {
@@ -130,6 +131,7 @@ div.search-item{
         border-left:solid #ccc 1px;
         vertical-align:middle;
         width:15%;
+        padding: 2px 2px 3px 2px;
     }
 
 
