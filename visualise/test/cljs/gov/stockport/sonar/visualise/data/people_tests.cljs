@@ -56,6 +56,28 @@
                        {:name "3"} {:data  [{:postcode "SK3 3AA"}]
                                     :areas #{"SK3 3AA"}}}})))
 
+
+    (testing "adds event types to people data"
+      (is (= (people/with-event-types {:people {
+                                          {:name "1"} {:data [{:event-type "asbo"} {:event-type "cin"}
+                                                              {:event-type nil} {:event-type ""} {:event-type "arrears"}]}
+                                          {:name "2"} {:data []}
+                                          {:name "3"} {:data [{:event-type "arrears"}]}}})
+
+             {:people {
+                       {:name "1"} {:data  [{:event-type "asbo"} {:event-type "cin"}
+                                            {:event-type nil} {:event-type ""} {:event-type "arrears"}]
+                                    :event-types #{"asbo" "cin" "arrears"}}
+                       {:name "2"} {:data  []
+                                    :event-types #{}}
+                       {:name "3"} {:data  [{:event-type "arrears"}]
+                                    :event-types #{"arrears"}}}})))
+
+
+
+
+
+
     (testing "ranks people by whether locked, then score and sort order of surname"
 
       (is (= (people/surname {:name "A AB" :score 1} )
