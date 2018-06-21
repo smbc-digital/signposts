@@ -46,7 +46,6 @@
      (:address event) [:br]
      (:postcode event)]]])
 
-
 (defn non-statutory-intervention[event]
   [:div
   [:h4   "YOS " [:span {:style {:font-weight "normal"}} "Non Statutory Intervention"]]

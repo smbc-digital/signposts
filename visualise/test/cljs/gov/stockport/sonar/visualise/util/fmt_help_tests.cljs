@@ -44,4 +44,15 @@
     (is (= (fh/label "abc") "Abc"))
     (is (= (fh/label "Event-Type") "Event Type"))
     (is (= (fh/label "EventType") "Event Type"))
-    (is (= (fh/label "EVENT_TYPE") "Event Type"))))
+    (is (= (fh/label "EVENT_TYPE") "Event Type")))
+
+
+  (testing "close-date"
+    (is (= (fh/close-date "") "" ))
+    (is (= (fh/close-date "25/12/2015")"Fri 25 Dec 2015" )))
+
+  (testing "eis-close-date"
+    (is (= (fh/eis-close-date "") "" ))
+    (is (= (fh/eis-close-date "2015-12-25T01:00:00Z")"Fri 25 Dec 2015" ))))
+
+
