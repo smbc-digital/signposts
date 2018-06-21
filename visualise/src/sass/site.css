@@ -549,6 +549,12 @@ div.sp-individual {
       border-radius: 0px 0px 0px 5px;
       background-color: rgba(153, 153, 153, 0.4); }
 
+.graph div.graph-header {
+  font-weight: 400;
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-left: 16px; }
 .graph div.flot-timeline {
   width: 100%;
   height: 400px; }

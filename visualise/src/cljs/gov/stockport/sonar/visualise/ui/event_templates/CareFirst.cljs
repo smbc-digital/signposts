@@ -52,12 +52,7 @@
     [:div.col.col-md-3
      [:strong "Address end date"]]
     [:div.col.col-md-9
-<<<<<<< HEAD
-     (:address-end event)
-=======
-      (:address-end event)
->>>>>>> master
-     ]])])
+     (:address-end event)]])])
 
 (defn contact[event]
   [:div.event-details

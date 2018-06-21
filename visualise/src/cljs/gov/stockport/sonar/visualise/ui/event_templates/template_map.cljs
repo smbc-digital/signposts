@@ -54,11 +54,11 @@
    :gmp-caution gmp/caution
    :gmp-domestic gmp/domestic
    :gmp-domestic-violence-demo gmp/domestic
-   :stockport-homes-arrears=6-week ho/arrears-6-wk
+   :stockport-homes-6-week-arrears ho/arrears-6-wk
    :stockport-homes-asb ho/asb
    :stockport-homes-evictions ho/eviction-application
    :stockport-homes-notice-possession ho/notice-seeking-possession
-   :homes-arrears=6-week ho/arrears-6-wk
+   :homes-6-week-arrears ho/arrears-6-wk
    :homes-asb ho/asb
    :homes-evictions ho/eviction-application
    :homes-notice-possession ho/notice-seeking-possession
