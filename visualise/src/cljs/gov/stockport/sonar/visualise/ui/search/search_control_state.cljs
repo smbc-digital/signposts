@@ -1,4 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.search.search-control-state
+  "Search Control State"
   (:require [clojure.string :as str]
             [gov.stockport.sonar.visualise.state :refer [!search-control-state !search-history]]))
 
@@ -38,8 +39,17 @@
       (= (:query-type criteria) query-type))
     existing-criteria))
 
-
-
+(defn- swap-criteria!
+  [new-criteria]
+  (swap! !search-control-state
+         (fn [state]
+           (-> state
+               (update :criteria
+                       (fn [existing-criteria]
+                         (if (contains-criteria? existing-criteria new-criteria)
+                           (replace-criteria existing-criteria new-criteria)
+                           (concat existing-criteria [new-criteria]))))
+               (assoc :search-term "")))))
 
 (defn add-search-criteria!
   ([]
@@ -48,16 +58,8 @@
   ([query-type search-term]
    (when (not (str/blank? search-term))
      (let [new-criteria {:query-type query-type :search-term search-term}]
-       (swap! !search-control-state
-                        (fn [state]
-                          (-> state
-                              (update :criteria
-                                      (fn [existing-criteria]
-                                        (if (contains-criteria? existing-criteria new-criteria)
-                                          (replace-criteria existing-criteria new-criteria)
-                                          (concat existing-criteria [new-criteria]))))
-                              (assoc :search-term ""))))))))
-
+       (swap-criteria! new-criteria)
+       ))))
 
 (defn add-search-criteria-and-search!
   ([]
@@ -66,22 +68,13 @@
   ([query-type search-term]
    (when (not (str/blank? search-term))
      (let [new-criteria {:query-type query-type :search-term search-term}]
-       (callback (swap! !search-control-state
-                        (fn [state]
-                          (-> state
-                              (update :criteria
-                                      (fn [existing-criteria]
-                                        (if (contains-criteria? existing-criteria new-criteria)
-                                          (replace-criteria existing-criteria new-criteria)
-                                          (concat existing-criteria [new-criteria]))))
-                              (assoc :search-term "")))))))))
+       (callback (swap-criteria! new-criteria))))))
 
 (defn remove-search-criteria! [query-type-to-remove]
   (swap! !search-control-state update :criteria
                    (fn [search-criteria]
                      (filter (fn [{:keys [query-type]}]
                                (not (= query-type-to-remove query-type))) search-criteria))))
-
 
 (defn search-criteria []
   (:criteria @!search-control-state))
