@@ -69,9 +69,9 @@
 
 (defn- surname[person-key]
   (let [name-components (str/split (:name person-key) #"\s+")]
-    (if(= nil (last name-components)))
+    (if(= nil (last name-components))
       (str/lower-case(first name-components))
-      (str/lower-case(last name-components))))
+      (str/lower-case(last name-components)))))
 
 (defn- forename [person-key]
   (let [name-components (str/split (:name person-key) #"\s+")]
