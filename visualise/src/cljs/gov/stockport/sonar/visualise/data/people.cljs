@@ -53,17 +53,27 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :score (apply max (map :score (:data v))))}) people))))
 
-(def area #(first (str/split (or (:postcode %) "") #" ")))
+(def area #(first (str/split (or (:postcode %) "") #"--")))
 
 (defn with-areas [{:keys [people] :as data}]
   (assoc data :people
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :areas (into #{} (remove str/blank? (map area (:data v)))))}) people))))
 
-(def surname #(str/lower-case(last (str/split (:name %) #"\s+"))))
+(def event-type #(first (str/split (or (:event-type %) "") #"--")))
 
+(defn with-event-types [{:keys [people] :as data}]
+  (assoc data :people
+              (reduce merge {}
+                      (map (fn [[k v]] {k (assoc v :event-types (into #{} (remove str/blank? (map event-type (:data v)))))}) people))))
 
-(defn forename [person-key]
+(defn- surname[person-key]
+  (let [name-components (str/split (:name person-key) #"\s+")]
+    (if(= nil (last name-components)))
+      (str/lower-case(first name-components))
+      (str/lower-case(last name-components))))
+
+(defn- forename [person-key]
   (let [name-components (str/split (:name person-key) #"\s+")]
   (if(= nil (re-find #"(?i)mr|mrs|miss|ms|dr"(first name-components)))
     (str/lower-case(first name-components))
@@ -71,8 +81,7 @@
 
 
 (defn is-locked?[p]
-  (if (:locked? p) 0 1)
-  )
+  (if (:locked? p) 0 1))
 
 (defn with-relevance-rank
   ([{:keys [people] :as data}]
@@ -141,7 +150,6 @@
 (defn with-timespan [data]
   (assoc data :timespan (timespan/from-events (all-events data))))
 
-
 (defn toggle-sort-by[data]
   (if(= :by-relevance (get data :rank-by))
     (assoc data :rank-by :by-name)
@@ -155,6 +163,7 @@
       (by-people)
       (with-max-score)
       (with-areas)
+      (with-event-types)
       (with-timespan)
       (with-name-rank)
       (with-relevance-rank)
@@ -164,8 +173,7 @@
   (if (= rank-by :by-name)
     (sort-by (fn [[_ {:keys [name-rank]}]] name-rank) people)
     (sort-by (fn [[_ {:keys [relevance-rank]}]] relevance-rank) people)
-    )
-  )
+    ))
 
 (defn sort-by-relevance[data]
   (= :by-relevance (get data :rank-by)))
