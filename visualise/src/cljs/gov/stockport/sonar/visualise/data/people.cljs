@@ -67,10 +67,13 @@
               (reduce merge {}
                       (map (fn [[k v]] {k (assoc v :event-types (into #{} (remove str/blank? (map event-type (:data v)))))}) people))))
 
-(def surname #(str/lower-case(last (str/split (:name %) #"\s+"))))
+(defn- surname[person-key]
+  (let [name-components (str/split (:name person-key) #"\s+")]
+    (if(= nil (last name-components)))
+      (str/lower-case(first name-components))
+      (str/lower-case(last name-components))))
 
-
-(defn forename [person-key]
+(defn- forename [person-key]
   (let [name-components (str/split (:name person-key) #"\s+")]
   (if(= nil (re-find #"(?i)mr|mrs|miss|ms|dr"(first name-components)))
     (str/lower-case(first name-components))
