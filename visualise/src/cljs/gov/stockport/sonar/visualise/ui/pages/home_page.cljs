@@ -6,14 +6,10 @@
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
             [gov.stockport.sonar.visualise.ui.results.individual-cards :as ic]
             [gov.stockport.sonar.visualise.auth.auth-client :as ac]
-            [gov.stockport.sonar.visualise.state :refer [!app !data !status refresh-status!]]
+            [gov.stockport.sonar.visualise.state :refer [!data refresh-status!]]
             [gov.stockport.sonar.visualise.ui.busy :as busy]
-            [gov.stockport.sonar.visualise.data.people :as people]
-            [gov.stockport.sonar.visualise.state :refer [!search-control-state]]
-            [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.ui.components.welcome-status :refer [welcome-message]]
-            [gov.stockport.sonar.visualise.ui.search.query-control :as qc]
-            [gov.stockport.sonar.visualise.query.client :refer [status null-handler]]))
+           ))
 
 
 

@@ -63,8 +63,7 @@
   (scs/set-search-term! value))
 
 (defn show-input-group []
-  (scs/add-search-criteria!)
-  )
+  (scs/add-search-criteria!))
 
 (defn- change-search-criteria[]
   (scs/add-search-criteria!)

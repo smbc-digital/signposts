@@ -45,6 +45,12 @@ i.fa.fa-times.delete-item{
    }
 }
 
+ .input-group-btn
+ {
+    line--height: 1.1em;
+    height:38px;
+ }
+
  button.search{
          background-color: $bright-blue !important;
          font-weight: 600;
@@ -52,6 +58,7 @@ i.fa.fa-times.delete-item{
          font-family: "Source Sans Pro";
          margin-left: 10px !important;
          border-radius:4px !important;
+         height:38px;
      }
 
 input.form-control::-moz-placeholder {
@@ -83,8 +90,9 @@ div.search-item{
     border-radius: 5px;
     margin-left: 10px;
     padding:2px 1px 0px 8px;
-    height:36px;
+    height:38px;
     display:inline-block;
+    width:200px;
 
      &:hover{
         border-color:#2196f3;

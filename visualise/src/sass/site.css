@@ -333,13 +333,18 @@ i.fa.fa-times.delete-item {
   i.fa.fa-times.delete-item:hover {
     color: red; }
 
+.input-group-btn {
+  line--height: 1.1em;
+  height: 38px; }
+
 button.search {
   background-color: #2b98f0 !important;
   font-weight: 600;
   font-size: 18px;
   font-family: "Source Sans Pro";
   margin-left: 10px !important;
-  border-radius: 4px !important; }
+  border-radius: 4px !important;
+  height: 38px; }
 
 input.form-control::-moz-placeholder {
   color: #999;
@@ -367,8 +372,9 @@ div.search-item {
   border-radius: 5px;
   margin-left: 10px;
   padding: 2px 1px 0px 8px;
-  height: 36px;
-  display: inline-block; }
+  height: 38px;
+  display: inline-block;
+  width: 200px; }
   div.search-item:hover {
     border-color: #2196f3; }
   div.search-item .item-container > label {
@@ -554,7 +560,7 @@ div.graph-header {
   font-size: 1.2em;
   margin-bottom: 15px;
   margin-top: 10px;
-  margin-left: 16px; }
+  margin-left: 11px; }
 
 .graph div.flot-timeline {
   width: 100%;
