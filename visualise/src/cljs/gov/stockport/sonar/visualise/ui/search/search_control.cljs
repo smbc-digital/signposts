@@ -107,8 +107,7 @@
       {
        :value     "none"
        :autoFocus "autofocus"
-       :on-change #(toggle-view (keyword (-> % .-target .-value)))
-       }
+       :on-change #(toggle-view (keyword (-> % .-target .-value)))}
       (when (empty? (scs/search-criteria))
         (reset! !selected-options  #{}) )
       (let [foo  @!selected-options]

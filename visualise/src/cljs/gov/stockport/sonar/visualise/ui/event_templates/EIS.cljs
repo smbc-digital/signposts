@@ -5,8 +5,11 @@
 
 (defn- primary-presenting-issue[event]
   (let [issue(:primary-presenting-issue event)]
-      (s/replace issue #"[{}]" "")
-    ))
+    (-> issue
+        (s/replace  #"[{}]" "")
+        (s/replace #"\"" "")
+        (s/replace #",NULL$", "")
+        )))
 
 (defn- left-column[event]
   [:div.col.col-md-4

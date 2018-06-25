@@ -63,7 +63,7 @@
                 :field-type [:age-more-than :age-less-than]
                 :description "AGE RANGE"
                 :placeholder "Age from to"
-                :size 3
+                :size "3"
                 }
 
   :all-fields    {:display-order     8
