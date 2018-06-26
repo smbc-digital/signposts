@@ -9,7 +9,8 @@
     [:div.col.col-md-4
      [:strong.label "Childview Id"]]
     [:div.col.col-md-8
-     (:child-view-id event)]]
+     (:childview-id
+       event)]]
    [:div.row
     [:div.col.col-md-4
      [:strong.label "Name"]]
