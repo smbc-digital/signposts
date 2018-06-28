@@ -4,7 +4,7 @@
     [gov.stockport.sonar.visualise.util.fmt-help :as f]
     [reagent.core :as r]))
 
-(defn recent-update [idx {:keys [event-source event-type qty from to last-updated]}]
+(defn recent-update [idx {:keys [event-source event-type last-updated]}]
   ^{:key (gensym)}
   [:div.col.col-2-sm.recent-update
    [:div.event-source-header

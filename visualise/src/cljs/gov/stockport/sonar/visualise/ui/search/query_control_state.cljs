@@ -15,7 +15,7 @@
            :field-type  :wildcard
            :description "NAME"
            :placeholder "what name?"
-           :type "text"
+           :input-type :text-input
            :size "1"}
 
    :address  {:display-order 3
@@ -23,7 +23,7 @@
               :field-type  :address-with-postcode
               :description "ADDRESS"
               :placeholder "what address?"
-              :type "text"
+              :input-type :text-input
               :size "10"}
 
   :postcode   {:display-order   4
@@ -31,7 +31,7 @@
                :field-type  :postcode
                :description "POSTCODE"
                :placeholder "what postcode?"
-               :type "text"
+               :input-type :text-input
                :size "8"}
 
   :dob         { :display-order   5
@@ -39,7 +39,7 @@
                  :field-type  :date-of-birth
                  :description "DATE OF BIRTH"
                  :placeholder "DOB e.g.25/01/2016"
-                 :type "date"
+                 :input-type :text-input
                  :size "8"}
 
   :age-less-than {:display-order        6
@@ -47,7 +47,7 @@
                   :field-type  :age-less-than
                   :description "AGE UP TO"
                   :placeholder "maximum age in years"
-                  :type "number"
+                  :input-type :text-input
                   :size "3"}
 
   :age-more-than {:display-order        7
@@ -55,7 +55,7 @@
                   :field-type  :age-more-than
                   :description "AGE OVER"
                   :placeholder "minimum age in years"
-                  :type "number"
+                  :input-type :text-input
                   :size "3"}
 
   :age-range  {:display-order 11
@@ -70,7 +70,7 @@
                   :field-type  :query-all
                   :description "ALL"
                   :placeholder "enter general search"
-                  :type "text"
+                  :input-type :text-input
                   :size "10"}
 
   :event-source  {:display-order        9
@@ -78,7 +78,7 @@
                   :field-type  :match-text
                   :description "EVENT SOURCE"
                   :placeholder "search for event source"
-                  :type "text"
+                  :input-type :event-source
                   :size "10"}
 
   :event-type    {:display-order      10
@@ -86,7 +86,7 @@
                   :field-type  :match-text
                   :description "EVENT TYPE"
                   :placeholder "search for event type"
-                  :type "text"
+                  :input-type :event-type
                   :size "10"
                   }})
 

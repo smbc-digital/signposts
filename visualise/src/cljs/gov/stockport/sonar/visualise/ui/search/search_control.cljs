@@ -5,6 +5,7 @@
             [gov.stockport.sonar.visualise.ui.search.search-control-state :as scs]
             [gov.stockport.sonar.visualise.query.client :refer [search]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [add-search-history!]]
+            [gov.stockport.sonar.visualise.ui.search.input-types :as it]
             [gov.stockport.sonar.visualise.state
                :refer
              [!search-control-state !data !search-type !show-select !show-input
@@ -99,6 +100,19 @@
   (hide-search-field)
   (swap! !search-control-state assoc :search-term "")))
 
+
+(defn text-input[]
+  [:input
+   {:type "text"
+    :value  (scs/search-term)
+    :name "search-term"
+    :id "search-term"
+    :size (get-in qcs/query-types [(scs/selected-control) :size])
+    :on-change   #(scs/set-search-term! (-> % .-target .-value))
+    :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))}])
+
+
+
 (defn input-group[]
   [:div.input-group
    {:style {:margin-left "10px"}}
@@ -122,14 +136,8 @@
       [:div.item-container
       [:label {:style {:width "100%"}}
         (get-in qcs/query-types [(scs/selected-control) :placeholder])
-       [:input
-        {:type "text"
-         :value  (scs/search-term)
-         :name "search-term"
-         :id "search-term"
-         :size (get-in qcs/query-types [(scs/selected-control) :size])
-         :on-change   #(scs/set-search-term! (-> % .-target .-value))
-         :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))}]]]
+        [it/get-input (get-in qcs/query-types [(scs/selected-control) :input-type])]
+       ]]
       [:div.delete-item-container
        [:i.fa.fa-times.ml-2.delete-item
         {:on-click  reset-search-field}]]])])

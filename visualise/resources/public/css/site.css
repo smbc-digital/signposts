@@ -428,6 +428,11 @@ select.custom-select {
       color: #999999;
       text-transfrom: capitalize; }
 
+select.event-type, select.event-source {
+  width: 95%;
+  font-size: 1.4em;
+  line-height: 1.0em; }
+
 .selected-event {
   width: 100%;
   height: 100%;
