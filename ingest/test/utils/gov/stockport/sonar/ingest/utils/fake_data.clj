@@ -13,10 +13,17 @@
    {:event-source :STOCKPORT-HOMES
     :event-types  [:ARREARS-6-WK :NOTICE-SEEKING-POSSESSION :EVICTION :ASB]}
    {:event-source :GMP
-    :event-types  [:GMP-DOMESTIC]}
+    :event-types  [:DOMESTIC-VIOLENCE]}
    {:event-source :EIS
-    :event-types  [:LAC :CIN :CONTACT :schools-attendance ]}
-   ])
+    :event-types  [:LAC :CIN :CONTACT :SEN]}
+   {:event-source :YOS
+    :event-types  [:STATUTORY-INTERVENTION :NON-STATUTORY-INTERVENTION]}
+   {:event-source :CHARITY-LOG
+    :event-types  [:THE-PREVENTION-ALLIANCE]}
+   {:event-source :CARE-FIRST
+    :event-types  [:FORM :SERVICE-AGREEMENT]}
+   {:event-source :revsbens
+    :event-types [:COUNCILTAXBILL :CTS-ONLY :HB-CTS]}])
 
 (defn rand-event-source []
   (let [{:keys [:event-source :event-types]} (rand-nth event-sources)]

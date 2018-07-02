@@ -6,7 +6,7 @@
 
 (defn child-in-need-events [children household]
   (let [durations (take (+ 1 (rand-int 5)) (h/durations 24 32))
-        event-type (rand-nth [:CIN :LAC])]
+        event-type (rand-nth [:CIN :LAC :CONTACT :SEN])]
     (flatten
       (map
         (fn [{:keys [timestamp] :as duration}]

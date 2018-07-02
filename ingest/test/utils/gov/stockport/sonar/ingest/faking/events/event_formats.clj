@@ -24,7 +24,6 @@
       :default)))
 
 ; SCHOOLS
-
 (defn- schools-data [{{{:keys [name phone district address headteacher]} :school} :meta}]
   {:school-name        name
    :school-phone       phone
@@ -44,7 +43,6 @@
          (schools-data timeline)))
 
 ; EIS
-
 (defn- eis-event [timeline]
   (merge (base-details timeline)
          (duration timeline)
@@ -53,7 +51,6 @@
 (defmethod format-event :eis [timeline] (eis-event timeline))
 
 ; HOMES
-
 (defn- home-event [timeline]
   (merge (base-details timeline)
          (select-keys timeline [:nino :keyworker])))

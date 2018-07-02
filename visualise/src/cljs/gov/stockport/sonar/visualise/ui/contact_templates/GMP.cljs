@@ -62,7 +62,7 @@
       (:source-crime-ref event)]]
     [:div.row
      [:div.col.col-md-4
-      [:strong.label "Victim Unique Refernce Number"]]
+      [:strong.label "Victim Unique Reference Number"]]
      [:div.col.col-md-8
       (:victim-urn event)]]
     [:div.row

@@ -6,11 +6,13 @@
 
 (def event-sources (r/atom  (set [])))
 
-(defn- option-event-source[{:keys [event-source]}]
+(defn- map-event-sources[{:keys [event-source]}]
   (when (not (contains? @event-sources event-source))
-    (swap! event-sources conj event-source)
+    (swap! event-sources conj event-source)))
+
+(defn- option-event-source[event-source]
     ^{:key (gensym)}
-    [:option {:value event-source} event-source]))
+    [:option {:value event-source} event-source])
 
 (defn- option-event-type[{:keys [event-type]}]
   ^{:key (gensym)}
@@ -24,7 +26,8 @@
     :id "search-term"
     :on-change   #(scs/set-search-term! (-> % .-target .-value))}
    [:option {:value "" :selected :selected} "Please select ..."]
-    (map option-event-source (sort-by :event-source @!status))])
+    (map map-event-sources (sort-by :event-source @!status))
+    (map option-event-source @event-sources)])
 
 (defn event-type[]
   [:select.event-type
@@ -34,7 +37,8 @@
     :id "search-term"
     :on-change   #(scs/set-search-term! (-> % .-target .-value))}
    [:option {:value "" :selected :selected} "Please select ..."]
-   (map option-event-type (sort-by :event-source @!status))])
+   (map option-event-type (sort-by :event-source @!status))
+   ])
 
 (defn text-input[]
   [:input

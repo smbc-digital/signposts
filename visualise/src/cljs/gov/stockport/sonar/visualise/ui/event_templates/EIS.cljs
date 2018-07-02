@@ -94,7 +94,7 @@
 (defn lac [event]
   [:div.event-details
    [:div.panel-heading
-   [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Looked-after child"]]]
+   [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Looked After Child"]]]
    [:div.row {:class "cin"}
     (left-column event)
     (middle-column event)

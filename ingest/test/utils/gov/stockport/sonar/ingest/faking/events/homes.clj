@@ -17,6 +17,7 @@
                            :name         (:full-name name)
                            :dob          dob
                            :nino         nino
+                           :other-information "Other Information Placeholder"
                            :address      (h/address-at timestamp household)
                            :keyworker    (-> keyworker :name :full-name)})))
       durations)))
