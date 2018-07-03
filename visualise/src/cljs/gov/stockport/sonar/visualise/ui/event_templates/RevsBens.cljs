@@ -60,7 +60,7 @@
 (defn ct-support[event]
     [:div.event-details
      [:div.panel-heading
-     [:h4   "RevsBens " [:span.not-bold "Council Tax Support"]]
+     [:h4   "RevsBens " [:span.not-bold "Council Tax Support"]]]
      [:div.row {:class "Yos"}
       (left-column event)
       (middle-column event)
