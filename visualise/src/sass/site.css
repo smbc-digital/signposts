@@ -36,6 +36,9 @@ div.reset-cards-text {
   vertical-align: middle;
   min-height: 43px; }
 
+.not-bold {
+  font-weight: normal; }
+
 div.person-container {
   box-shadow: 10px 10px 10px #ccc;
   margin: 10px 0px 20px 0px;

@@ -56,7 +56,7 @@
 (defn non-statutory-intervention[event]
   [:div.event-details
    [:div.panel-heading
-  [:h4 "YOS " [:span {:style {:style {:font-weight "normal"}}}"Non Statutory Intervention"]]]
+  [:h4 "YOS " [:span.not-bold"Non Statutory Intervention"]]]
   [:div.row {:class "Yos"}
    (left-column event)
    (middle-column event)
@@ -74,7 +74,7 @@
 (defn statutory-intervention[event]
   [:div.event-details.
    [:div.panel-heading
-   [:h4 "YOS " [:span {:style {:font-weight "normal"}}"Statutory Intervention"]]]
+   [:h4 "YOS " [:span.not-bold "Statutory Intervention"]]]
   [:div.row {:class "Yos"}
    (left-column event)
    (middle-column event)

@@ -58,14 +58,6 @@
                   :input-type :text-input
                   :size "3"}
 
-  :age-range  {:display-order 11
-                :field-name :dob
-                :field-type [:age-more-than :age-less-than]
-                :description "AGE RANGE"
-                :placeholder "Age from to"
-                :size "3"
-                }
-
   :all-fields    {:display-order     8
                   :field-type  :query-all
                   :description "ALL"

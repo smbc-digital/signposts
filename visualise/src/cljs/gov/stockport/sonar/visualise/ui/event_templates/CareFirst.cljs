@@ -57,7 +57,7 @@
 (defn contact[event]
   [:div.event-details
    [:div.panel-heading
-  [:h4   "Care First " [:span {:style {:font-weight "normal"}} "Contact (adult)"]]]
+  [:h4   "Care First " [:span.not-bold "Contact (adult)"]]]
   [:div.row {:class "carefirst contact"}
    (left-column event)
    (middle-column event)
@@ -82,7 +82,7 @@
 (defn service-agreement[event]
   [:div.event-details
    [:div.panel-heading
-  [:h4   "Care First " [:span {:style {:font-weight "normal"}} "Service Agreement"]]]
+  [:h4   "Care First " [:span.not-bold "Service Agreement"]]]
   [:div.row {:class "carefirst contact"}
    (left-column event)
    (middle-column event)

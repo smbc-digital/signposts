@@ -53,7 +53,7 @@
 (defn attendance[event]
   [:div.event-details
    [:div.panel-heading
-  [:h4   "Schools " [:span {:style {:font-weight "normal"}} "Attendance"]]]
+  [:h4   "Schools " [:span.not-bold "Attendance"]]]
   [:div.row {:class "schools-attendance"}
    (left-column event)
    (middle-column event)
@@ -72,7 +72,7 @@
 (defn exclusions[event]
   [:div.event-details
    [:div.panel-heading
-   [:h4   "School " [:span {:style {:font-weight "normal"}} "Exclusions"]]]
+   [:h4   "School " [:span.not-bold "Exclusions"]]]
    [:div.row {:class "school-exclusions"}
     (left-column event)
     (middle-column event)
@@ -98,7 +98,7 @@
 (defn registrations[event]
   [:div.event-details.
    [:div.panel-heading
-   [:h4   "Schools " [:span {:style {:font-weight "normal"}} "Registrations"]]]
+   [:h4   "Schools " [:span.not-bold "Registrations"]]]
    [:div.row {:class "school-registrations"}
     (left-column event)
     (middle-column event)

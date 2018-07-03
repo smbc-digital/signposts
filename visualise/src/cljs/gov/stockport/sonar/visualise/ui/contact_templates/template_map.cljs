@@ -21,7 +21,7 @@
 
 (defn default-template [event]
   [:div
-  [:h4   (:event-source event) [:span {:style {:font-weight "normal"}}" "  (:event-type event) ]]
+  [:h4   (:event-source event) [:span.not-bold" "  (:event-type event) ]]
   [:div.row {:class (make-template-key event) }
    [:div.col..col-4-sm
     [:div.row

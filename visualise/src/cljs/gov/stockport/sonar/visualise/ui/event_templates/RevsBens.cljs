@@ -60,7 +60,7 @@
 (defn ct-support[event]
     [:div.event-details
      [:div.panel-heading
-     [:h4   "RevsBens " [:span {:style {:font-weight "normal"}} "Council Tax Support"]]]
+     [:h4   "RevsBens " [:span.not-bold "Council Tax Support"]]
      [:div.row {:class "Yos"}
       (left-column event)
       (middle-column event)
@@ -84,7 +84,7 @@
 (defn ctax-bill[event]
   [:div.event-details
    [:div.panel-heading
-   [:h4   "RevsBens " [:span {:style {:font-weight "normal"}} "Council Tax Bill"]]]
+   [:h4   "RevsBens " [:span.not-bold "Council Tax Bill"]]]
    [:div.row {:class "ctax-bill"}
    [:div.col.col-md-4
     [:div.row
@@ -103,7 +103,7 @@
 (defn hb-cts[event]
   [:div.event-details
    [:div.panel-heading
-   [:h4   "RevsBens " [:span {:style {:font-weight "normal"}} "Housing Benefit and Council Tax Support"]]]
+   [:h4   "RevsBens " [:span.not-bold "Housing Benefit and Council Tax Support"]]]
    [:div.row {:class "Yos"}
     (left-column event)
     (middle-column event)

@@ -44,7 +44,7 @@
 (defn prevention-alliance[event]
   [:div.event-details
    [:div.panel-heading
-   [:h4   "Charity Log " [:span {:style {:font-weight "normal"}} "Prevention Alliance"]]]
+   [:h4   "Charity Log " [:span.not-bold "Prevention Alliance"]]]
    [:div.row {:class "charity-log"}
     (left-column event)
     (middle-column event)

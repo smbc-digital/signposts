@@ -1,3 +1,7 @@
+.not-bold {
+   font-weight: normal
+}
+
 div.person-container{
     box-shadow: 10px 10px 10px #ccc;
     margin:  10px 0px 20px 0px;
@@ -91,7 +95,9 @@ div.person {
 div.events-header {
    > h3 {
      text-align: center;
-     color:  $darkest-blue;}
+     color:  $darkest-blue;
+
+     }
     > p {
      text-align: center;
      color:  $darkest-blue;

@@ -6,7 +6,7 @@
 
 (defn asbo [event]
   [:div
-  [:h4   "Police " [:span {:style {:font-weight "normal"}} "ASBO"]]
+  [:h4   "Police " [:span.not-bold "ASBO"]]
    [:div.row {:class "ASBO"}
      [:div.col.col-md-4
          [:div.row
@@ -29,7 +29,7 @@
 
 (defn caution [event]
   [:div
-  [:h4   "Police " [:span {:style {:font-weight "normal"}} "Caution"]]
+  [:h4   "Police " [:span.not-bold "Caution"]]
   [:div.row {:class "Caution"}
    [:div.col..col-md-4
     [:div.row
@@ -52,7 +52,7 @@
 
 (defn domestic [event]
   [:div
-  [:h4   "Police " [:span {:style {:font-weight "normal"}} "Domestic Violence"]]
+  [:h4   "Police " [:span.not-bold "Domestic Violence"]]
   [:div.row {:class "gmp domestic"}
    [:div.col.col-md-4
     [:div.row

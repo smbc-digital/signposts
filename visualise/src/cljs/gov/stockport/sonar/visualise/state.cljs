@@ -34,9 +34,7 @@
   (if (= status 401)
     (navigate-to-login-page)
     (println (str "something bad happened: " status " " status-text)))
-    )
-
-
+  )
 
 (defn initialise! []
   (reset! !app {})
@@ -44,9 +42,7 @@
   (reset! !status {})
   (reset! !login-error 0)
   (reset! !search-control-state {})
-
-  (load-signposting-configuration)
-  )
+  (load-signposting-configuration))
 
 
 

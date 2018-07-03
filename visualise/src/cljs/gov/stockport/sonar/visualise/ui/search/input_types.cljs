@@ -21,7 +21,7 @@
 (defn event-source[]
   [:select.event-source
    {
-    :value (scs/search-term)
+    :value (or (scs/search-term) "")
     :name "seach-term"
     :id "search-term"
     :on-change   #(scs/set-search-term! (-> % .-target .-value))}
@@ -32,7 +32,7 @@
 (defn event-type[]
   [:select.event-type
    {
-    :value (scs/search-term)
+    :value (or(scs/search-term) "")
     :name "seach-term"
     :id "search-term"
     :on-change   #(scs/set-search-term! (-> % .-target .-value))}

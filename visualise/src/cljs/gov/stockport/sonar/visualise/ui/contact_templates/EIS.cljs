@@ -50,7 +50,7 @@
 
 (defn contact [event]
   [:div
-   [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Contact"]]
+   [:h4   "EIS " [:span.not-bold "Contact"]]
   [:div.row {:class "eis-in"}
    (left-column event)
    (middle-column event)
@@ -68,7 +68,7 @@
 
 (defn cin [event]
   [:div
-  [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Child in Need"]]
+  [:h4   "EIS " [:span.not-bold "Child in Need"]]
   [:div.row {:class "cin"}
    (left-column event)
    (middle-column event)
@@ -88,7 +88,7 @@
 
 (defn lac [event]
   [:div
-   [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Looked-after child"]]
+   [:h4   "EIS " [:span.not-bold "Looked-after child"]]
    [:div.row {:class "cin"}
     (left-column event)
     (middle-column event)
@@ -106,7 +106,7 @@
 
 (defn sen [event]
   [:div
-   [:h4   "EIS " [:span {:style {:font-weight "normal"}} "Special Educational Needs"]]
+   [:h4   "EIS " [:span.not-bold "Special Educational Needs"]]
    [:div.row {:class "cin"}
     (left-column event)
     (middle-column event)
