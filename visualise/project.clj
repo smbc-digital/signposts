@@ -36,6 +36,8 @@
                  [alandipert/storage-atom "1.2.4"]
                  [hodgepodge "0.1.3"]
                  [reagent-forms "0.5.32"]
+                 [org.clojure/java.jdbc "0.7.7"]
+                 [org.xerial/sqlite-jdbc "3.23.1"]
                  ]
 
   :plugins [[lein-ring "0.11.0"]
