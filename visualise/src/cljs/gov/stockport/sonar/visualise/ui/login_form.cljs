@@ -18,10 +18,9 @@
     (fn []
       [:div.login-form-container
        [:div.form-group
-        (if (> login-error 0 )
-          [:p#login-error {:style {:color "rgba(191,125,3,1)" :font-weight "bold" :text-align "left" :font-size "0.9em"}}
-           [:i.fa.fa-exclamation-triangle {:style{:font-size "1.5em" :margin-left "10px" :margin-right "20px"}}]
-           login-message])
+        (when (> login-error 0)
+          [:p#login-error
+           [:i.fa.fa-exclamation-triangle] login-message])
          [:div.input-group.addon
          [:div.input-group-addon
            [:i.fa.fa-user]]

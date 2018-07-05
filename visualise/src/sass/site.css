@@ -197,6 +197,16 @@ div.login-form {
   div.login-form button.btn-primary {
     background-color: #2b98f0; }
 
+p#login-error {
+  color: #bf7d03;
+  font-weight: bold;
+  text-align: left;
+  font-size: 0.9em; }
+  p#login-error i.fa {
+    font-size: 1.5em;
+    margin-left: 10px;
+    margin-right: 20px; }
+
 div.recent-searches {
   z-index: 1;
   background-color: #eceeef;
