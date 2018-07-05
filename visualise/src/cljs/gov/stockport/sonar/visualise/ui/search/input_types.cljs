@@ -4,7 +4,6 @@
             [gov.stockport.sonar.visualise.state :refer [!status]]
             [gov.stockport.sonar.visualise.util.fmt-help :as fh] ))
 
-
 (defn- option-event-source[events]
     (let [event-source (key events)]
     ^{:key (gensym)}
@@ -17,8 +16,8 @@
 (defn- optgroup-event-type[events]
   (let [event-source (key events)]
     ^{:key (gensym)}
-  [:optgroup {:label event-source}
-   (map option-event-type (val events))]))
+    [:optgroup {:label event-source}
+    (map option-event-type (val events))]))
 
 (defn event-source[]
   [:select.event-source

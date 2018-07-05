@@ -1,6 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.search.query-control-state
-  "Stores query control state"
-  )
+  "Stores query control state")
 
 (def query-types
   {

@@ -89,7 +89,7 @@
   (fn []
     (when (not-empty (:people @!data))
       [:div.cards
-       [:p  "You can select up to " [:strong "6 individuals"] " to highlight their events on the graph"]
+       [:p  "You can select up to " [:strong "10 individuals"] " to highlight their events on the graph"]
         [:div.select=cards
         [:div.reset-cards {:on-click #(swap! !data people/reset-selection)}
          [:div.icon[:i.fa.fa-times.ml-2]]

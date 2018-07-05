@@ -12,10 +12,8 @@
              (assoc  :field-name (get-in query-types [query-type :field-name] ))
              (assoc  :query search-term))))
 
-
 (defn query-from-search-control-state [search-history-item]
-     (map to-query-item search-history-item)
-  )
+     (map to-query-item search-history-item))
 
 (defn stored-search-criteria[index]
   (let [search-history-item (nth @!search-history index)]
@@ -31,5 +29,3 @@
 
 (defn clear-all-searches![]
   (reset! !search-history '()))
-
-
