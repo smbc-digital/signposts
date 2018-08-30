@@ -62,11 +62,6 @@
              (fh/to-dob(:dob event))]]
            [:div.row
             [:div.col.col-md-3
-             [:strong "National Insurance"]]
-            [:div.col.col-md-9
-             (:nino event)]]
-           [:div.row
-            [:div.col.col-md-3
              [:strong "Open Date"]]
             [:div.col.col-md-9
              (:timestamp (fh/unparse-timestamp event))]]
@@ -96,11 +91,6 @@
              (fh/to-dob(:dob event))]]
            [:div.row
             [:div.col.col-md-3
-             [:strong "National Insurance"]]
-            [:div.col.col-md-9
-             (:nino event)]]
-           [:div.row
-            [:div.col.col-md-3
              [:strong "Open Date"]]
             [:div.col.col-md-9
              (:timestamp (fh/unparse-timestamp event))]]]
@@ -123,11 +113,6 @@
              [:strong "DOB"]]
             [:div.col.col-md-9
              (fh/to-dob(:dob event))]]
-           [:div.row
-            [:div.col.col-md-3
-             [:strong "National Insurance"]]
-            [:div.col.col-md-9
-             (:nino event)]]
            [:div.row
             [:div.col.col-md-3
              [:strong "Open Date"]]

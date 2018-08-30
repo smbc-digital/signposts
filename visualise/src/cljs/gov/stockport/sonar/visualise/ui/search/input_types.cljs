@@ -17,7 +17,7 @@
   (let [event-source (key events)]
     ^{:key (gensym)}
     [:optgroup {:label event-source}
-    (map option-event-type (val events))]))
+    (map option-event-type (sort-by :event-type(val events)))]))
 
 (defn event-source[]
   [:select.event-source

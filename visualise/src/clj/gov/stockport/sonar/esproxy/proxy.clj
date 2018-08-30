@@ -8,6 +8,7 @@
             [gov.stockport.sonar.auth.session-manager :as sm]
             [gov.stockport.sonar.esproxy.es-query-builder :as qb]
             [gov.stockport.sonar.esproxy.es-available-data :as ad]
+            [gov.stockport.sonar.visualise.gdprlog :as g]
             [taoensso.timbre :refer [info]]))
 
 (def search-url "http://localhost:9200/events-*/_search?search_type=dfs_query_then_fetch")
@@ -33,7 +34,9 @@
   (if-let [query-defs (:body request)]
     (let [{:keys [username] :as credentials} (sm/get-credentials session)
           query (qb/build-es-query query-defs)]
-      (when username (info (str "User [" username "] performed query: " query)))
+      (when username
+        (g/log-query username query)
+        (info (str "User [" username "] performed query: " query)))
       (response (perform-query credentials query)))
     (response {})))
 

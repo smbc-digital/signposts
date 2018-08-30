@@ -11,6 +11,12 @@
        (s/replace #",NULL$", "")
     )))
 
+(defn- is-on-going[on-going]
+  (if (= on-going "t")
+    ("Yes")
+    ("No"))
+  )
+
 (defn- left-column[event]
   [:div.col.col-md-4
    [:div.row
@@ -120,4 +126,4 @@
      [:div.col.col-md-4
       [:strong "Ongoing"]]
      [:div.col.col-md-8
-      (:on-going event)]]]]])
+      (is-on-going(:on-going event))]]]]])

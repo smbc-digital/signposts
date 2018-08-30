@@ -2,6 +2,12 @@
   (:require
     [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
+
+  (defn- tenacenancy-ref[other-info]
+    (let tenancy-ref (re-matches #"tcy-ref\:{d+]" other-info)
+                     (if tenancy-ref
+      [:div tenancy-ref])))
+
   (defn- middle-column[event]
            [:div.col.col-md-4
             [:div.row
@@ -50,11 +56,6 @@
              (:individual-id event)]]
            [:div.row
             [:div.col.col-md-3
-             [:strong "National Insurance"]]
-            [:div.col.col-md-9
-             (:nino event)]]
-           [:div.row
-            [:div.col.col-md-3
              [:strong "Open Date"]]
             [:div.col.col-md-9
              (:timestamp (fh/unparse-timestamp event))]]
@@ -73,10 +74,6 @@
           [:div.col.col-md-4
            [:div.row
             [:div.col.col-md-3
-             [:strong "National Insurance"]]
-            [:div.col.col-md-9 (:nino event)]]
-           [:div.row
-            [:div.col.col-md-3
              [:strong "Open Date"]]
             [:div.col.col-md-9
              (:timestamp (fh/unparse-timestamp event))]]]
@@ -88,11 +85,6 @@
          [:h4   "Stockport Homes " [:span.not-bold "Notice Seeking Possesion"]]
          [:div.row {:class "cin"}
           [:div.col.col-md-4
-           [:div.row
-            [:div.col.col-md-3
-             [:strong "National Insurance"]]
-            [:div.col.col-md-9
-             (:nino event)]]
            [:div.row
             [:div.col.col-md-3
              [:strong "Open Date"]]

@@ -15,17 +15,14 @@
      [:div.col-md-12.recent-searches
       [:div.container
       [:h4  "RECENT SEARCHES" "  "
-
        [:span
-                [:a {:on-click #(clear-all-searches!)}  " Clear all searches"]]]
+        [:a {:on-click #(clear-all-searches!)}  " Clear all searches"]]]
        [:div
         [:div.row.col-12.recent-searches
-         (search-history)
-         ]]]]
+         (search-history)]]]]
      [:div.col-md-12.recent-updates
       [:div.container
       [:h4 {:style {:margin-left "11px"}}"RECENT UPDATES"]
        `[:div
          [:div.row.col-12
-          (~@(map-indexed recent-update (take 4 (reverse(sort-by :last-updated  @!status)))))]
-        ]]]]))
+          (~@(map-indexed recent-update (take 4 (reverse(sort-by :last-updated  @!status)))))]]]]]))

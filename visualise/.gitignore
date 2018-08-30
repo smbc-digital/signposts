@@ -17,3 +17,6 @@ pom.xml.asc
 *.iml
 .sass-cache/
 /node_modules
+*.db
+*.db-journal
+
