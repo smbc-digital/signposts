@@ -20,5 +20,9 @@ searchguard-es/
 *.exe
 !winsw.exe
 win-infra/artifacts/
+<<<<<<< HEAD
 visualise/src/sass/css
 visualise/src/sass/site.css.map
+*.db
+*.db-journal
+*.css.map

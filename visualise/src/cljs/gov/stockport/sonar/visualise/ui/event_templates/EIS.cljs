@@ -10,6 +10,7 @@
         (s/replace #"\"" "")
         (s/replace #",NULL$", "")
         )))
+
 (defn- is-on-going[on-going]
   (if (= on-going "t")
     ("Yes")
