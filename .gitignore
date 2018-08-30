@@ -20,3 +20,6 @@ searchguard-es/
 *.exe
 !winsw.exe
 win-infra/artifacts/
+*.db
+*.db-journal
+
