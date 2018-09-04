@@ -4,9 +4,8 @@
 
 
   (defn- tenacenancy-ref[other-info]
-    (let tenancy-ref (re-matches #"tcy-ref\:{d+]" other-info)
-                     (if tenancy-ref
-      [:div tenancy-ref])))
+    (other-info)
+    )
 
   (defn- middle-column[event]
            [:div.col.col-md-4

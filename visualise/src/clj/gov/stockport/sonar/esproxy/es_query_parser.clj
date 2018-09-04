@@ -13,8 +13,7 @@
   )
 
   (defn wild-card? [token]
-       (not (nil? (re-matches #"^[\w\'\-]+[\%\*].*$" token )))
-  )
+       (not (nil? (re-matches #"^[\w\'\-]+[\%\*].*$" token ))))
 
   (defn parse-token
     [field token]
@@ -25,11 +24,9 @@
 
   (defn parse-tokens [term value]
      (let [tokens (query-tokens value)]
-      (map #(parse-token term %) tokens)
-    ))
+      (map #(parse-token term %) tokens)))
 
   (defn parse-query [term value]
            {:should (parse-tokens term value)
             :minimum_should_match (token-count value)
-            }
-  )
+            })

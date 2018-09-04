@@ -11,7 +11,8 @@
             [buddy.auth :refer [authenticated?]]
             [gov.stockport.sonar.auth.auth-middleware :refer [wrap-buddy-auth]]
             [gov.stockport.sonar.auth.cookies :as c]
-            [clojure.edn :as edn])
+            [clojure.edn :as edn]
+            )
   (:import (java.util UUID)))
 
 (defonce version (UUID/randomUUID))
@@ -71,8 +72,10 @@
                  ["/logout" {:post :do-logout}]
                  ["/query" {:post :es-query}]
                  ["/status" {:get :es-status}]
+                 ["/search-history" {:get :test}]
                  ["/keep-alive" {:post :keep-alive}]
                  ["/signposting-config" {:get :signposting-config}]
+                 ["/test"   {:get :test}]
                  ["" (->ResourcesMaybe {:prefix "public/"})]
                  [true :404]]])
 
@@ -90,7 +93,10 @@
                :app                (redirect-if-not-auth (loading-page))
                :es-query           proxy/handle-query-request
                :es-status          proxy/handle-status-request
-               :keep-alive         proxy/handle-keep-alive})
+               :es-history         proxy/handle-search-history
+               :keep-alive         proxy/handle-keep-alive
+               :test               proxy/handle-search-history
+               })
 
 (def app-handler (make-handler routes (fn [handler-key-or-handler] (get handlers handler-key-or-handler handler-key-or-handler))))
 

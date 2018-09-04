@@ -1,5 +1,5 @@
 (ns gov.stockport.sonar.visualise.ui.components.welcome-status
-  (:require [gov.stockport.sonar.visualise.state :refer [!status !search-history refresh-status!]]
+  (:require [gov.stockport.sonar.visualise.state :refer [!status !search-history refresh-status! search-history!]]
             [gov.stockport.sonar.visualise.ui.search.search-history :refer [clear-all-searches!]]
             [reagent.core :as r]
             [gov.stockport.sonar.visualise.ui.components.recent-searches :refer [search-history]]
@@ -9,6 +9,7 @@
 
 (defn welcome-message []
   (refresh-status!)
+  (search-history!)
   (fn[]
     ^{:key (gensym)}
   [:div {:id "welcome-message"}

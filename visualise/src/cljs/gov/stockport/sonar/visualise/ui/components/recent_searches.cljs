@@ -12,7 +12,6 @@
     [:input
      {:type "text"
       :value search-term
-      :name (name query-type)
       :id (name query-type)
       :size "20"
       :read-only "true"}]]])

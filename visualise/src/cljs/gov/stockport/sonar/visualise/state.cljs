@@ -45,9 +45,27 @@
   (load-signposting-configuration))
 
 
+(defn name-to-keyword[search-term]
+  {:query-type (keyword (:query-type search-term)) :search-term (:search-term search-term)}
+  )
+
+(defn loop-search[search]
+  (map name-to-keyword search)
+  )
+
+(defn search-history-response[response]
+  (js/console.log (pr-str response))
+  (map loop-search response)
+  )
 
 (defn refresh-status! []
   (GET "/status" {:response-format :json
                   :keywords?       true
                   :handler        (fn [response](reset! !status response))
+                  :error-handler error-handler }))
+
+(defn search-history! []
+  (GET "/search-history" {:response-format :json
+                  :keywords?       true
+                  :handler        (fn [response](reset! !search-history (search-history-response(:search-history response))))
                   :error-handler error-handler }))

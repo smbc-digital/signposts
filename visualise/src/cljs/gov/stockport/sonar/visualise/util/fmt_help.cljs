@@ -8,8 +8,7 @@
 
 (def ellipsis \u2026)
 
-(def ->Title-Case (partial convert-case clojure.str
-                            ing/capitalize clojure.string/capitalize " "))
+(def ->Title-Case (partial convert-case clojure.string/capitalize clojure.string/capitalize " "))
 
 (defn title-case[word]
   (-> word
