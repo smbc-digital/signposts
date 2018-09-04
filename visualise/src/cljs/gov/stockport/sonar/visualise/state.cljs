@@ -2,7 +2,8 @@
   (:require [reagent.core :as r]
             [ajax.core :refer [GET]]
             [hodgepodge.core :refer [local-storage clear!]]))
-
+"Sets up Reagant atoms
+"
 (defonce !app (r/atom {}))
 (defonce !data (r/atom {}))
 (defonce !status (r/atom {}))
@@ -33,8 +34,7 @@
   (assoc! local-storage :login-error status)
   (if (= status 401)
     (navigate-to-login-page)
-    (println (str "something bad happened: " status " " status-text)))
-  )
+    (println (str "something bad happened: " status " " status-text))))
 
 (defn initialise! []
   (reset! !app {})
@@ -44,20 +44,18 @@
   (reset! !search-control-state {})
   (load-signposting-configuration))
 
-
+;;
+;;The Flollowing swaps {:query-type "Name" search-term "foo" } to {:query-type :name :search-term  "foo"}
 (defn name-to-keyword[search-term]
   {:query-type (keyword (:query-type search-term)) :search-term (:search-term search-term)}
   )
 
 (defn loop-search[search]
-  (map name-to-keyword search)
-  )
+  (map name-to-keyword search))
 
 (defn search-history-response[response]
-  (js/console.log (pr-str response))
-  (map loop-search response)
-  )
-
+  (map loop-search response))
+;;
 (defn refresh-status! []
   (GET "/status" {:response-format :json
                   :keywords?       true
