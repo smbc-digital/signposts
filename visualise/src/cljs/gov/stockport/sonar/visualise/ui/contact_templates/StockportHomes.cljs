@@ -3,8 +3,8 @@
     [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 
-  (defn- tenacenancy-ref[other-info]
-    (other-info)
+  (defn- format-other-info[event]
+    (if (= (:event-type )))
     )
 
   (defn- middle-column[event]
@@ -38,7 +38,15 @@
         [:div.col.col-md-3
          [:strong "Open Date"]]
         [:div.col.col-md-9
-         (:timestamp (fh/unparse-timestamp event))]]]
+         (:timestamp (fh/unparse-timestamp event))]]
+       [:div.row
+        [:div.col.col-md-3
+         [:strong "National Insurance"]
+         ]
+        [:div.col.col-md-9
+         (:nino event)
+         ]]
+       ]
       (middle-column event)
       (right-column event)]])
 

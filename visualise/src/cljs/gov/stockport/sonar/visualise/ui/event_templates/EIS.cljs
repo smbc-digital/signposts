@@ -60,23 +60,28 @@
      (:postcode event)]]])
 
 (defn contact [event]
-  [:div.event-details
-   [:div.panel-heading
-   [:h4   "EIS " [:span.not-bold "Contact"]]]
-  [:div.row {:class "eis-in"}
-   (left-column event)
-   (middle-column event)
-   [:div.col.col-md-4
-    [:div.row
-     [:div.col.col-md-4
-      [:strong "Presenting Issue"]]
-     [:div.col.col-md-8
-      (primary-presenting-issue event)]]
-    [:div.row
-     [:div.col.col-md-4
-      [:strong "Outcome"]]
-     [:div.col.col-md-8
-      "Proceed to Social Care Referral"]]]]])
+  [:div
+   [:h4   "EIS " [:span.not-bold "Contact"]]
+   [:div.row {:class "eis-in"}
+    (left-column event)
+    (middle-column event)
+    [:div.col.col-md-4
+     [:div.row
+      [:div.col.col-md-4
+       [:strong "Presenting Issue"]]
+      [:div.col.col-md-8
+       (primary-presenting-issue event)]]
+     [:div.row
+      [:div.col.col-md-4
+       [:strong "Outcome"]]
+      [:div.col.col-md-8
+       (:outcome event)]]
+     [:div.row
+      [:div.col.col-md-4
+       [:strong "Completed By"]]
+      [:div.col.col-md-8
+       (:completed-by event)]]]]])
+
 
 (defn cin [event]
   [:div.event-details

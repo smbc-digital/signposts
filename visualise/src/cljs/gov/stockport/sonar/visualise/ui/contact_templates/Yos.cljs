@@ -3,6 +3,9 @@
   (:require
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
+(defn- format-phone-number [number]
+  (str "0" number))
+
 (defn- left-column[event]
   [:div.col.col-md-4
    [:div.row
@@ -60,8 +63,8 @@
       (:supervisor-name event)[:br]
       [:strong "id:"](:supervisor-id event)[:br]
       [:a {:href (str "mailto:"(:supervisor-email event))} (:supervisor-email event)][:br]
-      (:supervisor-mobile event)[:br]
-      (:supervisor-phone event)]]]]])
+      (format-phone-number(:supervisor-mobile event))[:br]
+      (format-phone-number(:supervisor-phone event))]]]]])
 
 (defn statutory-intervention[event]
   [:div
@@ -76,6 +79,6 @@
     [:div.col.col-md-8
      (:supervisor-name event)[:br]
      [:strong "id:"](:supervisor-id event)[:br]
-     [:a {:href (str "mailto:"(:superviser-email event))} (:superviser-email event)][:br]
-     (:supervisor-mobile event)[:br]
-     (:supervisor-phone event)]]]]])
+     [:a {:href (str "mailto:"(:supervisor-email event))} (:supervisor-email event)][:br]
+     (format-phone-number(:supervisor-mobile event))[:br]
+     (format-phone-number(:supervisor-phone event))]]]]])
