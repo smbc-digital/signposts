@@ -56,29 +56,28 @@
    ])
 
 (defn contact[event]
-  [:div
-  [:h4   "Care First " [:span.not-bold "Contact (adult)"]]
-  [:div.row {:class "carefirst contact"}
-   (left-column event)
-   (middle-column event)
-   [:div.col.col-md-4
-    [:div.row
-     [:div.col.col-md-4
-      [:strong "Contact Type"]]
-     [:div.col.col-md-8
-      "Existing client contact"
-      ]]
-    [:div.row
-     [:div.col.col-md-4
-      [:strong "Team name"]]
-     [:div.col.col-md-8
-      "Adult Contact Centre"]]
-    [:div.row
-     [:div.col.col-md-4
-      [:strong "Worker"]]
-     [:div.col.col-md-8
-      (:worker-name event) [:br]
-      (:worker-tel event)]]]]])
+  [:div.event-details
+   [:div.panel-heading
+    [:h4   "Care First " [:span.not-bold "Contact (adult)"]]]
+   [:div.row {:class "carefirst contact"}
+    (left-column event)
+    (middle-column event)
+    [:div.col.col-md-4
+     [:div.row
+      [:div.col.col-md-4
+       [:strong "Contact Type"]]
+      [:div (:form-or-service-agreement event)]]
+     [:div.row
+      [:div.col.col-md-4
+       [:strong "Team name"]]
+      [:div.col.col-md-8
+       (:team-name event)]]
+     [:div.row
+      [:div.col.col-md-4
+       [:strong "Worker"]]
+      [:div.col.col-md-8
+       (:worker-name event) [:br]
+       (:worker-tel event)]]]]])
 
 
 (defn service-agreement[event]

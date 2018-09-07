@@ -65,13 +65,12 @@
     [:div.row
      [:div.col.col-md-4
       [:strong "Contact Type"]]
-     [:div.col.col-md-8
-      "Existing client contact"]]
+     [:div (:form-or-service-agreement event)]]
     [:div.row
      [:div.col.col-md-4
       [:strong "Team name"]]
      [:div.col.col-md-8
-      "Adult Contact Centre"]]
+      (:team-name event)]]
     [:div.row
      [:div.col.col-md-4
       [:strong "Worker"]]

@@ -2,10 +2,25 @@
   (:require
     [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
-
-  (defn- format-other-info[event]
-    (if (= (:event-type )))
-    )
+  ;;Tcy Refno:68499 Acc Balance:-848.53 5-week arrers
+  ;;Tcy Refno:64627 AEW Date:-30-MAY-17
+  ;;Tcy Refno:68506 NSP Date:-03-AUG-17
+  (defn- format-other-info [event]
+     (let  [tenancy-ref (re-find #"\d{5,}" (:otherinfo event))]
+       (let [date (re-find #"\d{2}\-[A-Za-z]{3}\-\d{2}"  (:otherinfo event))]
+         (let [amount (re-find #"\-[\d\.]+" (:otherinfo event))]
+             (when tenancy-ref
+               (let  [tenancy-ref-text (str "Tenancy Reference:" tenancy-ref)]
+                 [:div tenancy-ref-text [:br]
+                  (when amount
+                    (str "Account Balance:" amount))
+                  (when (and date (= "homes-evictions" (:event-type event) ))
+                    (str "AEW Date:" date)
+                    )
+                  (when (and date (= "notice-possesion" (:event-type event) ))
+                    (str "NSP Date:" date)
+                    )
+                  ] ))))))
 
   (defn- middle-column[event]
            [:div.col.col-md-4
