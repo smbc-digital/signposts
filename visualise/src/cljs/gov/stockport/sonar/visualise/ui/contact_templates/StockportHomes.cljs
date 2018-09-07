@@ -6,21 +6,21 @@
   ;;Tcy Refno:64627 AEW Date:-30-MAY-17
   ;;Tcy Refno:68506 NSP Date:-03-AUG-17
   (defn- format-other-info [event]
-     (let  [tenancy-ref (re-find #"\d{5,}" (:otherinfo event))]
-       (let [date (re-find #"\d{2}\-[A-Za-z]{3}\-\d{2}"  (:otherinfo event))]
-         (let [amount (re-find #"\-[\d\.]+" (:otherinfo event))]
-             (when tenancy-ref
-               (let  [tenancy-ref-text (str "Tenancy Reference:" tenancy-ref)]
-                 [:div tenancy-ref-text [:br]
-                  (when amount
-                    (str "Account Balance:" amount))
-                  (when (and date (= "homes-evictions" (:event-type event) ))
-                    (str "AEW Date:" date)
-                    )
-                  (when (and date (= "notice-possesion" (:event-type event) ))
-                    (str "NSP Date:" date)
-                    )
-                  ] ))))))
+    (let  [tenancy-ref (re-find #"\d{5,}" (:otherinfo event))]
+      (let [date (re-find #"\d{2}\-[A-Za-z]{3}\-\d{2}"  (:otherinfo event))]
+        (let [amount (re-find #"\-[\d\.]+" (:otherinfo event))]
+          (when tenancy-ref
+            (let  [tenancy-ref-text (str "Tenancy Reference: " tenancy-ref)]
+              [:div tenancy-ref-text [:br]
+               (when amount
+                 [:strong "Account Balance:"] amount)
+               (when (and date (= "homes-evictions" (:event-type event) )
+                          [:strong "AEW Date:"] date)
+                 )
+               (when (and date (= "notice-possesion" (:event-type event) )
+                          [:strong "NSP Date: "] date)
+                 )
+               ] ))))))
 
   (defn- middle-column[event]
            [:div.col.col-md-4
