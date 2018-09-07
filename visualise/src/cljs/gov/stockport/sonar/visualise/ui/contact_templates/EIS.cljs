@@ -69,7 +69,13 @@
      [:div.col.col-md-4
       [:strong "Outcome"]]
      [:div.col.col-md-8
-      "Proceed to Social Care Referral"]]]]])
+      (:outcome event)]]
+    [:div.row
+     [:div.col.col-md-4
+      [:strong "Completed By"]]
+     [:div.col.col-md-8
+      (:completed-by event)]]]]]
+  )
 
 (defn cin [event]
   [:div

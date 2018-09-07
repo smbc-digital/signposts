@@ -6,19 +6,17 @@
 (defn- format-other-info [event]
   (let  [tenancy-ref (re-find #"\d{5,}" (:otherinfo event))]
     (let [date (re-find #"\d{2}\-[A-Za-z]{3}\-\d{2}"  (:otherinfo event))]
-      (let [amount (re-find #"\-[\d\.]+" (:otherinfo event))]
+      (let [amount (re-find #"\-\d+.\d+" (:otherinfo event))]
         (when tenancy-ref
           (let  [tenancy-ref-text (str "Tenancy Reference: " tenancy-ref)]
             [:div tenancy-ref-text [:br]
              (when amount
-               [:strong "Account Balance:"] amount)
-             (when (and date (= "homes-evictions" (:event-type event) )
-               [:strong "AEW Date:"] date)
-               )
-             (when (and date (= "notice-possesion" (:event-type event) )
-               [:strong "NSP Date: "] date)
-               )
-             ] ))))))
+               [:span [:strong "Account Balance:"]amount])
+             (when (and date (= "homes-evictions" (:event-type event) ))
+               [:span  [:strong "AEW Date:"] date])
+             (when (and date (= "notice-possesion" (:event-type event) ))
+               [:span  [:strong "NSP Date: "] date])
+             ]))))))
 
   (defn- middle-column[event]
            [:div.col.col-md-4
@@ -40,7 +38,7 @@
       [:div.col.col-md-3
        [:strong "Other Information"]]
       [:div.col.col-md-9
-       (:otherinfo event)]])])
+       (format-other-info event)]])])
 
   (defn arrears-6-wk[event]
      [:div.event-details.

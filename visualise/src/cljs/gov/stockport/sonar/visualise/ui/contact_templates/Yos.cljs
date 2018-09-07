@@ -4,9 +4,12 @@
   [gov.stockport.sonar.visualise.util.fmt-help :as fh]))
 
 (defn- format-phone-number [number]
-  (str "0" number))
+   (if (clojure.string/blank? number)
+     ""
+     (str "0" number)))
 
-(defn- left-column[event]
+
+  (defn- left-column[event]
   [:div.col.col-md-4
    [:div.row
     [:div.col.col-md-4

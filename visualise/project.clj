@@ -78,6 +78,7 @@
                            {:output-to     "target/cljsbuild/public/js/app.js"
                             :output-dir    "target/uberjar"
                             :optimizations :advanced
+
                             :externs       ["externs/flot.plugins.navigate.ext.js"]
                             :pretty-print  false}}
             :app
