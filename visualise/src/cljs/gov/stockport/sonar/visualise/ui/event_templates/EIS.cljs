@@ -59,8 +59,9 @@
      (:postcode event)]]])
 
 (defn contact [event]
-  [:div
-   [:h4   "EIS " [:span.not-bold "Contact"]]
+  [:div.event-details
+   [:div.panel-heading
+   [:h4   "EIS " [:span.not-bold "Contact"]]]
    [:div.row {:class "eis-in"}
     (left-column event)
     (middle-column event)

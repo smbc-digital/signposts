@@ -13,12 +13,13 @@
           (let  [tenancy-ref-text (str "Tenancy Reference: " tenancy-ref)]
             [:div tenancy-ref-text [:br]
              (when amount
-               [:span [:strong "Account Balance:"]amount])
+               [:span "Account Balance: " amount])
              (when (= "Evictions" (:event-type event))
-               [:span  [:strong "AEW Date:"] date])
+               [:span   "AEW Date: " date])
              (when  (= "Notice-Possession" (:event-type event))
-               [:span  [:strong "NSP Date: "] date])
+               [:span  "NSP Date: " date])
              ]))))))
+
 
   (defn- middle-column[event]
            [:div.col.col-md-4
