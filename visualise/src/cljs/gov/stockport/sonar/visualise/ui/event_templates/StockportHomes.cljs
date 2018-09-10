@@ -12,9 +12,9 @@
             [:div tenancy-ref-text [:br]
              (when amount
                [:span [:strong "Account Balance:"]amount])
-             (when (and date (= "homes-evictions" (:event-type event) ))
+             (when (= "Evictions" (:event-type event))
                [:span  [:strong "AEW Date:"] date])
-             (when (and date (= "notice-possesion" (:event-type event) ))
+             (when  (= "Notice-Possession" (:event-type event))
                [:span  [:strong "NSP Date: "] date])
              ]))))))
 

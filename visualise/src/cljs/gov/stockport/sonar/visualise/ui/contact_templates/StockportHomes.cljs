@@ -14,9 +14,9 @@
             [:div tenancy-ref-text [:br]
              (when amount
                [:span [:strong "Account Balance:"]amount])
-             (when (and date (= "homes-evictions" (:event-type event) ))
+             (when (= "Evictions" (:event-type event))
                [:span  [:strong "AEW Date:"] date])
-             (when (and date (= "notice-possesion" (:event-type event) ))
+             (when  (= "Notice-Possession" (:event-type event))
                [:span  [:strong "NSP Date: "] date])
              ]))))))
 
@@ -40,7 +40,7 @@
       [:div.col.col-md-3
        [:strong "Other Information"]]
       [:div.col.col-md-9
-       (:format-other-info event)]])])
+       (format-other-info event)]])])
 
   (defn arrears-6-wk[event]
      [:div
