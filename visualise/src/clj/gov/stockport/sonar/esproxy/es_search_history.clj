@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.esproxy.es-search-history
   (:require
-            [clojure.java.jdbc :refer :all]))
+    [clojure.java.jdbc :refer :all])
+  (:import (sun.font TrueTypeFont$DirectoryEntry)))
 
   (def db
        {:classname   "org.sqlite.JDBC"
@@ -8,8 +9,20 @@
         :subname     "db\\visualise.db"})
 
 
-  (defn log-query [user query ]
-        (insert! db :querylog {:user user :query query}))
+(defn get-last-query [user]
+  (query db ["SELECT  Query FROM QueryLog WHERE User = ? ORDER BY Timestamp DESC LIMIT 1"  user]))
+
+
+(defn are-not-the-same [query user]
+  (if (not= (get-last-query user) query)
+     true
+     false))
+
+  (defn log-query [user query]
+    (if (are-not-the-same user query)
+    (insert! db :querylog {:user user :query query})))
+
+
 
   (defn query-search-history [user]
      (query db ["SELECT  Query FROM QueryLog WHERE User = ? ORDER BY Timestamp DESC LIMIT 10"  user]))
