@@ -19,13 +19,12 @@
      false))
 
   (defn log-query [user query]
-    (if (are-not-the-same user query)
-    (insert! db :querylog {:user user :query query})))
+    (insert! db :querylog {:user user :query query}))
 
 
 
   (defn query-search-history [user]
-     (query db ["SELECT  Query FROM QueryLog WHERE User = ? ORDER BY Timestamp DESC LIMIT 10"  user]))
+     (query db ["SELECT DISTINCT Query FROM QueryLog WHERE User = ? ORDER BY Timestamp DESC LIMIT 10"  user]))
 
 
   (defn parse-dob[query-field]
