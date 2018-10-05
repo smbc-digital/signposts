@@ -63,12 +63,14 @@
 
 (defn add-search-criteria-and-search!
   ([]
+   (js/console.log (pr-str "status" (:criteria @!search-control-state)))
    (when (not (str/blank? (search-term)))
      (apply add-search-criteria-and-search! (vals (select-keys @!search-control-state [:selected-control :search-term])))))
   ([query-type search-term]
    (when (not (str/blank? search-term))
      (let [new-criteria {:query-type query-type :search-term search-term}]
-       (callback (swap-criteria! new-criteria))))))
+       (callback (swap-criteria! new-criteria))
+       ))))
 
 (defn remove-search-criteria! [query-type-to-remove]
   (swap! !search-control-state update :criteria

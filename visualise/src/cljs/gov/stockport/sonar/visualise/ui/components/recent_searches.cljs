@@ -8,11 +8,11 @@
 (defn nugget [{:keys [query-type search-term]}]
   ^{:key (gensym)}
   [:div.col.col-md-3.search-event-item
-   [:label (name query-type)
+   [:label query-type
     [:input
      {:type "text"
       :value search-term
-      :id (name query-type)
+      :id query-type
       :size "20"
       :read-only "true"}]]])
 
