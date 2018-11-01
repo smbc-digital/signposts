@@ -45,10 +45,9 @@
   (load-signposting-configuration))
 
 ;;
-;;The Flollowing swaps {:query-type "Name" search-term "foo" } to {:query-type :name :search-term  "foo"}
+;;The Following swaps {:query-type "Name" search-term "foo" } to {:query-type :name :search-term  "foo"}
 (defn name-to-keyword[search-term]
-  {:query-type (keyword (:query-type search-term)) :search-term (:search-term search-term)}
-  )
+  {:query-type (keyword (:query-type search-term)) :search-term (:search-term search-term)})
 
 (defn loop-search[search]
   (map name-to-keyword search))

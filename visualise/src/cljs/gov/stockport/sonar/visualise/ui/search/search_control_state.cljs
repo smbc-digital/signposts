@@ -7,7 +7,11 @@
   (reset! !search-control-state {:selected-control   :name
                                  :query              ""
                                  :on-change-callback on-change-callback
-                                 :criteria           []}))
+                                 :criteria           []
+                                 :is-modified false
+                                 }))
+
+
 
 (defn set-selected-field! [field]
   (if (not= field "")
@@ -58,19 +62,17 @@
   ([query-type search-term]
    (when (not (str/blank? search-term))
      (let [new-criteria {:query-type query-type :search-term search-term}]
-       (swap-criteria! new-criteria)
-       ))))
+       (swap-criteria! new-criteria)))))
 
 (defn add-search-criteria-and-search!
   ([]
-   (js/console.log (pr-str "status" (:criteria @!search-control-state)))
-   (when (not (str/blank? (search-term)))
-     (apply add-search-criteria-and-search! (vals (select-keys @!search-control-state [:selected-control :search-term])))))
+   (add-search-criteria!)
+   (if (not(empty? (:criteria @!search-control-state)))
+        (callback @!search-control-state)))
   ([query-type search-term]
-   (when (not (str/blank? search-term))
-     (let [new-criteria {:query-type query-type :search-term search-term}]
-       (callback (swap-criteria! new-criteria))
-       ))))
+   (add-search-criteria! query-type search-term)
+   (if (not(empty? (:criteria @!search-control-state)))
+         (callback @!search-control-state))))
 
 (defn remove-search-criteria! [query-type-to-remove]
   (swap! !search-control-state update :criteria
