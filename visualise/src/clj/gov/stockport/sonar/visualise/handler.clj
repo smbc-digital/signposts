@@ -73,6 +73,7 @@
                  ["/query" {:post :es-query}]
                  ["/status" {:get :es-status}]
                  ["/search-history" {:get :test}]
+                 ["/delete-history" {:post :es-delete-history}]
                  ["/keep-alive" {:post :keep-alive}]
                  ["/signposting-config" {:get :signposting-config}]
                  ["/test"   {:get :test}]
@@ -94,6 +95,7 @@
                :es-query           proxy/handle-query-request
                :es-status          proxy/handle-status-request
                :es-history         proxy/handle-search-history
+               :es-delete-history  proxy/handle-delete-history
                :keep-alive         proxy/handle-keep-alive
                :test               proxy/handle-search-history
                })

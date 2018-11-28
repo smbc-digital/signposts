@@ -52,7 +52,11 @@
 
 (defn handle-search-history [{session :identity}]
   (let [{:keys [username] :as credentials} (sm/get-credentials session)]
-        (response (sh/get-search-history username)  )))
+        (response (sh/delete-search-history username)  )))
+
+(defn handle-delete-history [{session :identity}]
+  (let [{:keys [username] :as credentials} (sm/get-credentials session)]
+    (response (sh/get-search-history username)  )))
 
 (defn handle-keep-alive [{session :identity}]
   (sm/ping! session)
