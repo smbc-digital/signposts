@@ -50,11 +50,11 @@
       (catch Object _ (throw-unauthorized)))))
 
 
-(defn handle-search-history [{session :identity}]
+(defn handle-hide-history [{session :identity}]
   (let [{:keys [username] :as credentials} (sm/get-credentials session)]
         (response (sh/delete-search-history username)  )))
 
-(defn handle-delete-history [{session :identity}]
+(defn handle-search-history [{session :identity}]
   (let [{:keys [username] :as credentials} (sm/get-credentials session)]
     (response (sh/get-search-history username)  )))
 
