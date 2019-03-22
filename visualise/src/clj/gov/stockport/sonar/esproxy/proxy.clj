@@ -52,7 +52,7 @@
 
 (defn handle-hide-history [{session :identity}]
   (let [{:keys [username] :as credentials} (sm/get-credentials session)]
-        (response (sh/delete-search-history username)  )))
+        (response (sh/hide-search-history username)  )))
 
 (defn handle-search-history [{session :identity}]
   (let [{:keys [username] :as credentials} (sm/get-credentials session)]

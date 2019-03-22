@@ -95,7 +95,7 @@
                :es-query           proxy/handle-query-request
                :es-status          proxy/handle-status-request
                :es-history         proxy/handle-search-history
-               :es-delete-history  proxy/handle-delete-history
+               :es-delete-history  proxy/handle-search-history
                :keep-alive         proxy/handle-keep-alive
                :test               proxy/handle-search-history
                })

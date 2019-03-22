@@ -72,7 +72,7 @@
   (show-dropdown!)
   (deactivate-plus!))
 
-(defn- change-search-criteria-and-search[]
+(defn change-search-criteria-and-search[]
   (scs/add-search-criteria-and-search!)
   (hide-search-field)
   (show-dropdown!)
@@ -89,7 +89,7 @@
       :name (name query-type)
       :id (name query-type)
       :size "15"
-      :read-only "true"}]]]
+      }]]]
      [:div.delete-item-container
      [:i.fa.fa-times.ml-2.delete-item
      {:on-click #(remove-search-criteria query-type)}]]])
@@ -109,7 +109,7 @@
     :id "search-term"
     :size (get-in qcs/query-types [(scs/selected-control) :size])
     :on-change   #(scs/set-search-term! (-> % .-target .-value))
-    :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))}])
+    :on-key-up   #(when (= 13 (-> % .-keyCode)) (scs/change-search-criteria-and-search!))}])
 
 
 

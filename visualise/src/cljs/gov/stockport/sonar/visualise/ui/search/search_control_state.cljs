@@ -11,8 +11,6 @@
                                  :is-modified false
                                  }))
 
-
-
 (defn set-selected-field! [field]
   (if (not= field "")
   (swap! !search-control-state assoc :selected-control field)))

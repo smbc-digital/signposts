@@ -1,6 +1,7 @@
 (ns gov.stockport.sonar.visualise.ui.pages.home-page
   "Home Page of Signposts"
   (:require [reagent.core :as r]
+            [gov.stockport.sonar.visualise.state :as st]
             [gov.stockport.sonar.visualise.query.handler :as h]
             [gov.stockport.sonar.visualise.ui.search.search-control :as nsc]
             [gov.stockport.sonar.visualise.ui.results.tabbed-results :as tr]
@@ -32,7 +33,7 @@
       [:div.row.justify-content-center
        [:i.fa.fa-map-signs.fa-2x]]]
      [:div.column.col-lg-10.col-md-7.col-sm-8.col-xs-6
-      [:span.h2.page-title "SIGNPOSTS"]]
+      [:span.h2.page-title  "SIGNPOSTS" ]]
      [:div.column.col-lg-1.col-md-3.col-sm-2.col-xs-4 {:style{:padding-left  "0"}}
       [:button.btn.btn-primary {:on-click ac/logout} "Logout"]]]]
    [nsc/new-search-control (h/default-handler !data)]
