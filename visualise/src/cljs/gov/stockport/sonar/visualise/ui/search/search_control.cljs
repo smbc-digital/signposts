@@ -109,7 +109,7 @@
     :id "search-term"
     :size (get-in qcs/query-types [(scs/selected-control) :size])
     :on-change   #(scs/set-search-term! (-> % .-target .-value))
-    :on-key-up   #(when (= 13 (-> % .-keyCode)) (scs/change-search-criteria-and-search!))}])
+    :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))}])
 
 
 
