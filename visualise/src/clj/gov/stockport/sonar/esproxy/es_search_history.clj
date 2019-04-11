@@ -26,7 +26,7 @@
 
   (defn query-search-history [user]
      (query db 
-      ["SELECT DISTINCT Query FROM QueryLog WHERE User = ? AND IsHidden = False ORDER BY Timestamp DESC LIMIT 10" user]))
+      ["SELECT DISTINCT Query FROM QueryLog WHERE User = ?  ORDER BY Timestamp DESC LIMIT 10" user]))
 
 
   (defn parse-dob[query-field]

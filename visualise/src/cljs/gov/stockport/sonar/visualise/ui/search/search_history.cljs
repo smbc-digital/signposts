@@ -28,6 +28,4 @@
         (swap! !search-history conj (:criteria @!search-control-state)))))
 
 (defn clear-all-searches![]
-  (reset! !search-history '())
-  ()
-  )
+  (reset! !search-history '()))
