@@ -85,10 +85,12 @@
    [:label  {:style {:width "100%"}} (name query-type)
     [:input
      {:type "text"
-      :value search-term
+      :default-value search-term
       :name (name query-type)
       :id (name query-type)
       :size "15"
+      :on-change  #(change-search-criteria)
+      :on-key-up  #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))
       }]]]
      [:div.delete-item-container
      [:i.fa.fa-times.ml-2.delete-item
