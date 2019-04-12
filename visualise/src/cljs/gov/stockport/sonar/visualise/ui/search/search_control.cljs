@@ -37,12 +37,12 @@
   (reset! !active-plus 0))
 
 (defn- hide-search-field[]
-  "Hides text input and shows Seletc"
+  "Hides text input and shows Select"
   (show-dropdown!)
   (hide-search-item!))
 
 (defn- toggle-view[field]
-  "Shows text field if seach field is selected"
+  "Shows text field if search field is selected"
   (if (= "none" field)
     (do
       (show-dropdown!)
