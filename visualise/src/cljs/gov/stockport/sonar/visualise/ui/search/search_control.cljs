@@ -89,7 +89,7 @@
       :name (name query-type)
       :id (name query-type)
       :size "15"
-      :on-change  #(change-search-criteria)
+      :on-change  #(scs/set-search-term! (-> % .-target .-value))
       :on-key-up  #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))
       }]]]
      [:div.delete-item-container
@@ -106,12 +106,10 @@
 (defn text-input[]
   [:input
    {:type "text"
-    :value  (scs/search-term)
+    :default-value  (scs/search-term)
     :name "search-term"
     :id "search-term"
-    :size (get-in qcs/query-types [(scs/selected-control) :size])
-    :on-change   #(scs/set-search-term! (-> % .-target .-value))
-    :on-key-up   #(when (= 13 (-> % .-keyCode)) (change-search-criteria-and-search))}])
+    :size (get-in qcs/query-types [(scs/selected-control) :size])}])
 
 
 
