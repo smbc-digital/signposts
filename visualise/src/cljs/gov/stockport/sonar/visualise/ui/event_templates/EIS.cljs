@@ -60,6 +60,7 @@
 
 (defn contact [event]
   [:div
+   [:div.panel-heading
    [:h4   "EIS " [:span.not-bold "Contact"]]
    [:div.row {:class "eis-in"}
     (left-column event)
@@ -113,7 +114,12 @@
      [:div.col.col-md-4
       [:strong "Presenting Issue"]]
      [:div.col.col-md-8
-      (:primary-presenting-issue event)]]]]])
+      (:primary-presenting-issue event)]]
+    [:div.row
+     [:div.col.col-md-4
+      [:strong "Closure reason"]]
+     [:div.col.col-md-8
+      (:closure-reason event)]]]]])
 
 (defn sen [event]
   [:div.event-details
