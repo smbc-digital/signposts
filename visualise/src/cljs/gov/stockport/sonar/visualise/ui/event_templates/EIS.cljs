@@ -80,7 +80,7 @@
       [:div.col.col-md-4
        [:strong "Completed By"]]
       [:div.col.col-md-8
-       (:completed-by event)]]]]])
+       (:completed-by event)]]]]]])
 
 
 (defn cin [event]
